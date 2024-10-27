@@ -745,7 +745,7 @@ $("#addExport").click(async function () {
             } else {
                 // If no `id`, add a new certificate template
                 const response = await fetch(
-                    `http://localhost:8001/api/add-certificate-template`,
+                    `${apiUrl}/api/add-certificate-template`,
                     {
                         method: "POST",
                         headers: {
