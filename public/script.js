@@ -1,8 +1,8 @@
 
 // const apiUrl = "http://10.2.3.55:7039";
 // const apiUrl_Admin = "http://10.2.3.55:6049";
-const apiUrl = "https://userdevapi.certs365.io";
-const apiUrl_Admin = "https://adminapidev.certs365.io";
+const apiUrl = window.CONFIG.NEXT_PUBLIC_BASE_URL_USER;
+const apiUrl_Admin = window.CONFIG.NEXT_PUBLIC_BASE_URL;
 
 
 var canvas;
@@ -17,7 +17,7 @@ var selectedShape = null;
 
 
 $(document).ready(function () {
-  var isDataUnsaved = true;
+  var isDataUnsaved = true
   // fetchFonts();
   var canvasHeight = window.innerHeight * 0.8;
   var canvasWidth = window.innerWidth * 0.6;
