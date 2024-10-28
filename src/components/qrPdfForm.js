@@ -35,6 +35,8 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
   const [email, setEmail] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [nextRoute, setNextRoute] = useState(null);
+  const [documentNumberError, setDocumentNumberError] = useState('');
+  const [nameError, setNameError] = useState('');
   const adminUrl = process.env.NEXT_PUBLIC_BASE_URL_admin;
   const toggleLock = () => {
     setIsLocked(!isLocked);
@@ -75,6 +77,26 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
     const { name, value } = e.target;
     if (regex && !regex.test(value)) {
       return;
+    }
+    if (name === 'documentNumber') {
+      if (value.length < 6) {
+        setDocumentNumberError('Document Number must be at least 6 characters.');
+      } else if (value.length > 50) {
+        setDocumentNumberError('Document Number cannot exceed 50 characters.');
+      } else {
+        setDocumentNumberError('');
+      }
+    }
+
+    // Validation logic for Name
+    if (name === 'name') {
+      if (value.length < 6) {
+        setNameError('Name must be at least 6 characters.');
+      } else if (value.length > 50) {
+        setNameError('Name cannot exceed 50 characters.');
+      } else {
+        setNameError('');
+      }
     }
     setCertificateDetails({ ...certificateDetails, [name]: value });
   };
@@ -259,7 +281,7 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
   };
 
   const isFormValid = () => {
-    if (!certificateDetails.documentNumber || !certificateDetails.name) {
+    if (!certificateDetails.documentNumber || !certificateDetails.name || nameError || documentNumberError) {
       return false;
     }
     for (let field of customFields) {
@@ -289,7 +311,7 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
         </div>
         <div className='p-5'>
           <Row className='d-flex justify-content-md-center align-items-center'>
-            <Col md={{ span: 4 }} xs={{ span: 12 }}>
+            <Col md={{ span: 4 }} xs={{ span: 12 }} >
               <Form.Group controlId='documentNumber' className='mb-3'>
                 <Form.Label>Document Number<span className='text-danger'>*</span></Form.Label>
                 <InputGroup>
@@ -303,6 +325,9 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
                   />
                 </InputGroup>
               </Form.Group>
+                {documentNumberError && (
+                  <small className="text-danger">{documentNumberError}</small>
+                )}
             </Col>
             <Col md={{ span: 4 }} xs={{ span: 12 }}>
               <Form.Group controlId='name' className='mb-3'>
@@ -316,9 +341,13 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
                     required
                     maxLength={50}
                   />
-
+  
                 </InputGroup>
+               
               </Form.Group>
+              {nameError && (
+                  <small className="text-danger">{nameError}</small>
+                )}
             </Col>
             
             <Col md={{ span: 4 }} xs={{ span: 12 }} style={{ marginTop:"15px"}}>
@@ -401,7 +430,7 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
 {
   type=='poc' &&
   <div className='text-end mt-3'>
-  <Button label='Submit' className='golden ' onClick={submitDimentions} disabled={!isLocked || isLoading} />
+  <Button label='Submit' className='golden ' onClick={submitDimentions} disabled={!isLocked || isLoading } />
   </div>
 
 }
