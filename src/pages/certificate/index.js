@@ -1111,7 +1111,7 @@ const CardSelector = () => {
               <Row>
                 <Col xs={12} md={6}>
                   <Card className="p-0 template-thumb">
-                  <Card.Header>Design Templates</Card.Header>
+                  <Card.Header>Designed Templates</Card.Header>
                     <Row className="p-3">
                     {designCerts?.slice(-3)?.map((card, index) => (
                         <Col key={index} xs={6} md={4}>
@@ -1126,7 +1126,7 @@ const CardSelector = () => {
                         </Col>
                       ))}
                     </Row>
-                    <Card.Header>Select a Template</Card.Header>
+                    <Card.Header>Available Templates</Card.Header>
                     <Row className="p-3">
                       {cards.map((card, index) => (
                         <Col key={card.id} xs={6} md={4}>
