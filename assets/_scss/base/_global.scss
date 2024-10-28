@@ -132,35 +132,6 @@ a {
     }
 }
 
-.page-bg {
-    background-image: url(https://images.netcomlearning.com/ai-certs/cer365AllPageBg.png);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position-y: -10em;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    overflow: auto;
-    
-    // 1600
-    @media (min-width: $large-min) and (max-width: $large-max) {
-        background-position-y: -7em;
-        background-position-x: 4em;   
-    }
-
-    // 1366
-    @media (min-width: $small-min) and (max-width: $small-max) {
-        background-position-y: -5em;
-        background-position-x: 4em;
-    }
-
-    @media (min-width: $mobile-min) and (max-width: $mobile-max) {
-        background-position-y: 34px;
-    }
-}
-
 .page-footer-bg {
     background-image: url(https://images.netcomlearning.com/ai-certs/cer365AllPageFooterBg.svg);
     background-repeat: no-repeat;
@@ -235,7 +206,7 @@ a {
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    // margin: 40px 0 30px;
+    margin: 0 0 30px;
 
     @media (min-width: $large-min) and (max-width: $large-max) {
         font-size: 28px;
@@ -272,5 +243,91 @@ a {
         font-size: 28px;
         font-weight: 700;
         line-height: 34.13px;
+    }
+}
+
+
+.page-bg {
+    background-image: url(https://images.netcomlearning.com/ai-certs/cer365AllPageBg.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-y: -10em;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: auto;
+    
+    // 1600
+    @media (min-width: $large-min) and (max-width: $large-max) {
+        background-position-y: -7em;
+        background-position-x: 4em;   
+    }
+
+    // 1366
+    @media (min-width: $small-min) and (max-width: $small-max) {
+        background-position-y: -5em;
+        background-position-x: 4em;
+    }
+
+    @media (min-width: $mobile-min) and (max-width: $mobile-max) {
+        background-position-y: 34px;
+    }
+}
+
+.dark-mode {
+    .input-elements {
+        .form-label {
+            color: #A9A7B0;
+        }
+
+        .form-control {
+            color: $white;
+            background: transparent !important;
+        }
+        .form-select {
+            color: $white;
+            background: #000 !important;
+        }
+
+        .input-group-text {
+            color: #A9A7B0;
+            background: transparent !important;
+        }
+    }
+
+    .page-bg {
+        background-image: url('/backgrounds/background-dark.png');
+        background-size: cover;
+        background-position-y: 0;
+        
+        // 1600
+        @media (min-width: $large-min) and (max-width: $large-max) {
+            background-position-y: 0;
+            background-position-x: 0;   
+        }
+    
+        // 1366
+        @media (min-width: $small-min) and (max-width: $small-max) {
+            background-position-y: 0;
+            background-position-x: 0;
+        }
+    
+        @media (min-width: $mobile-min) and (max-width: $mobile-max) {
+            background-position-y: 0;
+        }
+    }
+
+    .title {
+        color: $white;
+    }
+
+    .loader-modal {
+        .modal-content {
+            .modal-body {
+                background: #fff;
+            }
+        }
     }
 }

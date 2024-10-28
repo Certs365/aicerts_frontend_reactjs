@@ -55,7 +55,7 @@ const DownloadCertificate = () => {
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
   };
-  
+
   const generatePresignedUrl = async (key) => {
     const s3 = new AWS.S3();
     const params = {
@@ -121,7 +121,7 @@ const DownloadCertificate = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({detail, message, polygonLink, status,badgeUrl, certificateUrl, logoUrl, signatureUrl, issuerName, issuerDesignation }),
+        body: JSON.stringify({ detail, message, polygonLink, status, badgeUrl, certificateUrl, logoUrl, signatureUrl, issuerName, issuerDesignation }),
       });
       if (res.ok) {
         const blob = await res.blob();
@@ -215,13 +215,13 @@ const DownloadCertificate = () => {
   const parsedCardId = typeof cardId === 'string' ? parseInt(cardId) : cardId || 0;
 
   useEffect(() => {
-    if(badgeUrl){
-     
-    const fetchImageUrl = async () => {
+    if (badgeUrl) {
+
+      const fetchImageUrl = async () => {
         const url = await badgeUrl;
         if (url) {
           setKeyUrl(url);
-           (url, "url")
+          (url, "url")
         }
       }
 
@@ -273,7 +273,7 @@ const DownloadCertificate = () => {
         },
         body: JSON.stringify({ detail, certificateUrl, logoUrl, signatureUrl, badgeUrl, issuerName, issuerDesignation }),
       });
-      
+
       if (res.ok) {
         const blob = await res.blob();
         const url = window.URL.createObjectURL(blob);
@@ -418,10 +418,12 @@ const DownloadCertificate = () => {
           <div className='vertical-center batchDashboard'>
             <div className='dashboard pb-5 pt-5'>
               <Container className='mt-5 mt-md-0'>
-              <span onClick={() => { window.location.href = "/certificate?tab=1" }} className='back-button'>
-              <Image width={10} height={10} src={BackIcon} alt='back' /><span className=''>Back</span>
-            </span>
-                <h3 className='title'>Batch Issuance</h3>
+                <div className='d-flex align-items-center mb-4'>
+                  <span onClick={() => { window.location.href = "/certificate?tab=1" }} className='back-button'>
+                    <Image width={10} height={10} src={BackIcon} alt='back' /><span className=''>Back</span>
+                  </span>
+                  <h3 className='title mb-0'>Batch Issuance</h3>
+                </div>
                 <Row>
                   <Col xs={12} md={4} className='mb-4 mb-md-0'>
                     <Card className='p-0 h-auto d-none d-md-block'>
@@ -598,7 +600,7 @@ const DownloadCertificate = () => {
                                         type="checkbox"
                                         aria-label={`option ${index}`}
                                         checked={checkedItems[index] || false}
-                                        
+
                                         onChange={(event) => handleCheckboxChange(event, index)}
                                       />
                                       {/* <span>{index + 1}.</span> */}

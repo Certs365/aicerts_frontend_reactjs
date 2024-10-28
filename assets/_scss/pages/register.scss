@@ -138,3 +138,26 @@
         padding-top: 15px;
     }
 }
+
+.dark-mode {
+    .register {    
+        .register-form {
+            .card {    
+                .card-body {
+                    .card-title {
+                        color: $white;
+                        background: #171A24;
+                        margin-bottom: 0;
+                    }
+    
+                    .input-elements {
+                        background-color: #000;
+                        .form-label {
+                            color: #A9A7B0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

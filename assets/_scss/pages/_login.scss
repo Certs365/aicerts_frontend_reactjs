@@ -233,3 +233,192 @@
         }
     }
 }
+
+.dark-mode {
+    .login-page {        
+        .global-header {
+        }
+    
+        .login-container {
+    
+            .login {
+                background-color: #171A24;
+    
+                .title {
+                    color: $white;
+                }
+    
+                .sub-text {
+                    color: #A9A7B0;
+                }
+    
+                .forgot-password-text {
+                    color: #7C91FF;
+                }
+            }
+    
+            .golden-border-left,
+            .golden-border-right {
+                width: 84%;
+                height: 84%;
+                flex-shrink: 0;
+                background: $golden;
+                position: absolute;
+            }
+    
+            .golden-border-left {
+                left: 0;
+                top: -10px;
+            }
+    
+            .golden-border-right {
+                right: 0;
+                bottom: -10px;
+                z-index: -1;
+            }
+    
+        }
+    
+        .collapse {
+            .navbar-collapse {
+                column-gap: 20px;
+    
+                .nav-text {
+                    color: $white;
+                    font-size: 18px;
+                    font-style: normal;
+                    font-weight: 500;
+                    line-height: normal;
+                    text-decoration: none;
+                    
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+    
+                .global-button {
+                    width: auto;
+                    padding: 16px 30px;
+                }
+            }
+        }
+    
+        // 1366
+        @media (min-width: $small-min) and (max-width: $small-max) {
+            .login-container {    
+                .login {
+                    .title {
+                        font-size: 32px;
+                    }
+        
+                    .sub-text {
+                        margin-bottom: 26px;
+                    }
+        
+                    .login-form {
+                        .form-control {
+                            margin-bottom: 26px;
+                        }
+    
+                        .golden {
+                            padding: 12px 60px;
+                        }
+                    }
+        
+                    .forgot-password-text {
+                        font-size: 16px;
+                    }
+                }    
+            }
+    
+            .collapse {
+                .navbar-collapse {    
+                    .global-button {
+                        padding: 12px 40px;
+                    }
+                }
+            }
+        }
+    
+        // 1280
+        @media (min-width: $laptop-min) and (max-width: $laptop-max) {
+            .login-container {    
+                .login {
+                    .title {
+                        font-size: 28px;
+                    }
+        
+                    .sub-text {
+                        margin-bottom: 20px;
+                    }
+        
+                    .login-form {
+                        .form-control {
+                            margin-bottom: 26px;
+                        }
+                    }
+        
+                    .forgot-password-text {
+                        font-size: 16px;
+                    }
+                }    
+            }
+        }
+    
+        // Tablet
+        @media (min-width: $tablet-min) and (max-width: $tablet-max) {
+            height: 100vh;
+        }
+    
+        // Mobile
+        @media (min-width: $mobile-min) and (max-width: $mobile-max) {
+            padding: 0 20px;
+    
+            .login-container {
+                .login {
+                    padding: 20px;
+    
+                    .title {
+                        font-size: 26px;
+                    }
+    
+                    .login-form {
+                        .global-button {
+                            font-size: 16px;
+                            width: 100%;
+                            padding: 12px 30px;
+                            margin-bottom: 22px;
+                        }
+    
+                        .forgot-password-text {
+                            color: #7C91FF;
+                            font-family: $font-family;
+                            font-size: 16px;
+                            font-style: normal;
+                            font-weight: 500;
+                            line-height: normal;
+                            text-decoration-line: underline;
+                            text-align: center;
+                        }
+                    }
+                }
+            }
+    
+            .register-user-text {
+                color: #FFF;
+                font-family: $font-family;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;
+                margin-top: 50px;
+                text-align: center;
+    
+                span {
+                    color: #CFA935;
+                    text-decoration-line: underline;
+                }
+            }
+        }
+    }
+}

@@ -8,9 +8,12 @@ import CopyrightNotice from '../app/CopyrightNotice';
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth"
 import { useRouter } from 'next/router';
 import { encryptData } from '@/utils/reusableFunctions';
+
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL_USER;
 const secretKey = process.env.NEXT_PUBLIC_BASE_ENCRYPTION_KEY;
 import OtpModal from "../components/OtpModal";
+import ThemedImage from '@/components/ThemedImage';
+
 const Login = () => {
   const router = useRouter();
   const [show, setShow] = useState(false);
@@ -63,14 +66,14 @@ const Login = () => {
       .confirm(otp)
       // @ts-ignore: Implicit any for children prop
       .then(async (res) => {
-    
+
       })
       // @ts-ignore: Implicit any for children prop
       .catch((err) => {
         setLoginError(err?.error?.message || "Invalid Code")
         setIsLoading(false)
         setShow(true)
-         (err)
+          (err)
 
       });
   }
@@ -81,7 +84,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-  // @ts-ignore: Implicit any for children prop
+    // @ts-ignore: Implicit any for children prop
 
     const storedUser = JSON.parse(localStorage?.getItem('user'));
 
@@ -159,15 +162,15 @@ const Login = () => {
     setNow(100); // Progress complete
   };
   const login = async () => {
-   
+
     try {
       setIsLoading(true);
       startProgress();
-  const payload = {
-    email: formData.email,
-    password: formData.password,
-  }
-  const encryptedData = encryptData(payload);
+      const payload = {
+        email: formData.email,
+        password: formData.password,
+      }
+      const encryptedData = encryptData(payload);
 
       const response = await fetch(`${apiUrl}/api/login`, {
         method: 'POST',
@@ -175,12 +178,12 @@ const Login = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-         data:encryptedData
+          data: encryptedData
         }),
       });
-  
+
       const responseData = await response.json();
-  
+
       if (response.status === 200) {
         if (responseData.status === 'FAILED') {
           setLoginStatus('FAILED');
@@ -192,7 +195,7 @@ const Login = () => {
           }
         } else if (responseData.status === 'SUCCESS') {
           if (responseData?.data && responseData?.data?.JWTToken !== undefined) {
-             
+
             await handleSendEmail()
             localStorage.setItem('user', JSON.stringify(responseData?.data));
           } else {
@@ -232,10 +235,10 @@ const Login = () => {
       setIsLoading(false);
     }
   };
-  
+
   const handleChangeOtp = (
-    e, 
-    index, 
+    e,
+    index,
     inputRefs
   ) => {
     const value = e.target.value;
@@ -243,91 +246,91 @@ const Login = () => {
       const newOtp = [...emailOtp];
       newOtp[index] = value;
       setEmailOtp(newOtp);
-  
+
       // Move focus to the next input field if a digit is entered
       if (value && index < 5) {
         inputRefs.current[index + 1]?.focus();
       }
     }
   };
-  
-  
 
-const handleSendEmail = async () => {
 
-  // Prepare the request payload
-  const payload = {
-    email:formData.email , // You can replace this with the actual email input// Replace this with the actual OTP code input
-  };
-  try {
-    const response = await fetch(`${apiUrl}/api/two-factor-auth`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json', // Set the request headers
-      },
-      body: JSON.stringify(payload), // Convert the payload to JSON string
-    });
 
-    const data = await response.json(); // Parse the JSON response
-    if (response.ok) {
-      setModalOtp(true)
-    } else {
-      // Handle error (e.g., show error message)
-      setLoginError('Error in sending mail');
-      setShow(true);
-      console.error('Error:', data);
+  const handleSendEmail = async () => {
+
+    // Prepare the request payload
+    const payload = {
+      email: formData.email, // You can replace this with the actual email input// Replace this with the actual OTP code input
+    };
+    try {
+      const response = await fetch(`${apiUrl}/api/two-factor-auth`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', // Set the request headers
+        },
+        body: JSON.stringify(payload), // Convert the payload to JSON string
+      });
+
+      const data = await response.json(); // Parse the JSON response
+      if (response.ok) {
+        setModalOtp(true)
+      } else {
+        // Handle error (e.g., show error message)
+        setLoginError('Error in sending mail');
+        setShow(true);
+        console.error('Error:', data);
+      }
+    } catch (error) {
+      // Handle fetch error (e.g., network issues)
+      console.error('Network error:', error);
     }
-  } catch (error) {
-    // Handle fetch error (e.g., network issues)
-    console.error('Network error:', error);
-  }
-};
-
-const handleLoginOtp = async (e) => {
-  setIsLoading(true)
-  e.preventDefault(); // Prevent the default form submission behavior
-  startProgress();
-
-  // Prepare the request payload
-  const payload = {
-    email:formData.email , // You can replace this with the actual email input
-    code: Number(emailOtp.join('')),// Replace this with the actual OTP code input
   };
 
-  try {
-    const response = await fetch(`${apiUrl}/api/verify-issuer`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json', // Set the request headers
-      },
-      body: JSON.stringify(payload), // Convert the payload to JSON string
-    });
+  const handleLoginOtp = async (e) => {
+    setIsLoading(true)
+    e.preventDefault(); // Prevent the default form submission behavior
+    startProgress();
 
-    const data = await response.json(); // Parse the JSON response
-    if (response.ok) {
-      setLoginStatus('SUCCESS');
-      setLoginError('');
-      setLoginSuccess("Logged In Successfully");
-      setShow(true)
-      // await validateIssuer(responseData?.data?.email)
-      router.push('/dashboard');
-      // Handle success (e.g., navigate, show success message)
-      console.log('Success:', data);
-    } else {
-      // Handle error (e.g., show error message)
-      setLoginError('Invalid Otp');
-      setShow(true);
-      console.error('Error:', data);
+    // Prepare the request payload
+    const payload = {
+      email: formData.email, // You can replace this with the actual email input
+      code: Number(emailOtp.join('')),// Replace this with the actual OTP code input
+    };
 
+    try {
+      const response = await fetch(`${apiUrl}/api/verify-issuer`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', // Set the request headers
+        },
+        body: JSON.stringify(payload), // Convert the payload to JSON string
+      });
+
+      const data = await response.json(); // Parse the JSON response
+      if (response.ok) {
+        setLoginStatus('SUCCESS');
+        setLoginError('');
+        setLoginSuccess("Logged In Successfully");
+        setShow(true)
+        // await validateIssuer(responseData?.data?.email)
+        router.push('/dashboard');
+        // Handle success (e.g., navigate, show success message)
+        console.log('Success:', data);
+      } else {
+        // Handle error (e.g., show error message)
+        setLoginError('Invalid Otp');
+        setShow(true);
+        console.error('Error:', data);
+
+      }
+    } catch (error) {
+      // Handle fetch error (e.g., network issues)
+      console.error('Network error:', error);
+    } finally {
+      setIsLoading(false)
+      stopProgress()
     }
-  } catch (error) {
-    // Handle fetch error (e.g., network issues)
-    console.error('Network error:', error);
-  }finally{
-  setIsLoading(false)
-stopProgress()
-  }
-};
+  };
 
 
   // otp login
@@ -477,8 +480,9 @@ stopProgress()
               <Form className='login-form' onSubmit={handleSubmit}>
                 <Form.Group controlId="email" className='mb-3'>
                   <Form.Label>
-                    <Image
-                      src="/icons/user-icon.svg"
+                    <ThemedImage
+                      imageLight="/icons/user-icon.svg"
+                      imageDark="/icons/user-icon-dark.svg"
                       width={16}
                       height={20}
                       alt='User Name'
@@ -496,24 +500,25 @@ stopProgress()
 
                 <Form.Group controlId="password">
                   <Form.Label>
-                    <Image
-                      src="/icons/lock-icon.svg"
+                    <ThemedImage
+                      imageLight="/icons/lock-icon.svg"
+                      imageDark="/icons/lock-icon-dark.svg"
                       width={20}
                       height={20}
                       alt='Password'
                     />
                     Password
                   </Form.Label>
-                  <Form.Control className='mb-2' style={{ marginBottom: showPhone ? "20px" : "" }} 
+                  <Form.Control className='mb-2' style={{ marginBottom: showPhone ? "20px" : "" }}
                     type="password"
                     name="password"
                     required
                     value={formData.password}
                     onChange={handlePasswordChange}
                   />
-                  {passwordError ? ( 
+                  {passwordError ? (
                     <p style={{ color: '#ff5500' }}>{passwordError}</p>
-                    ) : (
+                  ) : (
                     <p>&nbsp;</p>
                   )}
                 </Form.Group>
@@ -539,26 +544,26 @@ stopProgress()
           </Card>
           <div className='golden-border-right'></div>
         </Col>
-<OtpModal modalOtp={modalOtp} setModalOtp={setModalOtp} setEmailOtp={setEmailOtp} handleLoginOtp={handleLoginOtp}emailOtp={emailOtp}handleChangeOtp={handleChangeOtp}/>
+        <OtpModal modalOtp={modalOtp} setModalOtp={setModalOtp} setEmailOtp={setEmailOtp} handleLoginOtp={handleLoginOtp} emailOtp={emailOtp} handleChangeOtp={handleChangeOtp} />
 
         {/* <Modal className='loader-modal' show={modalOtp} centered onHide={()=>{setModalOtp(false); setEmailOtp("")}}>
-  <Modal.Header closeButton>
-  </Modal.Header>
-  <Modal.Body style={{ padding: "30px 20px" }}>
-    <p className='' style={{ color: 'green', fontFamily: "monospace", fontWeight: 600 }}>
-      Please Enter OTP Sent to Your Registered Email.
-    </p>
-    <input
-      type="text"
-      className="form-control mb-4"
-      value={emailOtp}
-      onChange={handleChangeOtp}
-      name='otp'
-      placeholder="Enter OTP"
-    />
-    <Button label="Submit OTP" onClick={handleLoginOtp} className="golden" />
-  </Modal.Body>
-</Modal> */}
+            <Modal.Header closeButton>
+            </Modal.Header>
+            <Modal.Body style={{ padding: "30px 20px" }}>
+              <p className='' style={{ color: 'green', fontFamily: "monospace", fontWeight: 600 }}>
+                Please Enter OTP Sent to Your Registered Email.
+              </p>
+              <input
+                type="text"
+                className="form-control mb-4"
+                value={emailOtp}
+                onChange={handleChangeOtp}
+                name='otp'
+                placeholder="Enter OTP"
+              />
+              <Button label="Submit OTP" onClick={handleLoginOtp} className="golden" />
+            </Modal.Body>
+        </Modal> */}
         <Col md={{ span: 12 }}>
           {/* <Button label="Register" className='golden mt-5 ps-0 pe-0 w-100 d-block d-lg-none' onClick={handleClick} /> */}
           <div className='register-user-text d-block d-lg-none'>
@@ -570,7 +575,7 @@ stopProgress()
           </div>
         </Col>
       </Row>
-    
+
 
       {/* Loading Modal for API call */}
       <Modal className='loader-modal' show={isLoading} centered>

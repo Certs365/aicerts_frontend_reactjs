@@ -490,7 +490,7 @@ const IssueCertificate = () => {
                   )}
                 </>
               ) : (
-                <Container>
+                <Container className="pt-5">
                   <h2 className="title">Issue New Certification</h2>
                   <Form
                     className="register-form"

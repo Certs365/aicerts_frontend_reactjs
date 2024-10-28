@@ -34,24 +34,53 @@ const GalleryCertificates = ({ certificatesData }) => {
         }
     }
 
+    // useEffect(() => {
+    //     const fetchThumbnails = async () => {
+    //         setIsImageLoading(true);
+    //         const urls = await Promise?.all(
+    //             certificatesData?.map(async (certificate) => {
+    //                 if (certificate?.url) {
+                        
+    //                     return certificate
+    //                 }
+    //                 return null;
+    //             })
+    //         );
+    //         const validCertificates = urls.filter(url => url !== null);
+    //         setThumbnailUrls(validCertificates);
+    //         setIsImageLoading(false);
+    //     };
+    //     fetchThumbnails();
+    // }, [certificatesData]);
+
     useEffect(() => {
+        if (!certificatesData || !Array.isArray(certificatesData)) {
+            return;
+        }
+    
         const fetchThumbnails = async () => {
             setIsImageLoading(true);
-            const urls = await Promise?.all(
-                certificatesData?.map(async (certificate) => {
-                    if (certificate?.url) {
-                        
-                        return certificate
-                    }
-                    return null;
-                })
-            );
-            const validCertificates = urls.filter(url => url !== null);
-            setThumbnailUrls(validCertificates);
-            setIsImageLoading(false);
+            try {
+                const urls = await Promise.all(
+                    certificatesData.map(async (certificate) => {
+                        if (certificate?.url) {
+                            return certificate;
+                        }
+                        return null;
+                    })
+                );
+                const validCertificates = urls.filter(url => url !== null);
+                setThumbnailUrls(validCertificates);
+            } catch (error) {
+                console.error('Error fetching thumbnails:', error);
+            } finally {
+                setIsImageLoading(false);
+            }
         };
+    
         fetchThumbnails();
     }, [certificatesData]);
+    
 
     const handleDownloadPDF = async (imageUrl, certificateNumber, detail) => {
         setIsLoading(true); // Set loading state to true when starting the download

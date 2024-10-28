@@ -1,48 +1,81 @@
-.next-btn-container{
-    
-}
-
-.pdf-qr-wrapper{
+.pdf-qr-wrapper {
     padding: 120px 100px;
+
     @media (min-width: $mobile-min) and (max-width: $mobile-max) {
         padding: 90px 10px;
     }
 }
 
 
-.display-wrapper{
-overflow: scroll;
-flex-direction: column;
-display: flex;
-justify-content: center;
-align-items: center;
-border: 1px solid #BFC0C2;
-padding: 10px 20px;
+.display-wrapper {
+    overflow: scroll;
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #BFC0C2;
+    padding: 10px 20px;
 }
-.certificate-form-wrapper{
-border: 1px solid #BFC0C2;
-min-height: 300px;
-    .qr-form-title{
+
+.certificate-form-wrapper {
+    border: 1px solid #BFC0C2;
+    min-height: 300px;
+
+    .qr-form-title {
         min-height: 30px;
         width: 100%;
         background-color: #F3F3F3;
         color: black;
-        .form-title{
+
+        .form-title {
             font-family: $font-family;
-font-size: 22px;
-font-weight: 600;
-line-height: 26.82px;
-padding: 16px 30px;
+            font-size: 22px;
+            font-weight: 600;
+            line-height: 26.82px;
+            padding: 16px 30px;
         }
     }
-    .form-control{
+
+    .form-control {
         border-radius: 0;
     }
-    .form-title2{
+
+    .form-title2 {
         font-family: $font-family;
-font-size: 22px;
-font-weight: 600;
-line-height: 26.82px;
-padding: 16px 0px;
+        font-size: 22px;
+        font-weight: 600;
+        line-height: 26.82px;
+        padding: 16px 0px;
+    }
+}
+
+.dark-mode {
+    .display-wrapper {
+        border: none;
+    }
+
+    .certificate-form-wrapper {
+        .qr-form-title {
+            .form-title {
+                color: $white;
+                background: #2A2E36;
+            }
+        }
+
+        .form-label {
+            color: #A9A7B0;
+        }
+
+        .form-control {
+            padding: 0.8rem .75rem;
+            color: $white;
+            background-color: transparent;
+        }
+
+        .global-button {
+            .golden {
+                margin-top: 14px;
+            }
+        }
     }
 }

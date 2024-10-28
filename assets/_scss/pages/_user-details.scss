@@ -46,3 +46,50 @@
         line-height: normal;
     }
 }
+
+.dark-mode {
+    .user-details {
+        .card {
+            background-color: #000;
+
+            .card-body {
+                .rounded-circle {
+                    color: #A9A7B0;
+                    background-color: #171A24 !important;
+                }
+
+                .form-control {
+                    border-radius: 0;
+                    -webkit-border-radius: 0;
+                    -moz-border-radius: 0;
+                    -ms-border-radius: 0;
+                    -o-border-radius: 0;
+                    color: $white;
+                    background-color: #000;
+                }
+            }
+        }
+
+        .name {
+            color: $white;
+        }
+
+        .role, .address {
+            color: #A9A7B0;
+        }
+
+        .icons  {
+            color: $white;
+        }
+
+        .list-group {
+            --bs-list-group-bg: #000;
+
+            
+
+            .lead-info {
+                color: #A9A7B0 !important;
+            }
+        }
+    }
+}

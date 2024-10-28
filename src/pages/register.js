@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import eyeIcon from '../../public/icons/eye.svg';
 import eyeSlashIcon from '../../public/icons/eye-slash.svg';
 import NavigationLogin from '../app/navigation-login';
+import ThemedImage from '@/components/ThemedImage';
 
 const Register = () => {
   const router = useRouter();
@@ -303,7 +304,7 @@ const Register = () => {
     <div className='register page-bg position-relative'>
             <NavigationLogin />
 
-      <div className='container'>
+      <div className='container pt-5'>
         <h2 className='title'>Register here</h2>
 
         <Form className='register-form'>
@@ -499,8 +500,9 @@ const Register = () => {
                         >
                         </i>
                         <div className='eye-icon position-absolute'>
-                            <Image
-                                src={passwordVisible ? eyeSlashIcon : eyeIcon}
+                            <ThemedImage
+                                imageLight={passwordVisible ? eyeSlashIcon : eyeIcon}
+                                imageDark={passwordVisible ? eyeSlashIcon : eyeIcon}
                                 width={20}
                                 height={20}
                                 alt={passwordVisible ? 'Hide password' : 'Show password'}
@@ -528,8 +530,9 @@ const Register = () => {
                           onClick={() => setShowPassword((prevShowPassword) => ({ ...prevShowPassword, confirmPassword: !prevShowPassword?.confirmPassword }))}
                         ></i>
                          <div className='eye-icon position-absolute'>
-                            <Image
-                                src={passwordVisible ? eyeSlashIcon : eyeIcon}
+                            <ThemedImage
+                                imageLight={passwordVisible ? eyeSlashIcon : eyeIcon}
+                                imageDark={passwordVisible ? eyeSlashIcon : eyeIcon}
                                 width={20}
                                 height={20}
                                 alt={passwordVisible ? 'Hide password' : 'Show password'}

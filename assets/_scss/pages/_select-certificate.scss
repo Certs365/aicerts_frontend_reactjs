@@ -629,6 +629,7 @@
                     font-style: normal;
                     font-weight: 500;
                     line-height: normal;
+                    margin-top: 5px;
                 }
             }
         }
@@ -1005,3 +1006,132 @@
     border-radius: 3px;
 }
 
+.dark-mode {
+    .upload-badge-container {
+        .upload-column {
+            .file-upload {
+                input {
+                    color: $white;
+                }
+            }
+
+            .file-info {
+                span {
+                    color: #A9A7B0;
+                }
+                .close-icon {
+                    color: #A9A7B0;
+                }
+            }
+
+            .golden-upload {
+                background-color: transparent;
+            }
+        }
+
+        .upload-info {
+            background: #2A2E36;
+
+            .details {
+                .info-text {
+                    color: #A9A7B0;
+                }
+            }
+        }
+    }
+
+    .dashboard {
+        .card {
+            border: 1px solid #BFC0C2;
+            background: transparent;
+
+            .card-header {
+                color: $white;
+                background: #171A24;
+            }
+
+            .card-body {
+                background: #000;
+            }
+        }
+
+        .issued-info {
+            .label {
+                color: #A9A7B0;
+            }
+
+            .detail {
+                color: $white;
+            }
+        }
+
+        .cert-list {
+            .grid-view {
+                background: #000;
+
+                .prev-cert-card {
+                    .form-check-label {
+                        color: $white;
+                    }
+                }
+            }
+
+            .select-all {
+                background: #000;
+
+                .form-check {
+                    .form-check-label {
+                        color: #A9A7B0;
+                    }
+                }
+            }
+
+            .search-wrapper {
+                .password-input {
+                    .form-control {
+                        color: $white;
+                        background-color: #000 !important;
+
+                        &::placeholder {
+                            color: #A9A7B0;
+                        }
+                    }
+                }
+            }
+        }
+
+        .bulk-upload {
+            .browse-file {
+                background: #000;
+
+                .tagline {
+                    color: $white;
+                }
+
+                .restriction-text {
+                    color: #A9A7B0;
+                }
+
+                p.mt-4 {
+                    color: #A9A7B0; 
+                }
+            }
+
+            .download-sample {
+                background: #000;
+
+                .tagline {
+                    color: #fff;
+                }
+            }
+        }
+
+    }
+    
+    .batchDashboard {
+        .back-button {
+            color: #A9A7B0;
+            background: #171A24;
+        }
+    } 
+}
