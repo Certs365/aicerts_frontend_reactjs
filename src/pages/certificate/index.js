@@ -709,6 +709,7 @@ const CardSelector = () => {
       console.log(customTemplateFromStorage);  //clg
       setNewTemplate(customTemplateFromStorage);  //for preview
       setCertificateUrl(customTemplateFromStorage);
+      setIsDesign(true)
       // setCertificateUrl(customTemplateFromStorage); // for later, in issue-certification, next part
     }else{
         handleCardSelect(0);
