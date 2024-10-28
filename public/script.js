@@ -1,8 +1,10 @@
 
 // const apiUrl = "http://10.2.3.55:7039";
 // const apiUrl_Admin = "http://10.2.3.55:6049";
-const apiUrl = window.CONFIG.NEXT_PUBLIC_BASE_URL_USER;
-const apiUrl_Admin = window.CONFIG.NEXT_PUBLIC_BASE_URL;
+// const apiUrl = window.CONFIG.NEXT_PUBLIC_BASE_URL_USER;
+const apiUrl="http://localhost:8001"
+const apiUrl_Admin = "https://api3.certs365.io"
+
 
 
 var canvas;
@@ -697,6 +699,12 @@ $("#addExport").click(async function () {
   let fileUrl = ""; // gets image url from uploadtos3 func, this will be used in below func. 
 
   $("#addTemplate").click(async function () {
+
+    if (canvas.isEmpty()) {  // Use `canvas.isEmpty()` if your canvas library supports it
+      showFailurePopup('Canvas is empty. Please add content before saving.');
+      return;  // Stop execution if the canvas is empty
+  }
+
     showLoader();
 
     // Get the email
@@ -979,7 +987,9 @@ $("#uploaded-images-tab").click(function() {
     fetch(`${apiUrl}/api/get/certificate/image/${issuerId}`)
       .then(response => {
         if (!response.ok) {
-          throw new Error('Failed to fetch images');
+          return response.json().then(err => {
+            throw new Error(err.message || 'Failed to fetch images.');
+          });
         }
         return response.json(); // Parse the JSON response
       })
@@ -1036,7 +1046,7 @@ $("#uploaded-images-tab").click(function() {
       })
       .catch(error => {
         console.error('Error fetching images:', error);
-        showFailurePopup("There was an error fetching your uploaded images.");
+        showFailurePopup(error.message);
       });
   } else {
     // alert('Issuer ID not found.');
@@ -1054,7 +1064,9 @@ $("#uploaded-bg-tab").click(function() {
     fetch(`${apiUrl}/api/get/certificate/background/${issuerId}`)
       .then(response => {
         if (!response.ok) {
-          throw new Error('Failed to fetch images');
+          return response.json().then(err => {
+            throw new Error(err.message || 'Failed to fetch images.');
+          });
         }
         return response.json(); // Parse the JSON response
       })
