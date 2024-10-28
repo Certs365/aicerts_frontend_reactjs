@@ -1,9 +1,8 @@
 
 // const apiUrl = "http://10.2.3.55:7039";
-// const apiUrl_Admin = "http://10.2.3.55:6049";
-// const apiUrl = window.CONFIG.NEXT_PUBLIC_BASE_URL_USER;
-const apiUrl="http://localhost:8001"
-const apiUrl_Admin = "https://api3.certs365.io"
+ const apiUrl_Admin =window.CONFIG.NEXT_PUBLIC_BASE_URL;
+const apiUrl = window.CONFIG.NEXT_PUBLIC_BASE_URL_USER;
+
 
 
 
