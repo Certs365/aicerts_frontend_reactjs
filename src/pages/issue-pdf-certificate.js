@@ -78,10 +78,11 @@ const IssueNewCertificate = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         
         if (hasErrors()) {
             setShow(false);
-            setIsLoading(false);
+            // setIsLoading(false);
             return;
         }
 
@@ -89,12 +90,12 @@ const IssueNewCertificate = () => {
         if (formData.grantDate >= formData.expirationDate) {
             setErrorMessage('Issued date must be smaller than expiry date');
             setShow(true);
-            setIsLoading(false);
+            // setIsLoading(false);
             return;
         }
 
 
-        setIsLoading(true);
+        
         setSuccessMessage("")
         setErrorMessage("")
         let progressInterval;
@@ -124,7 +125,7 @@ const IssueNewCertificate = () => {
             formDataWithFile.append('grantDate', formatDate(formData.grantDate));
             formDataWithFile.append('expirationDate', formatDate(formData.expirationDate));
             formDataWithFile.append('file', formData.file);
-
+            debugger
             // const response = await fetch(`${apiUrl}/api/issue-pdf/`, {
             //     method: 'POST',
             //     body: formDataWithFile,
@@ -132,18 +133,36 @@ const IssueNewCertificate = () => {
             //         'Authorization': `Bearer ${token}`
             //     },
             // });
+            // Log the contents of FormData
+    console.log("Logging FormData entries:");
+    for (let [key, value] of formDataWithFile.entries()) {
+      console.log(`${key}:`, value);  // This will show both the key and value in the FormData
+    }
             issuance.issuePdf(formDataWithFile, async (response)=>{
+                debugger
+                console.log(response);
+                console.log(response.data);
+                const responseData = response.data;
                 if(response.status === "SUCCESS"){
                 // if (response && response.ok) {
-                const blob = await response.blob();
-                setPdfBlob(blob);
+                // const blob = await response.blob();
+                // const blob = await responseData.blob();
+                // const blob = new Blob([response.data], { type: 'application/pdf' });
+                const pdfData = response.data;
+                const encoder = new TextEncoder();
+                const pdfBytes = encoder.encode(pdfData);
+                // Create a Blob from the Uint8Array
+                const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+                
+                setPdfBlob(pdfBlob);
                 setSuccessMessage("Certificate Successfully Generated")
                 setShow(true);
                 await UpdateLocalStorage()
                 } else if (response) {
-                    const responseBody = response;
+                    const responseBody = response.error.response.data;
                     const errorMessage = responseBody && responseBody.message ? responseBody.message : generalError;
-                    console.error('API Error:' || generalError);
+                    console.error('API Error:' ,errorMessage);
+                    // console.error('API Error:' || generalError);
                     setErrorMessage(errorMessage);
                     setShow(true);
                 } else {

@@ -165,7 +165,6 @@ const CertificateDisplayPage = ({ cardId }) => {
   // Get the data from the API
   const issueCertificates = async () => {
     let progressInterval;
-
     const startProgress = () => {
         progressInterval = setInterval(() => {
             setNow((prev) => {
@@ -205,7 +204,9 @@ const CertificateDisplayPage = ({ cardId }) => {
         //     body: formData
         // });
         certificate.batchCertificateIssue(formData, async (response) => {
+          debugger
           const responseData = response;
+          console.log(response);
           if(response.status == "SUCCESS"){
             setCertificatesData(responseData);
             sessionStorage.setItem("certificatesList", JSON.stringify(responseData));
@@ -221,6 +222,7 @@ const CertificateDisplayPage = ({ cardId }) => {
               pathname: '/certificate/download'
           });
           }else {
+            const responseData  = response.error.response.data;
             let errorMessage;
             if (typeof responseData.details === 'string') {
               if(responseData.message == "Issuer restricted to perform service"){
@@ -382,6 +384,7 @@ const uploadToS3 = async (blob, certificateNumber) => {
   const retryLimit = parseInt(process.env.RETRY_LIMIT_BATCH_UPLOAD || "3"); // Default to 3 retries if RETRY_LIMIT is not set
   let attempt = 0;
   let success = false;
+  debugger
 
   while (attempt < retryLimit && !success) {
       try {
@@ -402,7 +405,7 @@ const uploadToS3 = async (blob, certificateNumber) => {
           //     body: formCert
           // });
           certificate.apiuploadCertificate(formCert, async (response) => {
-            if(response.status === 'SUCCESS'){
+            if(response.status != 'SUCCESS'){
               // if (response.ok) {
               throw new Error(`Failed to upload certificate to S3 on attempt ${attempt}`);
           }

@@ -203,7 +203,8 @@ const handleFileBatchChange = (event) => {
         //     body: formData
         // }
         // );
-        issuance.dynamicBatchIssue(formData, (response)=>{
+        issuance.dynamicBatchIssue(formData, async (response)=>{
+          debugger
           if(response.status === 'SUCCESS'){
           // if(response && response.ok){
 
@@ -219,12 +220,9 @@ const handleFileBatchChange = (event) => {
               const blob = await response.blob();
               setBatchBlob(blob);
             }
-          
-  
-             
          } else if (response) {
           
-          const responseBody = await response.json();
+          const responseBody = response.error.response.data;
   
           const errorMessage = responseBody && responseBody.message ? responseBody.message : generalError;
           setError(errorMessage);

@@ -75,7 +75,7 @@ const Search = ({ setResponseData, tab,setLoading }) => {
                     console.log('Network response was not ok');
                 }
     
-                const data = response;
+                const data = response.data;
                 setSuggestions(data?.details);
                 setShowSuggestions(true);
             });

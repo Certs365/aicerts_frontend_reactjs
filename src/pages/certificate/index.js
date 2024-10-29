@@ -434,7 +434,6 @@ const CardSelector = () => {
       //   body: formData,
       // });
       user.upload(formData, async (response) => {
-        debugger
         if (response.status === "SUCCESS") {
           const data = response;
           if (data.status === "SUCCESS") {

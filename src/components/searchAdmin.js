@@ -190,7 +190,7 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
 
   const filteredData = (data, type, second = "") => {
     console.log('filtereddata: ', data);
-    console.log('filtereddata: data.data ', data.data);
+    // console.log('filtereddata: data.data ', data?.data);
     return data?.data?.filter(item => {
       if (type === "batch") {
         // Return items that have no 'type' property

@@ -174,17 +174,30 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
       //     'Authorization': `Bearer ${token}`
       //   },
       // });
+      console.log("Logging FormData entries:");
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);  // This will show both the key and value in the FormData
+    }
 
       issuance.issueDynamicPdf(formData, async (response)=>{
+        debugger
+        console.log(response);
         if( response.status === 'SUCCESS'){
         // if (response && response.ok) {
-          const blob = await response.blob();
+          // const blob = await response.blob();
+          const blob = await response.data.blob();
+          // todo --> blob() issue, temp fix, give pdf (corrupt)
+          // const pdfData = response.data;
+          // const encoder = new TextEncoder();
+          // const pdfBytes = encoder.encode(pdfData);
+          // // Create a Blob from the Uint8Array
+          // const blob = new Blob([pdfBytes], { type: 'application/pdf' });
           setBlobUrl(blob);
            
           setSuccess("Certificate Successfully Generated")
           setShow(true);
         } else if (response) {
-          const responseBody = response;
+          const responseBody = response.error.response.data;
           const errorMessage = responseBody && responseBody.message ? responseBody.message : generalError;
           
           setError(errorMessage);
@@ -266,7 +279,7 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
         setPage(1);
         
       } else if (response) {
-        const responseBody = response;
+        const responseBody = response.error.response.data;
         const errorMessage = responseBody && responseBody.message ? responseBody.message : generalError;
        
         setError(errorMessage);

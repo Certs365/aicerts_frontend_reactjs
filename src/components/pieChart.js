@@ -203,6 +203,7 @@ function PieChart() {
                     <div className="spinner-border text-danger" role="status">
                     </div>
                 </div>
+
             ) : (
                 <Pie
                     width={"100%"}

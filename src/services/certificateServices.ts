@@ -115,12 +115,13 @@ const renewCert = (data: any, callback: (response: Response) => void) => {
   }
 
   const apiuploadCertificate = (data: any, callback: (response: Response) => void) => {
-    const encryptedData = encryptData(data);
+    // const encryptedData = encryptData(data);
     
     API({
       method: "POST",
       url: `${ADMIN_API_URL}/api/upload-certificate`,
-      data: { data: encryptedData },
+      data: data,
+      // data: { data: encryptedData },
     })
       .then((response) => {
         callback({ status: "SUCCESS", data: response.data });

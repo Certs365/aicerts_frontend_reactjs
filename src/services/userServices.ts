@@ -100,7 +100,7 @@ const refreshToken = (data: any, callback: (response: Response) => void) => {
   
   API({
     method: "POST",
-    url: `${BASE_URL}/api/refresh`,
+    url: `${APP_URL}/api/refresh`,
     data: { data: encryptedData },
   })
     .then((response) => {

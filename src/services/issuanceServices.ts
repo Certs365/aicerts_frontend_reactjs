@@ -49,13 +49,31 @@ const appIssuersLog = (data: any, callback: (response: Response) => void) => {
       });
   }
 
-  const dynamicBatchIssue = (data: any, callback: (response: Response) => void) => {
+  const IssueDynamicCert = (data: any, callback: (response: Response) => void) => {
     const encryptedData = encryptData(data);
-    
+    debugger
     API({
       method: "POST",
       url: `${APP_URL}/api/issue-dynamic-cert`,
-      data: data,
+      data: { data: encryptedData },
+      // data: data ,
+    })
+      .then((response) => {
+        callback({ status: "SUCCESS", data: response.data });
+        debugger
+      })
+      .catch((error) => {
+        callback({ status: "ERROR", error: error });
+      });
+  }
+
+  const dynamicBatchIssue = (data: any, callback: (response: Response) => void) => {
+    // const encryptedData = encryptData(data);
+    API({
+      method: "POST",
+      url: `${ADMIN_API_URL}/api/dynamic-batch-issue`,
+      // data: { data: encryptedData },
+      data: data ,
     })
       .then((response) => {
         callback({ status: "SUCCESS", data: response.data });
@@ -82,12 +100,13 @@ const appIssuersLog = (data: any, callback: (response: Response) => void) => {
   }
 
   const issueDynamicPdf = (data: any, callback: (response: Response) => void) => {
-    const encryptedData = encryptData(data);
+    // const encryptedData = encryptData(data);
     
     API({
       method: "POST",
       url: `${ADMIN_API_URL}/api/issue-dynamic-pdf`,
-      data: { data: encryptedData },
+      data: data,
+      // data: { data: encryptedData },
     })
       .then((response) => {
         callback({ status: "SUCCESS", data: response.data });
@@ -98,12 +117,13 @@ const appIssuersLog = (data: any, callback: (response: Response) => void) => {
   }
 
   const provideInputs = (data: any, callback: (response: Response) => void) => {
-    const encryptedData = encryptData(data);
+    // const encryptedData = encryptData(data);
     
     API({
       method: "POST",
       url: `${ADMIN_API_URL}/api/provide-inputs`,
-      data: { data: encryptedData },
+      data: data ,
+      // data: { data: encryptedData },
     })
       .then((response) => {
         callback({ status: "SUCCESS", data: response.data });
@@ -178,12 +198,12 @@ const appIssuersLog = (data: any, callback: (response: Response) => void) => {
       });
   }
 
-  const issue = (data: any,isDesign: boolean, callback: (response: Response) => void) => {
+  const issue = (data: any, callback: (response: Response) => void) => {
     // const encryptedData = encryptData(data);
-    const url = isDesign?"api/issue-dynamic-cert" : "api/issue"
+    // const url = isDesign?"api/issue-dynamic-cert" : "api/issue"
     API({
       method: "POST",
-      url: `${ADMIN_API_URL}/${url}`,
+      url: `${ADMIN_API_URL}/api/issue`,
       data: data,
       // data: { data: encryptedData },
     })
@@ -213,12 +233,13 @@ const appIssuersLog = (data: any, callback: (response: Response) => void) => {
   }
   
   const issuePdf = (data: any, callback: (response: Response) => void) => {
-    const encryptedData = encryptData(data);
+    // const encryptedData = encryptData(data);
     
     API({
       method: "POST",
-      url: `${ADMIN_API_URL}/api/issue-pdf/`,
-      data: { data: encryptedData },
+      url: `${ADMIN_API_URL}/api/issue-pdf`,
+      // data: { data: encryptedData },
+      data: data,
     })
       .then((response) => {
         callback({ status: "SUCCESS", data: response.data });
@@ -233,6 +254,7 @@ const appIssuersLog = (data: any, callback: (response: Response) => void) => {
 const issuance = {
     appIssuersLog,
     dynamicBatchIssue,
+    IssueDynamicCert,
     bulkBatchIssue,
     issueDynamicPdf,
     provideInputs,

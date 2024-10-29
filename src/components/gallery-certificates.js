@@ -34,43 +34,57 @@ const GalleryCertificates = ({ certificatesData }) => {
         }
     }
 
-    useEffect(() => {
+    // useEffect(() => {
+    //     const fetchThumbnails = async () => {
+    //         setIsImageLoading(true);
+    //         if (Array.isArray(certificatesData)) {  // Check if certificatesData is an array
+    //             const urls = await Promise.all(
+    //                 certificatesData?.map(async (certificate) => {
+    //                     if (certificate?.url) {
+    //                         return certificate;
+    //                     }
+    //                     return null;
+    //                 })
+    //             );
+    //             const validCertificates = urls.filter(url => url !== null);
+    //             setThumbnailUrls(validCertificates);
+    //         }
+    //         setIsImageLoading(false);
+    //     };
+    //     fetchThumbnails();
+    //  }, [certificatesData]);
 
-        const fetchThumbnails = async () => {
-     
-            setIsImageLoading(true);
-     
-            if (Array.isArray(certificatesData)) {  // Check if certificatesData is an array
-     
-                const urls = await Promise.all(
-     
-                    certificatesData?.map(async (certificate) => {
-     
-                        if (certificate?.url) {
-     
-                            return certificate;
-     
-                        }
-     
-                        return null;
-     
-                    })
-     
-                );
-     
-                const validCertificates = urls.filter(url => url !== null);
-     
-                setThumbnailUrls(validCertificates);
-     
-            }
-     
-            setIsImageLoading(false);
-     
-        };
-     
-        fetchThumbnails();
-     
-     }, [certificatesData]);
+useEffect(() => {
+    const fetchThumbnails = async () => {
+        setIsImageLoading(true);
+
+        if (Array.isArray(certificatesData)) {  // Check if certificatesData is an array
+            const responseData = await Promise.all(certificatesData?.map(async (certificate) => {
+                if (certificate?.url) {
+                    return certificate;
+                }
+                return null;
+            }));
+
+            const validCertificates = responseData.filter(url => url !== null);
+            setThumbnailUrls(validCertificates);
+        } else if (certificatesData?.data && Array.isArray(certificatesData.data)) {
+            const urls = await Promise.all(certificatesData.data.map(async (certificate) => {
+                if (certificate?.url) {
+                    return certificate;
+                }
+                return null;
+            }));
+
+            const validCertificates = urls.filter(url => url !== null);
+            setThumbnailUrls(validCertificates);
+        }
+
+        setIsImageLoading(false);
+    };
+
+    fetchThumbnails();
+}, [certificatesData]);
 
     const handleDownloadPDF = async (imageUrl, certificateNumber, detail) => {
         setIsLoading(true); // Set loading state to true when starting the download

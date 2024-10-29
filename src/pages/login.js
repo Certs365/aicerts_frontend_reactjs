@@ -182,7 +182,6 @@ const Login = () => {
       // });
       user.login(payload, async (response)=>{
         const responseData =  response.data;
-        debugger
         if (responseData.code === 200) {
         if (responseData.status === 'FAILED') {
           setLoginStatus('FAILED');

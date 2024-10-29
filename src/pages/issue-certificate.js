@@ -17,10 +17,10 @@ import { useRouter } from "next/router";
 import moment from "moment";
 import CertificateContext from "../utils/CertificateContext";
 import { UpdateLocalStorage } from "../utils/UpdateLocalStorage";
-import download from '../services/downloadServices';
-import certificate from '../services/certificateServices';
+import download from "../services/downloadServices";
+import certificate from "../services/certificateServices";
 
-import issuance from '../services/issuanceServices';
+import issuance from "../services/issuanceServices";
 import fileDownload from "react-file-download";
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const adminUrl = process.env.NEXT_PUBLIC_BASE_URL_admin;
@@ -63,12 +63,12 @@ const IssueCertificate = () => {
 
   const handleDownload = (e) => {
     e.preventDefault();
-    setIsLoading(true)
+    setIsLoading(true);
     if (certPdf) {
-        const fileData = new Blob([certPdf], { type: 'application/pdf' });
-        fileDownload(fileData, `Certificate_${formData.certificateNumber}.pdf`);
+      const fileData = new Blob([certPdf], { type: "application/pdf" });
+      fileDownload(fileData, `Certificate_${formData.certificateNumber}.pdf`);
     }
-};
+  };
 
   const {
     badgeUrl,
@@ -86,8 +86,8 @@ const IssueCertificate = () => {
     setSignatureUrl,
     setBadgeUrl,
     setLogoUrl,
-     pdfDimentions,
-     pdfFile
+    pdfDimentions,
+    pdfFile,
   } = useContext(CertificateContext);
 
   useEffect(() => {
@@ -115,8 +115,6 @@ const IssueCertificate = () => {
     return errorFields.some((error) => error !== "");
   };
 
-             
-
   function formatDate(date) {
     return `${(date?.getMonth() + 1).toString().padStart(2, "0")}/${date
       ?.getDate()
@@ -126,14 +124,14 @@ const IssueCertificate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (hasErrors()) {
       // If there are errors, display them and stop the submission
       setShow(false);
       setIsLoading(false);
       return;
     }
-  
+
     // Check if the issued date is smaller than the expiry date
     if (formData.grantDate >= formData.expirationDate) {
       setMessage("Issued date must be smaller than expiry date");
@@ -141,7 +139,7 @@ const IssueCertificate = () => {
       setIsLoading(false);
       return;
     }
-  
+
     let progressInterval;
     const startProgress = () => {
       progressInterval = setInterval(() => {
@@ -152,22 +150,22 @@ const IssueCertificate = () => {
         });
       }, 100);
     };
-  
+
     const stopProgress = () => {
       if (progressInterval) {
         clearInterval(progressInterval);
         setNow(100); // Progress complete
       }
     };
-  
+
     // Format grantDate and expirationDate
     const formattedGrantDate = formatDate(formData?.grantDate);
     const formattedExpirationDate = formatDate(formData?.expirationDate);
-  
+
     startProgress();
     setIsLoading(true);
     setNow(10);
-  
+
     try {
       // Prepare the payload for both design and non-design cases
       const payload = {
@@ -178,7 +176,7 @@ const IssueCertificate = () => {
         grantDate: formattedGrantDate,
         expirationDate: formattedExpirationDate,
       };
-  
+      debugger
       if (isDesign) {
         // Call the dynamic issuance API if isDesign is true
         Object.assign(payload, {
@@ -193,11 +191,11 @@ const IssueCertificate = () => {
           posy: pdfDimentions.y,
           flag: 0,
         });
-  
+
         // Call issuance.issueDynamic API
-        issuance.dynamicBatchIssue(payload, async (response) => {
+        issuance.IssueDynamicCert(payload, async (response) => {
           const responseData = response;
-          if (response.status === 'SUCCESS') {
+          if (response.status === "SUCCESS") {
             setMessage(responseData.message || "Success");
             setCertPdf(responseData); // Corrected variable name
           } else if (response) {
@@ -216,23 +214,32 @@ const IssueCertificate = () => {
       } else {
         // Call the regular issuance API if isDesign is false
         Object.assign(payload, {
-          templateUrl: new URL(certificateUrl)?.origin + new URL(certificateUrl)?.pathname,
+          templateUrl:
+            new URL(certificateUrl)?.origin + new URL(certificateUrl)?.pathname,
           logoUrl: new URL(logoUrl)?.origin + new URL(logoUrl)?.pathname,
-          signatureUrl: new URL(signatureUrl)?.origin + new URL(signatureUrl)?.pathname,
-          badgeUrl: badgeUrl ? new URL(badgeUrl)?.origin + new URL(badgeUrl)?.pathname : null,
+          signatureUrl:
+            new URL(signatureUrl)?.origin + new URL(signatureUrl)?.pathname,
+          badgeUrl: badgeUrl
+            ? new URL(badgeUrl)?.origin + new URL(badgeUrl)?.pathname
+            : null,
           issuerName: issuerName,
           issuerDesignation: issuerDesignation,
         });
-  
+
         // Call issuance.issue API
-        issuance.issue(payload,false, async (response) => {
-          const responseData = response;
-          if (response.status === 'SUCCESS') {
+        issuance.issue(payload, async (response) => {
+          //todo --> how to add logic of isDesign: true/false
+          debugger;
+          console.log("issuance.issue  response", response);
+          console.log("issuance.issue  response.data", response.data);
+          const responseData = response.data;
+          if (response.status === "SUCCESS") {
             setMessage(responseData.message || "Success");
             setIssuedCertificate(responseData); // Corrected variable name
             await generateAndUploadImage(formData, responseData); // Pass formData and responseData
             await UpdateLocalStorage();
           } else if (response) {
+            const responseData = response.error.response.data;
             console.error("API Error:", responseData.message || generalError);
             setMessage(responseData.message || generalError);
             setDetails(responseData.details || null);
@@ -256,7 +263,6 @@ const IssueCertificate = () => {
       sessionStorage.removeItem("customTemplate"); // remove the custom template from session storage
     }
   };
-  
 
   // const handleSubmit = async (e) => {
   //     e.preventDefault();
@@ -343,6 +349,8 @@ const IssueCertificate = () => {
   // };
 
   const generateAndUploadImage = async (formData, responseData) => {
+    debugger;
+    console.log("generateAndUploadImage payload formData", formData);
     try {
       // Generate the image
       const blob = await handleShowImages(formData, responseData);
@@ -382,8 +390,8 @@ const IssueCertificate = () => {
         const blob = await res.blob();
         return blob; // Return blob for uploading
       } else {
-        return;
         console.error("Failed to generate image:", res.statusText);
+        return;
         throw new Error("Image generation failed");
       }
     } catch (error) {
@@ -394,26 +402,44 @@ const IssueCertificate = () => {
 
   const uploadToS3 = async (blob, certificateNumber) => {
     try {
+      const type = 2;
       // Create a new FormData object
       const formCert = new FormData();
       // Append the blob to the form data
       formCert.append("file", blob);
+      console.log("blob", blob);
+      debugger
       // Append additional fields
       formCert.append("certificateNumber", certificateNumber);
-      formCert.append("type", 2);
+      console.log("cn", certificateNumber);
+      formCert.append("type", type);
+      console.log("type", type);
+      console.log(formCert);
+      debugger
+
+    // Log the contents of FormData
+    console.log("Logging FormData entries:");
+    for (let [key, value] of formCert.entries()) {
+      console.log(`${key}:`, value);  // This will show both the key and value in the FormData
+    }
 
       // Make the API call to send the form data
       // const uploadResponse = await fetch(`${adminUrl}/api/upload-certificate`, {
       //   method: "POST",
       //   body: formCert,
       // });
-      certificate.apiuploadCertificate(formCert, (response) => {
-        // if(response?.data?.status != "SUCCESS"){
-          if(response.status === 'SUCCESS'){
-            // if (response.ok) {
-          throw new Error("Failed to upload certificate to S3");
-        }
-      })
+      try {
+        certificate.apiuploadCertificate(formCert, (response) => {
+          console.log("API Response:", response);
+          if (response.status !== "SUCCESS") {
+            console.error("Failed to upload certificate to S3");
+          } else {
+            console.log("Upload successful");
+          }
+        });
+      } catch (apiError) {
+        console.error("Error during API call:", apiError);  // Log the exact API error
+      }
 
       // if (!uploadResponse.ok) {
       //   throw new Error("Failed to upload certificate to S3");
@@ -751,16 +777,17 @@ const IssueCertificate = () => {
                         }
                       />
                     </div>
-                    {
-                      isDesign && certPdf &&
+                    {isDesign && certPdf && (
                       <div className="text-center">
-                      <Button
-                        label="Download Certificate"
-                        className="golden"
-                        onClick={(e) => { handleDownload(e) }}
-                      />
-                    </div>
-                    }
+                        <Button
+                          label="Download Certificate"
+                          className="golden"
+                          onClick={(e) => {
+                            handleDownload(e);
+                          }}
+                        />
+                      </div>
+                    )}
                   </Form>
                 </Container>
               )}
@@ -820,6 +847,6 @@ const IssueCertificate = () => {
       </Modal>
     </>
   );
-}
+};
 
 export default IssueCertificate;
