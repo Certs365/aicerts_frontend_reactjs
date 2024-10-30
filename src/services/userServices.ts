@@ -133,14 +133,14 @@ const login = (data: any, callback: (response: Response) => void) => {
   API({
     method: "POST",
     url: `${APP_URL}/api/login`,
-    data: { data: encryptedData },
+    data: data,
     // data: data,
   })
     .then((response) => {
       callback({ status: "SUCCESS", data: response.data });
     })
     .catch((error) => {
-      callback({ status: "ERROR", error: error });
+      callback(error.response.data);
     });
 }
 

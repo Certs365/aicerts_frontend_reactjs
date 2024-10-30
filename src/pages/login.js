@@ -181,8 +181,9 @@ const Login = () => {
       //   }),
       // });
       user.login(payload, async (response)=>{
-        const responseData =  response.data;
-        if (responseData.code === 200) {
+        const responseData =  response.data
+
+        if (responseData.code ==200) {
         if (responseData.status === 'FAILED') {
           setLoginStatus('FAILED');
           setLoginError(responseData.message || 'An error occurred during login');
