@@ -77,7 +77,7 @@ const IssueNewCertificate = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         if (hasErrors()) {
             setShow(false);
             setIsLoading(false);
@@ -110,45 +110,45 @@ const IssueNewCertificate = () => {
             clearInterval(progressInterval);
             setNow(0); // Progress complete
         };
-    
+
         startProgress();
 
         try {
-            if(!isDownloading) {
-            const formDataWithFile = new FormData();
-            formDataWithFile.append('email', email);
-            formDataWithFile.append('certificateNumber', formData.certificateNumber);
-            formDataWithFile.append('name', formData.name);
-            formDataWithFile.append('course', formData.course);
-            formDataWithFile.append('grantDate', formatDate(formData.grantDate));
-            formDataWithFile.append('expirationDate', formatDate(formData.expirationDate));
-            formDataWithFile.append('file', formData.file);
+            if (!isDownloading) {
+                const formDataWithFile = new FormData();
+                formDataWithFile.append('email', email);
+                formDataWithFile.append('certificateNumber', formData.certificateNumber);
+                formDataWithFile.append('name', formData.name);
+                formDataWithFile.append('course', formData.course);
+                formDataWithFile.append('grantDate', formatDate(formData.grantDate));
+                formDataWithFile.append('expirationDate', formatDate(formData.expirationDate));
+                formDataWithFile.append('file', formData.file);
 
-            const response = await fetch(`${apiUrl}/api/issue-pdf/`, {
-                method: 'POST',
-                body: formDataWithFile,
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
-            });
+                const response = await fetch(`${apiUrl}/api/issue-pdf/`, {
+                    method: 'POST',
+                    body: formDataWithFile,
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                });
 
-            if (response && response.ok) {
-                const blob = await response.blob();
-                setPdfBlob(blob);
-                setSuccessMessage("Certificate Successfully Generated")
-                setShow(true);
-                await UpdateLocalStorage()
+                if (response && response.ok) {
+                    const blob = await response.blob();
+                    setPdfBlob(blob);
+                    setSuccessMessage("Certificate Successfully Generated")
+                    setShow(true);
+                    await UpdateLocalStorage()
 
-            } else if (response) {
-                const responseBody = await response.json();
-                const errorMessage = responseBody && responseBody.message ? responseBody.message : generalError;
-                console.error('API Error:' || generalError);
-                setErrorMessage(errorMessage);
-                setShow(true);
-            } else {
-                console.error('No response received from the server.');
+                } else if (response) {
+                    const responseBody = await response.json();
+                    const errorMessage = responseBody && responseBody.message ? responseBody.message : generalError;
+                    console.error('API Error:' || generalError);
+                    setErrorMessage(errorMessage);
+                    setShow(true);
+                } else {
+                    console.error('No response received from the server.');
+                }
             }
-        }
         } catch (error) {
             console.error('Error during API request:', error);
         } finally {
@@ -224,9 +224,9 @@ const IssueNewCertificate = () => {
         course: '',
     });
 
-    const handleRedirect=((e)=>{
+    const handleRedirect = ((e) => {
         e.preventDefault()
-window.location.href = '/issue-pdf-certificate'
+        window.location.href = '/issue-pdf-certificate'
     })
 
     const handleChange = (e, regex, minLength, maxLength, fieldName) => {
@@ -320,7 +320,7 @@ window.location.href = '/issue-pdf-certificate'
                         <div className='vertical-center'>
                             <Container className='mt-5 mt-md-0'>
                                 <h2 className='title'>Issue New Certification</h2>
-                                <Form className='register-form' onSubmit={pdfBlob?handleRedirect:handleSubmit} encType="multipart/form-data">
+                                <Form className='register-form' onSubmit={pdfBlob ? handleRedirect : handleSubmit} encType="multipart/form-data">
                                     <Card>
                                         <Card.Body>
                                             <Card.Title>Certification Details</Card.Title>

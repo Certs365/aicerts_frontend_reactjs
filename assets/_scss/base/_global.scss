@@ -4,7 +4,7 @@ body {
     padding: 0;
     box-sizing: border-box;
     font-family: 'Montserrat', sans-serif;
-    
+
 
     * {
         box-sizing: inherit;
@@ -87,6 +87,7 @@ a {
 
     // 1366
     @media (min-width: $small-min) and (max-width: $small-max) {
+
         .form-control,
         .form-select {
             font-size: 16px;
@@ -110,7 +111,7 @@ a {
     @media (min-width: $mobile-min) and (max-width: $mobile-max) {
         p {
             font-size: 12px;
-       }
+        }
     }
 }
 
@@ -122,13 +123,11 @@ a {
 
         // 1366
         @media (min-width: $small-min) and (max-width: $small-max) {
-             top: 7px;
+            top: 7px;
         }
 
         // 1280
-        @media (min-width: $laptop-min) and (max-width: $laptop-max) {
-
-        }
+        @media (min-width: $laptop-min) and (max-width: $laptop-max) {}
     }
 }
 
@@ -192,12 +191,15 @@ a {
 
 /* Hide the scrollbar for all browsers */
 .hide-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
 }
 
 .hide-scrollbar::-webkit-scrollbar {
-    display: none;  /* Chrome, Safari, and Opera */
+    display: none;
+    /* Chrome, Safari, and Opera */
 }
 
 .title {
@@ -237,7 +239,7 @@ a {
 .no-cert-found {
     padding: 10%;
     height: 100%;
-    
+
     h3 {
         font-family: "Manrope", sans-serif !important;
         font-size: 28px;
@@ -258,11 +260,11 @@ a {
     bottom: 0;
     right: 0;
     overflow: auto;
-    
+
     // 1600
     @media (min-width: $large-min) and (max-width: $large-max) {
         background-position-y: -7em;
-        background-position-x: 4em;   
+        background-position-x: 4em;
     }
 
     // 1366
@@ -286,6 +288,7 @@ a {
             color: $white;
             background: transparent !important;
         }
+
         .form-select {
             color: $white;
             background: #000 !important;
@@ -301,19 +304,19 @@ a {
         background-image: url('/backgrounds/background-dark.png');
         background-size: cover;
         background-position-y: 0;
-        
+
         // 1600
         @media (min-width: $large-min) and (max-width: $large-max) {
             background-position-y: 0;
-            background-position-x: 0;   
+            background-position-x: 0;
         }
-    
+
         // 1366
         @media (min-width: $small-min) and (max-width: $small-max) {
             background-position-y: 0;
             background-position-x: 0;
         }
-    
+
         @media (min-width: $mobile-min) and (max-width: $mobile-max) {
             background-position-y: 0;
         }

@@ -35,9 +35,9 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
 // Create a custom hook to use the Theme Context
 export const useTheme = () => {
-    const context = useContext(ThemeContext);
-    if (!context) {
-      throw new Error('useTheme must be used within a ThemeProvider');
-    }
-    return context;
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
+  return context;
 };

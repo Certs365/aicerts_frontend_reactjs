@@ -74,6 +74,7 @@
         .cerficate-external-info {
             .details {
                 margin-bottom: 14px;
+
                 .heading {
                     color: #4D5060;
                     font-size: 16px;
@@ -200,54 +201,55 @@
 
         .valid-cerficate-info {
             padding: 0;
-    
+
             .cerficate-external-info {
                 .details {
                     &:not(:last-child) {
                         margin-bottom: 14px;
                     }
+
                     .heading {
                         font-size: 16px;
                         margin-bottom: 10px;
                     }
-    
+
                     .heading-info {
                         font-size: 18px;
                     }
-    
+
                     &.varification-info {
-                        .heading-info {  
+                        .heading-info {
                             font-size: 20px;
                             padding: 14px 40px;
                         }
                     }
                 }
             }
-    
+
             .dark-card {
                 padding: 20px;
                 margin-bottom: 40px;
-    
+
                 .certificate-internal-info {
                     .badge-banner {
                         width: 100%;
                     }
-    
+
                     .hash-info {
                         .hash-title {
                             font-size: 16px;
                             margin-bottom: 10px;
                         }
-    
+
                         .hash-info {
                             font-size: 16px;
                             word-break: break-word;
                         }
-    
+
                         hr {
                             display: none;
                         }
-    
+
                         .vertical-line {
                             display: none;
                         }

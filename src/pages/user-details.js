@@ -66,19 +66,19 @@ const ProfileDetails = () => {
 
         let progressInterval;
         const startProgress = () => {
-          progressInterval = setInterval(() => {
-            setNow((prev) => {
-              if (prev < 90) return prev + 5;
-              return prev;
-            });
-          }, 100);
+            progressInterval = setInterval(() => {
+                setNow((prev) => {
+                    if (prev < 90) return prev + 5;
+                    return prev;
+                });
+            }, 100);
         };
-    
+
         const stopProgress = () => {
-          clearInterval(progressInterval);
-          setNow(100); // Progress complete
+            clearInterval(progressInterval);
+            setNow(100); // Progress complete
         };
-    
+
         startProgress();
         const encryptedData = encryptData(data);
 
@@ -90,7 +90,7 @@ const ProfileDetails = () => {
                     'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify({
-                    data:encryptedData
+                    data: encryptedData
                 })
             });
             const userData = await response.json();
@@ -147,7 +147,7 @@ const ProfileDetails = () => {
 
     const handleClose = () => {
         setShow(false);
-        
+
     };
 
     const handleInputChange = (e) => {
@@ -165,22 +165,22 @@ const ProfileDetails = () => {
 
         let progressInterval;
         const startProgress = () => {
-          progressInterval = setInterval(() => {
-            setNow((prev) => {
-              if (prev < 90) return prev + 5;
-              return prev;
-            });
-          }, 100);
+            progressInterval = setInterval(() => {
+                setNow((prev) => {
+                    if (prev < 90) return prev + 5;
+                    return prev;
+                });
+            }, 100);
         };
-    
+
         const stopProgress = () => {
-          clearInterval(progressInterval);
-          setNow(100); // Progress complete
+            clearInterval(progressInterval);
+            setNow(100); // Progress complete
         };
-    
+
         startProgress();
-      const encryptedData = encryptData({email, ...formData}
-      );
+        const encryptedData = encryptData({ email, ...formData }
+        );
         try {
             const response = await fetch(`${apiUrl}/api/update-issuer`, {
                 method: "POST",
@@ -189,12 +189,12 @@ const ProfileDetails = () => {
                     'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify({
-                    data:encryptedData 
+                    data: encryptedData
                 })
             });
             const userData = await response.json();
             const userDetails =
-            setLoginSuccess("Details Updated Successfully")
+                setLoginSuccess("Details Updated Successfully")
             setShow(true)
             setEditable(false);
             // Assuming response is in JSON format
@@ -415,7 +415,7 @@ const ProfileDetails = () => {
                     </Container>
                 </div>
             </div>
-                    <div className='page-footer-bg'></div>
+            <div className='page-footer-bg'></div>
 
             {/* Loading Modal for API call */}
             <Modal className='loader-modal' show={isLoading} centered>

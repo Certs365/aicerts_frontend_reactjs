@@ -13,7 +13,7 @@ const DynamicPoc = () => {
 
   return (
     <div style={{ marginTop: "75px" }} className="page-bg gallery-wrapper">
-  
+
 
       {page === 0 && <SelectLocation page={page} setPage={setPage} />}
       {page === 1 && <Poc page={page} setPage={setPage} setCertificates={setCertificates} certificates={certificates} />}

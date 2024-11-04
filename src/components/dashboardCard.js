@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import React from 'react';
 
-const DashboardCard = ({ item }) => { 
+const DashboardCard = ({ item }) => {
   return (
     <div className='card-container'>
       {/* Badge container */}
       <div className='badge-container'>
-        <Image width={20} height={50} className='badge-cert' src={item?.image} alt='Badge'/> {/* Image for badge */}
+        <Image width={20} height={50} className='badge-cert' src={item?.image} alt='Badge' /> {/* Image for badge */}
       </div>
       {/* Title container */}
       <div className='title-cont'>
@@ -20,7 +20,7 @@ const DashboardCard = ({ item }) => {
           {/* <p className='item-percentage'>{item.percentage}</p>  */}
         </div>
         <div>
-          <Image width={200} height={50} className='graph-line'  src='/icons/Line-chart.svg' alt='Line chart icon'/> {/* Image for line chart */}
+          <Image width={200} height={50} className='graph-line' src='/icons/Line-chart.svg' alt='Line chart icon' /> {/* Image for line chart */}
         </div>
       </div>
     </div>

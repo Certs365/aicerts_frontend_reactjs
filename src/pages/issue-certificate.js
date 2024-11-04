@@ -98,7 +98,7 @@ const IssueCertificate = () => {
     return errorFields.some((error) => error !== "");
   };
 
-             
+
 
   function formatDate(date) {
     return `${(date?.getMonth() + 1).toString().padStart(2, "0")}/${date
@@ -160,7 +160,7 @@ const IssueCertificate = () => {
         grantDate: formattedGrantDate,
         expirationDate: formattedExpirationDate,
       };
-      
+
       if (!isDesign) {
         // Append additional fields when `isDesign` is true
         Object.assign(payload, {
@@ -171,18 +171,18 @@ const IssueCertificate = () => {
           issuerName: issuerName,
           issuerDesignation: issuerDesignation,
         });
-      }else{
+      } else {
         Object.assign(payload, {
           templateUrl: "",
           logoUrl: "",
           signatureUrl: "",
-          badgeUrl:"",
+          badgeUrl: "",
           issuerName: "",
-          issuerDesignation:"",
+          issuerDesignation: "",
         });
       }
-      
-     
+
+
       const response = await fetch(`${adminUrl}/api/issue/`, {
         method: "POST",
         headers: {
@@ -461,8 +461,8 @@ const IssueCertificate = () => {
             ? `Input length must be between ${minLength} and ${maxLength} characters`
             : ""
           : name === "certificateNumber"
-          ? "Certificate Number must be alphanumeric"
-          : `Input length must be between ${minLength} and ${maxLength} characters`,
+            ? "Certificate Number must be alphanumeric"
+            : `Input length must be between ${minLength} and ${maxLength} characters`,
       }));
     }
   };

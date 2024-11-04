@@ -31,7 +31,7 @@ const secretKey = process.env.NEXT_PUBLIC_BASE_ENCRYPTION_KEY;
  */
 const register = (data: any, callback: (response: Response) => void) => {
   const encryptedData = encryptData(data);
-  
+
   API({
     method: "POST",
     url: `${BASE_URL}/api/signup`,
@@ -47,7 +47,7 @@ const register = (data: any, callback: (response: Response) => void) => {
 
 const verifyOtp = (data: any, callback: (response: Response) => void) => {
   const encryptedData = encryptData(data);
-  
+
   API({
     method: "POST",
     url: `${BASE_URL}/api/verify-issuer`,
@@ -63,7 +63,7 @@ const verifyOtp = (data: any, callback: (response: Response) => void) => {
 
 const sendLink = (data: any, callback: (response: Response) => void) => {
   const encryptedData = encryptData({ email: data });
-  
+
   API({
     method: "POST",
     url: `${BASE_URL}/api/forgot-password`,
@@ -79,7 +79,7 @@ const sendLink = (data: any, callback: (response: Response) => void) => {
 
 const changePassword = (data: any, callback: (response: Response) => void) => {
   const encryptedData = encryptData(data);
-  
+
   API({
     method: "POST",
     url: `${BASE_URL}/api/reset-password`,
@@ -95,7 +95,7 @@ const changePassword = (data: any, callback: (response: Response) => void) => {
 
 const refreshToken = (data: any, callback: (response: Response) => void) => {
   const encryptedData = encryptData({ token: data?.refreshToken, email: data?.email });
-  
+
   API({
     method: "POST",
     url: `${BASE_URL}/api/refresh`,

@@ -43,7 +43,7 @@ const CertificateTemplateOne = () => {
                     </div>
                 </div>
                 <div className='bottom-info d-flex justify-content-center align-items-center w-100 position-absolute'>
-                    <div className='certificate-info'>Certificate No.: 65432E5W</div> 
+                    <div className='certificate-info'>Certificate No.: 65432E5W</div>
                     <span>|</span>
                     <div className='certificate-info'>Grant Date: 14 March 2024</div>
                     <span>|</span>

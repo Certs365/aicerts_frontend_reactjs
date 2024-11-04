@@ -31,7 +31,7 @@ const ShowMessage = ({ type, message }) => {
   // Render the message component
   return (
     <div className={`${type}-container`} style={{ display: 'flex', marginTop: '10px' }}>
-      <FontAwesomeIcon icon={icon} className={`${type}-icon`} style={{ paddingRight: '10px',color:color }} />
+      <FontAwesomeIcon icon={icon} className={`${type}-icon`} style={{ paddingRight: '10px', color: color }} />
       <p style={{ color }} className={`${type}-message`}>
         {message}
       </p>

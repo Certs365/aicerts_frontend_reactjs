@@ -20,7 +20,7 @@ async function UpdateLocalStorage() {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${storedUser.JWTToken}`,
             },
-            body: JSON.stringify({ data:encryptedData })
+            body: JSON.stringify({ data: encryptedData })
         });
 
         if (!resp.ok) {

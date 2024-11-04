@@ -41,14 +41,14 @@ const Admin = () => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
 
     if (storedUser && storedUser.JWTToken) {
-        // If token is available, set it in the state
-        setToken(storedUser.JWTToken);
-        setEmail(storedUser.email);
-        fetchData(tab, storedUser.email);
+      // If token is available, set it in the state
+      setToken(storedUser.JWTToken);
+      setEmail(storedUser.email);
+      fetchData(tab, storedUser.email);
 
     } else {
-        // If token is not available, redirect to the login page
-        // router.push("/");
+      // If token is not available, redirect to the login page
+      // router.push("/");
     }
   }, []);
   /* eslint-disable */
@@ -87,7 +87,7 @@ const Admin = () => {
       const data = await response.json();
       setResponseData(data);
       setIsBack(false);
-    setSearchQuery("")
+      setSearchQuery("")
 
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -97,9 +97,9 @@ const Admin = () => {
   };
 
   const handleSearchClick = async () => {
-    if(!searchQuery) return
+    if (!searchQuery) return
     setIsLoading(true);
-    
+
     try {
       const response = await fetch(`${apiUrl}/api/get-issue`, {
         method: 'POST',
@@ -108,17 +108,17 @@ const Admin = () => {
           'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({
-          email: email, 
-          input: searchQuery, 
+          email: email,
+          input: searchQuery,
           type: tab,
         }),
       });
       if (!response.ok) {
-      const data = await response.json();
-      setLoginError(data.message || "Network Error");
-      setShow(true);
-    setIsLoading(false);
-    
+        const data = await response.json();
+        setLoginError(data.message || "Network Error");
+        setShow(true);
+        setIsLoading(false);
+
 
         throw new Error('Failed to fetch data');
       }
@@ -128,11 +128,11 @@ const Admin = () => {
       setLoginSuccess(data?.message)
       setShow(true);
       setResponseData(data)
-    setIsLoading(false);
-    setIsBack(true)
+      setIsLoading(false);
+      setIsBack(true)
     } catch (error) {
       console.error('Error fetching data:', error);
-    setIsLoading(false);
+      setIsLoading(false);
 
     } finally {
       setIsLoading(false);
@@ -140,19 +140,19 @@ const Admin = () => {
   };
 
   return (
-    
+
     <div className='admin-wrapper page-bg'>
-   
+
       <div className='admin-title flex-column flex-md-row'>
         {isBack &&
-      <span onClick={() => { fetchData(tab,email); }} className='back-button'>
-              <Image width={10} height={10} src={BackIcon} alt='back' /><span className=''>Back</span>
-            </span>
+          <span onClick={() => { fetchData(tab, email); }} className='back-button'>
+            <Image width={10} height={10} src={BackIcon} alt='back' /><span className=''>Back</span>
+          </span>
         }
         <span className='admin-title-name'>
           Administration
         </span>
-        <div  className='admin-button-container'>
+        <div className='admin-button-container'>
           <span onClick={() => handleChange(1)} className={`btn ${tab === 1 ? 'btn-golden' : ''}`}>Extend Expiration</span>
           <span className="vertical-line"></span>
           <span onClick={() => handleChange(2)} className={`btn ${tab === 2 ? 'btn-golden' : ''}`}>Reactivate Certification</span>
@@ -176,20 +176,20 @@ const Admin = () => {
             <Image height={10} width={10} src="/icons/search.svg" alt='search' />
           </div>
         </div> */}
-       <Search setResponseData={setResponseData} tab={tab} setLoading={setIsLoading}/>
+        <Search setResponseData={setResponseData} tab={tab} setLoading={setIsLoading} />
       </div>
       {/* {tab === 2 && filteredBatchCertificatesData && (
             <span onClick={() => { setFilteredBatchCertificatesData(null); }} className='back-button'>
               <Image width={10} height={10} src={BackIcon} alt="Filter batch certificate" /><span className=''>Back</span>
             </span>
           )} */}
-          {responseData != null && responseData?.length == 0 ? (
-            <div className='d-flex justify-content-center align-items-center mt-5 text-center'>
-  <h5 style={{color:"#ff5500", marginTop:"70px"}}>No certificates have been issued yet. Please generate a certificate and revisit later!</h5>
-              </div>
-) : (
-      <AdminTable data={responseData} setTab={setTab} tab={tab} setResponseData={setResponseData} responseData={responseData} setIssuedCertificate={setIssuedCertificate} />
-)}
+      {responseData != null && responseData?.length == 0 ? (
+        <div className='d-flex justify-content-center align-items-center mt-5 text-center'>
+          <h5 style={{ color: "#ff5500", marginTop: "70px" }}>No certificates have been issued yet. Please generate a certificate and revisit later!</h5>
+        </div>
+      ) : (
+        <AdminTable data={responseData} setTab={setTab} tab={tab} setResponseData={setResponseData} responseData={responseData} setIssuedCertificate={setIssuedCertificate} />
+      )}
       <Modal onHide={handleClose} className='loader-modal text-center' show={show} centered>
         <Modal.Body className='p-5'>
           {loginError !== '' ? (
@@ -224,18 +224,18 @@ const Admin = () => {
         </Modal.Body>
       </Modal>
       <Modal className='loader-modal' show={isLoading} centered>
-            <Modal.Body>
-                <div className='certificate-loader'>
-                    <Image
-                        src="/backgrounds/login-loading.gif"
-                        layout='fill'
-                        alt='Loader'
-                    />
-                </div>
-                <div className='text mt-3'>Please Wait...</div>
-            </Modal.Body>
-        </Modal>
-        {/* </>
+        <Modal.Body>
+          <div className='certificate-loader'>
+            <Image
+              src="/backgrounds/login-loading.gif"
+              layout='fill'
+              alt='Loader'
+            />
+          </div>
+          <div className='text mt-3'>Please Wait...</div>
+        </Modal.Body>
+      </Modal>
+      {/* </>
            )} */}
     </div>
   );

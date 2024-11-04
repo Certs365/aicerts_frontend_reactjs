@@ -1,4 +1,5 @@
 .issue-new-certificate {
+
     // margin-top: 9em;
     .vertical-center {
         transform: translateY(-70%);
@@ -16,8 +17,8 @@
             -o-transform: translateY(-70%);
         }
 
-         // 1440
-         @media (min-width: $medium-min) and (max-width: $medium-max) {
+        // 1440
+        @media (min-width: $medium-min) and (max-width: $medium-max) {
             transform: translateY(-70%);
             -webkit-transform: translateY(-70%);
             -moz-transform: translateY(-70%);
@@ -35,16 +36,14 @@
         }
 
         // 1280
-        @media (min-width: $laptop-min) and (max-width: $laptop-max) {
-            
-        }
+        @media (min-width: $laptop-min) and (max-width: $laptop-max) {}
     }
 
     @media (min-width: $mobile-min) and (max-width: $mobile-max) {
         &.issue-certificate {
             margin-top: 40px;
-            
-            .register-form {    
+
+            .register-form {
                 padding-bottom: 20px;
             }
         }
@@ -66,9 +65,9 @@
     }
 
     @media (min-width: $mobile-min) and (max-width: $mobile-max) {
-       .container {
-        padding-top: 40px;
-       }
+        .container {
+            padding-top: 40px;
+        }
     }
 }
 

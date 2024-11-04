@@ -35,46 +35,50 @@
             }
         }
     }
-    .admin-button-container{
+
+    .admin-button-container {
         max-width: 175px;
-height: 50px;
-display: flex;
-// border-radius: 10px;
-border: 1px solid #D5DDEA;
-text-align: center;
-justify-content: center;
-align-items: center;
-.btn{
-    // width: 200px;
-height: 90%;
-font-family: $font-family;
-font-size: 17px;
-font-weight: 700;
-padding-top:9px;
-// border-radius: 0px;
-margin: 0 5px;
-color:  #5A677E;
-;
-// border: 1px solid black;
-&:hover{
-    background: #CFA935;
+        height: 50px;
+        display: flex;
+        // border-radius: 10px;
+        border: 1px solid #D5DDEA;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
 
-    color: white;
-    // border-radius: 10px;
-}
-}
+        .btn {
+            // width: 200px;
+            height: 90%;
+            font-family: $font-family;
+            font-size: 17px;
+            font-weight: 700;
+            padding-top: 9px;
+            // border-radius: 0px;
+            margin: 0 5px;
+            color: #5A677E;
+            ;
+
+            // border: 1px solid black;
+            &:hover {
+                background: #CFA935;
+
+                color: white;
+                // border-radius: 10px;
+            }
+        }
 
 
-  .btn-golden{
-    background: #CFA935;
-    color: white;
-    // border-radius: 10px;
-  }
-  .vertical-line {
-    border-left: 1px solid #D5DDEA;
-    height: 70%; 
-    margin: 0 2px; 
-  }
+        .btn-golden {
+            background: #CFA935;
+            color: white;
+            // border-radius: 10px;
+        }
+
+        .vertical-line {
+            border-left: 1px solid #D5DDEA;
+            height: 70%;
+            margin: 0 2px;
+        }
 
 
     }
@@ -296,14 +300,15 @@ color:  #5A677E;
 /* Media query for smaller screens */
 @media screen and (max-width: 768px) {
     .outer-container {
-       
-    
+
+
         .filter-options {
-            
-           
-    
+
+
+
             label {
                 font-size: 7px;
+
                 input {
                     margin-right: 5px;
                     accent-color: red;
@@ -311,6 +316,7 @@ color:  #5A677E;
                 }
             }
         }
+
         .filter-options input[type="radio"] {
             appearance: none;
             /* Remove default radio button styling */
@@ -324,7 +330,7 @@ color:  #5A677E;
             outline: none;
         }
     }
-    
+
 }
 
 .loader {
@@ -429,18 +435,17 @@ color:  #5A677E;
     }
 }
 
-.modal-wrapper{
+.modal-wrapper {
     border-radius: 0 !important;
+
     .modal-content {
-    border-radius: 0;
-    
+        border-radius: 0;
+
     }
 }
 
 .dark-mode {
-    .dashboard {
-        
-    }
+    .dashboard {}
 
     .card-container {
         background: #171a24;

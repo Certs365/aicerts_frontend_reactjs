@@ -1,6 +1,6 @@
 .user-details {
     padding-top: 6em;
-    
+
     .card {
         border-radius: 0;
         -webkit-border-radius: 0;
@@ -8,6 +8,7 @@
         -ms-border-radius: 0;
         -o-border-radius: 0;
     }
+
     .name {
         color: #000;
         font-size: 22px;
@@ -74,18 +75,19 @@
             color: $white;
         }
 
-        .role, .address {
+        .role,
+        .address {
             color: #A9A7B0;
         }
 
-        .icons  {
+        .icons {
             color: $white;
         }
 
         .list-group {
             --bs-list-group-bg: #000;
 
-            
+
 
             .lead-info {
                 color: #A9A7B0 !important;

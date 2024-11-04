@@ -80,9 +80,7 @@
                 }
 
                 // 1280
-                @media (min-width: $laptop-min) and (max-width: $laptop-max) {
-                    
-                }
+                @media (min-width: $laptop-min) and (max-width: $laptop-max) {}
             }
         }
 
@@ -132,15 +130,13 @@
             @media (min-width: $small-min) and (max-width: $small-max) {
                 padding: 16px;
 
-                .tagline { 
+                .tagline {
                     font-size: 16px;
                 }
             }
 
             // 1280
-            @media (min-width: $laptop-min) and (max-width: $laptop-max) {
-                
-            }
+            @media (min-width: $laptop-min) and (max-width: $laptop-max) {}
         }
 
         .browse-file {
@@ -190,8 +186,7 @@
             }
 
             // 1440
-            @media (min-width: $medium-min) and (max-width: $medium-max) {
-            }
+            @media (min-width: $medium-min) and (max-width: $medium-max) {}
 
             // 1366
             @media (min-width: $small-min) and (max-width: $small-max) {
@@ -212,9 +207,7 @@
             }
 
             // 1280
-            @media (min-width: $laptop-min) and (max-width: $laptop-max) {
-                
-            }
+            @media (min-width: $laptop-min) and (max-width: $laptop-max) {}
         }
 
         .btn-next {
@@ -228,66 +221,58 @@
         background-color: #f8f9fa;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      
+
         h2 {
-          font-size: 1.5rem;
-          color: #CFA935;
-          margin-bottom: 1rem;
+            font-size: 1.5rem;
+            color: #CFA935;
+            margin-bottom: 1rem;
         }
-      
+
         .steps-list {
-          list-style-type: none;  // Remove default numbering
-          padding-left: 0;        // Remove padding
-      
-          li {
-            margin-bottom: 0.75rem;
-            font-size: 1rem;
-            color: #495057;
-            counter-increment: step-counter;  // Increment custom counter
-      
-            &:before {
-              content: "Step " counter(step-counter) ": "; // Use custom counter for steps
-              font-weight: bold;
-              color:#CFA935;
+            list-style-type: none; // Remove default numbering
+            padding-left: 0; // Remove padding
+
+            li {
+                margin-bottom: 0.75rem;
+                font-size: 1rem;
+                color: #495057;
+                counter-increment: step-counter; // Increment custom counter
+
+                &:before {
+                    content: "Step "counter(step-counter) ": "; // Use custom counter for steps
+                    font-weight: bold;
+                    color: #CFA935;
+                }
             }
-          }
         }
-      
+
         .note {
-          margin-top: 1.5rem;
-          padding: 10px;
-          background-color: #fff3cd;
-          border: 1px solid #ffeeba;
-          border-radius: 4px;
-          font-size: 0.875rem;
-          color: #856404;
-      
-          strong {
+            margin-top: 1.5rem;
+            padding: 10px;
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 4px;
+            font-size: 0.875rem;
             color: #856404;
-          }
+
+            strong {
+                color: #856404;
+            }
         }
-      }
-      
-      
-    // 1600
-    @media (min-width: $large-min) and (max-width: $large-max) {
-               
     }
+
+
+    // 1600
+    @media (min-width: $large-min) and (max-width: $large-max) {}
 
     // 1440
-    @media (min-width: $medium-min) and (max-width: $medium-max) {
-       
-    }
+    @media (min-width: $medium-min) and (max-width: $medium-max) {}
 
     // 1366
-    @media (min-width: $small-min) and (max-width: $small-max) {
-       
-    }
+    @media (min-width: $small-min) and (max-width: $small-max) {}
 
     // 1280
-    @media (min-width: $laptop-min) and (max-width: $laptop-max) {
-      
-    }
+    @media (min-width: $laptop-min) and (max-width: $laptop-max) {}
 
     @media (min-width: $mobile-min) and (max-width: $mobile-max) {
         .card {
@@ -388,7 +373,9 @@
             }
 
             @media (min-width: $mobile-min) and (max-width: $mobile-max) {
-                .select-all, .golden-download {
+
+                .select-all,
+                .golden-download {
                     width: 100%;
                 }
 
@@ -414,7 +401,7 @@
 
             // 1440
             @media (min-width: $medium-min) and (max-width: $medium-max) {
-                height: 630px;   
+                height: 630px;
             }
 
             // 1366
@@ -453,7 +440,8 @@
                     margin-top: 20px;
                 }
             }
-            .cert-wrapper-container{
+
+            .cert-wrapper-container {
                 padding-top: 90px;
             }
 
@@ -470,7 +458,8 @@
                     font-style: normal;
                     font-weight: 600;
                 }
-                .form-check-input[type=checkbox]{
+
+                .form-check-input[type=checkbox] {
                     border: 1px solid black;
                     height: 20px;
                     width: 20px;
@@ -483,7 +472,7 @@
                     height: 167px;
                     margin: auto;
                     margin-bottom: 16px;
-                    
+
                     // 1280
                     @media (min-width: $laptop-min) and (max-width: $laptop-max) {
                         margin-bottom: 3px;
@@ -502,21 +491,22 @@
                     .cert-prev {
                         height: 227px;
                     }
-                }   
+                }
             }
         }
 
-        .form-check-input[type=checkbox]{
+        .form-check-input[type=checkbox] {
             border: 1px solid black;
             height: 20px;
             width: 20px;
             border-radius: 3px;
         }
-        .icon-download-container{
-                    padding: 10px;
-                        background-color: #CFA935;
-                        cursor: pointer;
-                }
+
+        .icon-download-container {
+            padding: 10px;
+            background-color: #CFA935;
+            cursor: pointer;
+        }
 
         .list-view-table {
             margin-top: 20px;
@@ -786,9 +776,11 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+
         .modal-body {
             padding: 20px 40px;
         }
+
         .close-modal {
             position: absolute;
             top: 8px;
@@ -807,7 +799,7 @@
             @media (min-width: $mobile-min) and (max-width: $mobile-max) {
                 height: 300px;
             }
-        }   
+        }
     }
 }
 
@@ -886,17 +878,17 @@
 
             // 1280
             @media (min-width: $laptop-min) and (max-width: $laptop-max) {}
-            
+
         }
 
         @media (min-width: $mobile-min) and (max-width: $mobile-max) {
-             padding: 10px;
+            padding: 10px;
 
-             .details {
+            .details {
                 .info-text {
                     font-size: 14px;
                 }
-             }
+            }
         }
     }
 }
@@ -917,6 +909,7 @@
         line-height: normal;
         margin: 30px 0 15px;
     }
+
     .upload-column {
         flex: 1;
         display: flex;
@@ -931,8 +924,9 @@
             border: 1px solid #bfbfbf;
             padding: 5px;
             overflow: hidden;
-            input{
-            overflow: hidden;
+
+            input {
+                overflow: hidden;
             }
         }
 
@@ -978,7 +972,8 @@
 
 .batchDashboard {
     transform: translateY(-80%);
-    .back-button{
+
+    .back-button {
         display: flex;
         flex-direction: row;
         width: fit-content;
@@ -988,18 +983,18 @@
         background-color: #F3F3F3;
         cursor: pointer;
         margin-right: 20px;
-       
-        span{
+
+        span {
             padding-left: 10px;
             color: #5B5A5F;
             font-family: "Montserrat";
             font-size: 16px;
             font-weight: 500;
         }
-}
+    }
 }
 
-.form-check-input[type=checkbox]{
+.form-check-input[type=checkbox] {
     border: 1px solid black;
     height: 20px;
     width: 20px;
@@ -1019,6 +1014,7 @@
                 span {
                     color: #A9A7B0;
                 }
+
                 .close-icon {
                     color: #A9A7B0;
                 }
@@ -1113,7 +1109,7 @@
                 }
 
                 p.mt-4 {
-                    color: #A9A7B0; 
+                    color: #A9A7B0;
                 }
             }
 
@@ -1127,11 +1123,11 @@
         }
 
     }
-    
+
     .batchDashboard {
         .back-button {
             color: #A9A7B0;
             background: #171A24;
         }
-    } 
+    }
 }

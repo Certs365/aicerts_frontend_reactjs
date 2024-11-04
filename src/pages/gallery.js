@@ -82,7 +82,7 @@ const Gallery = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${storedUser.token}`,
         },
-        body: JSON.stringify({data:encryptedData})
+        body: JSON.stringify({ data: encryptedData })
       });
       const certificatesData = await response.json();
       setSingleWithoutCertificates(certificatesData?.data);
@@ -109,7 +109,7 @@ const Gallery = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${storedUser.token}`,
         },
-        body: JSON.stringify({data:encryptedData})
+        body: JSON.stringify({ data: encryptedData })
       });
       const certificatesData = await response.json();
       setSingleWithCertificates(certificatesData?.data);
@@ -134,7 +134,7 @@ const Gallery = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${storedUser.token}`,
         },
-        body: JSON.stringify({data:encryptedData})
+        body: JSON.stringify({ data: encryptedData })
       });
       const datesData = await response.json();
       setDates(datesData?.data);
@@ -172,7 +172,7 @@ const Gallery = () => {
 
   return (
     <div className='page-bg gallery-wrapper' >
-           {/* <Modal className='loader-modal' show={loading} centered>
+      {/* <Modal className='loader-modal' show={loading} centered>
         <Modal.Body>
           <div className='certificate-loader'>
             <Image
@@ -205,9 +205,9 @@ const Gallery = () => {
           <span onClick={() => { handleChange(2); }} className={`btn ${tab === 2 ? 'btn-golden' : ''}`}>Batch</span>
         </div>
       </div>
-        {(tab === 0 || tab === 1 || (tab === 2 && filteredBatchCertificatesData)) && (
-      <div className='table-title'>
-        <span className='expire-typo p-3 p-md-0'>{subTitle}</span>
+      {(tab === 0 || tab === 1 || (tab === 2 && filteredBatchCertificatesData)) && (
+        <div className='table-title'>
+          <span className='expire-typo p-3 p-md-0'>{subTitle}</span>
           {/* <div className='gallery-search-container'>
             <input
               type="text"
@@ -231,10 +231,10 @@ const Gallery = () => {
             </div>
           </div> */}
 
-          <SearchAdmin setFilteredSingleWithCertificates={setFilteredSingleWithCertificates} setFilteredSingleWithoutCertificates={setFilteredSingleWithoutCertificates} setFilteredBatchCertificatesData={setFilteredBatchCertificatesData} tab={tab} setLoading={setLoading}/>
-      
-      </div>
-        )}
+          <SearchAdmin setFilteredSingleWithCertificates={setFilteredSingleWithCertificates} setFilteredSingleWithoutCertificates={setFilteredSingleWithoutCertificates} setFilteredBatchCertificatesData={setFilteredBatchCertificatesData} tab={tab} setLoading={setLoading} />
+
+        </div>
+      )}
       {searchLoading ? (
         <div>Loading...</div>
       ) : (
@@ -244,7 +244,7 @@ const Gallery = () => {
           {tab === 2 && <BatchDates dates={dates} batchCertificatesData={filteredBatchCertificatesData} setFilteredBatchCertificatesData={setFilteredBatchCertificatesData} setBatchCertificatesData={setBatchCertificatesData} />}
         </>
       )}
-     
+
     </div>
   );
 };
