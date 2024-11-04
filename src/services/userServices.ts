@@ -57,7 +57,7 @@ const verifyOtp = (data: any, callback: (response: Response) => void) => {
       callback({ status: "SUCCESS", data: response.data });
     })
     .catch((error) => {
-      callback({ status: "ERROR", error: error });
+      callback({ status: "ERROR", error: error.response.data });
     });
 };
 
