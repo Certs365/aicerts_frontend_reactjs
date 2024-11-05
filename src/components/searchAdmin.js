@@ -131,6 +131,7 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
       }
   };
 
+  /* eslint-disable */
     useEffect(() => {
         if (!isDateInput) {
             const debounceFetch = setTimeout(() => {
@@ -140,6 +141,7 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
             return () => clearTimeout(debounceFetch);
         }
     }, [searchTerm, searchBy]);
+    /* eslint-disable */
 
     const handleSearchTermChange = (e) => {
         const value = e.target.value;
