@@ -8,10 +8,16 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+  
+   
+    
 
     .verify-landing {
-        padding: 40px;
+        font-family: $font-family;
+        padding: 30px;
         border: 1px solid #BFC0C2;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        
         border-radius: 0;
         -webkit-border-radius: 0;
         -moz-border-radius: 0;
@@ -40,14 +46,15 @@
                 margin: 14px 0;
                 font-weight: 700;
                 font-family: $font-family;
+                
             }
 
             .card-text {
                 color: rgba(90, 103, 126, 1);
-                font-size: 16px;
+                font-size: 14px;
                 line-height: 19px;
                 font-weight: 500;
-                margin-bottom: 40px;
+                margin-bottom: 20px;
                 font-family: $font-family;
             }
         }
@@ -60,14 +67,16 @@
             /* Push the footer to the bottom */
 
             .golden {
+                font-size: 14px;
                 width: 100%;
-                padding: 20px 0;
+                padding: 13px 0;
             }
         }
 
         // 1366
         @media (min-width: $small-min) and (max-width: $small-max) {
             padding: 20px;
+           
 
             .card-img-top {
                 height: 120px;

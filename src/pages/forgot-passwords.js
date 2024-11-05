@@ -1,13 +1,14 @@
 // Import necessary modules and components
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { Container, Form, Row, Col } from 'react-bootstrap';
+import { Container, Form, Row, Col, Modal } from 'react-bootstrap';
 import Button from '../../shared/button/button';
 import { useRouter } from 'next/router';
 import user from '../services/userServices';
 import { validateEmail } from '../common/auth';
 import NavigationLogin from '@/app/navigation-login';
-
+import eyeIcon from '../../public/icons/eye.svg';
+import eyeSlashIcon from '../../public/icons/eye-slash.svg';
 // Component definition
 const ForgotPassword = () => {
   // Initialize React Router
@@ -19,6 +20,10 @@ const ForgotPassword = () => {
   const [otp, setOtp] = useState('');
   const [otpErrors, setOtpErrors] = useState('');
   const [show2FA, setShow2FA] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [show, setShow] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   // Handle click event for Send Recovery Link or Verify OTP button
   const handleClick = (e) => {
@@ -29,6 +34,14 @@ const ForgotPassword = () => {
       sendLink();
     }
   };
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+};
+  const handleClose = () => {
+    setShow(false);
+    setErrorMessage("")
+};
 
   // Function to send recovery link
   const sendLink = () => {
@@ -54,6 +67,9 @@ const ForgotPassword = () => {
 
   // Function to verify OTP
   const verifyOtp = () => {
+    setErrorMessage('')
+    setEmailErrors('')
+    setSuccessMessage('')
     // Call the verifyOtp API with the form data
     const data = {
       email: email,
@@ -66,7 +82,9 @@ const ForgotPassword = () => {
         // Pass email to /reset-password route
         router.push(`/passwords-confirm?email=${encodeURIComponent(email)}`);
       } else {
-        setOtpErrors(response?.data?.message);
+        setOtpErrors(response?.error?.message);
+        setShow(true)
+        setErrorMessage(response?.error?.message);
       }
     });
   };
@@ -102,17 +120,34 @@ const ForgotPassword = () => {
                       <h1 className='title'>Forgot Password?</h1>
                       <Form className='input-elements'>
                         {show2FA ? (
-                          <Form.Group controlId='otp'>
-                            <Form.Label>Enter OTP</Form.Label>
-                            <Form.Control
-                              type='password'
-                              value={otp}
-                              onChange={(e) => {
-                                setOtp(e.target.value);
-                                setOtpErrors('');
-                              }}
+                         <Form.Group controlId='otp' className='position-relative'>
+                         <Form.Label>Enter OTP</Form.Label>
+                         <Form.Control
+                           type={passwordVisible ? 'text' : 'password'} // Toggle input type
+                           value={otp}
+                           onChange={(e) => {
+                             setOtp(e.target.value);
+                             setOtpErrors('');
+                           }}
+                         />
+                        
+                          <div   style={{
+                             right: '10px',
+                             top: '70%',
+                             transform: 'translateY(-50%)',
+                             cursor: 'pointer',
+                           }} className='eye-icon position-absolute'>
+                            <Image
+                                src={passwordVisible ? eyeSlashIcon : eyeIcon}
+                                width={20}
+                                height={20}
+                                alt={passwordVisible ? 'Hide password' : 'Show password'}
+                                onClick={togglePasswordVisibility}
+                                className="password-toggle"
                             />
-                          </Form.Group>
+                        </div>
+                       </Form.Group>
+                       
                         ) : (
                           <Form.Group controlId='email'>
                             <Form.Label>Enter Your Registered Email</Form.Label>
@@ -124,9 +159,9 @@ const ForgotPassword = () => {
                                 setEmailErrors('');
                               }}
                             />
+                          
                           </Form.Group>
                         )}
-
                         {otpErrors && (
                           <p className='error-message' style={{ color: '#ff5500' }}>
                             {otpErrors}
@@ -156,6 +191,37 @@ const ForgotPassword = () => {
                 </Col>
               </Row>
             </Container>
+            <Modal onHide={handleClose} className='loader-modal text-center' show={show} centered>
+                <Modal.Body>
+                    {errorMessage !== '' ? (
+                        <>
+                            <div className='error-icon success-image'>
+                                <Image
+                                    src="/icons/invalid-password.gif"
+                                    layout='fill'
+                                    objectFit='contain'
+                                    alt='Loader'
+                                />
+                            </div>
+                            <div className='text' style={{ color: '#ff5500' }}>{errorMessage}</div>
+                            <button className='warning' onClick={handleClose}>Ok</button>
+                        </>
+                    ) : (
+                        <>
+                            <div className='error-icon success-image'>
+                                <Image
+                                    src="/icons/success.gif"
+                                    layout='fill'
+                                    objectFit='contain'
+                                    alt='Loader'
+                                />
+                            </div>
+                            <div className='text' style={{ color: '#CFA935' }}>{successMessage}</div>
+                            <button className='success' onClick={handleClose}>Ok</button>
+                        </>
+                    )}
+                </Modal.Body>
+            </Modal>
           </div>
         </div>
         <div className='page-footer-bg'></div>

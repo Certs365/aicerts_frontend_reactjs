@@ -3,7 +3,7 @@ import DashboardCard from "../components/dashboardCard"; // Importing DashboardC
 import BarChartSecond from "../components/barChartSecond"; // Importing LineChart component
 import BarChart from "../components/barChart"; // Importing BarChart component
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL;
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import PieChart from "../components/pieChart";
 import { Col, Container, Row } from "react-bootstrap";
 import { encryptData } from "../utils/reusableFunctions";
@@ -11,7 +11,8 @@ const secretKey = process.env.NEXT_PUBLIC_BASE_ENCRYPTION_KEY;
 const Dashboard = () => {
   const [token, setToken] = useState(null); // State variable for storing token
   const [email, setEmail] = useState(null); // State variable for storing email
-  const [formData, setFormData] = useState({ // State variable for form data
+  const [formData, setFormData] = useState({
+    // State variable for form data
     email: "",
     certificateNumber: "",
     name: "",
@@ -36,7 +37,6 @@ const Dashboard = () => {
         email: storedUser.email,
       }));
       fetchData(storedUser.email);
-
     } else {
       // If token is not available, redirect to the login page
       router.push("/");
@@ -47,14 +47,14 @@ const Dashboard = () => {
     const payload = {
       email: email,
       queryCode: 1,
-    }
+    };
     const encryptedData = encryptData(payload);
 
     try {
       const response = await fetch(`${apiUrl}/api/get-issuers-log`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           data: encryptedData,
@@ -62,17 +62,16 @@ const Dashboard = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch data');
+        throw new Error("Failed to fetch data");
       }
 
       const data = await response.json();
       setResponseData(data);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
       // Handle error as needed
     }
   };
-
 
   const cardsData = [
     {
@@ -81,7 +80,7 @@ const Dashboard = () => {
       badgeIcon: "",
       value: responseData?.data?.issued || "0",
       percentage: "+21.01%",
-      image: "/icons/badge-cert.svg"
+      image: "/icons/badge-cert.svg",
     },
     {
       title: "Monthly Certification",
@@ -89,9 +88,8 @@ const Dashboard = () => {
       badgeIcon: "",
       value: responseData?.data?.renewed || "0",
       percentage: "+21.01%",
-      image: "/icons/badge-cert-issue.svg"
-
-    },    //addd-mine
+      image: "/icons/badge-cert-issue.svg",
+    }, //addd-mine
 
     {
       title: "Certification",
@@ -99,8 +97,7 @@ const Dashboard = () => {
       badgeIcon: "",
       value: responseData?.data?.reactivated || "0",
       percentage: "+21.01%",
-      image: "/icons/badge-cert-reactive.svg"
-
+      image: "/icons/badge-cert-reactive.svg",
     },
     {
       title: "Certification",
@@ -109,7 +106,6 @@ const Dashboard = () => {
       value: responseData?.data?.revoked || "0",
       percentage: "+21.01%",
       image: "/icons/badge-cert-reactive.svg"
-
     },
   ];
 
@@ -121,13 +117,13 @@ const Dashboard = () => {
           return <DashboardCard key={index} item={item} />;
         })}
       </div>
-      <div className="main-container">
+      <div className="main-container gap">
         {/* Rendering LineChart component */}
         <Container>
           <BarChartSecond />
         </Container>
         {/* Rendering BarChart component */}
-        <Container className="d-flex flex-column flex-md-row justify-content-center align-items-center">
+        <Container className="d-flex flex-column flex-md-row justify-content-center align-items-center gap-2">
           <Col xs={12} md={4} className="mb-4 mb-md-0">
             <PieChart />
           </Col>
@@ -135,7 +131,6 @@ const Dashboard = () => {
             <BarChart />
           </Col>
         </Container>
-
       </div>
     </div>
   );

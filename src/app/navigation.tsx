@@ -322,7 +322,7 @@ if (issueService ) {
 
   return (
     <>
-     <Modal  className='modal-wrapper' show={showModal} centered>
+     <Modal  className='modal-wrapper' show={showModal} centered >
         <Modal.Body className='py-4 d-flex flex-column text-center justify-content-center align-items-center'>
           
           <p className='modal-text mt-3'>Are You Sure You Want to Log Out?</p>
@@ -332,8 +332,8 @@ if (issueService ) {
           </div>
         </Modal.Body>
       </Modal>
-    <Navbar expand="lg" className="global-header navbar navbar-expand-lg navbar-light bg-light">
-      <Container fluid>
+    <Navbar expand="lg" className="global-header navbar navbar-expand-lg navbar-light bg-light" >
+      <Container fluid >
         <Navbar.Brand>
           <div className='nav-logo'>
             <Link onClick={() => { handleClickTab(0) }} className="navbar-brand" href="/dashboard">
@@ -348,9 +348,9 @@ if (issueService ) {
           </div>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav d-md-none" />
-        <Navbar.Collapse id="basic-navbar-nav">
+        <Navbar.Collapse id="basic-navbar-nav"   >
             {routesWithLogoutButton.includes(router.pathname) && (
-              <Nav className="me-auto ">
+              <Nav className="me-auto w-100 d-flex justify-content-center align-items-md-center" >
                 <Nav.Link 
                   onClick={() => { handleClickTab(0) }} className={`nav-item ${selectedTab === 0 ? "tab-golden" : ""}`} 
                   href="/dashboard"
@@ -396,9 +396,9 @@ if (issueService ) {
                   }
                   className='profile'
                 >
-                  <div className='user-info'>
+                  <div className='user-info' >
                     <div className='divider'>
-                      <div className='info d-flex align-items-center'>
+                      <div className='info d-flex align-items-center' >
                         <div className='icon'>
                           <Image
                             src="https://images.netcomlearning.com/ai-certs/icons/profile-dark.svg"
@@ -408,7 +408,7 @@ if (issueService ) {
                           />
                         </div>
                         <div>
-                          <span className='label'>Issuer Name</span>
+                          <span className='label' >Issuer Name</span>
                           <span className='data'>{formData?.name || ""}</span>
                         </div>
                       </div>

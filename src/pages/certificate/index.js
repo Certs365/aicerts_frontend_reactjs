@@ -125,8 +125,7 @@ const CardSelector = () => {
       }
     };
 
-    setCertificateUrl("certificateUrl");
-
+ 
     retrieveDataFromSessionStorage();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -176,7 +175,7 @@ const CardSelector = () => {
       sessionStorage.setItem("issuerDesignation", inputValue);
     } else {
       // Show error message here, for example:
-      alert("Issuer designation must be 30 characters or less");
+      // alert("Issuer designation must be 30 characters or less");
     }
   };
 
@@ -613,16 +612,18 @@ const CardSelector = () => {
         return;
       }
     }
-
-    let route;
-    if (tab == 1 && !isDesign) {
-      route = `/certificate/${selectedCard}`;
-    } else {
-      route = `/issue-certificate`;
-    }
-
-    router.push(route);
-  };
+  }
+  if (tab == 1 && !isDesign) {
+    router.push(`/certificate/${selectedCard}`);
+  } else if (tab == 0 && isDesign) {
+    // Sending route with state
+    router.push({
+      pathname: '/selectQrPdf', // Example route
+      query: { certificateUrl },         // You can pass any other state you need here
+    });
+  } else {
+    router.push(`/issue-certificate`);
+  }
 
   const customTemplate = () => {
     // remove any previos customTemplate
@@ -707,6 +708,7 @@ const CardSelector = () => {
       console.log(customTemplateFromStorage);  //clg
       setNewTemplate(customTemplateFromStorage);  //for preview
       setCertificateUrl(customTemplateFromStorage);
+      setIsDesign(true)
       // setCertificateUrl(customTemplateFromStorage); // for later, in issue-certification, next part
     } else {
       handleCardSelect(0);
@@ -803,9 +805,9 @@ const CardSelector = () => {
                               </InputGroup>
                             </Form.Group>
                           </Col>
-                          <Col md={{ span: 4 }} xs={{ span: 12 }}>
-                            <div className="upload-badge-container">
-                              <div className="label">
+                          <Col md={{ span: 4 }} xs={{ span: 12 }} >
+                            <div className="upload-badge-container"  >
+                              <div className="label" style={{fontSize:"Montserrat"}}>
                                 Upload Badge (Optional)
                               </div>
                               <div className="upload-column">
@@ -824,7 +826,7 @@ const CardSelector = () => {
                                   <AiOutlineCheckCircle className="check-icon" />
                                 ) : (
                                   <>
-                                    <div className="file-upload">
+                                    <div className="file-upload ">
                                       <input
                                         type="file"
                                         accept="image/*"
@@ -934,7 +936,7 @@ const CardSelector = () => {
                                 <div className="details">
                                   {isDarkMode ? <InfoIconDark /> : <InfoIcon /> }
                                   <div className="info-text">
-                                    <span>Please use .png on</span>
+                                    <span >Please use .png on</span>
                                   </div>
                                 </div>
                                 <div className="details">
@@ -1045,7 +1047,7 @@ const CardSelector = () => {
                         </Col>
                       ))}
                     </Row>
-                    <Card.Header>Select a Template</Card.Header>
+                    <Card.Header>Available Templates</Card.Header>
                     <Row className="p-3">
                       {cards.map((card, index) => (
                         <Col key={card.id} xs={6} md={4}>

@@ -17,7 +17,7 @@ const IssuePdfQr = ({ type, page, setPage }) => {
     };
 
     return (
-        <div className='page-bg pdf-qr-wrapper hide-scrollbar'>
+        <div className='page-bg pdf-qr-wrapper hide-scrollbar '>
             <div className='d-flex justify-content-center text-align-center '>
                 <h3 className='title'>{type == "poc" ? "Select QR Position" : "Issue New Certificate"}</h3>
             </div>
@@ -29,7 +29,6 @@ const IssuePdfQr = ({ type, page, setPage }) => {
                     setSelectedFile={setSelectedFile}
                     setShowPdf={setShowPdf}
                     selectedFile={selectedFile}
-
                 />
             )}
         </div>

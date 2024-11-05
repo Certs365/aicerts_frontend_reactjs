@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import { Container } from 'react-bootstrap';
+import { Container, Modal } from 'react-bootstrap';
 import GalleryCertificates from './gallery-certificates';
 
 const apiUrl_Admin = process.env.NEXT_PUBLIC_BASE_URL;
 
-const BatchDates = ({ dates,batchCertificatesData, setFilteredBatchCertificatesData ,setBatchCertificatesData}) => {
+const BatchDates = ({ dates,batchCertificatesData, setFilteredBatchCertificatesData ,setBatchCertificatesData,isLoading, setIsLoading,loading,setloading}) => {
   const [user, setUser] =useState({});
   const [token, setToken] = useState(null);
 
@@ -23,7 +23,7 @@ const BatchDates = ({ dates,batchCertificatesData, setFilteredBatchCertificatesD
   }, []);
 
   const handleArrowClick = async (date) => {
-
+    setIsLoading(true)
     const data = {
       issuerId: date?.issuerId,
       batchId: date?.batchId
@@ -45,6 +45,8 @@ const BatchDates = ({ dates,batchCertificatesData, setFilteredBatchCertificatesD
     } catch (error) {
       console.error('Error fetching certificates data:', error);
       // Handle error
+    }finally{
+      setIsLoading(false)
     }
   };
 
@@ -68,7 +70,7 @@ const BatchDates = ({ dates,batchCertificatesData, setFilteredBatchCertificatesD
       <span className='expire-typo '>Batch</span>
       </div>
       {batchCertificatesData ? (
-        <GalleryCertificates certificatesData={batchCertificatesData} />
+        <GalleryCertificates certificatesData={batchCertificatesData}  setIsLoading={setIsLoading} isLoading={isLoading} />
       ) : (
         dates?.map((date) => (
           <div key={date} className='batch-date-container'>
@@ -87,6 +89,19 @@ const BatchDates = ({ dates,batchCertificatesData, setFilteredBatchCertificatesD
           </div>
         ))
       )}
+         <Modal className='loader-modal' show={loading || isLoading} centered>
+                <Modal.Body>
+                    <div className='certificate-loader'>
+                        <Image
+                            src="/backgrounds/login-loading.gif"
+                            layout='fill'
+                            objectFit='contain'
+                            alt='Loader'
+                        />
+                    </div>
+                </Modal.Body>
+            </Modal>
+
     </Container>
   );
 };

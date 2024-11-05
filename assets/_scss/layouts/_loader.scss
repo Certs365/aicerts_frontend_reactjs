@@ -96,12 +96,13 @@
     align-items: center;
     justify-content: center;  
     min-height: fit-content;  
-
+    
     .progress-bar {
         background-color: $golden;
     }
 
     .certificate-loader {
+       
         position: relative;
         width: 224px;
         height: 200px;

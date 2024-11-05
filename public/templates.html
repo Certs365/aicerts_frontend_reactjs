@@ -1,126 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Certificate Designer | AiCerts365</title>
+    <script src="/config.js"></script>
+    <link
+      rel="icon"
+      href="https://images.netcomlearning.com/ai-certs/favIcon.svg"
+    />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Certificate Designer | AiCerts365</title>
-  <link rel="icon" href="https://images.netcomlearning.com/ai-certs/favIcon.svg" />
+    <!-- for CSS -->
+    <!-- for bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+      crossorigin="anonymous"
+    />
+    <!-- <link rel="stylesheet" href="styles.css" /> -->
+    <link rel="stylesheet" href="templateStyles.css" />
 
-  <!-- for CSS -->
-  <!-- for bootstrap -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-  <!-- <link rel="stylesheet" href="styles.css" /> -->
-  <link rel="stylesheet" href="templateStyles.css" />
-
-  <!-- font Monsterrat -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <!-- cdn for jquery -->
-  <link rel="stylesheet" href="//code.jquery.com.ui/1.12.1/themes/base/jquery-ui.css" />
-  <!-- font awesome -->
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    <!-- font Monsterrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- cdn for jquery -->
+    <link
+      rel="stylesheet"
+      href="//code.jquery.com.ui/1.12.1/themes/base/jquery-ui.css"
+    />
+    <!-- font awesome -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
     integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
     crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
 
-</head>
 
-<body>
-  <!-- <header>
+  </head>
+
+  <body>
+    <!-- <header>
     <h1>Certificate Designer</h1>
   </header> -->
 
-  <main>
-    <div class="main-content">
-      <div class="sidebar-wrapper">
-        <div class="sidebar">
-          <div class="tools">
-            <div class="tools-box" onclick="showTemplates()">
-              <img src="./templateAsset/template.png" alt="templates" />
-              <p>Templates</p>
+    <main>
+      <div class="main-content">
+        <div class="sidebar-wrapper">
+          <div class="sidebar">
+            <div class="tools">
+              <div class="tools-box" onclick="showTemplates()">
+                <img src="./templateAsset/template.png" alt="templates" />
+                <p>Templates</p>
+              </div>
+              <div class="tools-box" onclick="showShapes()">
+                <img src="./templateAsset/shapes.png" alt="Shapes" />
+                <p>Shapes</p>
+              </div>
+              <div class="tools-box" onclick="showTexts()">
+                <img src="./templateAsset/text.png" alt="Text" />
+                <p>Texts</p>
+              </div>
+              <div class="tools-box" onclick="showImages()">
+                <img src="./templateAsset/image.png" alt="Image" />
+                <p>Images</p>
+              </div>
+              <div class="tools-box" onclick="showBackground()">
+                <img src="./templateAsset/background.png" alt="Background" />
+                <p>Background</p>
+              </div>
+              <div class="tools-box" onclick="showCanvas()">
+                <img src="./templateAsset/canvas.png" alt="Canvas" />
+                <p>Canvas</p>
+              </div>
+              <div class="tools-box" id="addinexistingTemplate" style="display: none;">
+                <img src="./templateAsset/white_save_icon.png" alt="Canvas" />
+                <p>Save</p>
             </div>
-            <div class="tools-box" onclick="showShapes()">
-              <img src="./templateAsset/shapes.png" alt="Shapes" />
-              <p>Shapes</p>
-            </div>
-            <div class="tools-box" onclick="showTexts()">
-              <img src="./templateAsset/text.png" alt="Text" />
-              <p>Texts</p>
-            </div>
-            <div class="tools-box" onclick="showImages()">
-              <img src="./templateAsset/image.png" alt="Image" />
-              <p>Images</p>
-            </div>
-            <div class="tools-box" onclick="showBackground()">
-              <img src="./templateAsset/background.png" alt="Background" />
-              <p>Background</p>
-            </div>
-            <div class="tools-box" onclick="showCanvas()">
-              <img src="./templateAsset/canvas.png" alt="Canvas" />
-              <p>Canvas</p>
-            </div>
-            <div class="tools-box" id="addinexistingTemplate">
-              <img src="./templateAsset/white_save_icon.png" alt="Canvas" />
-              <p>Save</p>
-            </div>
-            <div class="tools-box" id="addTemplate">
-              <img src="./templateAsset/white_save_fill.png" alt="Canvas" />
-              <p>Save New</p>
-            </div>
-            <!-- <div class="tools-box" id="addTemplate">
+              <div class="tools-box" id="addTemplate">
+                <img src="./templateAsset/white_save_fill.png" alt="Canvas" />
+                <p>Save As Template</p>
+              </div>
+              <!-- <div class="tools-box" id="addTemplate">
               <img src="./templateAsset/canvas.png" alt="Canvas" />
               <p>Save as New</p>
             </div> -->
-            <div class="back">
-              <div class="tools-box">
-                <!-- <img src="./templateAsset/back.png" alt="back" /> -->
-                <p>Back</p>
+              <div class="back">
+                <div class="tools-box">
+                  <img src="./templateAsset/back.png" alt="back" />
+                  <p>Back</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <!--slider template -->
-        <div class="sidebar-div sidebar-div-templates">
-          <div class="sliders">
-            <div class="slider-container">
-              <!-- {/* Headline */} -->
-              <div class="headline">
-                <h4>
-                  <b>Templates</b>
-                </h4>
-                <div class="close">
-                  <img src="./templateAsset/close.png" alt="close" />
+          <!--slider template -->
+          <div class="sidebar-div sidebar-div-templates">
+            <div class="sliders">
+              <div class="slider-container">
+                <!-- {/* Headline */} -->
+                <div class="headline">
+                  <h4>
+                    <b>Templates</b>
+                  </h4>
+                  <div class="close">
+                    <img src="./templateAsset/close.png" alt="close" />
+                  </div>
                 </div>
-              </div>
-              <!-- {/* tabs */} -->
-              <div class="multi-tab" id="templateMultiTab">
-                <div class="multi_tab_template" onclick="tabtemplates(event,'designed')">
-                  <h5>
-                    <b>Designed</b>
-                  </h5>
+                <!-- {/* tabs */} -->
+                <div class="multi-tab" id="templateMultiTab">
+                  <div
+                    class="multi_tab_template"
+                    onclick="tabtemplates(event,'designed')"
+                  >
+                    <h5>
+                      <b>Designed</b>
+                    </h5>
+                  </div>
+                  <div
+                    class="multi_tab_template"
+                    onclick="tabtemplates(event,'yourSaves')"
+                  >
+                    <h5>
+                      <b>Your Saves</b>
+                    </h5>
+                  </div>
                 </div>
-                <div class="multi_tab_template" onclick="tabtemplates(event,'yourSaves')">
-                  <h5>
-                    <b>Your Saves</b>
-                  </h5>
+                <!-- {/* search box */} -->
+                <div class="search-box">
+                  <div class="search-icon">
+                    <img src="./templateAsset/search_icon.png" alt="" />
+                  </div>
+                  <input
+                    type="text"
+                    name="search"
+                    class="search"
+                    placeholder="Search..."
+                  />
                 </div>
-              </div>
-              <!-- {/* search box */} -->
-              <div class="search-box">
-                <div class="search-icon">
-                  <img src="./templateAsset/search_icon.png" alt="" />
-                </div>
-                <input type="text" name="search" class="search" placeholder="Search..." />
-              </div>
-              <!-- {/* image-grid */} -->
-              <div class="image-grid dropdown-content-bg" id="designed">
-                <!-- <div class="grid-box">
+                <!-- {/* image-grid */} -->
+                <div class="image-grid dropdown-content-bg" id="designed">
+                  <!-- <div class="grid-box">
                   <img src="./templateAsset/checker.png" alt="">
                 </div> -->
-              </div>
-              <!-- <div class="image-grid" id="yourSaves" >
+                </div>
+                <!-- <div class="image-grid" id="yourSaves" >
                 <div class="grid-box">
                   <img src="./templateAsset/left_align.png" alt="">
                 </div>
@@ -134,499 +163,788 @@
                   <img src="./templateAsset/checker.png" alt="">
                 </div>
               </div> -->
+              </div>
             </div>
           </div>
-        </div>
-        <!--slider shapes -->
-        <div class="sidebar-div sidebar-div-shapes">
-          <div class="sliders">
-            <div class="slider-container">
-              <!-- {/* Headline */} -->
-              <div class="headline">
-                <h4>
-                  <b>Shapes</b>
-                </h4>
-                <div class="close">
-                  <img src="./templateAsset/close.png" alt="close" />
+          <!--slider shapes -->
+          <div class="sidebar-div sidebar-div-shapes">
+            <div class="sliders">
+              <div class="slider-container">
+                <!-- {/* Headline */} -->
+                <div class="headline">
+                  <h4>
+                    <b>Shapes</b>
+                  </h4>
+                  <div class="close">
+                    <img src="./templateAsset/close.png" alt="close" />
+                  </div>
                 </div>
-              </div>
-              <!-- {/* image-grid */} -->
-              <div class="image-grid">
-                <div class="grid-box" id="addSquare">
-                  <img src="./templateAsset/red_square.png" alt="skeleton" />
-                </div>
-                <div class="grid-box" id="addRectBtn">
+                <!-- {/* image-grid */} -->
+                <div class="image-grid">
+                  <div class="grid-box" id="addSquare">
+                    <img src="./templateAsset/Square.png" alt="skeleton" />
+                  </div>
+                  <!-- <div class="grid-box" id="addRectBtn">
                   <img src="./templateAsset/red_rect.png" alt="skeleton" />
-                </div>
-                <div class="grid-box" id="addCircle">
-                  <img src="./templateAsset/blue_circle.png" alt="skeleton" />
-                </div>
-                <div class="grid-box" id="addTriangle">
-                  <img src="./templateAsset/green_triangle.png" alt="skeleton" />
-                </div>
-                <div class="grid-box" id="addLine">
-                  <img src="./templateAsset/black_line.png" alt="skeleton" />
-                </div>
-                <div class="grid-box" id="addArrow">
-                  <img src="./templateAsset/black_arrow.png" alt="skeleton" />
+                </div> -->
+                  <div class="grid-box" id="addCircle">
+                    <img
+                      src="./templateAsset/black_circle.png"
+                      alt="skeleton"
+                    />
+                  </div>
+                  <div class="grid-box" id="addTriangle">
+                    <img src="./templateAsset/Trangle.png" alt="skeleton" />
+                  </div>
+                  <div class="grid-box" id="addLine">
+                    <img src="./templateAsset/black_line.png" alt="skeleton" />
+                  </div>
+                  <div class="grid-box" id="addArrow">
+                    <img src="./templateAsset/black_arrow.png" alt="skeleton" />
+                  </div>
+                  <div class="grid-box" id="addFlower">
+                    <img src="./templateAsset/Flower.png" alt="skeleton" />
+                  </div>
+                  <div class="grid-box" id="addStar">
+                    <img src="./templateAsset/Star.png" alt="skeleton" />
+                  </div>
+                  <!-- <div class="grid-box" id="addHeart">
+                  <img src="./templateAsset/Pinkheart.png" alt="skeleton" />
+                </div> -->
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <!-- slider images -->
-        <div class="sidebar-div sidebar-div-images">
-          <div class="sliders">
-            <div class="slider-container">
-              <!-- {/* Headline */} -->
-              <div class="headline">
-                <h4>
-                  <b>Images</b>
-                </h4>
-                <div class="close">
-                  <img src="./templateAsset/close.png" alt="close" />
+          <!-- slider images -->
+          <div class="sidebar-div sidebar-div-images">
+            <div class="sliders">
+              <div class="slider-container">
+                <!-- {/* Headline */} -->
+                <div class="headline">
+                  <h4>
+                    <b>Images</b>
+                  </h4>
+                  <div class="close">
+                    <img src="./templateAsset/close.png" alt="close" />
+                  </div>
                 </div>
-              </div>
-              <!-- {/* upload image */} -->
-              <div class="upload-image" id="addImageBtn">
-                <div class="brownbg">
-                  <div class="dotted-border">
-                    <div class="upload-container">
-                      <div>
-                        <img width="50%" height="50%" style="object-fit: cover" src="./templateAsset/image_icon.png"
-                          alt="" />
+                <!-- {/* upload image */} -->
+                <div class="upload-image" id="addImageBtn">
+                  <div class="brownbg">
+                    <div class="dotted-border">
+                      <div class="upload-container">
+                        <div>
+                          <img
+                            width="50%"
+                            height="50%"
+                            style="object-fit: cover"
+                            src="./templateAsset/image_icon.png"
+                            alt=""
+                          />
+                        </div>
+                        <h6>Upload Image(s)</h6>
                       </div>
-                      <h6>Upload Image(s)</h6>
                     </div>
                   </div>
+                  <div style="height: 0.625rem"></div>
                 </div>
-                <div style="height: 0.625rem"></div>
-              </div>
-              <input type="file" id="imageInput" accept="image/*" style="display: none" />
-              <!-- {/* tabs */} -->
-              <div class="multi-tab">
-                <div>
-                  <h5>
-                    <b>Images</b>
-                  </h5>
+                <input
+                  type="file"
+                  id="imageInput"
+                  accept="image/*"
+                  style="display: none"
+                />
+                <!-- {/* tabs */} -->
+                <div class="multi-tab">
+                  <div>
+                    <h5 id="default-images-tab">
+                      <b>Images</b>
+                    </h5>
+                  </div>
+                  <div>
+                    <h5 id="uploaded-images-tab">
+                      <b>Your Uploads</b>
+                    </h5>
+                  </div>
                 </div>
-                <div>
-                  <h5>
-                    <b>Your Uploads</b>
-                  </h5>
+                <!-- {/* search box */} -->
+                <div class="search-box">
+                  <div class="search-icon">
+                    <img src="./templateAsset/search_icon.png" alt="" />
+                  </div>
+                  <input
+                    type="text"
+                    name="search"
+                    class="search"
+                    placeholder="Search..."
+                  />
                 </div>
-              </div>
-              <!-- {/* search box */} -->
-              <div class="search-box">
-                <div class="search-icon">
-                  <img src="./templateAsset/search_icon.png" alt="" />
-                </div>
-                <input type="text" name="search" class="search" placeholder="Search..." />
-              </div>
-              <!-- {/* image-grid */} -->
-              <div class="image-grid dropdown-content-badge">
-                <!-- <div class="grid-box">
+                <!-- {/* image-grid */} -->
+                <div id="default-images-container" class="image-grid dropdown-content-badge">
+                  <!-- <div class="grid-box">
                   <img src="./templateAsset//checker.png" alt="skeleton">
                 </div> -->
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/gold badge.png" width="40" height="40" />
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/gold badge.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/award ribbon badge.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/gold shield badge.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/green badge.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/red ribbon badge.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/black badge.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/gold oval badge.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/1st badge.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <!-- wavy design -->
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/blue ribbon.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/pnik blue gradient waves.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/blue gradient waves.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/golden ribbon.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/blue golden black banner.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/blue ocean wave.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/pnik blue gradient.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <!-- title graphic -->
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/blue title ribbon.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/green title ribbon.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/orange title ribbon.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/white title ribbon.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/golden title ribbon.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <!-- shapes -->
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/black triangle.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/black diamond.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <div class="image-wrapper">
+                    <img
+                      src="./poc-assets/badges/black llgram.png"
+                      width="40"
+                      height="40"
+                    />
+                  </div>
                 </div>
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/award ribbon badge.png" width="40" height="40" />
-                </div>
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/gold shield badge.png" width="40" height="40" />
-                </div>
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/green badge.png" width="40" height="40" />
-                </div>
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/red ribbon badge.png" width="40" height="40" />
-                </div>
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/black badge.png" width="40" height="40" />
-                </div>
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/gold oval badge.png" width="40" height="40" />
-                </div>
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/1st badge.png" width="40" height="40" />
-                </div>
-                <!-- wavy design -->
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/blue ribbon.png" width="40" height="40" />
-                </div>
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/pnik blue gradient waves.png" width="40" height="40" />
-                </div>
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/blue gradient waves.png" width="40" height="40" />
-                </div>
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/golden ribbon.png" width="40" height="40" />
-                </div>
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/blue golden black banner.png" width="40" height="40" />
-                </div>
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/blue ocean wave.png" width="40" height="40" />
-                </div>
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/pnik blue gradient.png" width="40" height="40" />
-                </div>
-                <!-- title graphic -->
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/blue title ribbon.png" width="40" height="40" />
-                </div>
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/green title ribbon.png" width="40" height="40" />
-                </div>
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/orange title ribbon.png" width="40" height="40" />
-                </div>
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/white title ribbon.png" width="40" height="40" />
-                </div>
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/golden title ribbon.png" width="40" height="40" />
-                </div>
-                <!-- shapes -->
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/black triangle.png" width="40" height="40" />
-                </div>
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/black diamond.png" width="40" height="40" />
-                </div>
-                <div class="image-wrapper">
-                  <img src="./poc-assets/badges/black llgram.png" width="40" height="40" />
+                <!-- Container for uploaded images -->
+                <div
+                  id="uploaded-images-container"
+                  class="image-grid dropdown-content-badge"
+                  style="display: none"
+                >
+                  <!-- Uploaded images will be dynamically added here -->
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <!-- background shapes -->
-        <div class="sidebar-div sidebar-div-background">
-          <div class="sliders">
-            <div class="slider-container">
-              <!-- {/* Headline */} -->
-              <div class="headline">
-                <h4>
-                  <b>Backgrounds</b>
-                </h4>
-                <div class="close">
-                  <img src="./templateAsset/close.png" alt="close" />
+          <!-- background shapes -->
+          <div class="sidebar-div sidebar-div-background">
+            <div class="sliders">
+              <div class="slider-container">
+                <!-- {/* Headline */} -->
+                <div class="headline">
+                  <h4>
+                    <b>Backgrounds</b>
+                  </h4>
+                  <div class="close">
+                    <img src="./templateAsset/close.png" alt="close" />
+                  </div>
                 </div>
-              </div>
-              <!-- {/* tabs */} -->
-              <div class="multi-tab">
-                <div>
-                  <h5>
-                    <b>Images</b>
-                  </h5>
+                <div class="upload-image" id="addBgBtn">
+                  <div class="brownbg">
+                    <div class="dotted-border">
+                      <div class="upload-container">
+                        <div>
+                          <img
+                            width="50%"
+                            height="50%"
+                            style="object-fit: cover"
+                            src="./templateAsset/image_icon.png"
+                            alt=""
+                          />
+                        </div>
+                        <h6>Upload Background</h6>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="height: 0.625rem"></div>
                 </div>
-                <div id="addFromDevice">
-                  <h5>
-                    <b>Your Upload</b>
-                  </h5>
+                <input
+                  type="file"
+                  id="bgInput"
+                  accept="image/*"
+                  style="display: none"
+                />
+                <!-- {/* tabs */} -->
+                <div class="multi-tab">
+                  <div>
+                    <h5 id="default-bg-tab">
+                      <b>Images</b>
+                    </h5>
+                  </div>
+                  <div >
+                    <h5 id="uploaded-bg-tab">
+                      <b>Your Upload</b>
+                    </h5>
+                  </div>
+                  <input
+                    type="file"
+                    id="bgImageInput1"
+                    accept="image/*"
+                    style="display: none"
+                  />
                 </div>
-                <input type="file" id="bgImageInput1" accept="image/*" style="display: none" />
-              </div>
-              <!-- {/* search box */} -->
-              <div class="search-box">
-                <div class="search-icon">
-                  <img src="./templateAsset/search_icon.png" alt="search" />
+                <!-- {/* search box */} -->
+                <div class="search-box">
+                  <div class="search-icon">
+                    <img src="./templateAsset/search_icon.png" alt="search" />
+                  </div>
+                  <input
+                    type="text"
+                    name="search"
+                    class="search"
+                    placeholder="Search..."
+                  />
                 </div>
-                <input type="text" name="search" class="search" placeholder="Search..." />
-              </div>
-              <!-- {/* image-grid */} -->
-              <div class="image-grid dropdown-content-bg">
-                <div class="grid-box">
-                  <img src="./poc-assets/black-gold-canva-cerf.png" alt="skeleton" />
+                <!-- {/* image-grid */} -->
+                <div id="default-bg-container" class="image-grid dropdown-content-bg">
+                  <div class="grid-box">
+                    <img
+                      src="./poc-assets/black-gold-canva-cerf.png"
+                      alt="skeleton"
+                    />
+                  </div>
+                  <div class="grid-box">
+                    <img src="./poc-assets/blue-cerf.jpg" alt="skeleton" />
+                  </div>
+                  <div class="grid-box">
+                    <img
+                      src="./poc-assets/blue-stamp-cerf.jpg"
+                      alt="skeleton"
+                    />
+                  </div>
+                  <div class="grid-box">
+                    <img
+                      src="./poc-assets/blue-white-canva-cerf.png"
+                      alt="skeleton"
+                    />
+                  </div>
+                  <div class="grid-box">
+                    <img
+                      src="./poc-assets/gold-line-canva-cerf.png"
+                      alt="skeleton"
+                    />
+                  </div>
+                  <div class="grid-box">
+                    <img src="./poc-assets/golden-cerf.jpg" alt="skeleton" />
+                  </div>
+                  <div class="grid-box">
+                    <img src="./poc-assets/sky-cerf.png" alt="skeleton" />
+                  </div>
                 </div>
-                <div class="grid-box">
-                  <img src="./poc-assets/blue-cerf.jpg" alt="skeleton" />
-                </div>
-                <div class="grid-box">
-                  <img src="./poc-assets/blue-stamp-cerf.jpg" alt="skeleton" />
-                </div>
-                <div class="grid-box">
-                  <img src="./poc-assets/blue-white-canva-cerf.png" alt="skeleton" />
-                </div>
-                <div class="grid-box">
-                  <img src="./poc-assets/gold-line-canva-cerf.png" alt="skeleton" />
-                </div>
-                <div class="grid-box">
-                  <img src="./poc-assets/golden-cerf.jpg" alt="skeleton" />
-                </div>
-                <div class="grid-box">
-                  <img src="./poc-assets/sky-cerf.png" alt="skeleton" />
-                </div>
+                 <!-- Container for uploaded images -->
+                 <div
+                 id="uploaded-bg-container"
+                 class="image-grid dropdown-content-bg"
+                 style="display: none"
+               >
+                 <!-- Uploaded images will be dynamically added here -->
+               </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="canvas-content">
-        <div class="top-bar">
-          <div>
-            <!-- text settings -->
-            <div class="text-settings active-settings">
-              <div class="text-settings-container">
-                <!-- {/* font dropdown */} -->
-                <div class="font-dropdown">
-                  <select name="Select your font" id="fontSelect">
-                    <option value="Arial">Arial</option>
-                    <option value="Verdana">Verdana</option>
-                    <option value="Tahoma">Tahoma</option>
-                    <option value="Times New Roman">Times New Roman</option>
-                    <option value="Terminal">Terminal</option>
-                    <option value="sans">Sans</option>
-                    <option value="Gill Sans">Gill Sans</option>
-                    <option value="Calibri">Calibri</option>
-                    <option value="Bell MT">Bell MT</option>
-                  </select>
-                </div>
-                <!-- {/* size dropdown */} -->
-                <div class="size-dropdown">
-                  <select name="Size" id="sizeSelect">
-                  </select>
-                </div>
-                <!-- {/* font color */} -->
-                <div class="text-height-container">
-                  <div class="text-aligner" style="position: relative">
-                    <label for="colorInput">
-                      <img src="./templateAsset/A.png" alt="A" style="cursor: pointer" />
-                    </label>
-                    <input type="color" id="colorInput" />
+        <div class="canvas-content">
+          <div class="top-bar">
+            <div>
+              <!-- text settings -->
+              <div class="text-settings active-settings">
+                <div class="text-settings-container">
+                  <!-- {/* font dropdown */} -->
+                  <div class="font-dropdown">
+                    <select name="Select your font" id="fontSelect">
+                      <option value="Arial">Arial</option>
+                      <option value="Verdana">Verdana</option>
+                      <option value="Tahoma">Tahoma</option>
+                      <option value="Times New Roman">Times New Roman</option>
+                      <option value="Terminal">Terminal</option>
+                      <option value="sans">Sans</option>
+                      <option value="Gill Sans">Gill Sans</option>
+                      <option value="Calibri">Calibri</option>
+                      <option value="Bell MT">Bell MT</option>
+                    </select>
                   </div>
-                </div>
-                <!-- {/* Font Background color */} -->
-                <div class="text-height-container">
-                  <div class="text-aligner" style="position: relative">
-                    <label for="bgColorInput">
-                      <!-- <img src="./templateAsset/color_picker.png" alt="A" style="cursor: pointer" /> -->
-                      <img src="./templateAsset/bg_font_color.png" alt="A" style="cursor: pointer" />
-                    </label>
-                    <input type="color" id="bgColorInput" />
+                  <!-- {/* size dropdown */} -->
+                  <div class="size-dropdown">
+                    <select name="Size" id="sizeSelect"></select>
                   </div>
-                </div>
-                <!-- {/* add text */} -->
-                <div class="text-height-container" id="addTextBtn">
-                  <div class="text-aligner">
-                    <img src="./templateAsset/text_add.png" alt="text add" />
-                    <!-- {/* <input type="color" id="fontColorPicker" /> */} -->
+                  <!-- {/* font color */} -->
+                  <div class="text-height-container">
+                    <div class="text-aligner" style="position: relative">
+                      <label for="colorInput">
+                        <img
+                          src="./templateAsset/A.png"
+                          alt="A"
+                          style="cursor: pointer"
+                        />
+                      </label>
+                      <input type="color" id="colorInput" />
+                    </div>
                   </div>
-                </div>
-                <!-- {/* left align */} -->
-                <div class="text-height-container" id="textAlignLeft">
-                  <div class="text-aligner">
-                    <img src="./templateAsset/left_align.png" alt="left" />
+                  <!-- {/* Font Background color */} -->
+                  <div class="text-height-container">
+                    <div class="text-aligner" style="position: relative">
+                      <label for="bgColorInput">
+                        <!-- <img src="./templateAsset/color_picker.png" alt="A" style="cursor: pointer" /> -->
+                        <img
+                          src="./templateAsset/bg_font_color.png"
+                          alt="A"
+                          style="cursor: pointer"
+                        />
+                      </label>
+                      <input type="color" id="bgColorInput" />
+                    </div>
                   </div>
-                </div>
-                <!-- {/* center align */} -->
-                <div class="text-height-container" id="textAlignCenter">
-                  <div class="text-aligner">
-                    <img src="./templateAsset/center_align.png" alt="center" />
+                  <!-- {/* add text */} -->
+                  <div class="text-height-container" id="addTextBtn">
+                    <div class="text-aligner">
+                      <img src="./templateAsset/text_add.png" alt="text add" />
+                      <!-- {/* <input type="color" id="fontColorPicker" /> */} -->
+                    </div>
                   </div>
-                </div>
-                <!-- {/* right align */} -->
-                <div class="text-height-container" id="textAlignRight">
-                  <div class="text-aligner">
-                    <img src="./templateAsset/right_align.png" alt="right" />
+                  <!-- {/* left align */} -->
+                  <div class="text-height-container" id="textAlignLeft">
+                    <div class="text-aligner">
+                      <img src="./templateAsset/left_align.png" alt="left" />
+                    </div>
                   </div>
-                </div>
-                <!-- {/* evenly align */} -->
-                <!-- <div class="text-height-container">
+                  <!-- {/* center align */} -->
+                  <div class="text-height-container" id="textAlignCenter">
+                    <div class="text-aligner">
+                      <img
+                        src="./templateAsset/center_align.png"
+                        alt="center"
+                      />
+                    </div>
+                  </div>
+                  <!-- {/* right align */} -->
+                  <div class="text-height-container" id="textAlignRight">
+                    <div class="text-aligner">
+                      <img src="./templateAsset/right_align.png" alt="right" />
+                    </div>
+                  </div>
+                  <!-- {/* evenly align */} -->
+                  <!-- <div class="text-height-container">
                   <div class="text-aligner">
                     <img src="./templateAsset/evenly_align.png" alt="evenly" />
                   </div>
                 </div> -->
-              </div>
-            </div>
-            <!-- canvas settings -->
-            <div class="canvas-settings active-settings">
-              <div class="canvas-settings-container">
-                <!-- {/* canvas title */} -->
-                <div class="canvas-title-aligner">Canvas:</div>
-                <!-- {/* font dropdown */} -->
-                <div class="font-dropdown">
-                  <select name="Select your font" class="canvasSizeSelect"  id="canvasSelect">
-                    <option value="twitter">Twitter (1024x512)</option>
-                    <option value="instagram">Instagram (1080x1080)</option>
-                    <option value="facebook">Facebook (1200x630)</option>
-                    <option value="youtube">Youtube (2560x1440)</option>
-                    <option value="pinterest">Pinterest (1000x1500)</option>
-                    <option value="tumblr">Tumblr (540x810)</option>
-                    <option value="custom">Custom</option>
-                  </select>
-                </div>
-                <div>
-
-                  <div id="customSizeFields">
-                    <input type="number" id="customWidth" placeholder="Width" />
-                    <input type="number" id="customHeight" placeholder="Height" />
-                  </div>
-                </div>
-                <!-- {/* font color */} -->
-                <div class="canvas-height-container">
-                  <div class="canvas-aligner" style="position: relative">
-                    <label for="bgColorPicker">
-                      <img src="./templateAsset/canvas_bottom_color.png" alt="canvas color" style="cursor: pointer" />
-                    </label>
-                    <input type="color" id="bgColorPicker" />
-                  </div>
                 </div>
               </div>
+              <!-- canvas settings -->
+              <div class="canvas-settings active-settings">
+                <div class="canvas-settings-container">
+                  <!-- {/* canvas title */} -->
+                  <div class="canvas-title-aligner">Canvas:</div>
+                  <!-- {/* font dropdown */} -->
+                  <div class="font-dropdown">
+                    <select
+                      name="Select your font"
+                      class="canvasSizeSelect"
+                      id="canvasSelect"
+                    >
+                      <option value="twitter">Twitter (1024x512)</option>
+                      <option value="instagram">Instagram (1080x1080)</option>
+                      <option value="facebook">Facebook (1200x630)</option>
+                      <option value="youtube">Youtube (2560x1440)</option>
+                      <option value="pinterest">Pinterest (1000x1500)</option>
+                      <option value="tumblr">Tumblr (540x810)</option>
+                      <option value="custom">Custom</option>
+                    </select>
+                  </div>
+                  <div>
+                    <div id="customSizeFields">
+                      <input
+                        type="number"
+                        id="customWidth"
+                        placeholder="Width"
+                      />
+                      <input
+                        type="number"
+                        id="customHeight"
+                        placeholder="Height"
+                      />
+                    </div>
+                  </div>
+                  <!-- {/* font color */} -->
+                  <div class="canvas-height-container">
+                    <div class="canvas-aligner" style="position: relative">
+                      <label for="bgColorPicker">
+                        <img
+                          src="./templateAsset/canvas_bottom_color.png"
+                          alt="canvas color"
+                          style="cursor: pointer"
+                        />
+                      </label>
+                      <input type="color" id="bgColorPicker" />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
 
-          <div class="move-to">
-            <div class="right-text" id="addExport">
-              <img src="./templateAsset/logo_certs365.png" alt="logo" />
-              <div>Move to CERT's 365</div>
+            <div class="move-to">
+              <div class="right-text" id="addExport">
+                <img src="./templateAsset/logo_certs365.png" alt="logo" />
+                <div>Move to Issuance</div>
+              </div>
             </div>
-          </div>
 
-          <!-- <div class="move-to">
+            <!-- <div class="move-to">
             <div class="right-text" id="addExport">
               <img src="./templateAsset/logo_certs365.png" alt="logo">
               <div>Move to CERT's 365</div>
             </div>
           </div> -->
-        </div>
+          </div>
 
-        <div id="canvas-wrapper">
-          <div id="canvasContainer">
-            <canvas id="canvas" class="certificatecanvas"></canvas>
+          <div id="canvas-wrapper">
+            <div id="canvasContainer">
+              <canvas id="canvas" class="certificatecanvas"></canvas>
+
+                  <!-- Color Picker for Border and Background -->
+   
+            </div>
+          </div>
+          <div id="colorPickers">
+            <div style="display: flex; justify-content: space-between; flex-direction: row;">
+              <label for="borderColor">Border Color</label>
+              <input type="color" id="borderColor" class="" value="#000000">
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; flex-direction: row;">
+              <label for="bgColor">Background Color</label>
+              <input type="color" id="bgColor" class="" value="#ffffff">
+            </div>
+          
+            <div style="display: flex; justify-content: space-between; flex-direction: row;">
+              <label for="borderWidth">Border Width</label>
+              <input style="width: 40px; font-size: 10px;" type="number" id="borderWidth" value="1" min="0" step="1">
+            </div>
+          
+            <div style="display: flex; justify-content: space-between; flex-direction: row;">
+              <label for="borderRadius">Border Radius</label>
+              <input style="width: 40px ; font-size: 10px;" type="number" id="borderRadius" value="0" min="0" step="1">
+            </div>
+          
+            <div style=" display: flex; justify-content: space-between; flex-direction: row;">
+              <label for="borderStyle">Border Style</label>
+              <select id="borderStyle">
+                <option value="solid">Solid</option>
+                <option value="dashed">Dashed</option>
+                <option value="dotted">Dotted</option>
+             
+              </select>
+            </div>
+            <div id="overlap">
+              <button id="bringToFront">Bring to Front</button>
+<button id="sendToBack">Send to Back</button>
+            </div>
+            <div>
+              <div class="dlt-obj-btn">
+                <button id="deleteObject">Delete Object</button>
+
+              </div>
+              
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- modal for reload -->
+      <div id="unsavedChangesModal" style="display: none">
+        <p>You have unsaved changes. Do you really want to leave?</p>
+        <button id="saveButton">Save</button>
+        <button id="leaveButton">Stay</button>
+      </div>
+    </main>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="alertModal"
+      tabindex="-1"
+      aria-labelledby="alertModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div
+            class="modal-header"
+            style="background-color: #cfa935; color: #ffffff"
+          >
+            <h5 class="modal-title" id="alertModalLabel">Alert</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="alertModalBody">...</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              id="alertModalButton"
+              style="background-color: #cfa935"
+            >
+              Close
+            </button>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- modal for reload -->
-    <div id="unsavedChangesModal" style="display: none">
-      <p>You have unsaved changes. Do you really want to leave?</p>
-      <button id="saveButton">Save</button>
-      <button id="leaveButton">Stay</button>
+    <div id="loader" style="display: none;">
+      <div class="spinner"></div>
     </div>
-  </main>
+    
+  </body>
 
-<!-- Modal -->
-<div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header" style="background-color: #CFA935; color: #ffffff;">
-        <h5 class="modal-title" id="alertModalLabel">Alert</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" id="alertModalBody">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="alertModalButton" style="background-color: #CFA935;">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-</body>
-
-<!-- FabricJS script -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.4.0/fabric.min.js"
-  integrity="sha512-Ly9uI3QY88jVXCgkORH2A4Qqz5xYm1pew9jEgedgSpyEg9asvyPISK+CY7QNDN3CMftXU/KLNwQR7XUUo7Cqag=="
-  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<!-- JQuery script -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-  integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<!-- JQuery UI script -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
-  integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
-  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<!-- File Saver js -->
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"
+  <!-- FabricJS script -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.4.0/fabric.min.js"
+    integrity="sha512-Ly9uI3QY88jVXCgkORH2A4Qqz5xYm1pew9jEgedgSpyEg9asvyPISK+CY7QNDN3CMftXU/KLNwQR7XUUo7Cqag=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <!-- JQuery script -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <!-- JQuery UI script -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+    integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <!-- File Saver js -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"
   integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw=="
   crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
-<!-- Font loader -->
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script> -->
-<!-- bootstrap -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+  <!-- Font loader -->
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script> -->
+  <!-- bootstrap -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+    crossorigin="anonymous"
+  ></script>
 
-<script>
-function closeAllSidebars() {
-  const activeSidebar = document.querySelector('.active-sidebar');
-  if (activeSidebar) {
-    activeSidebar.classList.remove('active-sidebar');
-  }
-}
+  <script>
+    function closeAllSidebars() {
+      const activeSidebar = document.querySelector(".active-sidebar");
+      if (activeSidebar) {
+        activeSidebar.classList.remove("active-sidebar");
+      }
+    }
 
-function toggleSidebar(sidebarClass) {
-  const sideBar = document.querySelector(sidebarClass);
+    function toggleSidebar(sidebarClass) {
+      const sideBar = document.querySelector(sidebarClass);
 
-  if (sideBar.classList.contains('active-sidebar')) {
-    sideBar.classList.remove('active-sidebar');
-  } else {
-    closeAllSidebars();
-    sideBar.classList.add('active-sidebar');
-  }
-}
+      if (sideBar.classList.contains("active-sidebar")) {
+        sideBar.classList.remove("active-sidebar");
+      } else {
+        closeAllSidebars();
+        sideBar.classList.add("active-sidebar");
+      }
+    }
 
-function showTemplates() {
-  toggleSidebar('.sidebar-div-templates');
-}
+    function showTemplates() {
+      toggleSidebar(".sidebar-div-templates");
+    }
 
-function showImages() {
-  toggleSidebar('.sidebar-div-images');
-}
+    function showImages() {
+      toggleSidebar(".sidebar-div-images");
+    }
 
-function showShapes() {
-  toggleSidebar('.sidebar-div-shapes');
-}
+    function showShapes() {
+      toggleSidebar(".sidebar-div-shapes");
+    }
 
-function showBackground() {
-  toggleSidebar('.sidebar-div-background');
-}
+    function showBackground() {
+      toggleSidebar(".sidebar-div-background");
+    }
 
-function showTexts() {
-  const settings = document.querySelector('.text-settings');
-  if (settings.classList.contains('active-settings')) {
-    settings.classList.remove('active-settings');
-  } else {
-    closeAllSidebars();
-    settings.classList.add('active-settings');
-  }
-}
+    function showTexts() {
+      const settings = document.querySelector(".text-settings");
+      if (settings.classList.contains("active-settings")) {
+        settings.classList.remove("active-settings");
+      } else {
+        closeAllSidebars();
+        settings.classList.add("active-settings");
+      }
+    }
 
-function showCanvas() {
-  const settings = document.querySelector('.canvas-settings');
-  if (settings.classList.contains('active-settings')) {
-    settings.classList.remove('active-settings');
-  } else {
-    closeAllSidebars();
-    settings.classList.add('active-settings');
-  }
-}
+    function showCanvas() {
+      const settings = document.querySelector(".canvas-settings");
+      if (settings.classList.contains("active-settings")) {
+        settings.classList.remove("active-settings");
+      } else {
+        closeAllSidebars();
+        settings.classList.add("active-settings");
+      }
+    }
 
-function closeSidebar(event) {
-  const sidebar = event.target.closest('.sidebar, .sidebar-div-templates, .sidebar-div-images, .sidebar-div-shapes, .sidebar-div-background');
-  if (sidebar) {
-    sidebar.classList.remove('active-sidebar');
-  }
-}
+    function closeSidebar(event) {
+      const sidebar = event.target.closest(
+        ".sidebar, .sidebar-div-templates, .sidebar-div-images, .sidebar-div-shapes, .sidebar-div-background"
+      );
+      if (sidebar) {
+        sidebar.classList.remove("active-sidebar");
+      }
+    }
 
-document.addEventListener('DOMContentLoaded', function () {
-  document.querySelectorAll('.close').forEach(closeBtn => {
-    closeBtn.addEventListener('click', closeSidebar);
-  });
-});
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll(".close").forEach((closeBtn) => {
+        closeBtn.addEventListener("click", closeSidebar);
+      });
+    });
+  </script>
 
-</script>
-
-<!-- JS file -->
-<script src="script.js"></script>
-
+  <!-- JS file -->
+  <script src="script.js"></script>
 </html>

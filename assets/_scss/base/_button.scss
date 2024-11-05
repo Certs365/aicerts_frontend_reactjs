@@ -92,7 +92,7 @@
 
         &.m-upload {
             // padding: 10px 20px 30px;
-            min-height: 50px;
+            min-height: 40px;
             justify-content: center;
 
         }
@@ -145,7 +145,7 @@
 
     &.danger {
         color: #FFF;
-        font-family: Montserrat;
+        font-family: 'Montserrat', sans-serif;
         font-style: normal;
         font-weight: 600;
         line-height: normal;

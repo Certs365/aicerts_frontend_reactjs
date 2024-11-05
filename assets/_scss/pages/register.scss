@@ -17,15 +17,16 @@
 
             .card-body {
                 padding: 0;
+                font-family: $font-family;
 
                 .card-title {
-                    color: #2F3847;
-                    font-size: 22px;
+                    color: #000000;
+                    font-size: 20px;
                     font-style: normal;
                     font-weight: 600;
                     line-height: normal;
                     background: #F3F3F3;
-                    padding: 18px 30px;
+                    padding: 10px 30px;
                     border-radius: 0;
                     -webkit-border-radius: 0;
                     -moz-border-radius: 0;
@@ -34,12 +35,13 @@
                 }
 
                 .input-elements {
-                    padding: 18px 30px;
+                    padding: 10px 30px;
+                   
 
                     .form-label {
                         color: #5A677E;
                         font-family: $font-family;
-                        font-size: 16px;
+                        font-size: 14px;
                         font-style: normal;
                         font-weight: 500;
                         line-height: normal;

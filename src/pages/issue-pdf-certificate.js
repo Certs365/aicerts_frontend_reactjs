@@ -474,8 +474,8 @@ const IssueNewCertificate = () => {
                                             </div>
                                         </Card.Body>
                                     </Card>
-                                    <div className='text-center d-block d-md-flex justify-content-center' style={{ columnGap: '40px' }}>
-                                        <Button type="submit" label="Issue Certification" className="golden"
+                                    <div className='text-center d-block d-md-flex justify-content-center'>
+                                        <Button type="submit" label="Issue Certification" className="golden mx-2"
                                             disabled={
                                                 !formData.name ||
                                                 !formData.certificateNumber ||

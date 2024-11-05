@@ -53,84 +53,82 @@ const Certificates = () => {
 
     return (
         <div className='page-bg'>
-            <div className='position-relative h-100'>
+            <div className='position-relative h-100' >
                 <div className='vertical-center'>
                     <div className='verify-cert-container'>
                         {/* <Container> */}
-                        <Row className='equal-height-row '>
-                            <Col xs="12" md="6" lg="3">
-                                <div className='card-warapper'>
-                                    <Card className='verify-landing'>
-                                        <Card.Img variant="top"
-                                            src={isDarkMode ? '/icons/pdf-icon.svg' : `${iconUrl}/batch-issue-certificate.svg`}
-                                        />
-                                        <Card.Body>
-                                            <Card.Title>Issue Certification with PDF</Card.Title>
-                                            <Card.Text>If you have the certificate in PDF format, you can utilize our platform to securely issue the certification on the blockchain. This process ensures the addition of a globally verifiable QR code directly onto your certificate, providing enhanced credibility and ease of verification.</Card.Text>
-                                        </Card.Body>
-                                        <CardFooter>
-                                            <Button label="With PDF &#8594;" className='golden' onClick={issueWithPdf} />
-                                        </CardFooter>
-                                    </Card>
-                                </div>
-                            </Col>
-                            <Col xs="12" md="6" lg="3">
-                                <div className='card-warapper'>
-                                    <Card className='verify-landing mt-4 mt-md-0'>
-                                        <Card.Img variant="top" src={isDarkMode ? '/icons/pdf-icon.svg' : `${iconUrl}/batch-issue-certificate.svg`} />
-                                        <Card.Body>
-                                            <Card.Title>Issue Certification without PDF</Card.Title>
-                                            <Card.Text>If you find yourself without a PDF document, fret not. You can simply select a certification template that suits your needs, provide the necessary details, and effortlessly issue your certification on the blockchain. This seamless process ensures that you receive a globally recognized certification.</Card.Text>
-                                        </Card.Body>
-                                        <CardFooter>
-                                            <Button label="Without PDF &#8594;" className='golden' onClick={issueWithoutPdf} />
-                                        </CardFooter>
-                                    </Card>
-                                </div>
-                            </Col>
-                            <Col xs="12" md="12" lg="3" className='mt-0 mt-md-4 mt-lg-0'>
-                                <div className='card-warapper'>
-                                    <Card className='verify-landing mt-4 mt-md-0'>
-                                        <Card.Img variant="top" src={isDarkMode ? '/icons/pdf-icon.svg' : `${iconUrl}/batch-issue-certificate.svg`} />
-                                        <Card.Body>
-                                            <Card.Title>Batch Issue Certification PDF</Card.Title>
-                                            <Card.Text>Streamline your batch issuance process seamlessly with our Excel template. Choose from a variety of certification templates, input your data, and experience the power of blockchain-backed batch issuance. Effortlessly obtain globally recognized certifications bearing the template of your choice, ensuring efficiency and authenticity in every batch.</Card.Text>
-                                        </Card.Body>
-                                        <CardFooter>
-                                            <Button label="Without PDF &#8594;" className='golden' onClick={issueBatchPdf} />
-                                        </CardFooter>
-                                    </Card>
-                                </div>
-                            </Col>
-                            <Col xs="12" md="12" lg="3" className='mt-0 mt-md-4 mt-lg-0'>
-                                <div className='card-warapper'>
-                                    <Card className='verify-landing mt-4 mt-md-0'>
-                                        <Card.Img variant="top" src={isDarkMode ? '/icons/pdf-icon.svg' : `${iconUrl}/batch-issue-certificate.svg`} />
-                                        <Card.Body>
-                                            <Card.Title>Dynamic QR Code</Card.Title>
-                                            <Card.Text>If your PDF has a different orientation, we offer the flexibility to place the QR code at any desired location on the PDF. Our dynamic QR code solution enables you to print the QR code on any type of PDF, whether it is in landscape or portrait orientation, supporting over 13 different layout options.</Card.Text>
-                                        </Card.Body>
-                                        <CardFooter>
-                                            <Button label="With Dynamic QR &#8594;" className='golden' onClick={issueQrPdf} />
-                                        </CardFooter>
-                                    </Card>
-                                </div>
-                            </Col>
-                            <Col xs="12" md="12" lg="3" className='mt-0 mt-md-4 mt-lg-0'>
-                                <div className='card-warapper'>
-                                    <Card className='verify-landing mt-4 mt-md-0'>
-                                        <Card.Img variant="top" src={isDarkMode ? '/icons/pdf-icon.svg' : `${iconUrl}/batch-issue-certificate.svg`} />
-                                        <Card.Body>
-                                            <Card.Title>Dynamic Batch QR Code</Card.Title>
-                                            <Card.Text>Our platform offers batch issuance, allowing users to generate multiple PDF at once, each with a unique dynamic QR code. If your PDF have different orientations, we provide the flexibility to place the QR code at any desired location. Our solution supports over 13 different layout options, enabling you to print the QR code on any type of PDF, whether in landscape or portrait orientation.</Card.Text>
-                                        </Card.Body>
-                                        <CardFooter>
-                                            <Button label="With Batch Dynamic QR &#8594;" className='golden' onClick={issueDynamicPoc} />
-                                        </CardFooter>
-                                    </Card>
-                                </div>
-                            </Col>
-                        </Row>
+                            <Row className=' equal-height-row   '>
+                                <Col xs="12" md="6" lg="3">
+                                    <div className='card-warapper' >
+                                        <Card className='verify-landing' >
+                                            <Card.Img variant="top" src={`${iconUrl}/batch-issue-certificate.svg`} />
+                                            <Card.Body>
+                                                <Card.Title>Issue Certificate with PDF</Card.Title>
+                                                <Card.Text>If you have the certificate in PDF format, you can utilize our platform to securely issue the certification on the blockchain. This process ensures the addition of a globally verifiable QR code directly onto your certificate, providing enhanced credibility and ease of verification.</Card.Text>
+                                            </Card.Body>
+                                            <CardFooter>
+                                                <Button label="With PDF &#8594;" className='golden' onClick={issueWithPdf}/>
+                                            </CardFooter>
+                                        </Card>
+                                    </div>
+                                </Col>
+                                <Col xs="12" md="6" lg="3">
+                                    <div className='card-warapper'>
+                                        <Card className='verify-landing mt-4 mt-md-0'>
+                                            <Card.Img variant="top" src={`${iconUrl}/batch-issue-certificate.svg`} />
+                                            <Card.Body>
+                                                <Card.Title>Issue Certificate without PDF</Card.Title>
+                                                <Card.Text>If you find yourself without a PDF document, fret not. You can simply select a certification template that suits your needs, provide the necessary details, and effortlessly issue your certification on the blockchain. This seamless process ensures that you receive a globally recognized certification.</Card.Text>
+                                            </Card.Body>
+                                            <CardFooter>
+                                                <Button label="Without PDF &#8594;" className='golden' onClick={issueWithoutPdf}/>
+                                            </CardFooter>
+                                        </Card>
+                                    </div>
+                                </Col>
+                                <Col xs="12" md="12" lg="3" className='mt-0 mt-md-4 mt-lg-0'>
+                                    <div className='card-warapper' >
+                                        <Card className='verify-landing mt-4 mt-md-0'>
+                                            <Card.Img variant="top" src={`${iconUrl}/batch-issue-certificate.svg`} />
+                                            <Card.Body>
+                                                <Card.Title>Batch Issue Certificate PDF</Card.Title>
+                                                <Card.Text>Streamline your batch issuance process seamlessly with our Excel template. Choose from a variety of certification templates, input your data, and experience the power of blockchain-backed batch issuance. Effortlessly obtain globally recognized certifications bearing the template of your choice, ensuring efficiency and authenticity in every batch.</Card.Text>
+                                            </Card.Body>
+                                            <CardFooter>
+                                                <Button label="Without PDF &#8594;" className='golden' onClick={issueBatchPdf}/>
+                                            </CardFooter>
+                                        </Card>
+                                    </div>
+                                </Col>
+                                <Col xs="12" md="12" lg="3" className='mt-0 mt-md-4 mt-lg-0'>
+                                    <div className='card-warapper'>
+                                        <Card className='verify-landing mt-4 mt-md-0'>
+                                            <Card.Img variant="top" src={`${iconUrl}/batch-issue-certificate.svg`} />
+                                            <Card.Body>
+                                                <Card.Title>Dynamic QR Code</Card.Title>
+                                                <Card.Text>If your PDF has a different orientation, we offer the flexibility to place the QR code at any desired location on the PDF. Our dynamic QR code solution enables you to print the QR code on any type of PDF, whether it is in landscape or portrait orientation, supporting over 13 different layout options.</Card.Text>
+                                            </Card.Body>
+                                            <CardFooter>
+                                                <Button label="With Dynamic QR &#8594;" className='golden' onClick={issueQrPdf}/>
+                                            </CardFooter>
+                                        </Card>
+                                    </div>
+                                </Col>
+                                <Col xs="12" md="12" lg="3" className='mt-0 mt-md-4 mt-lg-0'>
+                                    <div className='card-warapper'>
+                                        <Card className='verify-landing mt-4 mt-md-0'>
+                                            <Card.Img variant="top" src={`${iconUrl}/batch-issue-certificate.svg`} />
+                                            <Card.Body>
+                                                <Card.Title>Dynamic Batch QR Code</Card.Title>
+                                                <Card.Text>Our platform offers batch issuance, allowing users to generate multiple PDF at once, each with a unique dynamic QR code. If your PDF have different orientations, we provide the flexibility to place the QR code at any desired location. Our solution supports over 13 different layout options, enabling you to print the QR code on any type of PDF, whether in landscape or portrait orientation.</Card.Text>
+                                            </Card.Body>
+                                            <CardFooter>
+                                                <Button label="With Batch Dynamic QR &#8594;" className='golden' onClick={issueDynamicPoc}/>
+                                            </CardFooter>
+                                        </Card>
+                                    </div>
+                                </Col>
+                            </Row>
                         {/* </Container> */}
                     </div>
                 </div>

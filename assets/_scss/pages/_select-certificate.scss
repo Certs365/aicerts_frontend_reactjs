@@ -1,5 +1,5 @@
 .dashboard {
-    font-family: 'Montserrat', sans-serif;
+    font-family: $font-family;
 
     .card {
         height: 100%;
@@ -216,10 +216,9 @@
     }
 
     .steps-container {
-        padding: 20px;
+        padding: 10px;
         margin-top: 20px;
         background-color: #f8f9fa;
-        border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
         h2 {
@@ -294,6 +293,7 @@
 
     .issued-info {
         .label {
+            
             color: #5A677E;
             font-size: 16px;
             font-style: normal;
@@ -647,6 +647,7 @@
         }
 
         .info-text {
+            
             color: #5A677E;
             font-size: 16px;
             font-style: normal;
@@ -847,7 +848,11 @@
 }
 
 .upload-badge-container {
+ 
+   
+    
     .upload-info {
+        font-family: $font-family;
         background: #F7F7F7;
         padding: 20px;
 
@@ -858,7 +863,8 @@
 
             .info-text {
                 color: #5B5A5F;
-                font-family: $font-family;
+                // font-family: $font-family;
+                
                 font-size: 16px;
                 font-style: normal;
                 font-weight: 400;
@@ -900,10 +906,12 @@
 }
 
 .upload-badge-container {
+    font-family: $font-family;
     .label {
-        color: #5B5A5F;
         font-family: $font-family;
-        font-size: 16px;
+        color: #5B5A5F;
+        // font-family: $font-family;
+        font-size: 14px;
         font-style: normal;
         font-weight: 500;
         line-height: normal;
@@ -920,6 +928,7 @@
         /* Adjust as needed */
 
         .file-upload {
+            font-family: $font-family;
             width: 70%;
             border: 1px solid #bfbfbf;
             padding: 5px;
@@ -928,9 +937,13 @@
             input {
                 overflow: hidden;
             }
+            @media (min-width: $mobile-min) and (max-width: $mobile-max) {
+               width: 82%;
+            }
         }
 
         .golden-upload {
+            // font-family: Montserrat;
             padding: 8px 10px 8px 36px;
 
             &::before {

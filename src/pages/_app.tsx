@@ -35,6 +35,9 @@ const ComponentWrapper = ({ Component, pageProps }: any) => {
   const [certificatesData, setCertificatesData] = useState({});
   const [certificateUrl, setCertificateUrl] = useState("https://html.aicerts.io/Background123.png")
   const [isDesign, setIsDesign] = useState(false)
+  const [pdfDimentions, setPdfDimentions] = useState({})
+  const [pdfFile, setPdfFile] = useState(null)
+
   const router = useRouter();
   const isLoginPage = router.pathname === '/' || router.pathname === '/register'|| router.pathname === '/forgot-passwords' ||  router.pathname === '/passwords-confirm' ;
   // @ts-ignore: Implicit any for children prop

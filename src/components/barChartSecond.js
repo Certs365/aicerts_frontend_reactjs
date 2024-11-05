@@ -30,6 +30,24 @@ function BarChartSecond() {
     const [token, setToken] = useState(null);
     const [selectedFilter, setSelectedFilter] = useState("All");
 
+    const [barThickness, setBarThickness] = useState(20); // Default bar thickness
+
+    // Determine screen size and adjust bar thickness
+    useEffect(() => {
+        const updateBarThickness = () => {
+            if (window.innerWidth < 768) { // If mobile screen
+                setBarThickness(10); // Thinner bars for mobile
+            } else {
+                setBarThickness(20); // Default bar thickness for larger screens
+            }
+        };
+
+        window.addEventListener("resize", updateBarThickness);
+        updateBarThickness(); // Set the initial bar thickness based on screen size
+
+        return () => window.removeEventListener("resize", updateBarThickness);
+    }, []);
+
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem("user"));
 
@@ -106,7 +124,7 @@ function BarChartSecond() {
                     backgroundColor: "#FF885B",
                     borderColor: "#FF885B",
                     data: issuedData,
-                    // barThickness: 10,
+                    barThickness: barThickness,
                     borderRadius: 6,
                     tension: 0.4,
                     barPercentage: 0.5,
@@ -117,7 +135,7 @@ function BarChartSecond() {
                     backgroundColor: "#FABC3F",
                     borderColor: "#FABC3F",
                     data: expiredData,
-                    // barThickness: 10,
+                    barThickness: barThickness,
                     borderRadius: 6,
                     tension: 0.4,
                     barPercentage: 0.5,
@@ -207,13 +225,19 @@ function BarChartSecond() {
                 },
             },
             scales: {
+            
                 x: {
                     grid: {
                         display: false,
                     },
                     ticks: {
                         display: true,
+                        font: {
+                            size: window.innerWidth < 600 ? 8 : 12 // Adjust label size for small screens
+                        }
                     },
+                    // barPercentage: window.innerWidth < 600 ? 0.2 : 0.6, // Adjust bar width for mobile
+                    // categoryPercentage: 0.5,
                 },
                 y: {
                     grid: {
@@ -223,11 +247,15 @@ function BarChartSecond() {
                     ticks: {
                         stepSize: 5, // Adjust the step size to 5
                         maxTicksLimit: 10, // Adjust the number of ticks
+                        font: {
+                            size: window.innerWidth < 600 ? 8 : 12 // Adjust label size for small screens
+                        },
                         callback: function (value) {
                             return value;
                         },
                     },
                 },
+          
             },
             layout: {
                 padding: getPadding()
@@ -236,7 +264,7 @@ function BarChartSecond() {
     }, []);
 
     return (
-        <div style={{height:"300px"}} className="container outer-container">
+        <div  className="container outer-container p-0" style={{height:"300px"}}>
             <div className="chart-date">
                 <DatePicker
                     selected={selectedDate}
@@ -247,7 +275,7 @@ function BarChartSecond() {
                     className="form-control"
                 />
             </div>
-            <div className="filter-options d-none d-md-flex">
+            <div className="filter-options d-none d-md-flex " >
                 <label>
                     <input
                         type="radio"
@@ -296,7 +324,10 @@ function BarChartSecond() {
             </div>
 
             {loading ? (
-                <div className="spinner">Loading...</div>
+                <div className="loader">
+                <div className="spinner-border text-danger" role="status">
+                </div>
+            </div>
             ) : (
                     <Bar data={chartData} options={chartOptions} width={"100%"}
                     height={"90%"}/>

@@ -22,8 +22,8 @@
 
   .nav-item {
     font-family: $font-family;
-    font-size: 13px;
-    font-weight: 700;
+    font-size: 17px;
+    font-weight: 500;
     line-height: 27px;
     text-align: right;
     text-decoration: none;
@@ -131,21 +131,46 @@
         }
       }
 
+
       .dropdown-menu {
         padding: 0;
         border: none;
+        margin-top: 25px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+
+                   /* Triangle pointer */
+    &::before {
+      content: '';
+      position: absolute;
+      top: -18px; /* Position it above the box */
+      right: 20px; /* Adjust the left positioning */
+      width: 0;
+      height: 0;
+      border-left: 22px solid transparent; /* Left side of the triangle */
+      border-right: 22px solid transparent; /* Right side of the triangle */
+      border-bottom: 35px solid white; /* Color of the triangle */
+    }
 
         .user-info {
           padding: 18px 20px;
+          width: 350px;
+          display: flex;
+          flex-direction: column;
 
+
+  
           .divider {
 
+
             .info {
+              font-family: $font-family;
               position: relative;
-              width: 236px;
+              width: 100%;
               padding: 10px 0;
               border-bottom: 1px solid #D5DDEA;
               column-gap: 14px;
+
 
               .icon {
                 padding: 6px 8px 2px;
@@ -163,6 +188,7 @@
                   font-weight: 500;
                   line-height: normal;
                   margin-bottom: 6px;
+                  font-family: $font-family;
                 }
 
                 &.data {
