@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PlaceholderPosition from "../components/PlaceholderPosition";
+import PlaceholderPosition from "../components/placeholderPosition";
 import { createPdfFromImage } from '@/utils/reusableFunctions';
 import imgBg from "../../public/backgrounds/Certificate_template_1.png"
 // Define the type for each placeholder
@@ -33,7 +33,7 @@ const Placeholder: React.FC<PlaceholderProps> = () => {
 
     useEffect(() => {
         const generatePdf = async () => {
-            const pdfFile = await createPdfFromImage("/backgrounds/bg-image.png"); // Adjust this function to handle PNG
+            const pdfFile = await createPdfFromImage("/backgrounds/Certificate_template_1.png"); // Adjust this function to handle PNG
             setFile(pdfFile);
         };
         generatePdf();
@@ -73,7 +73,10 @@ const Placeholder: React.FC<PlaceholderProps> = () => {
 
     return (
         <div>
-            <h2>Placeholder Controls</h2>
+            <div style={{height:"10px"}}>
+
+            </div>
+            {/* <h2>Placeholder Controls</h2>
             <div>
                 {Object.keys(placeholders).map((key) => (
                     <div key={key} style={{ marginBottom: '10px' }}>
@@ -87,7 +90,7 @@ const Placeholder: React.FC<PlaceholderProps> = () => {
                         </button>
                     </div>
                 ))}
-            </div>
+            </div> */}
 
             {/* Pass file, placeholders, and setPlaceholders to the DisplayPdf component */}
             <PlaceholderPosition

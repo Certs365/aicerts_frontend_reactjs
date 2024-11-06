@@ -4,9 +4,8 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import Modal from 'react-bootstrap/Modal';
 import Image from 'next/image';
 import { Rnd } from 'react-rnd';
-import { PDFPageProxy } from 'pdfjs-dist/types/src/display/api'; // Import the type directly from pdfjs-dist
+import { PDFPageProxy } from 'pdfjs-dist/types/src/display/api';
 
-// Placeholder type definition
 interface Placeholder {
     show: boolean;
     xpos: number;
@@ -14,13 +13,13 @@ interface Placeholder {
     width: number;
     height: number;
     isLocked: boolean;
+    text: string;
 }
 
 interface Placeholders {
     [key: string]: Placeholder;
 }
 
-// Props type definition
 interface PlaceholderPositionProps {
     fileUrl: string;
     scale: number;
@@ -46,8 +45,8 @@ const PlaceholderPosition: React.FC<PlaceholderPositionProps> = ({ fileUrl, scal
     };
 
     const onPageLoadSuccess = (page: PDFPageProxy) => {
-        const { width, height } = page.getViewport({ scale: currentScale });
-        setPdfDimensions({ width, height });
+        const viewport = page.getViewport({ scale: currentScale });
+        setPdfDimensions({ width: viewport.width, height: viewport.height });
     };
 
     const handlePlaceholderChange = (key: string, changes: Partial<Placeholder>) => {
@@ -57,24 +56,30 @@ const PlaceholderPosition: React.FC<PlaceholderPositionProps> = ({ fileUrl, scal
         }));
     };
 
-    // Update scale based on screen width for responsiveness
+    const handleTextChange = (key: string, text: string) => {
+        handlePlaceholderChange(key, { text });
+    };
+
+    const toggleLock = (key: string) => {
+        const isCurrentlyLocked = placeholders[key].isLocked;
+        handlePlaceholderChange(key, { isLocked: !isCurrentlyLocked });
+    };
+
     useEffect(() => {
         const updateScale = () => {
             const width = window.innerWidth;
-            let newScale = 1; // Default scale
+            let newScale = 1;
 
             if (width < 768) {
-                newScale = 0.5; // Mobile view scale
+                newScale = 0.5;
             } else if (width >= 768 && width < 1200) {
-                newScale = 0.75; // Tablet view scale
+                newScale = 0.75;
             }
 
             setCurrentScale(newScale);
         };
 
-        updateScale(); // Set initial scale
-
-        // Add event listener for window resize
+        updateScale();
         window.addEventListener('resize', updateScale);
         return () => window.removeEventListener('resize', updateScale);
     }, []);
@@ -98,7 +103,7 @@ const PlaceholderPosition: React.FC<PlaceholderPositionProps> = ({ fileUrl, scal
                 overflowX: 'auto' 
             }}
         >
-            <div
+             <div
                 className="hide-scrollbar"
                 ref={containerRef}
                 style={{
@@ -122,58 +127,81 @@ const PlaceholderPosition: React.FC<PlaceholderPositionProps> = ({ fileUrl, scal
                     />
                 </Document>
                 
-                {/* Render all placeholders dynamically */}
                 {Object.keys(placeholders).map((key) => {
                     const placeholder = placeholders[key];
                     
                     return (
-                        placeholder.show && (
-                            <Rnd
-    key={key}
-    size={{ width: placeholder.width * currentScale, height: placeholder.height * currentScale }}
-    position={{ x: placeholder.xpos * currentScale, y: placeholder.ypos * currentScale }}
-    onDragStop={(e, d) => {
-        if (!placeholder.isLocked) {
-            handlePlaceholderChange(key, { 
-                xpos: Math.max(0, d.x / currentScale), // Ensure it stays within bounds
-                ypos: Math.max(0, d.y / currentScale)
-            });
-        }
-    }}
-    onResizeStop={(e, direction, ref, delta, position) => {
-        if (!placeholder.isLocked) {
-            handlePlaceholderChange(key, {
-                width: ref.offsetWidth / currentScale,
-                height: ref.offsetHeight / currentScale,
-                xpos: Math.max(0, position.x / currentScale), // Ensure it stays within bounds
-                ypos: Math.max(0, position.y / currentScale),
-            });
-        }
-    }}
-    lockAspectRatio={key === 'QrCode'} // Lock aspect ratio for QR code
-    bounds="parent"
-    disableDragging={placeholder.isLocked}
-    enableResizing={!placeholder.isLocked}
-    style={{
-        border: '2px solid red',
-        backgroundColor: placeholder.isLocked ? 'rgba(255,0,0,0.1)' : 'transparent',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: '#ff5500',
-        fontSize: '20px',
-        fontWeight: 'bold'
-    }}
->
-    <div>{key}</div>
-</Rnd>
-
-                        )
+                        <Rnd
+                            key={key}
+                            size={{ width: placeholder.width * currentScale, height: placeholder.height * currentScale }}
+                            position={{ x: placeholder.xpos * currentScale, y: placeholder.ypos * currentScale }}
+                            onDragStop={(e, d) => {
+                                if (!placeholder.isLocked) {
+                                    handlePlaceholderChange(key, { 
+                                        xpos: d.x / currentScale,
+                                        ypos: d.y / currentScale
+                                    });
+                                }
+                            }}
+                            onResizeStop={(e, direction, ref, delta, position) => {
+                                // Allow resizing even when locked
+                                handlePlaceholderChange(key, {
+                                    width: ref.offsetWidth / currentScale,
+                                    height: ref.offsetHeight / currentScale,
+                                    xpos: position.x / currentScale,
+                                    ypos: position.y / currentScale,
+                                });
+                            }}
+                            lockAspectRatio={key === 'QrCode'}
+                            bounds="parent"
+                            disableDragging={placeholder.isLocked}
+                            enableResizing={true} // Always allow resizing
+                            style={{
+                                border: placeholder.isLocked ? '2px solid gray' : '2px dashed black',
+                                borderRadius: '10px',
+                                backgroundColor: placeholder.isLocked ? 'transparent' : 'rgba(200,200,200,0.1)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                padding: '5px',
+                                opacity: placeholder.isLocked ? 0.7 : 1 // Slight transparency when locked
+                            }}
+                            onClick={() => placeholder.isLocked && toggleLock(key)}
+                        >
+                            <div style={{ 
+                                fontSize: '20px',
+                                color: 'gray',
+                                textAlign: 'center',
+                            }}>
+                                {placeholder.isLocked ? (placeholder.text || key): 
+                                <input
+                                    type="text"
+                                    value={placeholder.text}
+                                    onChange={(e) => handleTextChange(key, e.target.value)}
+                                    onBlur={() => handlePlaceholderChange(key, { isLocked: true })}
+                                    onFocus={(e) => e.target.style.border = 'transparent'} // Change border to transparent on focus
+                                    disabled={key === 'QrCode'}
+                                    style={{
+                                        border: '1px solid lightgray',
+                                        borderRadius: '5px',
+                                        background: 'transparent',
+                                        color: 'gray',
+                                        fontSize: '20px',
+                                        fontWeight: 'bold',
+                                        textAlign: 'center',
+                                        width: '90%',
+                                        margin: '0',
+                                        outline: 'none', // Remove default outline
+                                    }}
+                                    placeholder={`${key}`}
+                                    autoFocus
+                                />}
+                            </div>
+                        </Rnd>
                     );
                 })}
             </div>
             
-            {/* Modals for loading/error/success */}
             <Modal className='loader-modal' show={isLoading} centered>
                 <Modal.Body style={{ display: "flex", flexDirection: "column", textAlign: "center" }}>
                     <div className='certificate-loader'>
