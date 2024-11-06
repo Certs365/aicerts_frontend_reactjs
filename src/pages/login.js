@@ -309,6 +309,8 @@ const handleLoginOtp = async (e) => {
       setLoginError('');
       setLoginSuccess("Logged In Successfully");
       setShow(true)
+      // getRemainingDays(); // set remaining days in ls //todo->remove it
+      localStorage.setItem('firstlogin', "true");
       // await validateIssuer(responseData?.data?.email)
       router.push('/dashboard');
       // Handle success (e.g., navigate, show success message)
@@ -367,6 +369,7 @@ stopProgress()
             setLoginSuccess("Login Success");
             setShow(true);
             localStorage.setItem('user', JSON.stringify(responseData?.data))
+            localStorage.setItem('firstlogin', "true");
             router.push('/dashboard');
 
           } else {
@@ -443,6 +446,33 @@ stopProgress()
   const handleForgotPassword = () => {
     router.push('/forgot-passwords')
   }
+
+
+  //todo-> remove it
+  // const getRemainingDays = async () => {
+  //   try {
+  //     const email = formData.email;
+  //     const response = await fetch(`${apiUrl}/api/get-subscription-details`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ email }),
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error('Failed to fetch plan name');
+  //     }
+
+  //     const data = await response.json();
+  //     if(data.message) {
+
+  //       localStorage.setItem('expirydate', data.message);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching plan details:', error);
+  //   }
+  // };
 
   return (
     <>

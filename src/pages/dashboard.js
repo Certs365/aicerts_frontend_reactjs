@@ -5,7 +5,9 @@ import BarChart from "../components/barChart"; // Importing BarChart component
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL;
 import { useRouter } from "next/router";
 import PieChart from "../components/pieChart";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row, Modal } from "react-bootstrap";
+import Image from 'next/legacy/image';
+import Button from '../../shared/button/button';
 import { encryptData } from "../utils/reusableFunctions";
 const secretKey = process.env.NEXT_PUBLIC_BASE_ENCRYPTION_KEY;
 const Dashboard = () => {
@@ -134,6 +136,68 @@ const Dashboard = () => {
       </div>
     </div>
   );
+    const closeModal = () => {
+      setWarnModal(false);
+      // localStorage.removeItem('expirydate');
+      localStorage.setItem('firstlogin', "false");
+    }
+
+    return (
+        <div className=" page-bg">
+            <div className="container cards-container-main">
+                {/* Mapping through cardsData and rendering DashboardCard component for each item */}
+                {cardsData.map((item, index) => {
+                    return <DashboardCard key={index} item={item}  />;
+                })}
+            </div>
+            <div className="main-container">
+                {/* Rendering LineChart component */}
+                <Container>
+                <BarChartSecond />
+                </Container>
+                {/* Rendering BarChart component */}
+                <Container className="d-flex flex-column flex-md-row justify-content-center align-items-center">
+  <Col xs={12} md={4} className="mb-4 mb-md-0">
+    <PieChart />
+  </Col>
+  <Col xs={12} md={8}>
+    <BarChart />
+  </Col>
+</Container>
+
+             {/* { warning != false && */}
+             {expiryDate !== null && warnModal &&   //todo=> modal not showing on initial load, fix it
+             <Modal className='modal-wrapper' show={warnModal} centered>
+                <Modal.Header className='extend-modal-header'>
+                  <span className='extend-modal-header-text'>WARNING</span>
+                </Modal.Header>
+                <Modal.Body >
+                   <div className='error-icon'>
+                     <Image
+                        src="/icons/invalid-password.gif"
+                        layout='fill'
+                        objectFit='contain'
+                        alt='Loader'
+                      />
+                   </div>
+                    <div className='text modal-text' style={{ color: '#ff5500' }}>{
+                    expiryDate > 1 ? `Your plan will expire in ${expiryDate} days.`
+                    : expiryDate === 1 ? `Your plan will expire in ${expiryDate} day.`
+                    :
+                    'Your subscription plan has expired.'
+                    }
+
+                    </div>
+                    {/* <div className='text modal-text' style={{ color: '#ff5500' }}>{warningMessage}</div> */}
+                    </Modal.Body>
+                    <Modal.Footer className='d-flex justify-content-center'>
+                      <Button  className='red-btn px-4' label='Ok' onClick={closeModal}/>
+                    </Modal.Footer>
+              </Modal> }
+
+            </div>
+        </div>
+    );
 };
 
 export default Dashboard;
