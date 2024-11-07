@@ -48,10 +48,11 @@ const DownloadCertificate = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [keyUrl, setKeyUrl] = useState("");
   // const [badgeUrl, setBadgeUrl] = useState("");
-  const [singleDetail, setSingleDetail] = useState({});
-  const { badgeUrl, certificateUrl, logoUrl, signatureUrl, issuerName, issuerDesignation, certificatesData, setCertificatesDatasetBadgeUrl, setIssuerName, setissuerDesignation, setCertificatesData, setSignatureUrl, setBadgeUrl, setLogoUrl } = useContext(CertificateContext);
-  // Get the selected template from the previous screeen
+  const { isDesign } = router.query;
 
+  const [singleDetail, setSingleDetail] = useState({});
+  const { badgeUrl, certificateUrl, logoUrl, signatureUrl, issuerName, issuerDesignation, certificatesData, setCertificatesDatasetBadgeUrl, setIssuerName, setissuerDesignation, setCertificatesData, setSignatureUrl, setBadgeUrl, setLogoUrl,pdfBatchDimentions  } = useContext(CertificateContext);
+  // Get the selected template from the previous screeen
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
   };
@@ -116,17 +117,38 @@ const DownloadCertificate = () => {
 
 
     try {
-      const res = await fetch('/api/generateImage', {
+      let url = '/api/generateImage'; // Default endpoint
+      const requestBody = {
+        detail,
+        message,
+        polygonLink,
+        status,
+        badgeUrl,
+        certificateUrl,
+        logoUrl,
+        signatureUrl,
+        issuerName,
+        issuerDesignation,
+      };
+    
+      // Check if it's a design request and update the URL and request body accordingly
+      if (isDesign) {
+        url = '/api/downloadDesignImage';
+        requestBody.pdfBatchDimentions = pdfBatchDimentions; // Assuming pdfBatchDimentions is defined
+      }
+    
+      const res = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({detail, message, polygonLink, status,badgeUrl, certificateUrl, logoUrl, signatureUrl, issuerName, issuerDesignation }),
+        body: JSON.stringify(requestBody),
       });
+    
       if (res.ok) {
         const blob = await res.blob();
         const imageUrl = URL.createObjectURL(blob);
-        setImageUrlList(prevList => {
+        setImageUrlList((prevList) => {
           const newList = [...prevList];
           newList[index] = imageUrl; // Maintain order based on index
           return newList;
@@ -139,6 +161,7 @@ const DownloadCertificate = () => {
     } finally {
       // setIsLoading(false);
     }
+    
   };
 
   useEffect(() => {
@@ -262,18 +285,31 @@ const DownloadCertificate = () => {
 
 
 
-  // Handle download PDF for a single certificate
   const handleDownloadPDF = async (detail, message, polygonLink, status) => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const res = await fetch('/api/generatePDF', {
+      // Determine endpoint and additional data based on isDesign
+      const isDesign = new URLSearchParams(window.location.search).get('isDesign');
+      const endpoint = isDesign ? '/api/generatePDFBatch' : '/api/generatePDF';
+      const bodyData = {
+        detail,
+        certificateUrl,
+        logoUrl,
+        signatureUrl,
+        badgeUrl,
+        issuerName,
+        issuerDesignation,
+        ...(isDesign && { pdfBatchDimentions }) // Only include if isDesign is true
+      };
+
+      const res = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ detail, certificateUrl, logoUrl, signatureUrl, badgeUrl, issuerName, issuerDesignation }),
+        body: JSON.stringify(bodyData),
       });
-      
+
       if (res.ok) {
         const blob = await res.blob();
         const url = window.URL.createObjectURL(blob);
@@ -283,22 +319,23 @@ const DownloadCertificate = () => {
         document.body.appendChild(link);
         link.click();
         link.parentNode.removeChild(link);
-        setLoginError("")
-        setLoginSuccess("Certification Downloaded")
-        setShow(true)
+        setLoginError("");
+        setLoginSuccess("Certification Downloaded");
+        setShow(true);
       } else {
         console.error('Failed to fetch PDF:', res.statusText);
-        setLoginError("Error downloading PDF")
-        setShow(true)
+        setLoginError("Error downloading PDF");
+        setShow(true);
       }
     } catch (error) {
       console.error('Error downloading PDF:', error);
-      setLoginError("Error downloading PDF")
-      setShow(true)
+      setLoginError("Error downloading PDF");
+      setShow(true);
     } finally {
       setIsLoading(false);
     }
-  };
+};
+
 
   // Handle download PDFs for multiple certificates
   const handleDownloadPDFs = async () => {
@@ -306,16 +343,26 @@ const DownloadCertificate = () => {
 
     try {
       const zip = new JSZip();
-      const { message, polygonLink, status } = apiResponseData
+      const endpoint = isDesign ? '/api/generatePDFBatch' : '/api/generatePDF';
+
       for (const detail of detailsArray) {
-        const res = await fetch('/api/generatePDF', {
+        const bodyData = {
+          detail,
+          certificateUrl,
+          logoUrl,
+          signatureUrl,
+          badgeUrl,
+          issuerName,
+          issuerDesignation,
+          ...(isDesign && { pdfBatchDimentions }) // Only include if isDesign is true
+        };
+
+        const res = await fetch(endpoint, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            detail, certificateUrl, logoUrl, signatureUrl, badgeUrl, issuerName, issuerDesignation
-          }),
+          body: JSON.stringify(bodyData),
         });
 
         if (res.ok) {
@@ -347,7 +394,8 @@ const DownloadCertificate = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+};
+
 
   // Toggle Grid / List view
   const toggleViewMode = () => {
@@ -663,7 +711,7 @@ const DownloadCertificate = () => {
             <Image
               src={imageUrl}
               layout='fill'
-              objectFit='contain'
+              objectFit='cover'
               alt='Certificate'
             />
           </div>

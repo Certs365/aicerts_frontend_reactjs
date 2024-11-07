@@ -127,7 +127,7 @@ const PlaceholderPosition: React.FC<PlaceholderPositionProps> = ({ fileUrl, scal
                     />
                 </Document>
                 
-                {Object.keys(placeholders).map((key) => {
+                {Object.keys(placeholders).filter((key) => key !== 'TemplateHeight' && key !== 'TemplateWidth').map((key) => {
                     const placeholder = placeholders[key];
                     
                     return (
