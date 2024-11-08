@@ -73,7 +73,7 @@ const BatchDates = ({ dates,batchCertificatesData, setFilteredBatchCertificatesD
         <GalleryCertificates certificatesData={batchCertificatesData}  setIsLoading={setIsLoading} isLoading={isLoading} />
       ) : (
         dates?.map((date) => (
-          <div key={date} className='batch-date-container'>
+          <div key={date} className='batch-date-container' onClick={() => handleArrowClick(date)}>
             <div className='badge-wrapper col-3 '>
               <div className='badge-wrapper-inner '>
                 <Image width={20} height={50} className='badge-cert' src='/icons/badge-cert.svg' alt='Badge' />
@@ -83,7 +83,7 @@ const BatchDates = ({ dates,batchCertificatesData, setFilteredBatchCertificatesD
               <p className='date-batch' style={{ fontWeight: 'bold' }}>{formatDate(date?.issueDate)}</p>
               <p className='time-batch'>{formatTime(date?.issueDate)}</p>
             </div>
-            <div className='right-arrow-dates col-2' onClick={() => handleArrowClick(date)}>
+            <div className='right-arrow-dates col-2' >
               <span style={{ color: '#CFA935', cursor: 'pointer' }}>→</span>
             </div>
           </div>
