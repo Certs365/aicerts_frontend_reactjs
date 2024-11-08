@@ -251,10 +251,10 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
         <Form onSubmit={(e) => e.preventDefault()} >
             <Form.Group controlId="search">
             <div 
-            className="search d-flex align-items-start">
+            className="search  align-items-center d-flex align-items-center">
             
       {/* First Dropdown (For) */}
-    <div style={{width:"100%",display:"flex",justifyContent:"center"}}>
+    <div style={{width:"100%",display:"flex",justifyContent:"center" }}>
     <Dropdown onSelect={handleSearchForSelect} className="me-2 golden-dropdown-button">
   <Dropdown.Toggle
     variant="secondary"

@@ -346,7 +346,7 @@ const handleFileBatchChange = (event) => {
           onChange={handleOptionChange}
           style={{width:"18px", height:"18px"}}
         />
-        250 issues
+        upto 250
       </label>
       
       <label className=' d-flex justify-content-center align-items-center'>
@@ -358,7 +358,7 @@ const handleFileBatchChange = (event) => {
           onChange={handleOptionChange}
           style={{width:"18px", height:"18px"}}
         />
-        Upto 2000 Issues
+        Max 2000
       </label>
 
          </div>
