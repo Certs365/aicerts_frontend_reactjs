@@ -343,7 +343,6 @@ const Login = () => {
     // Handle fetch error (e.g., network issues)
     console.error('Network error:', error);
   }
-};
 
 const handleLoginOtp = async (e) => {
   setIsLoading(true)
@@ -580,7 +579,7 @@ stopProgress()
 
   const handleForgotPassword = () => {
     router.push('/forgot-passwords')
-  }
+  };
 
   return (
     <>
@@ -763,6 +762,6 @@ stopProgress()
       </Modal>
     </>
   );
-}
+};
 
 export default Login;
