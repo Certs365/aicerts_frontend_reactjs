@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
-
+import issuance from '../services/issuanceServices';
 const adminUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const generalError = process.env.NEXT_PUBLIC_BASE_GENERAL_ERROR;
 
@@ -34,35 +34,60 @@ const SearchTab = () => {
       return;
     }
 
-    fetch(`${adminUrl}/api/get-bulk-files`, {
-      method: 'POST',
-      body: JSON.stringify({ search: searchQuery, category: searchMode }),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.status === "SUCCESS") {
-        setCertData(data.details);
-        setSuccess("Certificates Retrived Successfully"); // Set success message
-      setShow(true)
-
-      } else if (data.status === "FAILED") {
-        setError(data.message);
-      setShow(true)
-
-      }
-    })
-    .catch(error => {
+    const data={
+      search: searchQuery, 
+      category: searchMode 
+    }
+    
+    try {
+      issuance.getbulkFiles(data, (response) => {
+        if(response.status === "SUCCESS") {
+          setCertData(response.data.details);
+          setSuccess("Certificates Retrived Successfully"); // Set success message
+          setShow(true)
+        }
+        else if(response?.data?.status === "FAILED") {
+          setError(response.data.message);
+          setShow(true)
+        }
+      })
+    } catch (error) {
       console.error('Error:', error);
       setError(generalError); // Set error message for fetch error
       setShow(true)
-
-    })
-    .finally(() => {
+    } finally{
       setIsLoading(false);
-    });
+    };
+
+    // fetch(`${adminUrl}/api/get-bulk-files`, {
+    //   method: 'POST',
+    //   body: JSON.stringify({ search: searchQuery, category: searchMode }),
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    // })
+    // .then(response => response.json())
+    // .then(data => {
+    //   if (data.status === "SUCCESS") {
+    //     setCertData(data.details);
+    //     setSuccess("Certificates Retrived Successfully"); // Set success message
+    //   setShow(true)
+
+    //   } else if (data.status === "FAILED") {
+    //     setError(data.message);
+    //   setShow(true)
+
+    //   }
+    // })
+    // .catch(error => {
+    //   console.error('Error:', error);
+    //   setError(generalError); // Set error message for fetch error
+    //   setShow(true)
+
+    // })
+    // .finally(() => {
+    //   setIsLoading(false);
+    // });
   };
 
   const handleClose = () => {

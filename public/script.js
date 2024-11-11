@@ -1,12 +1,10 @@
 
 // const apiUrl = "http://10.2.3.55:7039";
- const apiUrl_Admin =window.CONFIG.NEXT_PUBLIC_BASE_URL;
-const apiUrl = window.CONFIG.NEXT_PUBLIC_BASE_URL_USER;
+// const apiUrl_Admin = "http://10.2.3.55:6049";
+const apiUrl = "https://userdevapi.certs365.io";
+const apiUrl_Admin = "https://adminapidev.certs365.io";
 
-
-
-
-var canvas;
+let canvas;
 let textObjects = [];
 let shapeObjects = [];
 let activeTextIndex = -1;
@@ -697,7 +695,7 @@ $("#addExport").click(async function () {
   //add template to s3 vua api
   let fileUrl = ""; // gets image url from uploadtos3 func, this will be used in below func. 
 
-  $("#addTemplate").click(async function () {
+  $("#saveTemplate").click(async function () {
 
     if (canvas.isEmpty()) {  // Use `canvas.isEmpty()` if your canvas library supports it
       showFailurePopup('Canvas is empty. Please add content before saving.');
@@ -1748,8 +1746,7 @@ function showFailurePopup(message) {
               email: userEmail,
             }),
           }
-        );
-  
+        );  
         if (response.ok) {
           const data = await response.json();
           // console.log(data);  

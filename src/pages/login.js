@@ -8,6 +8,7 @@ import CopyrightNotice from '../app/CopyrightNotice';
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth"
 import { useRouter } from 'next/router';
 import { encryptData } from '@/utils/reusableFunctions';
+import user from '@/services/userServices';
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL_USER;
 const secretKey = process.env.NEXT_PUBLIC_BASE_ENCRYPTION_KEY;
 import OtpModal from "../components/OtpModal";
@@ -26,8 +27,9 @@ const Login = () => {
   const [loginStatus, setLoginStatus] = useState('');
   const [confirmationResult, setConfirmationResult] = useState('');
   const [otpSentMessage, setOtpSentMessage] = useState('');
-  const [user, setUser] = useState({});
+  const [userDetails, setUserDetails] = useState({});
   const [token, setToken] = useState(null);
+  const [loginData, setLoginData] = useState({});
   const [emailOtp, setEmailOtp] = useState(["", "", "", "", "", ""]);
   const [modalOtp, setModalOtp] = useState(false);
   const auth = getAuth()
@@ -86,7 +88,7 @@ const Login = () => {
     const storedUser = JSON.parse(localStorage?.getItem('user'));
 
     if (storedUser && storedUser.JWTToken) {
-      setUser(storedUser);
+      setUserDetails(storedUser);
       setToken(storedUser.JWTToken);
     } else {
       router.push('/');
@@ -167,34 +169,33 @@ const Login = () => {
     email: formData.email,
     password: formData.password,
   }
-  const encryptedData = encryptData(payload);
+  // const encryptedData = encryptData(payload);
 
-      const response = await fetch(`${apiUrl}/api/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-         data:encryptedData
-        }),
-      });
-  
-      const responseData = await response.json();
-  
-      if (response.status === 200) {
+      // const response = await fetch(`${apiUrl}/api/login`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //    data:encryptedData
+      //   }),
+      // });
+      user.login(payload, async (response)=>{
+        const responseData =  response.data;
+        if (responseData.code === 200) {
         if (responseData.status === 'FAILED') {
           setLoginStatus('FAILED');
           setLoginError(responseData.message || 'An error occurred during login');
           setShow(true);
-          setShowPhone(responseData?.isPhoneNumber);
+          // setShowPhone(responseData?.isPhoneNumber);
           if (responseData?.isPhoneNumber && responseData?.phoneNumber) {
             setPhoneNumber(responseData?.phoneNumber);
           }
-        } else if (responseData.status === 'SUCCESS') {
+        } else if (responseData.status == "SUCCESS") {
           if (responseData?.data && responseData?.data?.JWTToken !== undefined) {
              
             await handleSendEmail()
-            localStorage.setItem('user', JSON.stringify(responseData?.data));
+            setLoginData(responseData?.data)
           } else {
             setShowPhone(responseData?.isPhoneNumber);
             setLoginError('An error occurred during login');
@@ -204,11 +205,11 @@ const Login = () => {
             }
           }
         }
-      } else if (response.status === 400) {
+      } else if (responseData.code === 400) {
         setShowPhone(responseData?.isPhoneNumber);
         setLoginError('Invalid input or empty credentials');
         setShow(true);
-      } else if (response.status === 401) {
+      } else if (responseData.code === 401) {
         setShowPhone(responseData?.isPhoneNumber);
         setLoginError('Invalid credentials entered');
         setShow(true);
@@ -223,6 +224,52 @@ const Login = () => {
         setLoginError('An error occurred during login');
         setShow(true);
       }
+      })
+  
+      // const responseData = await response.json();
+  
+      // if (response.status === 200) {
+      //   if (responseData.status === 'FAILED') {
+      //     setLoginStatus('FAILED');
+      //     setLoginError(responseData.message || 'An error occurred during login');
+      //     setShow(true);
+      //     // setShowPhone(responseData?.isPhoneNumber);
+      //     if (responseData?.isPhoneNumber && responseData?.phoneNumber) {
+      //       setPhoneNumber(responseData?.phoneNumber);
+      //     }
+      //   } else if (responseData.status === 'SUCCESS') {
+      //     if (responseData?.data && responseData?.data?.JWTToken !== undefined) {
+             
+      //       await handleSendEmail()
+      //       setLoginData(responseData?.data)
+      //     } else {
+      //       setShowPhone(responseData?.isPhoneNumber);
+      //       setLoginError('An error occurred during login');
+      //       setShow(true);
+      //       if (responseData?.isPhoneNumber && responseData?.phoneNumber) {
+      //         setPhoneNumber(responseData?.phoneNumber);
+      //       }
+      //     }
+      //   }
+      // } else if (response.status === 400) {
+      //   setShowPhone(responseData?.isPhoneNumber);
+      //   setLoginError('Invalid input or empty credentials');
+      //   setShow(true);
+      // } else if (response.status === 401) {
+      //   setShowPhone(responseData?.isPhoneNumber);
+      //   setLoginError('Invalid credentials entered');
+      //   setShow(true);
+      //   if (responseData?.isPhoneNumber && responseData?.phoneNumber) {
+      //     setPhoneNumber(responseData?.phoneNumber);
+      //   }
+      // } else {
+      //   setShowPhone(responseData?.isPhoneNumber);
+      //   if (responseData?.isPhoneNumber && responseData?.phoneNumber) {
+      //     setPhoneNumber(responseData?.phoneNumber);
+      //   }
+      //   setLoginError('An error occurred during login');
+      //   setShow(true);
+      // }
     } catch (error) {
       console.error('Error during login:', error);
       setLoginError('Server Error. Please try again');
@@ -259,24 +306,39 @@ const handleSendEmail = async () => {
   const payload = {
     email:formData.email , // You can replace this with the actual email input// Replace this with the actual OTP code input
   };
+  // const payload = JSON.stringify({
+  //   email:formData.email , // You can replace this with the actual email input// Replace this with the actual OTP code input
+  // });
   try {
-    const response = await fetch(`${apiUrl}/api/two-factor-auth`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json', // Set the request headers
-      },
-      body: JSON.stringify(payload), // Convert the payload to JSON string
-    });
-
-    const data = await response.json(); // Parse the JSON response
-    if (response.ok) {
+    // const response = await fetch(`${apiUrl}/api/two-factor-auth`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json', // Set the request headers
+    //   },
+    //   body: JSON.stringify(payload), // Convert the payload to JSON string
+    // });
+    user.twoFactorAuth(payload, (response) => {
+      const data = response; // Parse the JSON response
+    if (response.status ==="SUCCESS") {
       setModalOtp(true)
     } else {
       // Handle error (e.g., show error message)
-      setLoginError('Error in sending mail');
+      setLoginError(data?.message || 'Please Try After Sometime');
       setShow(true);
       console.error('Error:', data);
     }
+    })
+
+
+    // const data = await response.json(); // Parse the JSON response
+    // if (response.ok) {
+    //   setModalOtp(true)
+    // } else {
+    //   // Handle error (e.g., show error message)
+    //   setLoginError(data?.message || 'Please Try After Sometime');
+    //   setShow(true);
+    //   console.error('Error:', data);
+    // }
   } catch (error) {
     // Handle fetch error (e.g., network issues)
     console.error('Network error:', error);
@@ -295,31 +357,54 @@ const handleLoginOtp = async (e) => {
   };
 
   try {
-    const response = await fetch(`${apiUrl}/api/verify-issuer`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json', // Set the request headers
-      },
-      body: JSON.stringify(payload), // Convert the payload to JSON string
-    });
+    // const response = await fetch(`${apiUrl}/api/verify-issuer`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json', // Set the request headers
+    //   },
+    //   body: JSON.stringify(payload), // Convert the payload to JSON string
+    // });
+    user.verifyIssuer(payload,  (response) => {
+    const data = response; // Parse the JSON response
+      if (response.status ==="SUCCESS") {
+        setLoginStatus('SUCCESS');
+        setLoginError('');
+        setLoginSuccess("Logged In Successfully");
+        setShow(true)
+        localStorage.setItem('user', JSON.stringify(loginData));
+        // await validateIssuer(responseData?.data?.email)
+        localStorage.setItem('firstlogin', "true");
+        router.push('/dashboard');
+        // Handle success (e.g., navigate, show success message)
+        // console.log('Success:', data);
+      } else {
+        // Handle error (e.g., show error message)
+        setLoginError('Invalid Otp');
+        setShow(true);
+        console.error('Error:', data);
+  
+      }
+    })
 
-    const data = await response.json(); // Parse the JSON response
-    if (response.ok) {
-      setLoginStatus('SUCCESS');
-      setLoginError('');
-      setLoginSuccess("Logged In Successfully");
-      setShow(true)
-      // await validateIssuer(responseData?.data?.email)
-      router.push('/dashboard');
-      // Handle success (e.g., navigate, show success message)
-      console.log('Success:', data);
-    } else {
-      // Handle error (e.g., show error message)
-      setLoginError('Invalid Otp');
-      setShow(true);
-      console.error('Error:', data);
+    // const data = await response.json(); // Parse the JSON response
+    // if (response.ok) {
+    //   setLoginStatus('SUCCESS');
+    //   setLoginError('');
+    //   setLoginSuccess("Logged In Successfully");
+    //   setShow(true)
+    //   localStorage.setItem('user', JSON.stringify(loginData));
 
-    }
+    //   // await validateIssuer(responseData?.data?.email)
+    //   router.push('/dashboard');
+    //   // Handle success (e.g., navigate, show success message)
+    //   console.log('Success:', data);
+    // } else {
+    //   // Handle error (e.g., show error message)
+    //   setLoginError('Invalid Otp');
+    //   setShow(true);
+    //   console.error('Error:', data);
+
+    // }
   } catch (error) {
     // Handle fetch error (e.g., network issues)
     console.error('Network error:', error);
@@ -337,21 +422,25 @@ stopProgress()
     await handleOtpSubmit(e)
     try {
       setIsLoading(true);
-      const token = await auth.currentUser?.getIdToken();
-      const response = await fetch(`${apiUrl}/api/login-with-phone`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          idToken: token,
-          email: formData.email
-        }),
-      });
-
-      const responseData = await response.json();
-
-      if (response.status === 200) {
+      // const token = await auth.currentUser?.getIdToken();
+      // const response = await fetch(`${apiUrl}/api/login-with-phone`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //     idToken: token,
+      //     email: formData.email
+      //   }),
+      // });
+      const data = {
+        idToken: token,
+        email: formData.email
+      };
+      user.loginWithPhone(data, async (response)=>{
+        const responseData = response;
+        
+      if (responseData.status === 'SUCCESS') {
         // Successful login, handle accordingly (redirect or show a success message)
         if (responseData.status === 'FAILED') {
           // Display error message for failed login
@@ -367,6 +456,7 @@ stopProgress()
             setLoginSuccess("Login Success");
             setShow(true);
             localStorage.setItem('user', JSON.stringify(responseData?.data))
+            localStorage.setItem('firstlogin', "true");
             router.push('/dashboard');
 
           } else {
@@ -392,6 +482,52 @@ stopProgress()
         setLoginError('An error occurred during login');
         setShow(true);
       }
+      })
+
+
+      // const responseData = await response.json();
+
+      // if (response.status === 200) {
+      //   // Successful login, handle accordingly (redirect or show a success message)
+      //   if (responseData.status === 'FAILED') {
+      //     // Display error message for failed login
+      //     setLoginStatus('FAILED');
+      //     setLoginError(responseData.message || 'An error occurred during login');
+      //     setShow(true);
+
+      //   } else if (responseData.status === 'SUCCESS') {
+
+
+      //     if (responseData?.data && responseData?.data?.JWTToken !== undefined) {
+      //       setLoginStatus('SUCCESS');
+      //       setLoginSuccess("Login Success");
+      //       setShow(true);
+      //       localStorage.setItem('user', JSON.stringify(responseData?.data))
+      //       router.push('/dashboard');
+
+      //     } else {
+
+      //       setLoginError('An error occurred during login');
+      //       setShow(true);
+
+      //     }
+      //   }
+      // } else if (response.status === 400) {
+      //   // Invalid input or empty credentials
+
+      //   setLoginError('Invalid input or empty credentials');
+      //   setShow(true);
+      // } else if (response.status === 401) {
+      //   // Invalid credentials entered
+
+      //   setLoginError('Invalid credentials entered');
+      //   setShow(true);
+
+      // } else {
+      //   // An error occurred during login
+      //   setLoginError('An error occurred during login');
+      //   setShow(true);
+      // }
     } catch (error) {
       console.error('Error during login:', error);
     } finally {
@@ -405,14 +541,16 @@ stopProgress()
       email: formData.email
     };
     try {
-      const response = await fetch(`${apiUrl_Admin}/api/create-validate-issuer`, {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-      const res = await response.json();
+      // const response = await fetch(`${apiUrl_Admin}/api/create-validate-issuer`, {
+      //   method: "POST",
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify(data)
+      // });
+      user.createValidateIssuer(data, async (response)=>{
+      const res = response;
+      })
     } catch (error) {
       console.error('Error ', error);
     }

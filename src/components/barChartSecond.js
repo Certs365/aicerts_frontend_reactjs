@@ -8,6 +8,8 @@ import { AiOutlineCalendar, AiOutlineDown } from 'react-icons/ai';
 import calenderIcon from "../../public/icons/calendar.svg";
 import "react-datepicker/dist/react-datepicker.css";
 import Image from 'next/image';
+import chart from '../services/chartServices';
+
 
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -73,20 +75,31 @@ function BarChartSecond() {
 
                 const encodedEmail = encodeURIComponent(email);
                 const month = String(date.getMonth() + 1).padStart(2, '0');
-                const year = date.getFullYear();
-                const response = await fetch(`${apiUrl}/api/get-status-graph-data/${month}/${encodedEmail}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to fetch data');
+                const endpoints  = {
+                    month: month,
+                    encodedEmail: encodedEmail
                 }
+                const year = date.getFullYear();
+                // const response = await fetch(`${apiUrl}/api/get-status-graph-data/${month}/${encodedEmail}`, {
+                //     method: 'GET',
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //     },
+                // });
+                chart.getStatusGraph(endpoints , (response)=>{
+                    if (response.status != "SUCCESS") {
+                        console.error('Failed to fetch data');
+                    }
+                    const data = response?.data?.data
+                    updateChartData(data, `${year}-${month}`);
+                })
 
-                const data = await response.json();
-                updateChartData(data.data, `${year}-${month}`);
+                // if (!response.ok) {
+                //     throw new Error('Failed to fetch data');
+                // }
+
+                // const data = await response.json();
+                // updateChartData(data.data, `${year}-${month}`);
             } catch (error) {
                 // console.error('Error fetching data:', error);
                 setLoading(false);
@@ -105,8 +118,7 @@ function BarChartSecond() {
         const reactivatedData = Array(isYearSelected ? 12 : 31).fill(0);
         const revokedData = Array(isYearSelected ? 12 : 31).fill(0);
         const expiredData = Array(isYearSelected ? 12 : 31).fill(0);
-
-        data.forEach((item) => {
+        data?.forEach((item) => {
             const index = isYearSelected ? item.month - 1 : item.day - 1;
             issuedData[index] = item.count[0];
             expiredData[index] = item.count[1];
@@ -225,7 +237,6 @@ function BarChartSecond() {
                 },
             },
             scales: {
-            
                 x: {
                     grid: {
                         display: false,
@@ -329,8 +340,7 @@ function BarChartSecond() {
                 </div>
             </div>
             ) : (
-                    <Bar data={chartData} options={chartOptions} width={"100%"}
-                    height={"90%"}/>
+                    <Bar data={chartData} options={chartOptions} width={"100%"}height={"90%"}/>
             )}
         </div>
     );

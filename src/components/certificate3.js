@@ -6,10 +6,12 @@ import { Container, Modal } from 'react-bootstrap';
 import { useContext } from 'react';
 import CertificateContext from "../utils/CertificateContext"
 import BackIcon from "../../public/icons/back-icon.svg";
+import user from '@/services/userServices';
+
 
 const CertificateTemplateThree = ({ certificateData }) => {
     const [isLoading, setIsLoading] = useState(false);
-    const { badgeUrl,certificateUrl,logoUrl,signatureUrl,issuerName,issuerDesignation, isDesign} = useContext(CertificateContext);
+    const { badgeUrl,certificateUrl,logoUrl,signatureUrl,issuerName,issuerDesignation, isDesign,pdfDimentions} = useContext(CertificateContext);
     const router = useRouter(); // Call useRouter at the top level
 
     useEffect(() => {
@@ -38,7 +40,7 @@ const CertificateTemplateThree = ({ certificateData }) => {
 
     const handleDownloadPDF = async () => {
         const isCustomCerf = JSON.parse(sessionStorage.getItem("cerf") || false);
-    console.log(isCustomCerf);
+        console.log(isCustomCerf);
         try {
             setIsLoading(true);
             let url;
@@ -62,6 +64,7 @@ const CertificateTemplateThree = ({ certificateData }) => {
                     issuerName,
                     issuerDesignation,
                     isCustomCerf,
+                    pdfDimentions
                 }),
             });
             if (res.ok) {

@@ -3,6 +3,7 @@ import { Pie } from "react-chartjs-2";
 import { CategoryScale, LinearScale, ArcElement, Title } from "chart.js";
 import Chart from "chart.js/auto";
 import { useRouter } from 'next/router';
+import chart from '../services/chartServices';
 
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -37,19 +38,31 @@ function PieChart() {
         try {
             setLoading(true); // Set loading to true before making the API call
             const encodedEmail = encodeURIComponent(email);
-            const response = await fetch(`${apiUrl}/api/get-graph-data/${selectedYear}/${encodedEmail}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch data');
+            // const response = await fetch(`${apiUrl}/api/get-graph-data/${selectedYear}/${encodedEmail}`, {
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     }
+            // });
+            const endpoints ={
+                selectedYear: selectedYear,
+                encodedEmail: encodedEmail
             }
+            chart.graphData(endpoints, (response)=>{
+                if (response.status !== "SUCCESS") {
+                    throw new Error('Failed to fetch data');
+                }
+                const data = response.data;
+                setResponseData(data.data);
+            })
 
-            const data = await response.json();
-            setResponseData(data.data);
+
+            // if (!response.ok) {
+            //     throw new Error('Failed to fetch data');
+            // }
+
+            // const data = await response.json();
+            // setResponseData(data.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         } finally {
@@ -190,6 +203,7 @@ function PieChart() {
                     <div className="spinner-border text-danger" role="status">
                     </div>
                 </div>
+
             ) : (
                 <Pie
                     width={"100%"}

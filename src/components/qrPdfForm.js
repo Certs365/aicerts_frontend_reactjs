@@ -7,6 +7,7 @@ import Image from 'next/image';
 import fileDownload from 'react-file-download';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import issuance from '../services/issuanceServices';
 
 const generalError = process.env.NEXT_PUBLIC_BASE_GENERAL_ERROR;
 
@@ -188,13 +189,47 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
       formData.append('qrsize', qrsize);
       formData.append('file', selectedFile);
 
-      const response = await fetch(`${adminUrl}/api/issue-dynamic-pdf`, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-      });
+      // const response = await fetch(`${adminUrl}/api/issue-dynamic-pdf`, {
+      //   method: 'POST',
+      //   body: formData,
+      //   headers: {
+      //     'Authorization': `Bearer ${token}`
+      //   },
+      // });
+    //   console.log("Logging FormData entries:");
+    // for (let [key, value] of formData.entries()) {
+    //   console.log(`${key}:`, value);  // This will show both the key and value in the FormData
+    // }
+
+      issuance.issueDynamicPdf(formData, async (response)=>{
+      //   debugger
+      //   console.log(response);
+      //   if( response.status === 'SUCCESS'){
+        // if (response && response.ok) {
+          // const blob = await response.blob();
+          // const blob = await response.data.blob();
+          // todo --> blob() issue, temp fix, give pdf (corrupt)
+          // const pdfData = response.data;
+          // const encoder = new TextEncoder();
+          // const pdfBytes = encoder.encode(pdfData);
+          // // Create a Blob from the Uint8Array
+          // const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      //     setBlobUrl(blob);
+           
+      //     setSuccess("Certificate Successfully Generated")
+      //     setShow(true);
+      //   } else if (response) {
+      //     const responseBody = response.error.response.data;
+      //     const errorMessage = responseBody && responseBody.message ? responseBody.message : generalError;
+          
+      //     setError(errorMessage);
+      //     setShow(true);
+      //   } else {
+      //     console.error('No response received from the server.');
+      //   }
+      // })
+
+
       if (response && response.ok) {
         const blob = await response.blob();
         setBlobUrl(blob);
@@ -210,6 +245,7 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
       } else {
         console.error('No response received from the server.');
       }
+    })
     }
     catch (error) {
       console.error('Error during API request:', error);
@@ -250,20 +286,23 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
       formData.append('qrside', qrsize);
       formData.append('pdfFile', selectedFile);
 
-      const response = await fetch(`${adminUrl}/api/provide-inputs`, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-      });
-      if (response && response.ok) {
+      // const response = await fetch(`${adminUrl}/api/provide-inputs`, {
+      //   method: 'POST',
+      //   body: formData,
+      //   headers: {
+      //     'Authorization': `Bearer ${token}`
+      //   },
+      // });
+
+      issuance.provideInputs(formData, async (response)=>{ 
+        if( response.status === 'SUCCESS'){
+        // if (response && response.ok) {
         setSuccess("Dimentions Updated Successfully")
         setShow(true);
         setPage(1);
         
       } else if (response) {
-        const responseBody = await response.json();
+        const responseBody = response.error.response.data;
         const errorMessage = responseBody && responseBody.message ? responseBody.message : generalError;
        
         setError(errorMessage);
@@ -271,6 +310,22 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
       } else {
         console.error('No response received from the server.');
       }
+      })
+
+      // if (response && response.ok) {
+      //   setSuccess("Dimentions Updated Successfully")
+      //   setShow(true);
+      //   setPage(1);
+        
+      // } else if (response) {
+      //   const responseBody = await response.json();
+      //   const errorMessage = responseBody && responseBody.message ? responseBody.message : generalError;
+       
+      //   setError(errorMessage);
+      //   setShow(true);
+      // } else {
+      //   console.error('No response received from the server.');
+      // }
     }
     catch (error) {
       console.error('Error during API request:', error);

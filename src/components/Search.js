@@ -3,6 +3,7 @@ import { Form, Dropdown, Modal } from 'react-bootstrap';
 import Image from 'next/image';
 import axios from 'axios';
 import { encryptData } from '../utils/reusableFunctions';
+import issuance from '../services/issuanceServices';
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const secretKey = process.env.NEXT_PUBLIC_BASE_ENCRYPTION_KEY;
 
@@ -53,32 +54,46 @@ const Search = ({ setResponseData, tab,setLoading }) => {
             status:tab,
             flag: 1
         }
-      const encryptedData = encryptData(dataToEncrypt);
+    //   const encryptedData = encryptData(dataToEncrypt);
 
         try {
-            const response = await fetch(`${apiUrl}/api/admin-filtered-issues`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    data: encryptedData,
-                }),
+            // const response = await fetch(`${apiUrl}/api/admin-filtered-issues`, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({
+            //         data: encryptedData,
+            //     }),
+            // });
+
+            issuance.adminFilteredIssues(dataToEncrypt, async (response)=>{
+                debugger
+                if( response.status != 'SUCCESS'){
+                // if (!response.ok) {
+                    // throw new Error('Network response was not ok');
+                    console.log('Network response was not ok');
+                }
+    
+                const data = response.data;
+                setSuggestions(data?.details);
+                setShowSuggestions(true);
             });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+            // if (!response.ok) {
+            //     throw new Error('Network response was not ok');
+            // }
 
-            const data = await response.json();
-            setSuggestions(data?.details);
-            setShowSuggestions(true);
+            // const data = await response.json();
+            // setSuggestions(data?.details);
+            // setShowSuggestions(true);
         } catch (error) {
             console.error('Error fetching suggestions:', error);
             setSuggestions([]);
         }
     };
 
+    /* eslint-disable */
     useEffect(() => {
         if (!isDateInput) {
             const debounceFetch = setTimeout(() => {
@@ -88,6 +103,7 @@ const Search = ({ setResponseData, tab,setLoading }) => {
             return () => clearTimeout(debounceFetch);
         }
     }, [searchTerm, searchBy]);
+    /* eslint-disable */
 
     const handleSearchTermChange = (e) => {
         const value = e.target.value;

@@ -18,6 +18,7 @@ import moment from "moment";
 import CertificateContext from "../utils/CertificateContext";
 import { UpdateLocalStorage } from "../utils/UpdateLocalStorage";
 import fileDownload from "react-file-download";
+import issuance from "../services/issuanceServices";
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const adminUrl = process.env.NEXT_PUBLIC_BASE_URL_admin;
 const generalError = process.env.NEXT_PUBLIC_BASE_GENERAL_ERROR;
@@ -164,29 +165,34 @@ const DynamicQrForm = ({rectangle}) => {
       if(pdfFile){
           formDataObj.append("file", pdfFile);
       }
-      const response = await fetch(`${adminUrl}/api/issue-dynamic-cert`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formDataObj, // Send the FormData object directly as the body
-      });
+      // const response = await fetch(`${adminUrl}/api/issue-dynamic-cert`, {
+      //   method: "POST",
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      //   body: formDataObj, // Send the FormData object directly as the body
+      // });
+
+      issuance.IssueDynamicCertByFetch(formDataObj, async (response) => {
+        console.log("issue-dyn-cert",response);
+        if (response && response.ok) {
+          setMessage( "Certificate Successfully Generated");
+          const blob = await response.blob();
+          setPdfBlob(blob);
+        } else if (response) {
+        const responseData = await response.json();
+          console.error("API Error:", responseData.message || generalError);
+          setMessage(responseData.message || generalError);
+          setShow(true);
+        } else {
+        const responseData = await response.json();
+          setMessage(responseData.message || "No response received from the server.");
+          console.error("No response received from the server.");
+          setShow(true);
+        }
+      })
+
   
-      if (response && response.ok) {
-        setMessage( "Certificate Successfully Generated");
-        const blob = await response.blob();
-        setPdfBlob(blob);
-      } else if (response) {
-      const responseData = await response.json();
-        console.error("API Error:", responseData.message || generalError);
-        setMessage(responseData.message || generalError);
-        setShow(true);
-      } else {
-      const responseData = await response.json();
-        setMessage(responseData.message || "No response received from the server.");
-        console.error("No response received from the server.");
-        setShow(true);
-      }
     } catch (error) {
       console.log(error);
       setMessage(generalError);

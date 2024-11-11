@@ -6,7 +6,9 @@ import { useRouter } from 'next/router';
 import Button from '../../shared/button/button';
 import { jwtDecode } from 'jwt-decode';
 const apiUrl_Admin = process.env.NEXT_PUBLIC_BASE_URL;
+const apiUrl = process.env.NEXT_PUBLIC_BASE_URL_USER;
 import { getAuth } from "firebase/auth"
+import issuance from '@/services/issuanceServices';
 import user from '@/services/userServices';
 import { encryptData } from '../utils/reusableFunctions';
 const secretKey = process.env.NEXT_PUBLIC_BASE_ENCRYPTION_KEY;
@@ -47,6 +49,8 @@ const Navigation = () => {
   const [responseData, setResponseData] = useState<ResponseData | null>(null);
   const [creditLimit, setCreditLimit] = useState(0);
   const [showModal, setShowModal] = useState(false);
+  const [planName, setPlanName] = useState(null);
+  const [creditRemaining, setcreditRemaining] = useState(0);
 
   const [formData, setFormData] = useState({
     organization: '',
@@ -71,6 +75,7 @@ const Navigation = () => {
       fetchData(storedUser.email);  
       
       getCreditLimit(storedUser.email);
+      getPlanName(storedUser.email);
       setFormData({
         organization: storedUser.organization || '',
         name: storedUser.name || '',
@@ -84,36 +89,21 @@ const Navigation = () => {
 
   // API call
   const fetchData = async (email: string): Promise<void> => {
-    try {
       const payload = {
         email: email,
         queryCode: 1,
       };
   
-      const encryptedData = encryptData(payload);
-  
-      const response = await fetch(`${apiUrl_Admin}/api/get-issuers-log`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          data: encryptedData
-        }),
+      issuance.appIssuersLog(payload, (response) => {
+       try {
+         if (response?.data?.status === 'SUCCESS') {
+           setResponseData(response.data);
+         }
+       } catch (error) {
+        console.error('Error fetching data:', error);
+       }
       });
-  
-      if (!response.ok) {
-        throw new Error('Failed to fetch data');
-      }
-  
-      const data: FetchResponseData = await response.json();
-  // @ts-ignore: Implicit any for children prop
-      setResponseData(data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      // Handle error as needed
-    }
-  };
+    };
 
   // const fetchData = async (email: any) => {
   //   const data = { email };
@@ -142,37 +132,42 @@ const Navigation = () => {
   //   }
   // };
   const getCreditLimit = async (email:any) => {
-    const encryptedData = encryptData({
-      email: email,
-    });
-  
+    // const encryptedData = encryptData({
+    //   email: email,
+    // });
+    const payload={
+      email: email
+    }
+    user.creditLimit(payload, async (response) => {
+      try {
+        const issueService : any = response.data.details.find((obj: any) => obj.serviceId === "issue") as Service | undefined;
+        if (issueService ) {
+            setCreditLimit(issueService?.limit);
+          }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    })
+  };
+
+  const getPlanName = async (email:string) => {
     try {
-      const response = await fetch(`${apiUrl_Admin}/api/get-credits-by-email`, {
+      const response = await fetch(`${apiUrl}/api/get-subscription-details`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          data:encryptedData
-        }),
+        body: JSON.stringify({ email }),
       });
-  
+      debugger
       if (!response.ok) {
-        throw new Error('Failed to fetch data');
+        throw new Error('Failed to fetch plan name');
       }
-  
-      const data = await response.json();
-// Find the object that has serviceId: "issue"
-// @ts-ignore: Implicit any for children prop
-const issueService = data.details.find(obj => obj.serviceId === "issue");
-// If such an object is found, set the credit limit
-if (issueService ) {
-  setCreditLimit(issueService?.limit);
-}
-
+      const data = await response.json();    
+      setPlanName(data.details.subscriptionPlanName);
+      setcreditRemaining(data.details.currentCredentials);
     } catch (error) {
-      console.error('Error fetching data:', error);
-      // Handle error as needed
+      console.error('Error fetching plan name:', error);
     }
   };
   // @ts-ignore: Implicit any for children prop
@@ -271,6 +266,7 @@ if (issueService ) {
 
   const handleLogout = () => {
     localStorage.removeItem('user');
+    localStorage.removeItem('firstlogin');
     sessionStorage.removeItem('badgeUrl');
     sessionStorage.removeItem('logoUrl');
     sessionStorage.removeItem('signatureUrl');
@@ -448,7 +444,24 @@ if (issueService ) {
                         </div>
                         <div>
                           <span className='label'>Credit Limit</span>
-                          <span className='data'>{creditLimit}</span>
+                          {/* <span className='data'>{creditLimit}</span> */}
+                          {/* <span className='data'>{creditLimit}</span> */}
+                          <span className='data'>{creditRemaining}</span>                         
+                        </div>
+                      </div>
+                        {/*plan type  */}
+                        <div className='info d-flex align-items-center'>
+                        <div className='icon'>
+                          <Image
+                            src="https://images.netcomlearning.com/ai-certs/icons/certificate-issued.svg"
+                            width={18}
+                            height={18}
+                            alt='Profile'
+                          />
+                        </div>
+                        <div>
+                          <span className='label'>Plan</span>
+                          <span className='data'>{planName}</span>
                         </div>
                       </div>
                     </div>
@@ -472,11 +485,11 @@ if (issueService ) {
                 </div>
               </div>
             </Navbar.Text>
-            {/* <Navbar.Text>
+            <Navbar.Text>
             <div onClick={()=>{navigateToSettings()}} className='icons-container-settings'>
               <Image src={settingsIcon}/>
             </div>
-            </Navbar.Text> */}
+            </Navbar.Text> 
             <Navbar.Text>
               {routesWithLogoutButton.includes(router.pathname) && (
                 <div className='icons-container'>

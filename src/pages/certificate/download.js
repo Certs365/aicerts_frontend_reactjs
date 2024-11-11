@@ -180,10 +180,10 @@ const DownloadCertificate = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-
+      debugger
       if (certificatesData) {
         // Parse the JSON data if it exists
-        const parsedData = certificatesData;
+        const parsedData = certificatesData.data;
 
         setApiResponseData(certificatesData);
         setFilteredCertificatesArray(parsedData.details)
@@ -260,6 +260,7 @@ const DownloadCertificate = () => {
   }
 
   const handleSearchChange = (e) => {
+    debugger
     const searchValue = e.target.value;
     setSearchQuery(searchValue);
 
@@ -267,10 +268,10 @@ const DownloadCertificate = () => {
     let filteredDetails;
     if (searchValue.trim() === "") {
       // If the search value is empty, show all data
-      filteredDetails = apiResponseData.details;
+      filteredDetails = apiResponseData.data.details;
     } else {
       // Otherwise, filter based on the certificateNumber or name
-      filteredDetails = apiResponseData?.details.filter((detail) =>
+      filteredDetails = apiResponseData?.data?.details?.filter((detail) =>
         (detail?.certificateNumber && detail.certificateNumber.toString().toLowerCase().includes(searchValue.toLowerCase())) ||
         (detail?.name && detail.name.toLowerCase().includes(searchValue.toLowerCase()))
       );
@@ -422,16 +423,17 @@ const DownloadCertificate = () => {
       [index]: isChecked,
     }));
 
-    const selectedDetail = apiResponseData?.details?.find(
+    const selectedDetail = apiResponseData?.data?.details?.find(
       (detail, i) => i === index
     );
 
     if (isChecked) {
       setDetailsArray((prevDetails) => [...prevDetails, selectedDetail]);
     } else {
+      // console.log(prevDetails);
       setDetailsArray((prevDetails) =>
         prevDetails.filter(
-          (detail) => detail.certificateNumber !== selectedDetail?.certificateNumber
+          (detail) => detail?.certificateNumber !== selectedDetail?.certificateNumber
         )
       );
     }
@@ -445,9 +447,9 @@ const DownloadCertificate = () => {
 
     if (newSelectAll) {
       // If "Select All" is checked, store all details in the state
-      setDetailsArray(apiResponseData?.details || []);
+      setDetailsArray(apiResponseData?.data?.details || []);
       setCheckedItems(
-        apiResponseData?.details.reduce((acc, _, index) => {
+        apiResponseData?.data?.details?.reduce((acc, _, index) => {
           acc[index] = true;
           return acc;
         }, {})

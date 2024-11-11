@@ -4,7 +4,7 @@ import { Container, Row, Col, Form, Modal, Spinner } from 'react-bootstrap';
 import AWS from "../config/aws-config"
 
 import axios from 'axios';
-import { PDFDocument } from 'pdf-lib'; 
+import { PDFDocument, reverseArray } from 'pdf-lib'; 
 
 
 const GalleryCertificates = ({ certificatesData, isLoading, setIsLoading }) => {
@@ -36,42 +36,54 @@ const GalleryCertificates = ({ certificatesData, isLoading, setIsLoading }) => {
     // useEffect(() => {
     //     const fetchThumbnails = async () => {
     //         setIsImageLoading(true);
-    //         const urls = await Promise?.all(
-    //             certificatesData?.map(async (certificate) => {
-    //                 if (certificate?.url) {
-                        
-    //                     return certificate
-    //                 }
-    //                 return null;
-    //             })
-    //         );
-    //         const validCertificates = urls.filter(url => url !== null);
-    //         setThumbnailUrls(validCertificates);
+    //         if (Array.isArray(certificatesData)) {  // Check if certificatesData is an array
+    //             const urls = await Promise.all(
+    //                 certificatesData?.map(async (certificate) => {
+    //                     if (certificate?.url) {
+    //                         return certificate;
+    //                     }
+    //                     return null;
+    //                 })
+    //             );
+    //             const validCertificates = urls.filter(url => url !== null);
+    //             setThumbnailUrls(validCertificates);
+    //         }
     //         setIsImageLoading(false);
     //     };
     //     fetchThumbnails();
-    // }, [certificatesData]);
+    //  }, [certificatesData]);
 
-    useEffect(() => {
-        const fetchThumbnails = async () => {
-            setIsImageLoading(true);
-            if (Array.isArray(certificatesData)) {  // Check if certificatesData is an array
-                const urls = await Promise.all(
-                    certificatesData.map(async (certificate) => {
-                        if (certificate?.url) {
-                            return certificate;
-                        }
-                        return null;
-                    })
-                );
-                const validCertificates = urls.filter(url => url !== null);
-                setThumbnailUrls(validCertificates);
-            }
-            setIsImageLoading(false);
-        };
-        fetchThumbnails();
-    }, [certificatesData]);
-    
+useEffect(() => {
+    const fetchThumbnails = async () => {
+        setIsImageLoading(true);
+
+        if (Array.isArray(certificatesData)) {  // Check if certificatesData is an array
+            const responseData = await Promise.all(certificatesData?.map(async (certificate) => {
+                if (certificate?.url) {
+                    return certificate;
+                }
+                return null;
+            }));
+
+            const validCertificates = responseData.filter(url => url !== null);
+            setThumbnailUrls(validCertificates);
+        } else if (certificatesData?.data && Array.isArray(certificatesData.data)) {
+            const urls = await Promise.all(certificatesData.data.map(async (certificate) => {
+                if (certificate?.url) {
+                    return certificate;
+                }
+                return null;
+            }));
+
+            const validCertificates = urls.filter(url => url !== null);
+            setThumbnailUrls(validCertificates);
+        }
+
+        setIsImageLoading(false);
+    };
+
+    fetchThumbnails();
+}, [certificatesData]);
 
     const handleDownloadPDF = async (imageUrl, certificateNumber, detail) => {
         setIsLoading(true); // Set loading state to true when starting the download
@@ -79,6 +91,7 @@ const GalleryCertificates = ({ certificatesData, isLoading, setIsLoading }) => {
             const response = await axios.get(imageUrl, {
                 responseType: 'arraybuffer' // Ensure response is treated as an ArrayBuffer
             });
+        
             
             const pdfDoc = await PDFDocument.create();
             // Adjust page dimensions to match the typical horizontal orientation of a certificate

@@ -2,6 +2,7 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { Container, Modal } from 'react-bootstrap';
 import GalleryCertificates from './gallery-certificates';
+import certificate from '../services/certificateServices';
 
 const apiUrl_Admin = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -28,20 +29,33 @@ const BatchDates = ({ dates,batchCertificatesData, setFilteredBatchCertificatesD
       issuerId: date?.issuerId,
       batchId: date?.batchId
     };
+    console.log(data);
 
     try {
-      const response = await fetch(`${apiUrl_Admin}/api/get-batch-certificates`, {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify(data)
-      });
+      // const response = await fetch(`${apiUrl_Admin}/api/get-batch-certificates`, {
+      //   method: "POST",
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'Authorization': `Bearer ${token}`,
+      //   },
+      //   body: JSON.stringify(data)
+      // });
+      debugger
+      certificate.batchCertificates(data, async (response) => {
+        debugger
+        if (response.status === 'SUCCESS') {
+          const result = response;
+          setFilteredBatchCertificatesData(result?.data);
+          setBatchCertificatesData(result?.data)
+        }else{
+          //todo --> add proper modal to show error?
+          console.log(error.response.data.message);
+        }
+      })
 
-      const result = await response.json();
-      setFilteredBatchCertificatesData(result?.data);
-      setBatchCertificatesData(result?.data)
+      // const result = await response.json();
+      // setFilteredBatchCertificatesData(result?.data);
+      // setBatchCertificatesData(result?.data)
     } catch (error) {
       console.error('Error fetching certificates data:', error);
       // Handle error
@@ -63,7 +77,8 @@ const BatchDates = ({ dates,batchCertificatesData, setFilteredBatchCertificatesD
     const optionsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
     return dateObj.toLocaleTimeString('en-US', optionsTime);
   };
-
+console.log(dates);
+console.log(dates.data);
   return (
     <Container className='batch-wrapper-dates'>
       <div className='title-bg d-md-none'>

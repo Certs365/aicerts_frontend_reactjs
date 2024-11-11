@@ -7,6 +7,8 @@ import BackIcon from "../../public/icons/back-icon.svg";
 import { Modal, ProgressBar } from 'react-bootstrap';
 import SearchAdmin from '../components/searchAdmin';
 import { encryptData } from '../utils/reusableFunctions';
+import certificate from '../services/certificateServices';
+
 
 const Gallery = () => {
   const [tab, setTab] = useState(0);
@@ -74,20 +76,26 @@ const Gallery = () => {
       issuerId: storedUser.issuerId,
       type: 2
     };
-    const encryptedData = encryptData(data)
+    // const encryptedData = encryptData(data)
 
     try {
-      const response = await fetch(`${apiUrl_Admin}/api/get-single-certificates`, {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${storedUser.token}`,
-        },
-        body: JSON.stringify({data:encryptedData})
-      });
-      const certificatesData = await response.json();
+      // const response = await fetch(`${apiUrl_Admin}/api/get-single-certificates`, {
+      //   method: "POST",
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'Authorization': `Bearer ${storedUser.token}`,
+      //   },
+      //   body: JSON.stringify({data:encryptedData})
+      // });
+      certificate.getSingleCertificates(data, async (response)=>{
+        const certificatesData = response;
+        console.log("gallery->getsinglecerf-->", certificatesData);
       setSingleWithoutCertificates(certificatesData?.data);
       setFilteredSingleWithoutCertificates(certificatesData?.data);
+      })
+      // const certificatesData = await response.json();
+      // setSingleWithoutCertificates(certificatesData?.data);
+      // setFilteredSingleWithoutCertificates(certificatesData?.data);
     } catch (error) {
       console.error('Error ', error);
     } 
@@ -98,20 +106,25 @@ const Gallery = () => {
       issuerId: storedUser.issuerId,
       type: 1
     };
-    const encryptedData = encryptData(data)
+    // const encryptedData = encryptData(data)
 
     try {
-      const response = await fetch(`${apiUrl_Admin}/api/get-single-certificates`, {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${storedUser.token}`,
-        },
-        body: JSON.stringify({data:encryptedData})
-      });
-      const certificatesData = await response.json();
+      // const response = await fetch(`${apiUrl_Admin}/api/get-single-certificates`, {
+      //   method: "POST",
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'Authorization': `Bearer ${storedUser.token}`,
+      //   },
+      //   body: JSON.stringify({data:encryptedData})
+      // });
+      certificate.getSingleCertificates(data, (response)=>{
+        const certificatesData =  response;
       setSingleWithCertificates(certificatesData?.data);
       setFilteredSingleWithCertificates(certificatesData?.data);
+      })
+      // const certificatesData = await response.json();
+      // setSingleWithCertificates(certificatesData?.data);
+      // setFilteredSingleWithCertificates(certificatesData?.data);
     } catch (error) {
       console.error('Error ', error);
     } 
@@ -122,18 +135,23 @@ const Gallery = () => {
     const data = {
       issuerId: storedUser.issuerId,
     };
-    const encryptedData = encryptData(data)
+    // const encryptedData = encryptData(data)
     try {
-      const response = await fetch(`${apiUrl_Admin}/api/get-batch-certificate-dates`, {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${storedUser.token}`,
-        },
-        body: JSON.stringify({data:encryptedData})
-      });
-      const datesData = await response.json();
+      // const response = await fetch(`${apiUrl_Admin}/api/get-batch-certificate-dates`, {
+      //   method: "POST",
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'Authorization': `Bearer ${storedUser.token}`,
+      //   },
+      //   body: JSON.stringify({data:encryptedData})
+      // });
+      certificate.getBatchCertificateDates(data, async (response)=>{
+        const datesData = response;
       setDates(datesData?.data);
+      }) 
+
+      // const datesData = await response.json();
+      // setDates(datesData?.data);
     } catch (error) {
       console.error('Error ', error);
     } finally {

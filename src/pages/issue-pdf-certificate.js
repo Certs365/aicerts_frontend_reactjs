@@ -10,6 +10,7 @@ import AWS from "../config/aws-config"
 import axios from 'axios';
 import Image from 'next/image';
 import { UpdateLocalStorage } from '../utils/UpdateLocalStorage';
+import issuance from '../services/issuanceServices';
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL_admin;
 const generalError = process.env.NEXT_PUBLIC_BASE_GENERAL_ERROR;
 
@@ -77,10 +78,11 @@ const IssueNewCertificate = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         
         if (hasErrors()) {
             setShow(false);
-            setIsLoading(false);
+            // setIsLoading(false);
             return;
         }
 
@@ -88,12 +90,12 @@ const IssueNewCertificate = () => {
         if (formData.grantDate >= formData.expirationDate) {
             setErrorMessage('Issued date must be smaller than expiry date');
             setShow(true);
-            setIsLoading(false);
+            // setIsLoading(false);
             return;
         }
 
 
-        setIsLoading(true);
+        
         setSuccessMessage("")
         setErrorMessage("")
         let progressInterval;
@@ -123,7 +125,7 @@ const IssueNewCertificate = () => {
             formDataWithFile.append('grantDate', formatDate(formData.grantDate));
             formDataWithFile.append('expirationDate', formatDate(formData.expirationDate));
             formDataWithFile.append('file', formData.file);
-
+            debugger
             const response = await fetch(`${apiUrl}/api/issue-pdf/`, {
                 method: 'POST',
                 body: formDataWithFile,
@@ -131,7 +133,37 @@ const IssueNewCertificate = () => {
                     'Authorization': `Bearer ${token}`
                 },
             });
-
+            // Log the contents of FormData
+            // console.log("Logging FormData entries:");
+            // for (let [key, value] of formDataWithFile.entries()) {
+            //   console.log(`${key}:`, value);  // This will show both the key and value in the FormData
+            // }
+            // issuance.issuePdf(formDataWithFile, async (response)=>{
+            //     debugger
+            //     console.log(response);
+            //     console.log(response.data);
+            //     const responseData = response.data;
+            //     if(response.status === "SUCCESS"){
+            //     // if (response && response.ok) {
+            //     debugger
+            //     const blob = await responseData.blob();
+                
+                
+            //     setPdfBlob(blob);
+            //     setSuccessMessage("Certificate Successfully Generated")
+            //     setShow(true);
+            //     await UpdateLocalStorage()
+            //     } else if (response) {
+            //         const responseBody = response.error.response.data;
+            //         const errorMessage = responseBody && responseBody.message ? responseBody.message : generalError;
+            //         console.error('API Error:' ,errorMessage);
+            //         // console.error('API Error:' || generalError);
+            //         setErrorMessage(errorMessage);
+            //         setShow(true);
+            //     } else {
+            //         console.error('No response received from the server.');
+            //     }
+            // })
             if (response && response.ok) {
                 const blob = await response.blob();
                 setPdfBlob(blob);
