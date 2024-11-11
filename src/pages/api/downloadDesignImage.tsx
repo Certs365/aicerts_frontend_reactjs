@@ -162,10 +162,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         <!-- Certificate Holder Name -->
         <div style="
             position: absolute;
-            left: ${pdfBatchDimentions.Name.xpos}px;
-            top: ${pdfBatchDimentions.Name.ypos}px;
-            width: ${pdfBatchDimentions.Name.width}px;
-            height: ${pdfBatchDimentions.Name.height}px;
+            left: ${pdfBatchDimentions?.Name?.xpos}px;
+            top: ${pdfBatchDimentions?.Name?.ypos}px;
+            width: ${pdfBatchDimentions?.Name?.width}px;
+            height: ${pdfBatchDimentions?.Name?.height}px;
             text-align: center;
             color: #0C393D;
             font-size: 40px;
@@ -179,10 +179,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         <!-- Course Name -->
         <div style="
             position: absolute;
-            left: ${pdfBatchDimentions.CourseName.xpos}px;
-            top: ${pdfBatchDimentions.CourseName.ypos}px;
-            width: ${pdfBatchDimentions.CourseName.width}px;
-            height: ${pdfBatchDimentions.CourseName.height}px;
+            left: ${pdfBatchDimentions?.CourseName?.xpos}px;
+            top: ${pdfBatchDimentions?.CourseName?.ypos}px;
+            width: ${pdfBatchDimentions?.CourseName?.width}px;
+            height: ${pdfBatchDimentions?.CourseName?.height}px;
             text-align: center;
             color: #0C393D;
             font-size: 40px;
@@ -194,10 +194,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         <!-- Certificate Number -->
         <div style="
             position: absolute;
-            left: ${pdfBatchDimentions.CertificateNumber.xpos}px;
-            top: ${pdfBatchDimentions.CertificateNumber.ypos}px;
-            width: ${pdfBatchDimentions.CertificateNumber.width}px;
-            height: ${pdfBatchDimentions.CertificateNumber.height}px;
+            left: ${pdfBatchDimentions?.CertificateNumber?.xpos}px;
+            top: ${pdfBatchDimentions?.CertificateNumber?.ypos}px;
+            width: ${pdfBatchDimentions?.CertificateNumber?.width}px;
+            height: ${pdfBatchDimentions?.CertificateNumber?.height}px;
             color: #000000;
             font-size: 18px;
             font-weight: 600;
@@ -208,34 +208,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         <!-- Issue Date -->
         <div style="
             position: absolute;
-            left: ${pdfBatchDimentions.IssueDate.xpos}px;
-            top: ${pdfBatchDimentions.IssueDate.ypos}px;
-            width: ${pdfBatchDimentions.IssueDate.width}px;
-            height: ${pdfBatchDimentions.IssueDate.height}px;
+            left: ${pdfBatchDimentions?.IssueDate?.xpos}px;
+            top: ${pdfBatchDimentions?.IssueDate?.ypos}px;
+            width: ${pdfBatchDimentions?.IssueDate?.width}px;
+            height: ${pdfBatchDimentions?.IssueDate?.height}px;
             color: #000000;
             font-size: 16px;
             font-family: 'Kanit', sans-serif;
-        ">Grant Date: ${ detail?.grantDate ? new Date(detail.grantDate).toLocaleDateString() : 'N/A' }</div>
+        ">Grant Date: ${ detail?.grantDate ? new Date(detail?.grantDate)?.toLocaleDateString() : 'N/A' }</div>
 
         <!-- Expiration Date -->
         <div style="
             position: absolute;
-            left: ${pdfBatchDimentions.ExpirationDate.xpos}px;
-            top: ${pdfBatchDimentions.ExpirationDate.ypos}px;
-            width: ${pdfBatchDimentions.ExpirationDate.width}px;
-            height: ${pdfBatchDimentions.ExpirationDate.height}px;
+            left: ${pdfBatchDimentions?.ExpirationDate?.xpos}px;
+            top: ${pdfBatchDimentions?.ExpirationDate?.ypos}px;
+            width: ${pdfBatchDimentions?.ExpirationDate?.width}px;
+            height: ${pdfBatchDimentions?.ExpirationDate?.height}px;
             color: #000000;
             font-size: 16px;
             font-family: 'Kanit', sans-serif;
-        ">Expiration Date: ${ detail?.expirationDate ? new Date(detail.expirationDate).toLocaleDateString() : 'N/A' }</div>
+        ">Expiration Date: ${ detail?.expirationDate ? new Date(detail?.expirationDate)?.toLocaleDateString() : 'N/A' }</div>
 
         <!-- QR Code -->
         <div style="
             position: absolute;
-            left: ${pdfBatchDimentions.QrCode.xpos}px;
-            top: ${pdfBatchDimentions.QrCode.ypos}px;
-            width: ${pdfBatchDimentions.QrCode.width}px;
-            height: ${pdfBatchDimentions.QrCode.height}px;
+            left: ${pdfBatchDimentions?.QrCode?.xpos}px;
+            top: ${pdfBatchDimentions?.QrCode?.ypos}px;
+            width: ${pdfBatchDimentions?.QrCode?.width}px;
+            height: ${pdfBatchDimentions?.QrCode?.height}px;
         ">
             <img src=${detail?.qrImage || qrCodeImage} alt='QR info' style="width: 100%; height: 100%;" />
         </div>

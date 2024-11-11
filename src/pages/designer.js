@@ -129,7 +129,7 @@ const Designer = () => {
         console.error("Error uploading template:", error);
         alert("An error occurred while uploading the template.");
       } finally {
-        hideLoader();
+        // hideLoader();
       }
     };
 

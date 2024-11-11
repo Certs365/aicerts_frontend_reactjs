@@ -35,6 +35,7 @@ const Placeholder: React.FC<PlaceholderProps> = () => {
     const [file, setFile] = useState<string>('');
     const router = useRouter();
     const { certificateUrl, cardId } = router.query;
+    // @ts-ignore: Implicit any for children prop
     const { setPdfBatchDimentions } = useContext(CertificateContext);
 
     const [dimentions, setDimentions] = useState<{ width: number | null; height: number | null }>({
@@ -96,13 +97,20 @@ const Placeholder: React.FC<PlaceholderProps> = () => {
             console.error('Error updating placeholders:', error);
         }
     };
+  // @ts-ignore: Implicit any for children prop
 
     return (
-        <div>
+        <div className='d-flex flex-column justify-content-center align-items-center'>
+
+           
             <PlaceholderPosition
                 fileUrl={file}
                 scale={1}
+  // @ts-ignore: Implicit any for children prop
+
                 placeholders={placeholders}
+  // @ts-ignore: Implicit any for children prop
+
                 setPlaceholders={setPlaceholders}
             />
             <Button label='Submit' className='golden' onClick={submitDimentions} />

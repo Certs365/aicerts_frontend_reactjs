@@ -24,8 +24,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   const [isDesign, setIsDesign] = useState(false)
   const [pdfDimentions, setPdfDimentions] = useState({})
   const [pdfFile, setPdfFile] = useState(null)
-  const [pdfBatchDimentions, setPdfBatchDimentions] = useState({})
-
+  const [pdfBatchDimentions, setPdfBatchDimentions] = useState<{}>({});
   const router = useRouter();
   const isLoginPage = router.pathname === '/' || router.pathname === '/register'|| router.pathname === '/forgot-passwords' ||  router.pathname === '/passwords-confirm' ;
   // @ts-ignore: Implicit any for children prop

@@ -140,7 +140,6 @@ const GalleryCertificates = ({ certificatesData, isLoading, setIsLoading }) => {
     <Image
         src={detail?.url}
         layout="fill"
-        objectFit="contain"
         alt={`Certificate ${index + 1}`}
         onLoadingComplete={() => setIsImageLoading(false)}
         onLoad={() => setIsImageLoading(true)}
