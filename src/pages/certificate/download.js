@@ -382,7 +382,7 @@ const DownloadCertificate = () => {
     if (isChecked) {
       setDetailsArray((prevDetails) => [...prevDetails, selectedDetail]);
     } else {
-      console.log(prevDetails);
+      // console.log(prevDetails);
       setDetailsArray((prevDetails) =>
         prevDetails.filter(
           (detail) => detail?.certificateNumber !== selectedDetail?.certificateNumber
@@ -399,7 +399,6 @@ const DownloadCertificate = () => {
 
     if (newSelectAll) {
       // If "Select All" is checked, store all details in the state
-      
       setDetailsArray(apiResponseData?.data?.details || []);
       setCheckedItems(
         apiResponseData?.data?.details?.reduce((acc, _, index) => {

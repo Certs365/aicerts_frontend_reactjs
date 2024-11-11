@@ -17,7 +17,7 @@
 
             .card-body {
                 padding: 0;
-                font-family: 'Montserrat', sans-serif;
+                font-family: $font-family;
 
                 .card-title {
                     color: #000000;
@@ -40,7 +40,7 @@
 
                     .form-label {
                         color: #5A677E;
-                        font-family: 'Montserrat', sans-serif;
+                        font-family: $font-family;
                         font-size: 14px;
                         font-style: normal;
                         font-weight: 500;

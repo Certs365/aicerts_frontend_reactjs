@@ -7,9 +7,8 @@ import axios from 'axios';
 import { PDFDocument, reverseArray } from 'pdf-lib'; 
 
 
-const GalleryCertificates = ({ certificatesData }) => {
+const GalleryCertificates = ({ certificatesData, isLoading, setIsLoading }) => {
     const [isImageLoading, setIsImageLoading] = useState(true);
-    const [isLoading, setIsLoading] = useState(false);
     const [filteredCertificatesArray, setFilteredCertificatesArray] = useState(certificatesData || []);
     const [thumbnailUrls, setThumbnailUrls] = useState([]);
     
@@ -33,6 +32,25 @@ const GalleryCertificates = ({ certificatesData }) => {
             return null;
         }
     }
+
+    // useEffect(() => {
+    //     const fetchThumbnails = async () => {
+    //         setIsImageLoading(true);
+    //         const urls = await Promise?.all(
+    //             certificatesData?.map(async (certificate) => {
+    //                 if (certificate?.url) {
+                        
+    //                     return certificate
+    //                 }
+    //                 return null;
+    //             })
+    //         );
+    //         const validCertificates = urls.filter(url => url !== null);
+    //         setThumbnailUrls(validCertificates);
+    //         setIsImageLoading(false);
+    //     };
+    //     fetchThumbnails();
+    // }, [certificatesData]);
 
     // useEffect(() => {
     //     const fetchThumbnails = async () => {

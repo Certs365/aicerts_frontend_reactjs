@@ -127,7 +127,6 @@ const CardSelector = () => {
       }
     };
 
-    setCertificateUrl("certificateUrl");
  
     retrieveDataFromSessionStorage();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -178,7 +177,7 @@ const CardSelector = () => {
       sessionStorage.setItem("issuerDesignation", inputValue);
     } else {
       // Show error message here, for example:
-      alert("Issuer designation must be 30 characters or less");
+      // alert("Issuer designation must be 30 characters or less");
     }
   };
 
@@ -703,6 +702,18 @@ const CardSelector = () => {
       return;
     }
   }
+  if (tab == 1 && !isDesign) {
+    router.push(`/certificate/${selectedCard}`);
+  } else if (tab == 0 && isDesign) {
+    // Sending route with state
+    router.push({
+      pathname: '/selectQrPdf', // Example route
+      query: { certificateUrl },         // You can pass any other state you need here
+    });
+  } else {
+    router.push(`/issue-certificate`);
+  }
+  
 
   if (tab == 1 && !isDesign) {
     router.push(`/certificate/${selectedCard}`);
@@ -808,6 +819,7 @@ const CardSelector = () => {
       console.log(customTemplateFromStorage);  //clg
       setNewTemplate(customTemplateFromStorage);  //for preview
       setCertificateUrl(customTemplateFromStorage);
+      setIsDesign(true)
       // setCertificateUrl(customTemplateFromStorage); // for later, in issue-certification, next part
     }else{
         handleCardSelect(0);

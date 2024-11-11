@@ -36,6 +36,8 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
   const [email, setEmail] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [nextRoute, setNextRoute] = useState(null);
+  const [documentNumberError, setDocumentNumberError] = useState('');
+  const [nameError, setNameError] = useState('');
   const adminUrl = process.env.NEXT_PUBLIC_BASE_URL_admin;
   const toggleLock = () => {
     setIsLocked(!isLocked);
@@ -49,7 +51,7 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
   });
 
   window.addEventListener('beforeunload', () => {
-    alert('User clicked back button');
+    // alert('User clicked back button');
      
        });
 
@@ -76,6 +78,26 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
     const { name, value } = e.target;
     if (regex && !regex.test(value)) {
       return;
+    }
+    if (name === 'documentNumber') {
+      if (value.length < 6) {
+        setDocumentNumberError('Document Number must be at least 6 characters.');
+      } else if (value.length > 50) {
+        setDocumentNumberError('Document Number cannot exceed 50 characters.');
+      } else {
+        setDocumentNumberError('');
+      }
+    }
+
+    // Validation logic for Name
+    if (name === 'name') {
+      if (value.length < 6) {
+        setNameError('Name must be at least 6 characters.');
+      } else if (value.length > 50) {
+        setNameError('Name cannot exceed 50 characters.');
+      } else {
+        setNameError('');
+      }
     }
     setCertificateDetails({ ...certificateDetails, [name]: value });
   };
@@ -174,55 +196,56 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
       //     'Authorization': `Bearer ${token}`
       //   },
       // });
-      console.log("Logging FormData entries:");
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);  // This will show both the key and value in the FormData
-    }
+    //   console.log("Logging FormData entries:");
+    // for (let [key, value] of formData.entries()) {
+    //   console.log(`${key}:`, value);  // This will show both the key and value in the FormData
+    // }
 
       issuance.issueDynamicPdf(formData, async (response)=>{
-        debugger
-        console.log(response);
-        if( response.status === 'SUCCESS'){
+      //   debugger
+      //   console.log(response);
+      //   if( response.status === 'SUCCESS'){
         // if (response && response.ok) {
           // const blob = await response.blob();
-          const blob = await response.data.blob();
+          // const blob = await response.data.blob();
           // todo --> blob() issue, temp fix, give pdf (corrupt)
           // const pdfData = response.data;
           // const encoder = new TextEncoder();
           // const pdfBytes = encoder.encode(pdfData);
           // // Create a Blob from the Uint8Array
           // const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-          setBlobUrl(blob);
+      //     setBlobUrl(blob);
            
-          setSuccess("Certificate Successfully Generated")
-          setShow(true);
-        } else if (response) {
-          const responseBody = response.error.response.data;
-          const errorMessage = responseBody && responseBody.message ? responseBody.message : generalError;
+      //     setSuccess("Certificate Successfully Generated")
+      //     setShow(true);
+      //   } else if (response) {
+      //     const responseBody = response.error.response.data;
+      //     const errorMessage = responseBody && responseBody.message ? responseBody.message : generalError;
           
-          setError(errorMessage);
-          setShow(true);
-        } else {
-          console.error('No response received from the server.');
-        }
-      })
+      //     setError(errorMessage);
+      //     setShow(true);
+      //   } else {
+      //     console.error('No response received from the server.');
+      //   }
+      // })
 
 
-      // if (response && response.ok) {
-      //   const blob = await response.blob();
-      //   setBlobUrl(blob);
+      if (response && response.ok) {
+        const blob = await response.blob();
+        setBlobUrl(blob);
          
-      //   setSuccess("Certificate Successfully Generated")
-      //   setShow(true);
-      // } else if (response) {
-      //   const responseBody = await response.json();
-      //   const errorMessage = responseBody && responseBody.message ? responseBody.message : generalError;
+        setSuccess("Certificate Successfully Generated")
+        setShow(true);
+      } else if (response) {
+        const responseBody = await response.json();
+        const errorMessage = responseBody && responseBody.message ? responseBody.message : generalError;
         
-      //   setError(errorMessage);
-      //   setShow(true);
-      // } else {
-      //   console.error('No response received from the server.');
-      // }
+        setError(errorMessage);
+        setShow(true);
+      } else {
+        console.error('No response received from the server.');
+      }
+    })
     }
     catch (error) {
       console.error('Error during API request:', error);
@@ -313,7 +336,7 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
   };
 
   const isFormValid = () => {
-    if (!certificateDetails.documentNumber || !certificateDetails.name) {
+    if (!certificateDetails.documentNumber || !certificateDetails.name || nameError || documentNumberError) {
       return false;
     }
     for (let field of customFields) {
@@ -343,7 +366,7 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
         </div>
         <div className='p-5'>
           <Row className='d-flex justify-content-md-center align-items-center'>
-            <Col md={{ span: 4 }} xs={{ span: 12 }}>
+            <Col md={{ span: 4 }} xs={{ span: 12 }} >
               <Form.Group controlId='documentNumber' className='mb-3'>
                 <Form.Label>Document Number<span className='text-danger'>*</span></Form.Label>
                 <InputGroup>
@@ -357,6 +380,9 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
                   />
                 </InputGroup>
               </Form.Group>
+                {documentNumberError && (
+                  <small className="text-danger">{documentNumberError}</small>
+                )}
             </Col>
             <Col md={{ span: 4 }} xs={{ span: 12 }}>
               <Form.Group controlId='name' className='mb-3'>
@@ -370,9 +396,13 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
                     required
                     maxLength={50}
                   />
-
+  
                 </InputGroup>
+               
               </Form.Group>
+              {nameError && (
+                  <small className="text-danger">{nameError}</small>
+                )}
             </Col>
             
             <Col md={{ span: 4 }} xs={{ span: 12 }} style={{ marginTop:"15px"}}>
@@ -455,7 +485,7 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
 {
   type=='poc' &&
   <div className='text-end mt-3'>
-  <Button label='Submit' className='golden ' onClick={submitDimentions} disabled={!isLocked || isLoading} />
+  <Button label='Submit' className='golden ' onClick={submitDimentions} disabled={!isLocked || isLoading } />
   </div>
 
 }

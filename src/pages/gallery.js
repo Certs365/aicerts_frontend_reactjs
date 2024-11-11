@@ -22,6 +22,7 @@ const Gallery = () => {
   const [user, setUser] = useState({});
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState(''); // New state for search query
   const [searchLoading, setSearchLoading] = useState(false); // New state for search loading
   const [filteredSingleWithCertificates, setFilteredSingleWithCertificates] = useState([]);
@@ -44,12 +45,13 @@ const Gallery = () => {
   }, []);
 
   const fetchData = async (storedUser) => {
+    setIsLoading(true)
+    fetchBatchDates(storedUser)
     await Promise.all([
       fetchSingleWithPdfCertificates(storedUser),
       fetchSingleWithoutCertificates(storedUser),
-      fetchBatchDates(storedUser),
     ]);
-    setLoading(false);
+    setIsLoading(false);
   };
 
   const handleChange = (value) => {
@@ -70,7 +72,6 @@ const Gallery = () => {
   };
 
   const fetchSingleWithoutCertificates = async (storedUser) => {
-    setLoading(true)
     const data = {
       issuerId: storedUser.issuerId,
       type: 2
@@ -97,13 +98,10 @@ const Gallery = () => {
       // setFilteredSingleWithoutCertificates(certificatesData?.data);
     } catch (error) {
       console.error('Error ', error);
-    } finally {
-      setLoading(false)
-    }
+    } 
   };
 
   const fetchSingleWithPdfCertificates = async (storedUser) => {
-    setLoading(true)
     const data = {
       issuerId: storedUser.issuerId,
       type: 1
@@ -129,9 +127,7 @@ const Gallery = () => {
       // setFilteredSingleWithCertificates(certificatesData?.data);
     } catch (error) {
       console.error('Error ', error);
-    } finally {
-      setLoading(false)
-    }
+    } 
   };
 
   const fetchBatchDates = async (storedUser) => {
@@ -257,9 +253,9 @@ const Gallery = () => {
         <div>Loading...</div>
       ) : (
         <>
-          {tab === 0 && <GalleryCertificates certificatesData={filteredSingleWithCertificates} />}
-          {tab === 1 && <GalleryCertificates certificatesData={filteredSingleWithoutCertificates} />}
-          {tab === 2 && <BatchDates dates={dates} batchCertificatesData={filteredBatchCertificatesData} setFilteredBatchCertificatesData={setFilteredBatchCertificatesData} setBatchCertificatesData={setBatchCertificatesData} />}
+          {tab === 0 && <GalleryCertificates certificatesData={filteredSingleWithCertificates} setIsLoading={setIsLoading} isLoading={isLoading}/>}
+          {tab === 1 && <GalleryCertificates certificatesData={filteredSingleWithoutCertificates} setIsLoading={setIsLoading} isLoading={isLoading}/>}
+          {tab === 2 && <BatchDates dates={dates} batchCertificatesData={filteredBatchCertificatesData} setFilteredBatchCertificatesData={setFilteredBatchCertificatesData} setBatchCertificatesData={setBatchCertificatesData} setIsLoading={setIsLoading} isLoading={isLoading} loading={loading} setLoading={setLoading}/>}
         </>
       )}
      

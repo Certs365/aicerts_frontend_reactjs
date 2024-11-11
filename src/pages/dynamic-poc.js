@@ -12,7 +12,7 @@ const DynamicPoc = () => {
   };
 
   return (
-    <div style={{ marginTop: "75px" }} className="page-bg gallery-wrapper">
+    <div style={{ marginTop: "75px" }} className="page-bg">
   
 
       {page === 0 && <SelectLocation page={page} setPage={setPage} />}

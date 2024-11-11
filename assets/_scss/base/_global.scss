@@ -3,7 +3,7 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Montserrat', sans-serif;
+    font-family: $font-family;
     
 
     * {
@@ -245,7 +245,7 @@ a {
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    margin: 40px 0 30px;
+    // margin: 40px 0 30px;
 
     @media (min-width: $large-min) and (max-width: $large-max) {
         font-size: 28px;

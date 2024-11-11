@@ -13,7 +13,7 @@
     
 
     .verify-landing {
-        font-family: 'Montserrat', sans-serif;
+        font-family: $font-family;
         padding: 30px;
         border: 1px solid #BFC0C2;
         box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -43,7 +43,7 @@ margin-bottom: 10px;
                 line-height: 26px;
                 margin: 14px 0;
                 font-weight: 700;
-                font-family: 'Montserrat', sans-serif;
+                font-family: $font-family;
                 
             }
 
@@ -53,7 +53,7 @@ margin-bottom: 10px;
                 line-height: 19px;
                 font-weight: 500;
                 margin-bottom: 20px;
-                font-family: 'Montserrat', sans-serif;
+                font-family: $font-family;
             }
         }
 

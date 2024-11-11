@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import { Container } from 'react-bootstrap';
+import { Container, Modal } from 'react-bootstrap';
 import GalleryCertificates from './gallery-certificates';
 import certificate from '../services/certificateServices';
 
 const apiUrl_Admin = process.env.NEXT_PUBLIC_BASE_URL;
 
-const BatchDates = ({ dates,batchCertificatesData, setFilteredBatchCertificatesData ,setBatchCertificatesData}) => {
+const BatchDates = ({ dates,batchCertificatesData, setFilteredBatchCertificatesData ,setBatchCertificatesData,isLoading, setIsLoading,loading,setloading}) => {
   const [user, setUser] =useState({});
   const [token, setToken] = useState(null);
 
@@ -24,11 +24,12 @@ const BatchDates = ({ dates,batchCertificatesData, setFilteredBatchCertificatesD
   }, []);
 
   const handleArrowClick = async (date) => {
-
+    setIsLoading(true)
     const data = {
       issuerId: date?.issuerId,
       batchId: date?.batchId
     };
+    console.log(data);
 
     try {
       // const response = await fetch(`${apiUrl_Admin}/api/get-batch-certificates`, {
@@ -41,10 +42,14 @@ const BatchDates = ({ dates,batchCertificatesData, setFilteredBatchCertificatesD
       // });
       debugger
       certificate.batchCertificates(data, async (response) => {
+        debugger
         if (response.status === 'SUCCESS') {
           const result = response;
           setFilteredBatchCertificatesData(result?.data);
           setBatchCertificatesData(result?.data)
+        }else{
+          //todo --> add proper modal to show error?
+          console.log(error.response.data.message);
         }
       })
 
@@ -54,6 +59,8 @@ const BatchDates = ({ dates,batchCertificatesData, setFilteredBatchCertificatesD
     } catch (error) {
       console.error('Error fetching certificates data:', error);
       // Handle error
+    }finally{
+      setIsLoading(false)
     }
   };
 
@@ -78,7 +85,7 @@ console.log(dates.data);
       <span className='expire-typo '>Batch</span>
       </div>
       {batchCertificatesData ? (
-        <GalleryCertificates certificatesData={batchCertificatesData} />
+        <GalleryCertificates certificatesData={batchCertificatesData}  setIsLoading={setIsLoading} isLoading={isLoading} />
       ) : (
         dates?.data?.map((date) => (
           <div key={date} className='batch-date-container'>
@@ -97,6 +104,19 @@ console.log(dates.data);
           </div>
         ))
       )}
+         <Modal className='loader-modal' show={loading || isLoading} centered>
+                <Modal.Body>
+                    <div className='certificate-loader'>
+                        <Image
+                            src="/backgrounds/login-loading.gif"
+                            layout='fill'
+                            objectFit='contain'
+                            alt='Loader'
+                        />
+                    </div>
+                </Modal.Body>
+            </Modal>
+
     </Container>
   );
 };

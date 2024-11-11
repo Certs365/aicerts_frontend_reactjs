@@ -82,12 +82,13 @@ const renewCert = (data: any, callback: (response: Response) => void) => {
   }
 
   const batchCertificates = (data: any, callback: (response: Response) => void) => {
-    const encryptedData = encryptData(data);
+    // const encryptedData = encryptData(data);
     
     API({
       method: "POST",
       url: `${APP_URL}/api/get-batch-certificates`,
-      data: { data: encryptedData },
+      // data: { data: encryptedData },
+      data: data
     })
       .then((response) => {
         callback({ status: "SUCCESS", data: response.data });
@@ -168,7 +169,7 @@ const renewCert = (data: any, callback: (response: Response) => void) => {
     
     API({
       method: "POST",
-      url: `${BASE_URL}/api/get-certificate-templates`,
+      url: `${APP_URL}/api/get-certificate-templates`,
       data: data,
     })
       .then((response) => {

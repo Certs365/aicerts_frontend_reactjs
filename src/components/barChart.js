@@ -66,7 +66,9 @@ function BarChart() {
         } catch (error) {
             console.error('Error fetching data:', error);
         } finally {
+            // setTimeout(() => setLoading(false), 100);
             setLoading(false); // Set loading to false after the API call
+
         }
     };
 

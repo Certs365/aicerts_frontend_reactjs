@@ -1,5 +1,5 @@
 .dashboard {
-    font-family: 'Montserrat', sans-serif;
+    font-family: $font-family;
 
     .card {
         height: 100%;
@@ -223,24 +223,37 @@
     }
 
     .steps-container {
-        padding: 20px;
+        padding: 10px;
         margin-top: 20px;
         background-color: #f8f9fa;
-        border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      
-        h2 {
-          font-size: 1.3rem;
-          color: #CFA935;
-          margin-bottom: 1rem;
+        // border: 1px solid red;
+        height: 67vh;
+        display: flex;
+        flex-direction: column;
+
+        .steps-header{
+            width: 100%;
+            background-color: #F3F3F3;
+            h2 {
+                font-size: 1.3rem;
+                color: #1C1F30;
+                
+                font-weight: 700;
+                
+              }
+
         }
+      
+    
       
         .steps-list {
           list-style-type: none;  // Remove default numbering
           padding-left: 0;        // Remove padding
           display: flex;
           flex-direction: column;
-          gap: 15px;
+          overflow-y: scroll; /* Enable vertical scrolling */
+          scrollbar-width: none; /* Hide scrollbar for Firefox */
          
       
           li {
@@ -248,10 +261,9 @@
             font-size: 0.8rem;
             color: #495057;
             counter-increment: step-counter;  // Increment custom counter
-            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+           
             padding: 10px;
-            transform: rotate(-2deg); 
-            background-image: linear-gradient(var(--lines) 0.05em, transparent 0.05em); // Optional background lines 
+           background-color:#F3F3F3 ;
 
 
             
@@ -261,20 +273,12 @@
                 font-weight: bold;
                 color: #CFA935;
                 display: block;  /* Ensures text displays */
-                text-align: center;  /* Center the text */
-                padding: 2px 5px;  /* Add some padding */
+                font-size: 16px;
+               
+                padding: 0px 0px;  /* Add some padding */
                 margin-bottom: 5px;
         
-                /* Tape effect */
-                position: absolute;
-                width: 100px;  /* Adjust the width of the tape */
-                top: -15px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: rgba(255, 255, 255, 0.8);  /* Transparent tape */
-                border: 1px solid rgba(0, 0, 0, 0.1);
-                border-radius: 4px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+               
             }
           
 
@@ -283,14 +287,12 @@
           }
           
         }
+        .steps-list::-webkit-scrollbar {
+            display: none; /* Hide scrollbar for Chrome, Safari, and Edge */
+            
+          }
     
-        
-        .steps-list li:nth-child(odd) {
-            transform: rotate(2deg);
-        }
-        .steps-list li:nth-child(even) {
-            transform: rotate(-1deg);
-        }
+ 
         
       
         .note {
@@ -900,7 +902,7 @@
    
     
     .upload-info {
-        font-family: 'Montserrat', sans-serif;
+        font-family: $font-family;
         background: #F7F7F7;
         padding: 20px;
 
@@ -954,9 +956,9 @@
 }
 
 .upload-badge-container {
-    font-family: 'Montserrat', sans-serif;
+    font-family: $font-family;
     .label {
-        font-family: 'Montserrat', sans-serif;
+        font-family: $font-family;
         color: #5B5A5F;
         // font-family: $font-family;
         font-size: 14px;
@@ -975,7 +977,7 @@
         /* Adjust as needed */
 
         .file-upload {
-            font-family: 'Montserrat', sans-serif;
+            font-family: $font-family;
             width: 70%;
             border: 1px solid #bfbfbf;
             padding: 5px;

@@ -249,6 +249,7 @@ const Search = ({ setResponseData, tab,setLoading }) => {
                     <div style={{ position: 'relative', flex: 1 }}>
                         {isDateInput ? (
                             <Form.Control
+                            style={{paddingLeft:"220px"}}
                                 type="date"
                                 className="search-input-admin"
                                 value={rawDate} // Bind rawDate to the date picker
@@ -257,6 +258,7 @@ const Search = ({ setResponseData, tab,setLoading }) => {
                         ) : (
                             <>
                                 <input
+                                
                                     type="text"
                                     className="d-none d-md-flex search-input-admin-page"
                                     placeholder={`Search by ${searchBy}`}

@@ -41,24 +41,24 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
     } else if (searchFor === 'dynamic') {
       return (
         <>
-          <Dropdown.Item eventKey="certificationNumber">Certification Number</Dropdown.Item>
-          <Dropdown.Item eventKey="name">Name</Dropdown.Item>
-          <InputGroup className="mb-3">
-            <FormControl
-              size="sm" // Make the input small
-              placeholder="Enter search criteria"
-              aria-label="Search criteria"
-              aria-describedby="basic-addon1"
-              className='m-2'
-              value={dynamicSearchCriteria}
-              onChange={(e) => { setDynamicSearchCriteria(e.target.value) }}
-              onKeyPress={(e) => {
-                if (e.key === 'Enter') {
-                  handleDynamicSearchCriteriaChange(e); // Trigger onEnter
-                }
-              }}
-            />
-          </InputGroup>
+        <Dropdown.Item eventKey="certificationNumber">Certification Number</Dropdown.Item>
+        <Dropdown.Item eventKey="name">Name</Dropdown.Item>
+        <InputGroup className="mb-3">
+  {/* <FormControl
+    size="sm" // Make the input small
+    placeholder="Enter search criteria"
+    aria-label="Search criteria"
+    aria-describedby="basic-addon1"
+    className='m-2'
+    value={dynamicSearchCriteria}
+    onChange={(e)=>{setDynamicSearchCriteria(e.target.value)}}
+    onKeyPress={(e) => {
+      if (e.key === 'Enter') {
+        handleDynamicSearchCriteriaChange(e); // Trigger onEnter
+      }
+    }}
+  /> */}
+</InputGroup>
         </>
       );
     } else {
@@ -183,6 +183,7 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
   };
 
   const handleSuggestionClick = (suggestion) => {
+    debugger
     console.log('suggestion: ', suggestion);
     setSearchTerm(suggestion); // Set suggestion as search term
     setShowSuggestions(false);
@@ -301,95 +302,100 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
     return `${mm}/${dd}/${yyyy}`;
   };
 
-  return (
-    <Form onSubmit={(e) => e.preventDefault()}>
-      <Form.Group controlId="search">
-        <div
-          className="search d-flex align-items-start">
-          {/* First Dropdown (For) */}
-          <Dropdown onSelect={handleSearchForSelect} className="me-2 golden-dropdown-button">
-            <Dropdown.Toggle
-              variant="secondary"
-              id="dropdown-basic"
-              className="custom-dropdown-toggle"
-              style={{
-                backgroundColor: "#ffffff",
-                color: "#5B5A5F",
-                borderColor: "#ffffff",
-                borderRadius: 0
-              }}
-            >
-              {`For: ${searchFor.charAt(0).toUpperCase() + searchFor.slice(1)}`}
-            </Dropdown.Toggle>
+    return (
+        <Form onSubmit={(e) => e.preventDefault()} >
+            <Form.Group controlId="search">
+            <div className="search d-flex align-items-start">
+            
+      {/* First Dropdown (For) */}
+    <div style={{width:"100%",display:"flex",justifyContent:"center"}}>
+    <Dropdown onSelect={handleSearchForSelect} className="me-2 golden-dropdown-button">
+  <Dropdown.Toggle
+    variant="secondary"
+    id="dropdown-basic btn-golden"
+    className="btn-golden"
+    style={{
+      backgroundColor: "#CFA935",
+      color: "white",
+      border:"none",
+      borderRadius: 0
+    }}
+  >
+    {`For: ${searchFor.charAt(0).toUpperCase() + searchFor.slice(1)}`}
+  </Dropdown.Toggle>
 
-            <Dropdown.Menu style={{ borderRadius: 0 }} className="custom-dropdown-menu">
-              {['default', 'dynamic'].map((item) => (
-                <div key={item} style={{ position: 'relative' }}>
-                  <Dropdown.Item
-                    eventKey={item}
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      padding: '8px 16px',
-                      color: item === searchFor ? '#CFA935' : '#5B5A5F', // Apply golden color if selected
-                    }}
-                  >
-                    {item.charAt(0).toUpperCase() + item.slice(1)}
-                    {item === searchFor && (
-                      <span style={{ color: '#CFA935', fontWeight: 'bold' }}>✔</span> // Tick for selected item
-                    )}
-                  </Dropdown.Item>
-                  {/* Horizontal Line */}
-                  {item !== 'dynamic' && <hr style={{ margin: '0', borderColor: '#ccc' }} />}
-                </div>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-          <Dropdown onSelect={handleSearchBySelect} className="golden-dropdown-button d-flex d-md-none" >
-            <Dropdown.Toggle variant="secondary" id="dropdown-basic" className="custom-dropdown-toggle"
-              style={{ backgroundColor: "#F3F3F3", color: "#5B5A5F", borderColor: "white", borderRadius: 0, height: '100%', width: "200px" }} disabled={!searchFor}>
-              {` ${searchBy.length ? searchBy.charAt(0).toUpperCase() + searchBy.slice(1) : 'Select Search For'}`}
-            </Dropdown.Toggle>
+  <Dropdown.Menu style={{ borderRadius: 0 }} className="custom-dropdown-menu">
+    {['default', 'dynamic'].map((item) => (
+      <div key={item} style={{ position: 'relative' }}>
+        <Dropdown.Item
+          eventKey={item}
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '8px 16px',
+            color: item === searchFor ? '#CFA935' : '#5B5A5F', // Apply golden color if selected
+          }}
+        >
+          {item.charAt(0).toUpperCase() + item.slice(1)}
+          {item === searchFor && (
+            <span style={{ color: '#CFA935', fontWeight: 'bold' }}>✔</span> // Tick for selected item
+          )}
+        </Dropdown.Item>
+        {/* Horizontal Line */}
+        {item !== 'dynamic' && <hr style={{ margin: '0', borderColor: '#ccc' }} />}
+      </div>
+    ))}
+  </Dropdown.Menu>
+</Dropdown>
+<Dropdown onSelect={handleSearchBySelect} className="golden-dropdown-button d-flex d-md-none" >
+    <Dropdown.Toggle variant="secondary" id="dropdown-basic btn-golden" className="custom-dropdown-toggle" 
+      style={{ backgroundColor: "#CFA935", color: "white", borderColor: "white", borderRadius: 0, height: '100%', minWidth:"150px" }} disabled={!searchFor}>
+      {` ${searchBy.length ? searchBy.charAt(0).toUpperCase() + searchBy.slice(1) : 'Select Search For'}`}
+    </Dropdown.Toggle>
 
             <Dropdown.Menu style={{ borderRadius: 0 }} className="custom-dropdown-menu">
               {getSearchByOptions()}
             </Dropdown.Menu>
           </Dropdown>
 
-          {/* Wrapper div to hold the input and dropdown */}
-          <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-
-            {/* Search Input */}
-            <div style={{ flex: 1, marginRight: '5px' }}>
-              {isDateInput ? (
-                <Form.Control
-                  type="date"
-                  style={{ paddingLeft: "220px" }}
-                  className="search-input-admin custom-date-picker pd-220"
-                  value={rawDate} // Bind rawDate to the date picker
-                  onChange={handleDateChange}
-                />
-              ) : (
-                <>
-                  <input
-                    type="text"
-                    style={{ paddingLeft: "220px" }}
-                    className="d-none d-md-flex search-input-admin ml-2"
-                    placeholder={`Search by ${searchBy}`}
-                    value={searchTerm}
-                    onChange={handleSearchTermChange}
-                  />
-                  <input
-                    type="text"
-                    // style={{paddingLeft:"220px"}}
-                    placeholder="Search here..."
-                    className="d-flex d-md-none search-input ml-2"
-                    value={searchTerm}
-                    onChange={handleSearchTermChange}
-                  />
-                </>
-              )}
+{/* Wrapper div to hold the input and dropdown */}
+<div style={{ position: 'relative', display: 'flex', alignItems: 'center',justifyContent:"center" }}>
+  
+  {/* Search Input */}
+  <div style={{ flex: 1, }}>
+    {isDateInput ? (
+      <Form.Control
+      style={{paddingLeft:"220px"}}
+        type="date"
+        className="search-input-admin custom-date-picker pd-220"
+        value={rawDate} // Bind rawDate to the date picker
+        onChange={handleDateChange}
+        
+      />
+    ) : (
+      <>
+        <input
+          type="text"
+          
+          className="d-none d-md-flex search-input-admin ml-2"
+          placeholder={`Search by ${searchBy}`}
+          value={searchTerm}
+          onChange={handleSearchTermChange}
+          style={{paddingLeft:"220px",border:"none"}}
+       
+        />
+        <input
+          type="text"
+          // style={{paddingLeft:"220px"}}
+          placeholder="Search here..."
+          className="d-flex d-md-none search-input  "
+          value={searchTerm}
+          onChange={handleSearchTermChange}
+          style={{border:"none"}}
+        />
+      </>
+    )}
 
               {/* Suggestions List */}
               {!isDateInput && showSuggestions && (
@@ -412,12 +418,12 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
               )}
             </div>
 
-            {/* Dropdown (placed inside the input container) */}
-            <Dropdown onSelect={handleSearchBySelect} className="golden-dropdown-button d-none d-md-flex" style={{ position: 'absolute', left: 2, width: "200px" }}>
-              <Dropdown.Toggle variant="secondary" id="dropdown-basic" className="custom-dropdown-toggle"
-                style={{ backgroundColor: "#F3F3F3", color: "#5B5A5F", borderColor: "white", borderRadius: 0, height: '100%', width: "200px" }} disabled={!searchFor}>
-                {` ${searchBy.length ? searchBy.charAt(0).toUpperCase() + searchBy.slice(1) : 'Select Search For'}`}
-              </Dropdown.Toggle>
+  {/* Dropdown (placed inside the input container) */}
+  <Dropdown onSelect={handleSearchBySelect} className="golden-dropdown-button d-none d-md-flex" style={{ position: 'absolute', left: 2, width:"200px" }}>
+    <Dropdown.Toggle variant="secondary" id="dropdown-basic btn-golden" className="btn-golden" 
+      style={{backgroundColor: "#CFA935",  color: "white", borderRadius: 0, height: '100%', width:"200px",marginRight:"10px",border:"none" }} disabled={!searchFor}>
+      {` ${searchBy.length ? searchBy.charAt(0).toUpperCase() + searchBy.slice(1) : 'Select Search For'}`}
+    </Dropdown.Toggle>
 
               <Dropdown.Menu style={{ borderRadius: 0 }} className="custom-dropdown-menu">
                 {getSearchByOptions()}
@@ -433,6 +439,7 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
           <div className='d-flex d-md-none search-icon-container-mobile' onClick={handleSearch}>
             <Image width={10} height={10} src="/icons/search.svg" alt='search' />
           </div>
+        </div>
         </div>
       </Form.Group>
 

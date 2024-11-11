@@ -324,6 +324,7 @@ const handleShowImages = async (index, detail, message, polygonLink, status) => 
       });
  
       if (res.ok) {
+        console.log('what go in blob', res);
           const blob = await res.blob();
           return blob; // Return blob for uploading
       } else {
@@ -404,26 +405,23 @@ const uploadToS3 = async (blob, certificateNumber) => {
           //     method: 'POST',
           //     body: formCert
           // });
-          certificate.apiuploadCertificate(formCert, async (response) => {
-            if(response.status != 'SUCCESS'){
-              // if (response.ok) {
-              throw new Error(`Failed to upload certificate to S3 on attempt ${attempt}`);
-          }
-
+          // console.log(uploadResponse);
+          // if (uploadResponse.ok) {
           // If successful
-          success = true;
-          })
-
+          // success = true;
+          //  }
           // if (!uploadResponse.ok) {
           //     throw new Error(`Failed to upload certificate to S3 on attempt ${attempt}`);
           // }
-
-          // // If successful
-          // success = true;
-
+          certificate.apiuploadCertificate(formCert, async (response) => {
+            debugger
+            if(response.status != 'SUCCESS'){
+              console.log(`Failed to upload certificate to S3 on attempt ${attempt}`);
+            }
+            success = true;
+          })
       } catch (error) {
           console.error(`Error uploading to S3 on attempt ${attempt}:`, error);
-
           // If max retries are reached
           if (attempt >= retryLimit) {
               console.error(`Max retries reached for certificate: ${certificateNumber}`);

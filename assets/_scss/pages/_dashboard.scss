@@ -223,7 +223,7 @@ color:  #5A677E;
     // box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
     .filter-options {
-        font-family: 'Montserrat', sans-serif;
+        font-family: $font-family;
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -231,7 +231,7 @@ color:  #5A677E;
 
         label {
             margin: 0 10px 0 0;
-            font-family: 'Montserrat', sans-serif;
+            font-family: $font-family;
             font-size: 14px;
             font-weight: 600;
             line-height: 17.07px;
@@ -384,7 +384,7 @@ color:  #5A677E;
 
 .custom-date-input span {
     // flex-grow: 1;
-    font-family: 'Montserrat', sans-serif;
+    font-family: $font-family;
     font-size: 16px;
     font-weight: 600;
     line-height: 19.5px;

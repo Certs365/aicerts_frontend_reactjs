@@ -40,7 +40,7 @@ const CertificateTemplateThree = ({ certificateData }) => {
 
     const handleDownloadPDF = async () => {
         const isCustomCerf = JSON.parse(sessionStorage.getItem("cerf") || false);
-    console.log(isCustomCerf);
+        console.log(isCustomCerf);
         try {
             setIsLoading(true);
             let url;

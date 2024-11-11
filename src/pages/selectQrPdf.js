@@ -6,12 +6,14 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import { PDFDocument } from 'pdf-lib';
 import CertificateContext from '../utils/CertificateContext';
+import DynamicQrForm from '../components/dynamicQrForm';
 
 const SelectQrPdf = () => {
     const router = useRouter();
     const { certificateUrl } = router.query;
   const [selectedFile, setSelectedFile] = useState(null);
   const [isLocked, setIsLocked] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const [rectangle, setRectangle] = useState({
     x: 100,
     y: 100,
@@ -20,7 +22,6 @@ const SelectQrPdf = () => {
   });
  
   const { pdfDimentions,setPdfDimentions, setPdfFile} = useContext(CertificateContext);
-
   const toggleLock = () => {
     setIsLocked(!isLocked);
   };
@@ -78,7 +79,7 @@ const SelectQrPdf = () => {
   const submitDimentions = async () => {
     if (!rectangle) return;
     setPdfDimentions(rectangle);
-    router.push('/issue-certificate')
+    setShowForm(true)
     
   };
 
@@ -92,6 +93,9 @@ const SelectQrPdf = () => {
 
   return (
     <div>
+      {showForm ?
+        <DynamicQrForm rectangle={rectangle}/>
+        :
       <div className='display-wrapper hide-scrollbar bg-white py-4'>
         <DisplayPdf file={selectedFile} scale={1} toggleLock={toggleLock} isLocked={isLocked} setRectangle={setRectangle} rectangle={rectangle} />
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
@@ -101,6 +105,8 @@ const SelectQrPdf = () => {
        <Button label='Submit' className='golden ' onClick={submitDimentions} disabled={!isLocked } />
   </div>
       </div>
+      }
+
     </div>
   );
 };

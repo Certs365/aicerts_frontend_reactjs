@@ -372,11 +372,11 @@ const handleLoginOtp = async (e) => {
         setLoginSuccess("Logged In Successfully");
         setShow(true)
         localStorage.setItem('user', JSON.stringify(loginData));
-  
         // await validateIssuer(responseData?.data?.email)
+        localStorage.setItem('firstlogin', "true");
         router.push('/dashboard');
         // Handle success (e.g., navigate, show success message)
-        console.log('Success:', data);
+        // console.log('Success:', data);
       } else {
         // Handle error (e.g., show error message)
         setLoginError('Invalid Otp');
@@ -456,6 +456,7 @@ stopProgress()
             setLoginSuccess("Login Success");
             setShow(true);
             localStorage.setItem('user', JSON.stringify(responseData?.data))
+            localStorage.setItem('firstlogin', "true");
             router.push('/dashboard');
 
           } else {
