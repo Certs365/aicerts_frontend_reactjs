@@ -33,7 +33,7 @@ const batchFileInputRef = useRef(null);
   const [token, setToken] = useState(null);
   const [flag, setFlag] = useState(true);
   const [now, setNow] = useState(0);
-
+  const [details, setDetails] = useState(null);
     // State to track active tab
     const [activeTab, setActiveTab] = useState('single');
     const [selectedOption, setSelectedOption] = useState('250');
@@ -292,9 +292,9 @@ const handleFileBatchChange = (event) => {
            
        } else if (response) {
         const responseBody = await response.json();
-
         const errorMessage = responseBody && responseBody.message ? responseBody.message : generalError;
         setError(errorMessage);
+        setDetails(Array.isArray(responseBody?.details) ? responseBody.details : []);
         setShow(true);
        }
       })
@@ -407,7 +407,7 @@ const handleFileBatchChange = (event) => {
           onChange={handleOptionChange}
           style={{width:"18px", height:"18px"}}
         />
-        250 issues
+        upto 250
       </label>
       
       <label className=' d-flex justify-content-center align-items-center'>
@@ -419,7 +419,7 @@ const handleFileBatchChange = (event) => {
           onChange={handleOptionChange}
           style={{width:"18px", height:"18px"}}
         />
-        Upto 2000 Issues
+        Max 2000
       </label>
 
          </div>
@@ -566,6 +566,17 @@ const handleFileBatchChange = (event) => {
                             />
                         </div>
                         <h3 className='text' style={{ color: '#ff5500' }}>{error}</h3>
+                        <div className='d-flex flex-row align-items-center flex-wrap text-cert-wrapper mb-3'>
+                        {details?.length > 0 && (
+    details?.slice(0, 10).map((cert, index) => (
+        <div key={index} className='cert-number'>
+            {cert.length > 20 ? `${cert.slice(0, 20)}...` : cert}
+            <span>|</span>
+        </div>
+    ))
+)}
+
+                </div> 
                         <button className='warning' onClick={handleClose}>Ok</button>
                     </>
                 )}

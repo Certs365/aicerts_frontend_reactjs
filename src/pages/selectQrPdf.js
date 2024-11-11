@@ -39,11 +39,18 @@ const SelectQrPdf = () => {
   
       // Create a new PDF document
       const pdfDoc = await PDFDocument.create();
-  
-      // Adjust page dimensions based on provided detail or default to A4 size
-      const imgWidth = detail?.width || 792;
-      const imgHeight = detail?.height || 612;// A4 page dimensions in mm
-  
+   const image = new Image();
+        image.src = imageUrl;
+        
+        // Wait for the image to load to get its natural dimensions
+        await new Promise((resolve, reject) => {
+            image.onload = resolve;
+            image.onerror = reject;
+        });
+
+        // Get the natural width and height of the image
+        const imgWidth = detail?.width || image.naturalWidth;
+        const imgHeight = detail?.height || image.naturalHeight;
       const page = pdfDoc.addPage([imgWidth, imgHeight]);
   
       // Embed the image (assuming it's PNG for now)

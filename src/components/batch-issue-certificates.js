@@ -13,6 +13,7 @@ import certificate from '../services/certificateServices';
 
 const iconUrl = process.env.NEXT_PUBLIC_BASE_ICON_URL;
 const adminApiUrl = process.env.NEXT_PUBLIC_BASE_URL_admin;
+const apiUrl = process.env.NEXT_PUBLIC_BASE_URL_USER;
 
 /**
  * @typedef {object} CertificateDisplayPageProps
@@ -38,8 +39,8 @@ const CertificateDisplayPage = ({ cardId }) => {
   const [show, setShow] = useState(false);
   const [now, setNow] = useState(0);
   const [details, setDetails] = useState(null);
-  const { badgeUrl, certificateUrl, logoUrl, signatureUrl, issuerName, issuerDesignation, certificatesData, setCertificatesDatasetBadgeUrl, setIssuerName, setissuerDesignation, setCertificatesData, setSignatureUrl, setBadgeUrl, setLogoUrl } = useContext(CertificateContext);
-
+  const { badgeUrl,pdfBatchDimentions, certificateUrl, logoUrl, signatureUrl, issuerName, issuerDesignation, certificatesData, setCertificatesDatasetBadgeUrl, setIssuerName, setissuerDesignation, setCertificatesData, setSignatureUrl, setBadgeUrl, setLogoUrl, setPdfDimentions } = useContext(CertificateContext);
+  const {certificatePath, isDesign,templateId} = router.query;
   useEffect(() => {
     sessionStorage.removeItem('certificatesList');
     // Check if the token is available in localStorage
@@ -56,6 +57,33 @@ const CertificateDisplayPage = ({ cardId }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+
+  useEffect(() => {
+    const fetchPlaceholders = async () => {
+        try {
+            const response = await fetch(`${apiUrl}/api/get-certificate-template/${templateId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json(); // Parse the JSON data
+            setPdfDimentions(data?.data?.dimentions); // Update state with the fetched data
+            console.log('Placeholders fetched successfully:', data);
+        } catch (error) {
+            console.error('Error fetching placeholders:', error);
+        }
+    };
+if(cardId){
+
+  fetchPlaceholders(); // Call the function to fetch data on component mount
+}
+}, []);
   useEffect(() => {
     // Function to retrieve data from session storage and set local state
     const retrieveDataFromSessionStorage = () => {
@@ -186,12 +214,15 @@ const CertificateDisplayPage = ({ cardId }) => {
         const formData = new FormData();
         formData.append('email', userEmail);
         formData.append('excelFile', selectedFile);
-        formData.append('templateUrl', new URL(certificateUrl)?.origin + new URL(certificateUrl)?.pathname);
-        formData.append('logoUrl', new URL(logoUrl)?.origin + new URL(logoUrl)?.pathname);
-        formData.append('signatureUrl', new URL(signatureUrl)?.origin + new URL(signatureUrl)?.pathname);
-        formData.append('badgeUrl', badgeUrl ? new URL(badgeUrl)?.origin + new URL(badgeUrl)?.pathname : null);
-        formData.append('issuerName', issuerName);
-        formData.append('issuerDesignation', issuerDesignation);
+        
+        if (!isDesign) {
+            formData.append('templateUrl', new URL(certificateUrl || certificatePath)?.origin + new URL(certificateUrl)?.pathname);
+            formData.append('logoUrl', new URL(logoUrl)?.origin + new URL(logoUrl)?.pathname);
+            formData.append('signatureUrl', new URL(signatureUrl)?.origin + new URL(signatureUrl)?.pathname);
+            formData.append('badgeUrl', badgeUrl ? new URL(badgeUrl)?.origin + new URL(badgeUrl)?.pathname : null);
+            formData.append('issuerName', issuerName);
+            formData.append('issuerDesignation', issuerDesignation);
+        }
 
         startProgress();
 
@@ -219,7 +250,8 @@ const CertificateDisplayPage = ({ cardId }) => {
           ));
           await UpdateLocalStorage();
             router.push({
-              pathname: '/certificate/download'
+              pathname: '/certificate/download',
+              query:{isDesign:isDesign, templateId:templateId}
           });
           }else {
             const responseData  = response.error.response.data;
@@ -245,46 +277,7 @@ const CertificateDisplayPage = ({ cardId }) => {
           }
         })
 
-        // const responseData = await response.json();
-
-        // if(responseData?.status == "SUCCESS"){
-        //     setCertificatesData(responseData);
-        //     sessionStorage.setItem("certificatesList", JSON.stringify(responseData));
-        //     setResponse(responseData);
-            
-        //     // Generate images and upload to S3
-        //     await Promise.all(responseData.details.map((detail, index) =>
-        //       generateAndUploadImage(index, detail, responseData.message, responseData.polygonLink, responseData.status)
-        //   ));
-        //   await UpdateLocalStorage();
-        //     router.push({
-        //       pathname: '/certificate/download'
-        //   });
-        // }
-        //  else {
-
-         
-        //   let errorMessage;
-        //   if (typeof responseData.details === 'string') {
-        //     if(responseData.message == "Issuer restricted to perform service"){
-        //       errorMessage = `Issuer restricted to perform service`;
-        //     }else{
-
-        //       errorMessage = `Error at ${truncateMessage(responseData.details, 7)}`;
-        //     }
-        //   } else if (typeof responseData.message === 'string') {
-        //     errorMessage = truncateMessage(responseData.message, 7);
-
-        //   } else {
-        //     errorMessage = 'Something went wrong';
-        //   }
-          
-          
-        //   setError(errorMessage);
-        //     setShow(true);
-        //     setDetails(Array.isArray(responseData?.details) ? responseData.details : []);
-
-        // }
+        
     } catch (error) {
         console.error('Error issuing certificates:', error);
         setError('An unexpected error occurred.');
@@ -312,74 +305,50 @@ const generateAndUploadImage = async (index, detail, message, polygonLink, statu
 };
 
 const handleShowImages = async (index, detail, message, polygonLink, status) => {
-   
-  try {
-    debugger
-      const res = await fetch('/api/downloadImage', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ detail, message, polygonLink, status, certificateUrl,badgeUrl, logoUrl, signatureUrl, issuerName, issuerDesignation }),
-      });
- 
-      if (res.ok) {
-        console.log('what go in blob', res);
-          const blob = await res.blob();
-          return blob; // Return blob for uploading
-      } else {
-        
-          console.error('Failed to generate image:', res.statusText);
-          throw new Error('Image generation failed');
-          
-      }
-  } catch (error) {
-      console.error('Error generating image:', error);
-      throw error;
+  let url = '/api/downloadImage';
+  let certificateUrl = certificatePath; // Start with certificatePath as the default
+  const requestBody = {
+      detail,
+      message,
+      polygonLink,
+      status,
+      certificateUrl,
+      badgeUrl,
+      logoUrl,
+      signatureUrl,
+      issuerName,
+      issuerDesignation,
+      pdfBatchDimentions
+  };
+
+  // Conditionally add certificatePdfDimentions if isDesign is true
+  if (isDesign) {
+      url = '/api/downloadDesignImage';
+      requestBody.pdfBatchDimentions = pdfBatchDimentions; // Assuming this is defined
   }
-}
 
-// const uploadToS3 = async (blob, certificateNumber) => {
-//   const retryLimit = parseInt(process.env.RETRY_LIMIT_BATCH_UPLOAD || "3"); // Default to 3 retries if RETRY_LIMIT is not set
-//   let attempt = 0;
-//   let success = false;
+  try {
+     const res = await fetch(url, {
+         method: 'POST',
+         headers: {
+             'Content-Type': 'application/json',
+         },
+         body: JSON.stringify(requestBody),
+     });
 
-//   while (attempt < retryLimit && !success) {
-//       try {
-//           // Increment attempt count
-//           attempt++;
+     if (res.ok) {
+         const blob = await res.blob();
+         return blob; // Return blob for uploading
+     } else {
+         console.error('Failed to generate image:', res.statusText);
+         throw new Error('Image generation failed');
+     }
+  } catch (error) {
+     console.error('Error generating image:', error);
+     throw error;
+  }
+};
 
-//           // Create a new FormData object
-//           const formCert = new FormData();
-//           // Append the blob to the form data
-//           formCert.append('file', blob);
-//           // Append additional fields
-//           formCert.append('certificateNumber', certificateNumber);
-//           formCert.append('type', 3);
-
-//           // Make the API call to send the form data
-//           const uploadResponse = await fetch(`${adminApiUrl}/api/upload-certificate`, {
-//               method: 'POST',
-//               body: formCert
-//           });
-
-//           if (!uploadResponse.ok) {
-//               throw new Error(`Failed to upload certificate to S3 on attempt ${attempt}`);
-//           }
-
-//           // If successful
-//           success = true;
-
-//       } catch (error) {
-//           console.error(`Error uploading to S3 on attempt ${attempt}:`, error);
-
-//           // If max retries are reached
-//           if (attempt >= retryLimit) {
-//               console.error(`Max retries reached for certificate: ${certificateNumber}`);
-//           }
-//       }
-//   }
-// };
 
 const uploadToS3 = async (blob, certificateNumber) => {
   const retryLimit = parseInt(process.env.RETRY_LIMIT_BATCH_UPLOAD || "3"); // Default to 3 retries if RETRY_LIMIT is not set
@@ -448,7 +417,7 @@ const uploadToS3 = async (blob, certificateNumber) => {
                 <Card.Body>
                   <div className='batch-cert-temp'>
                     <Image 
-                      src={certificateUrl} 
+                      src={certificatePath || certificateUrl} 
                       layout='fill'
                       objectFit='contain'
                       alt={`Certificate ${parsedCardId + 1}`} />

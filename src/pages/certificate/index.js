@@ -54,6 +54,7 @@ const CardSelector = () => {
   const [signatureFileName, setSignatureFileName] = useState("");
   const [newTemplate, setNewTemplate] = useState("")
   const [designCerts, setDesignCerts] = useState([])
+  const [card, setCard] = useState({})
 
   const {
     setCertificateUrl,
@@ -177,6 +178,7 @@ const CardSelector = () => {
       sessionStorage.setItem("issuerDesignation", inputValue);
     } else {
       // Show error message here, for example:
+      // alert("Issuer designation must be 30 characters or less");
       // alert("Issuer designation must be 30 characters or less");
     }
   };
@@ -621,8 +623,9 @@ const CardSelector = () => {
     }
   };
 
-  const handleDesignCardSelect = (url) => {
+  const handleDesignCardSelect = (url,card) => {
     setCertificateUrl(url);
+    setCard(card)
     setIsDesign(true)
   }
   const handleCardSelect = (cardIndex) => {
@@ -704,20 +707,13 @@ const CardSelector = () => {
   }
   if (tab == 1 && !isDesign) {
     router.push(`/certificate/${selectedCard}`);
-  } else if (tab == 0 && isDesign) {
-    // Sending route with state
+  }else if (tab == 1 && isDesign) {
     router.push({
-      pathname: '/selectQrPdf', // Example route
-      query: { certificateUrl },         // You can pass any other state you need here
+      pathname: '/placeholder', // Example route
+      query: { certificateUrl, cardId: card._id },         // You can pass any other state you need here
     });
-  } else {
-    router.push(`/issue-certificate`);
-  }
-  
-
-  if (tab == 1 && !isDesign) {
-    router.push(`/certificate/${selectedCard}`);
-  } else if (tab == 0 && isDesign) {
+  } 
+  else if (tab == 0 && isDesign) {
     // Sending route with state
     router.push({
       pathname: '/selectQrPdf', // Example route
@@ -819,6 +815,7 @@ const CardSelector = () => {
       console.log(customTemplateFromStorage);  //clg
       setNewTemplate(customTemplateFromStorage);  //for preview
       setCertificateUrl(customTemplateFromStorage);
+      setIsDesign(true)
       setIsDesign(true)
       // setCertificateUrl(customTemplateFromStorage); // for later, in issue-certification, next part
     }else{
@@ -1233,7 +1230,7 @@ const CardSelector = () => {
                           <Card
                             className="cert-thumb"
                             style={{ cursor: "pointer" }}
-                            onClick={() => handleDesignCardSelect(card?.url)}
+                            onClick={() => handleDesignCardSelect(card?.url, card)}
                           >
                             <Card.Img
                              variant="top" src={card?.url} />

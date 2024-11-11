@@ -1,14 +1,10 @@
 
 // const apiUrl = "http://10.2.3.55:7039";
-//  const apiUrl_Admin =window.CONFIG.NEXT_PUBLIC_BASE_URL;
-// const apiUrl = window.CONFIG.NEXT_PUBLIC_BASE_URL_USER;
-const apiUrl_Admin =window.CONFIG.NEXT_PUBLIC_BASE_URL_admin;
-const apiUrl = window.CONFIG.NEXT_PUBLIC_BASE_URL;
+// const apiUrl_Admin = "http://10.2.3.55:6049";
+const apiUrl = "https://userdevapi.certs365.io";
+const apiUrl_Admin = "https://adminapidev.certs365.io";
 
-
-
-
-var canvas;
+let canvas;
 let textObjects = [];
 let shapeObjects = [];
 let activeTextIndex = -1;

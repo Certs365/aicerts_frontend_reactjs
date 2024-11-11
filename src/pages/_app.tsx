@@ -24,6 +24,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   const [isDesign, setIsDesign] = useState(false)
   const [pdfDimentions, setPdfDimentions] = useState({})
   const [pdfFile, setPdfFile] = useState(null)
+  const [pdfBatchDimentions, setPdfBatchDimentions] = useState({})
 
   const router = useRouter();
   const isLoginPage = router.pathname === '/' || router.pathname === '/register'|| router.pathname === '/forgot-passwords' ||  router.pathname === '/passwords-confirm' ;
@@ -34,7 +35,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   
   return (
     // @ts-ignore: Implicit any for children prop
-    <CertificateContext.Provider value={{badgeUrl, logoUrl, signatureUrl,certificateUrl,tab,selectedCard, issuerName, issuerDesignation,certificatesData,isDesign,pdfDimentions,pdfFile, setBadgeUrl:setBadgeUrl,setSignatureUrl:setSignatureUrl, setLogoUrl:setLogoUrl, setCertificateUrl:setCertificateUrl,setTab:setTab,setSelectedCard:setSelectedCard, setIssuerName:setIssuerName, setissuerDesignation:setissuerDesignation,setCertificatesData:setCertificatesData,setIsDesign:setIsDesign, setPdfDimentions:setPdfDimentions,setPdfFile}}>
+    <CertificateContext.Provider value={{badgeUrl, logoUrl, signatureUrl,certificateUrl,tab,selectedCard, issuerName, issuerDesignation,certificatesData,isDesign,pdfDimentions,pdfFile,pdfBatchDimentions, setBadgeUrl:setBadgeUrl,setSignatureUrl:setSignatureUrl, setLogoUrl:setLogoUrl, setCertificateUrl:setCertificateUrl,setTab:setTab,setSelectedCard:setSelectedCard, setIssuerName:setIssuerName, setissuerDesignation:setissuerDesignation,setCertificatesData:setCertificatesData,setIsDesign:setIsDesign,setPdfBatchDimentions:setPdfBatchDimentions, setPdfDimentions:setPdfDimentions,setPdfFile}}>
      <Head>
     <title>Certs365 Blockchain Issuance: Secure, Fast, and Reliable</title>
     <meta name="description" content="Blockchain-based issuance is revolutionizing asset management. Explore its benefits and potential in enhancing transparency and security." />
