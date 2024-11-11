@@ -26,6 +26,7 @@
     "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "fabric": "^6.4.3",
     "file-saver": "^2.0.5",
     "firebase": "^10.8.1",
     "font-list": "^1.5.1",

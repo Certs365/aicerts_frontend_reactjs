@@ -254,7 +254,7 @@ if (issueService ) {
       case '/admin':
         setSelectedTab(4);
         break;
-        case '/templates.html':
+        case '/designer':
         setSelectedTab(5);
         break;
       default:
@@ -264,6 +264,7 @@ if (issueService ) {
 
   // @ts-ignore: Implicit any for children prop
   const handleClickTab = ((value) => {
+    console.log(value)
     setSelectedTab(value)
   })
 
@@ -302,7 +303,7 @@ if (issueService ) {
       handleLogout();
     }
   };
-  const routesWithLogoutButton = ['/certificates', '/issue-pdf-certificate', '/issue-certificate', '/certificate', '/certificate/[id]', '/certificate/download', '/dashboard', '/user-details', '/admin', '/gallery', '/issue-pdf-qr','/dynamic-poc', '/settings'];
+  const routesWithLogoutButton = ['/certificates', '/issue-pdf-certificate', '/issue-certificate', '/certificate', '/certificate/[id]', '/certificate/download', '/dashboard', '/user-details', '/admin', '/gallery', '/issue-pdf-qr','/dynamic-poc', '/settings','/designer'];
   const handleConfirm = () => {
     setShowModal(false)
     handleLogout();
@@ -353,7 +354,7 @@ if (issueService ) {
                 <Nav.Link onClick={() => { handleClickTab(1) }} className={`nav-item ${selectedTab === 1 ? "tab-golden" : ""}`} href="/gallery">
                     Gallery
                 </Nav.Link>
-                <Nav.Link onClick={() => { handleClickTab(5) }} className={`nav-item ${selectedTab === 5 ? "tab-golden" : ""}`} href="/templates.html">
+                <Nav.Link onClick={() => { handleClickTab(5) }} className={`nav-item ${selectedTab === 5 ? "tab-golden" : ""}`} href="/designer">
                 Certificate Designer
                 </Nav.Link>
                 <Nav.Link onClick={() => { handleClickTab(2) }} className={`nav-item ${selectedTab === 2 ? "tab-golden" : ""}`} href="/certificates">
