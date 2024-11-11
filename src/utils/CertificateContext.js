@@ -13,7 +13,8 @@ const CertificateContext = createContext({
     certificatesData:[],
     isDesign:false,
     pdfDimentions:{},
-    pdfFile:null
+    pdfFile:null,
+    pdfBatchDimentions:{}
 })
 
 export default CertificateContext;

@@ -30,7 +30,7 @@ const batchFileInputRef = useRef(null);
   const [token, setToken] = useState(null);
   const [flag, setFlag] = useState(true);
   const [now, setNow] = useState(0);
-
+  const [details, setDetails] = useState(null);
     // State to track active tab
     const [activeTab, setActiveTab] = useState('single');
     const [selectedOption, setSelectedOption] = useState('250');
@@ -246,6 +246,7 @@ const handleFileBatchChange = (event) => {
           setSuccess("Certificates Successfully Generated");
           setShow(true);
           if (data?.details) {
+
             setCertificates(data?.details);
           }
         } else {
@@ -256,6 +257,7 @@ const handleFileBatchChange = (event) => {
         const responseBody = await response.json();
         const errorMessage = responseBody && responseBody.message ? responseBody.message : generalError;
         setError(errorMessage);
+        setDetails(Array.isArray(responseBody?.details) ? responseBody.details : []);
         setShow(true);
       }
     } catch (error) {
@@ -263,7 +265,6 @@ const handleFileBatchChange = (event) => {
       if (error.response && error.response.data && error.response.data.message) {
         errorMessage = error.response.data.message;
       }
-  
       setError(errorMessage);
       setShow(true);
     } finally {
@@ -505,6 +506,17 @@ const handleFileBatchChange = (event) => {
                             />
                         </div>
                         <h3 className='text' style={{ color: '#ff5500' }}>{error}</h3>
+                        <div className='d-flex flex-row align-items-center flex-wrap text-cert-wrapper mb-3'>
+                        {details?.length > 0 && (
+    details?.slice(0, 10).map((cert, index) => (
+        <div key={index} className='cert-number'>
+            {cert.length > 20 ? `${cert.slice(0, 20)}...` : cert}
+            <span>|</span>
+        </div>
+    ))
+)}
+
+                </div> 
                         <button className='warning' onClick={handleClose}>Ok</button>
                     </>
                 )}
