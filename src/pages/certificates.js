@@ -4,49 +4,51 @@ import Button from '../../shared/button/button';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import CertificateContext from "../utils/CertificateContext"
+import { useTheme } from '../context/ThemeContext';
 const iconUrl = process.env.NEXT_PUBLIC_BASE_ICON_URL;
 
 const Certificates = () => {
     const router = useRouter();
     const [token, setToken] = useState(null);
-    const {tab, setTab } = useContext(CertificateContext);
+    const { tab, setTab } = useContext(CertificateContext);
+    const { isDarkMode } = useTheme();
 
     useEffect(() => {
         // Check if the token is available in localStorage
         const storedUser = JSON.parse(localStorage.getItem('user'));
-    
+
         if (storedUser && storedUser.JWTToken) {
-          // If token is available, set it in the state
-          setToken(storedUser.JWTToken);
+            // If token is available, set it in the state
+            setToken(storedUser.JWTToken);
         } else {
-          // If token is not available, redirect to the login page
-          router.push('/');
+            // If token is not available, redirect to the login page
+            router.push('/');
         }
-          // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const issueWithPdf = () => {
-        window.location= '/issue-pdf-certificate'
+        window.location = '/issue-pdf-certificate'
     }
 
     const issueWithoutPdf = () => {
         setTab(0)
-        window.location= '/certificate?tab=0'
+        window.location = '/certificate?tab=0'
     }
 
     const issueBatchPdf = () => {
         setTab(1)
-        window.location= '/certificate?tab=1'
+        window.location = '/certificate?tab=1'
     }
 
     const issueQrPdf = () => {
         setTab(1)
-        window.location= '/issue-pdf-qr'
+        window.location = '/issue-pdf-qr'
     }
 
     const issueDynamicPoc = () => {
         setTab(1)
-        window.location= '/dynamic-poc'
+        window.location = '/dynamic-poc'
     }
 
     return (

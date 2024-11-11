@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 import { Navbar } from 'react-bootstrap';
 import { getAuth } from 'firebase/auth';
 import Button from '../../shared/button/button';
+import ThemeSwitcher from '@/components/ThemeSwitcher';
+import ThemedImage from '@/components/ThemedImage';
 
 const NavigationLogin = () => {
   const router = useRouter();
@@ -38,8 +40,9 @@ const NavigationLogin = () => {
       <div className="container-fluid">
         <div className='nav-logo'>
           <Link className="navbar-brand" href="/">
-            <Image
-              src={logoSrc}
+            <ThemedImage
+              imageLight={logoSrc}
+              imageDark="/images/Certs365-white-logo.svg"
               layout='fill'
               objectFit="contain"
               alt='AI Certs logo'
@@ -47,17 +50,22 @@ const NavigationLogin = () => {
           </Link>
         </div>
         {router.pathname !== '/register' && (
-          <div className="collapse navbar-collapse">
-            <Navbar.Collapse className="justify-content-end">
-              <Navbar.Text>
-                <span className='nav-text text-decoration-none'>Dont have an account?</span>
-              </Navbar.Text>
-              <Navbar.Text>
-                <Button label="Apply for Account" onClick={handleClick} className="golden" />
-              </Navbar.Text>
-            </Navbar.Collapse>
-          </div>
+          <>
+            <div className="collapse navbar-collapse">
+              <Navbar.Collapse className="justify-content-end">
+                <Navbar.Text>
+                  <span className='nav-text text-decoration-none'>Dont have an account?</span>
+                </Navbar.Text>
+                <Navbar.Text>
+                  <Button label="Apply for Account" onClick={handleClick} className="golden" />
+                </Navbar.Text>
+              </Navbar.Collapse>
+            </div>
+          </>
         )}
+        <div className='ms-3'>
+          <ThemeSwitcher />
+        </div>
       </div>
     </nav>
   );

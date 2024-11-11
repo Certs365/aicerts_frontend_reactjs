@@ -7,16 +7,16 @@ import issuance from '../services/issuanceServices';
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const secretKey = process.env.NEXT_PUBLIC_BASE_ENCRYPTION_KEY;
 
-const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWithoutCertificates, setFilteredBatchCertificatesData, tab, setLoading }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchBy, setSearchBy] = useState('certificationNumber');
-  const [searchFor, setSearchFor] = useState('default');
-  const [suggestions, setSuggestions] = useState([]);
-  const [email, setEmail] = useState("");
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const [isDateInput, setIsDateInput] = useState(false); // Control input type
-  const [rawDate, setRawDate] = useState(''); // Store raw date for date picker UI
-  const [error, setError] = useState('');
+const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWithoutCertificates, setFilteredBatchCertificatesData, tab,setLoading }) => {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [searchBy, setSearchBy] = useState('certificationNumber');
+    const [searchFor, setSearchFor] = useState('default');
+    const [suggestions, setSuggestions] = useState([]);
+    const [email, setEmail] = useState("");
+    const [showSuggestions, setShowSuggestions] = useState(false);
+    const [isDateInput, setIsDateInput] = useState(false); // Control input type
+    const [rawDate, setRawDate] = useState(''); // Store raw date for date picker UI
+    const [error, setError] = useState('');
   const [show, setShow] = useState(false);
   const [success, setSuccess] = useState('');
   const [dynamicSearchCriteria, setDynamicSearchCriteria] = useState('');
@@ -70,13 +70,13 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
   };
 
 
-  useEffect(() => {
-    if (searchTerm === "" || isDateInput) {
-      setShowSuggestions(false);
-    } else {
-      setShowSuggestions(true);
-    }
-  }, [searchTerm, isDateInput]);
+    useEffect(() => {
+        if (searchTerm === "" || isDateInput) {
+            setShowSuggestions(false);
+        } else {
+            setShowSuggestions(true);
+        }
+    }, [searchTerm, isDateInput]);
 
   const handleClose = () => {
     setShow(false);
@@ -84,29 +84,28 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
     setSuccess("")
   };
 
-  useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem('user') ?? 'null');
-    if (storedUser && storedUser.JWTToken) {
-      setEmail(storedUser.email);
-    }
-  }, []);
+  /* eslint-disable */
+    useEffect(() => {
+        if (!isDateInput) {
+            const debounceFetch = setTimeout(() => {
+                fetchSuggestions(searchTerm, searchBy);
+            }, 300);
 
+            return () => clearTimeout(debounceFetch);
+        }
+    }, [searchTerm, searchBy]);
+    /* eslint-disable */
 
-
-  const fetchSuggestions = async (term, criterion) => {
-    if (!term.trim() || isDateInput) {
-      setSuggestions([]);
-      return;
-    }
-
-    const dataToEncrypt = {
-      email: email,
-      input: term,
-      filter: criterion,
-      flag: 1,
+    const handleSearchTermChange = (e) => {
+        const value = e.target.value;
+        setSearchTerm(value);
     };
 
-    // Your AES secret key (ensure both front-end and back-end use the same key)
+    const handleDateChange = (e) => {
+        const value = e.target.value;
+        setRawDate(value); // Store raw date in 'yyyy-mm-dd' format
+        setSearchTerm(formatDate(value)); // Format date for API call
+    };
 
     // const encryptedData = encryptData(dataToEncrypt);
 
@@ -146,161 +145,69 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
     }
   };
 
-  /* eslint-disable */
-  useEffect(() => {
-    if (!isDateInput) {
-      const debounceFetch = setTimeout(() => {
-        fetchSuggestions(searchTerm, searchBy);
-      }, 300);
+    const handleSearch = async (e) => {
+        e.preventDefault();
+        setError("");
+    
+        try {
+            // setLoading(true);
 
-      return () => clearTimeout(debounceFetch);
-    }
-  }, [searchTerm, searchBy]);
-  /* eslint-disable */
+           const dataToEncrypt = {
+              email: email,
+              input: searchTerm,
+              filter: searchBy,
+              flag: 2,
+          }
+      const encryptedData = encryptData(dataToEncrypt);
+            const response = await fetch(`${apiUrl}/api/get-filtered-issues`, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                  data: encryptedData, 
+              }),
+          } );
 
-  const handleSearchTermChange = (e) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-  };
-
-  const handleDateChange = (e) => {
-    const value = e.target.value;
-    setRawDate(value); // Store raw date in 'yyyy-mm-dd' format
-    setSearchTerm(formatDate(value)); // Format date for API call
-  };
-
-  const handleSearchBySelect = (eventKey) => {
-    setSearchBy(eventKey);
-    setSearchTerm(''); // Reset search term when search criterion changes
-    setSuggestions([]);
-    setShowSuggestions(false);
-
-    // Toggle date picker for certain searchBy options
-    if (eventKey === 'grantDate' || eventKey === 'expirationDate') {
-      setIsDateInput(true);
-    } else {
-      setIsDateInput(false);
-    }
-  };
-
-  const handleSuggestionClick = (suggestion) => {
-    console.log('suggestion: ', suggestion);
-    setSearchTerm(suggestion); // Set suggestion as search term
-    setShowSuggestions(false);
-  };
-
-  const filteredData = (data, type, second = "") => {
-    console.log('filtereddata: ', data);
-    // console.log('filtereddata: data.data ', data?.data);
-    return data?.data?.filter(item => {
-      if (type === "batch") {
-        // Return items that have no 'type' property
-        return item.hasOwnProperty('batchId');
-      }
-      // Return items that match the specified 'type'
-      return item.type === type || second;
-    });
-  };
-
-
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    setError("");
-
-    try {
-      // setLoading(true);
-
-      const dataToEncrypt = {
-        email: email,
-        input: searchTerm,
-        filter: searchBy,
-        flag: 2,
-      }
-      // const encryptedData = encryptData(dataToEncrypt);
-
-      // const response = await fetch(`${apiUrl}/api/get-filtered-issues`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({
-      //     data: encryptedData,
-      //   }),
-      // });
-
-      issuance.filteredIssues( dataToEncrypt, async (response) => {
-        if( response.status != 'SUCCESS'){
-        // if (!response.ok) {
-          // throw new Error('Network response was not ok');
-          console.log('Network response was not ok');
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
-  
-        const responseData = response;
-        const data = responseData?.data?.details;
-        console.log("filteredissue of handlesearch responseData", responseData);
-        console.log("filteredissue of handlesearch response.data", response.data);
-        console.log("filteredissue of handlesearch  data", data);
 
-        if (!data) {
-          // throw new Error("No data returned from the server.");
-          console.log("No data returned from the server.");
+        const responseData = await response.json();
+          const data = responseData?.details?.data;
+            if (!data) {
+                throw new Error("No data returned from the server.");
+            }
+    
+            if (tab === 0) {
+                setFilteredSingleWithCertificates(filteredData(data, "withpdf", "dynamic"));
+            } else if (tab === 1) {
+                setFilteredSingleWithoutCertificates(filteredData(data, "withoutpdf"));
+            } else if (tab === 2) {
+                setFilteredBatchCertificatesData(filteredData(data, "batch", "dynamic"));
+            }
+            setLoading(false);
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                setError(error.response.data.message || "Not able to Search");
+                setShow(true);
+            } else {
+                setError('An unexpected error occurred.');
+                console.error('Error during search:', error);
+            }
+            setLoading(false);
         }
-  
-        if (tab === 0) {
-          setFilteredSingleWithCertificates(filteredData(data, "withpdf", "dynamic"));
-          const checker =filteredData(data, "withpdf", "dynamic");
-          debugger
-        } else if (tab === 1) {
-          setFilteredSingleWithoutCertificates(filteredData(data, "withoutpdf"));
-          const checker =filteredData(data, "withoutpdfthpdf");
-          debugger
-        } else if (tab === 2) {
-          setFilteredBatchCertificatesData(filteredData(data, "batch", "dynamic"));
-          const checker =filteredData(data, "batch", "dynamic");
-          debugger
-        }
-        setLoading(false);
-      })
+    };
+    
 
-      // if (!response.ok) {
-      //   throw new Error('Network response was not ok');
-      // }
-
-      // const responseData = await response.json();
-      // const data = responseData?.details?.data;
-      // if (!data) {
-      //   throw new Error("No data returned from the server.");
-      // }
-
-      // if (tab === 0) {
-      //   setFilteredSingleWithCertificates(filteredData(data, "withpdf", "dynamic"));
-      // } else if (tab === 1) {
-      //   setFilteredSingleWithoutCertificates(filteredData(data, "withoutpdf"));
-      // } else if (tab === 2) {
-      //   setFilteredBatchCertificatesData(filteredData(data, "batch", "dynamic"));
-      // }
-      // setLoading(false);
-    } catch (error) {
-      if (error.response && error.response.status === 400) {
-        setError(error.response.data.message || "Not able to Search");
-        setShow(true);
-      } else {
-        setError('An unexpected error occurred.');
-        console.error('Error during search:', error);
-      }
-      setLoading(false);
-    }
-  };
-
-
-  // Utility function to format date as mm-dd-yyyy for the API call
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const mm = String(date.getMonth() + 1).padStart(2, '0');
-    const dd = String(date.getDate()).padStart(2, '0');
-    const yyyy = date.getFullYear();
-    return `${mm}/${dd}/${yyyy}`;
-  };
+    // Utility function to format date as mm-dd-yyyy for the API call
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        const dd = String(date.getDate()).padStart(2, '0');
+        const yyyy = date.getFullYear();
+        return `${mm}/${dd}/${yyyy}`;
+    };
 
     return (
         <Form onSubmit={(e) => e.preventDefault()} >
@@ -475,30 +382,29 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
           )}
         </Modal.Body>
       </Modal>
-    </Form>
-  );
-};
+        </Form>
+    );
 
 // Inline styles for suggestions list and items
 const suggestionsListStyle = {
-  position: 'absolute',
-  top: '100%',
-  width: "65%",
-  right: 15,
-  zIndex: 1000,
-  backgroundColor: '#fff',
-  border: '1px solid #ccc',
-  maxHeight: '200px',
-  overflowY: 'auto',
-  listStyle: 'none',
-  padding: 0,
-  margin: 0,
+    position: 'absolute',
+    top: '100%',
+    width:"65%",
+    right: 15,
+    zIndex: 1000,
+    backgroundColor: '#fff',
+    border: '1px solid #ccc',
+    maxHeight: '200px',
+    overflowY: 'auto',
+    listStyle: 'none',
+    padding: 0,
+    margin: 0,
 };
 
 const suggestionItemStyle = {
-  padding: '8px 12px',
-  cursor: 'pointer',
-  borderBottom: '1px solid #eee',
+    padding: '8px 12px',
+    cursor: 'pointer',
+    borderBottom: '1px solid #eee',
 };
 
 export default SearchAdmin;

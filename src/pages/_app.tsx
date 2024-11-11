@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import "../../assets/css/styles.scss";
+import '../../assets/css/styles.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 import React, { useEffect, useState } from 'react';
 import { AppProps } from 'next/app';
@@ -7,11 +7,24 @@ import Navigation from '../app/navigation';
 import { useRouter } from 'next/router';
 import CertificateContext from "../utils/CertificateContext"
 import Head from 'next/head';
+import { ThemeProvider, useTheme } from '@/context/ThemeContext';
 
 import { getAuth } from 'firebase/auth';
 // @ts-ignore: Implicit any for children prop
 import { app } from "../config/firebaseConfig"
-const App: React.FC<AppProps> = ({ Component, pageProps }) => {
+
+
+function App({ Component, pageProps }: any) {
+  return (
+    <ThemeProvider>
+      <ComponentWrapper Component={Component} pageProps={pageProps} />
+    </ThemeProvider>
+  );
+}
+
+const ComponentWrapper = ({ Component, pageProps }: any) => {
+  const { isDarkMode } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [badgeUrl, setBadgeUrl] = useState("")
   const [logoUrl, setLogoUrl] = useState("")
   const [signatureUrl, setSignatureUrl] = useState("")
@@ -30,8 +43,28 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   const isLoginPage = router.pathname === '/' || router.pathname === '/register'|| router.pathname === '/forgot-passwords' ||  router.pathname === '/passwords-confirm' ;
   // @ts-ignore: Implicit any for children prop
   const auth = getAuth(app)
-
   
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  // Conditionally load CSS based on dark mode state
+
+   useEffect(() => {
+    if (mounted) {
+      const body = document.body;
+      if (isDarkMode) {
+        body.classList.add('dark-mode');
+        body.classList.remove('light-mode');
+      } else {
+        body.classList.add('light-mode');
+        body.classList.remove('dark-mode');
+      }
+    }
+  }, [isDarkMode, mounted]);
+
+  if (!mounted) {
+    return null;
+  }
   
   return (
     // @ts-ignore: Implicit any for children prop
@@ -52,11 +85,12 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
     <meta name="twitter:title" content="Certs365 Blockchain Issuance: Secure, Fast, and Reliable" />
     <meta name="twitter:description" content="Blockchain-based issuance is revolutionizing asset management. Explore its benefits and potential in enhancing transparency and security." />
 
-   
-</Head>
+      </Head>
 
       {!isLoginPage && <Navigation />}
-      <Component {...pageProps} router={router} />
+      
+        <Component {...pageProps} router={router} />
+      
     </CertificateContext.Provider>
   );
 };

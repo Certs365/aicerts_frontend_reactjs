@@ -527,8 +527,8 @@ const IssueCertificate = () => {
             ? `Input length must be between ${minLength} and ${maxLength} characters`
             : ""
           : name === "certificateNumber"
-          ? "Certificate Number must be alphanumeric"
-          : `Input length must be between ${minLength} and ${maxLength} characters`,
+            ? "Certificate Number must be alphanumeric"
+            : `Input length must be between ${minLength} and ${maxLength} characters`,
       }));
     }
   };
@@ -556,7 +556,7 @@ const IssueCertificate = () => {
                   )}
                 </>
               ) : (
-                <Container>
+                <Container className="pt-5">
                   <h2 className="title">Issue New Certification</h2>
                   <Form
                     className="register-form"

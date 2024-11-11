@@ -7,7 +7,7 @@ import issuance from '../services/issuanceServices';
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const secretKey = process.env.NEXT_PUBLIC_BASE_ENCRYPTION_KEY;
 
-const Search = ({ setResponseData, tab,setLoading }) => {
+const Search = ({ setResponseData, tab, setLoading }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchBy, setSearchBy] = useState('certificationNumber');
     const [suggestions, setSuggestions] = useState([]);
@@ -16,8 +16,8 @@ const Search = ({ setResponseData, tab,setLoading }) => {
     const [isDateInput, setIsDateInput] = useState(false); // Control input type
     const [rawDate, setRawDate] = useState(''); // Store raw date for date picker UI
     const [error, setError] = useState('');
-  const [show, setShow] = useState(false);
-  const [success, setSuccess] = useState('');
+    const [show, setShow] = useState(false);
+    const [success, setSuccess] = useState('');
 
     useEffect(() => {
         if (searchTerm === "" || isDateInput) {
@@ -31,7 +31,7 @@ const Search = ({ setResponseData, tab,setLoading }) => {
         setShow(false);
         setError("")
         setSuccess("")
-      };
+    };
 
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem('user') ?? 'null');
@@ -51,10 +51,10 @@ const Search = ({ setResponseData, tab,setLoading }) => {
             email: email,
             input: searchTerm,
             filter: searchBy,
-            status:tab,
+            status: tab,
             flag: 1
         }
-    //   const encryptedData = encryptData(dataToEncrypt);
+        const encryptedData = encryptData(dataToEncrypt);
 
         try {
             // const response = await fetch(`${apiUrl}/api/admin-filtered-issues`, {
@@ -145,31 +145,31 @@ const Search = ({ setResponseData, tab,setLoading }) => {
             return item.type === type;
         });
     };
-    
+
 
     const handleSearch = async (e) => {
         e.preventDefault();
         setError("");
         try {
             // setLoading(true);
-            const dataToEncrypt =  {
+            const dataToEncrypt = {
                 email: email,
                 input: searchTerm,
                 filter: searchBy,
-                status:tab,
+                status: tab,
                 flag: 2,
             }
             const encryptedData = encryptData(dataToEncrypt);
-    
+
             const response = await axios.post(`${apiUrl}/api/admin-filtered-issues`, {
                 data: encryptedData
             });
-    
+
             const data = response?.data?.details;
             if (!data) {
                 throw new Error("No data returned from the server.");
             }
-        setResponseData(data)
+            setResponseData(data)
             setLoading(false);
         } catch (error) {
             if (error.response && error.response.status === 400) {
@@ -182,7 +182,7 @@ const Search = ({ setResponseData, tab,setLoading }) => {
             setLoading(false);
         }
     };
-    
+
 
     // Utility function to format date as mm-dd-yyyy for the API call
     const formatDate = (dateString) => {
@@ -198,51 +198,51 @@ const Search = ({ setResponseData, tab,setLoading }) => {
             <Form.Group controlId="search">
                 <div className="search d-flex align-items-start">
                     {/* Search Criteria Dropdown */}
-    <Dropdown style={{borderRadius:0}} onSelect={handleSearchBySelect} className="me-2 golden-dropdown">
-    <Dropdown.Toggle variant="secondary" id="dropdown-basic" className="custom-dropdown-toggle">
-        Search by: {searchBy.charAt(0).toUpperCase() + searchBy.slice(1)}
-    </Dropdown.Toggle>
+                    <Dropdown style={{ borderRadius: 0 }} onSelect={handleSearchBySelect} className="me-2 golden-dropdown">
+                        <Dropdown.Toggle variant="secondary" id="dropdown-basic" className="custom-dropdown-toggle">
+                            Search by: {searchBy.charAt(0).toUpperCase() + searchBy.slice(1)}
+                        </Dropdown.Toggle>
 
-    <Dropdown.Menu className="custom-dropdown-menu">
-        <Dropdown.Item eventKey="certificationNumber">Certification Number</Dropdown.Item>
-        <Dropdown.Item eventKey="name">Name</Dropdown.Item>
-        <Dropdown.Item eventKey="courseName">Course Name</Dropdown.Item>
-        <Dropdown.Item eventKey="grantDate">Grant Date</Dropdown.Item>
-        <Dropdown.Item eventKey="expirationDate">Expiration Date</Dropdown.Item>
-    </Dropdown.Menu>
-    </Dropdown>
+                        <Dropdown.Menu className="custom-dropdown-menu">
+                            <Dropdown.Item eventKey="certificationNumber">Certification Number</Dropdown.Item>
+                            <Dropdown.Item eventKey="name">Name</Dropdown.Item>
+                            <Dropdown.Item eventKey="courseName">Course Name</Dropdown.Item>
+                            <Dropdown.Item eventKey="grantDate">Grant Date</Dropdown.Item>
+                            <Dropdown.Item eventKey="expirationDate">Expiration Date</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
 
-<Modal onHide={handleClose} className='loader-modal text-center' show={show} centered>
-        <Modal.Body>
-          {error !== '' ? (
-            <>
-              <div className='error-icon success-image'>
-                <Image
-                  src="/icons/invalid-password.gif"
-                  layout='fill'
-                  objectFit='contain'
-                  alt='Loader'
-                />
-              </div>
-              <div className='text' style={{ color: '#ff5500' }}>{error}</div>
-              <button className='warning' onClick={handleClose}>Ok</button>
-            </>
-          ) : (
-            <>
-              <div className='error-icon success-image'>
-                <Image
-                  src="/icons/success.gif"
-                  layout='fill'
-                  objectFit='contain'
-                  alt='Loader'
-                />
-              </div>
-              <div className='text' style={{ color: '#CFA935' }}>{success}</div>
-              <button className='success' onClick={handleClose}>Ok</button>
-            </>
-          )}
-        </Modal.Body>
-      </Modal>
+                    <Modal onHide={handleClose} className='loader-modal text-center' show={show} centered>
+                        <Modal.Body>
+                            {error !== '' ? (
+                                <>
+                                    <div className='error-icon success-image'>
+                                        <Image
+                                            src="/icons/invalid-password.gif"
+                                            layout='fill'
+                                            objectFit='contain'
+                                            alt='Loader'
+                                        />
+                                    </div>
+                                    <div className='text' style={{ color: '#ff5500' }}>{error}</div>
+                                    <button className='warning' onClick={handleClose}>Ok</button>
+                                </>
+                            ) : (
+                                <>
+                                    <div className='error-icon success-image'>
+                                        <Image
+                                            src="/icons/success.gif"
+                                            layout='fill'
+                                            objectFit='contain'
+                                            alt='Loader'
+                                        />
+                                    </div>
+                                    <div className='text' style={{ color: '#CFA935' }}>{success}</div>
+                                    <button className='success' onClick={handleClose}>Ok</button>
+                                </>
+                            )}
+                        </Modal.Body>
+                    </Modal>
 
 
                     {/* Search Input and Suggestions */}

@@ -67,19 +67,19 @@ const ProfileDetails = () => {
 
         let progressInterval;
         const startProgress = () => {
-          progressInterval = setInterval(() => {
-            setNow((prev) => {
-              if (prev < 90) return prev + 5;
-              return prev;
-            });
-          }, 100);
+            progressInterval = setInterval(() => {
+                setNow((prev) => {
+                    if (prev < 90) return prev + 5;
+                    return prev;
+                });
+            }, 100);
         };
-    
+
         const stopProgress = () => {
-          clearInterval(progressInterval);
-          setNow(100); // Progress complete
+            clearInterval(progressInterval);
+            setNow(100); // Progress complete
         };
-    
+
         startProgress();
         // const encryptedData = encryptData(data);
 
@@ -192,7 +192,7 @@ const ProfileDetails = () => {
 
     const handleClose = () => {
         setShow(false);
-        
+
     };
 
     const handleInputChange = (e) => {
@@ -210,19 +210,19 @@ const ProfileDetails = () => {
 
         let progressInterval;
         const startProgress = () => {
-          progressInterval = setInterval(() => {
-            setNow((prev) => {
-              if (prev < 90) return prev + 5;
-              return prev;
-            });
-          }, 100);
+            progressInterval = setInterval(() => {
+                setNow((prev) => {
+                    if (prev < 90) return prev + 5;
+                    return prev;
+                });
+            }, 100);
         };
-    
+
         const stopProgress = () => {
-          clearInterval(progressInterval);
-          setNow(100); // Progress complete
+            clearInterval(progressInterval);
+            setNow(100); // Progress complete
         };
-    
+
         startProgress();
       const data = {email, ...formData};
         try {
@@ -482,7 +482,7 @@ const ProfileDetails = () => {
                     </Container>
                 </div>
             </div>
-                    <div className='page-footer-bg'></div>
+            <div className='page-footer-bg'></div>
 
             {/* Loading Modal for API call */}
             <Modal className='loader-modal' show={isLoading} centered>

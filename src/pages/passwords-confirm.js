@@ -22,12 +22,12 @@ const PasswordsConfirm = () => {
   const [errors, setErrors] = useState({ message: '' });
   const [successMessage, setSuccessMessage] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [message, SetMessage] =useState();
+  const [message, SetMessage] = useState();
   const [show, setShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-        
+
   const togglePasswordVisibility = () => {
-      setPasswordVisible(!passwordVisible);
+    setPasswordVisible(!passwordVisible);
   };
 
   // Function to toggle password visibility
@@ -110,7 +110,7 @@ const PasswordsConfirm = () => {
   return (
     <>
       <div className='page-bg'>
-      <NavigationLogin />
+        <NavigationLogin />
 
         <div className='position-relative h-100'>
           <div className='forgot-password'>
@@ -129,7 +129,7 @@ const PasswordsConfirm = () => {
                   </Col>
                   <Col xs={{ span: 12 }} md={{ span: 5 }}>
                     <div className='position-relative h-100'>
-                      <div className='vertical-center' style={{transform: "translateY(-82%)"}}>
+                      <div className='vertical-center' style={{ transform: "translateY(-82%)" }}>
                         <h1 className='title'>Create a New Password</h1>
                         <Form className='input-elements' onSubmit={handleClick}>
                           <Form.Group controlId='new-password'>
@@ -142,12 +142,12 @@ const PasswordsConfirm = () => {
                               />
                               <div className='eye-icon position-absolute'>
                                 <Image
-                                    src={passwordVisible ? eyeSlashIcon : eyeIcon}
-                                    width={20}
-                                    height={20}
-                                    alt={passwordVisible ? 'Hide password' : 'Show password'}
-                                    onClick={togglePasswordVisibility}
-                                    className="password-toggle"
+                                  src={passwordVisible ? eyeSlashIcon : eyeIcon}
+                                  width={20}
+                                  height={20}
+                                  alt={passwordVisible ? 'Hide password' : 'Show password'}
+                                  onClick={togglePasswordVisibility}
+                                  className="password-toggle"
                                 />
                               </div>
                             </div>
@@ -161,14 +161,14 @@ const PasswordsConfirm = () => {
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                               />
                               <div className='eye-icon position-absolute'>
-                                  <Image
-                                      src={passwordVisible ? eyeSlashIcon : eyeIcon}
-                                      width={20}
-                                      height={20}
-                                      alt={passwordVisible ? 'Hide password' : 'Show password'}
-                                      onClick={togglePasswordVisibility}
-                                      className="password-toggle"
-                                  />
+                                <Image
+                                  src={passwordVisible ? eyeSlashIcon : eyeIcon}
+                                  width={20}
+                                  height={20}
+                                  alt={passwordVisible ? 'Hide password' : 'Show password'}
+                                  onClick={togglePasswordVisibility}
+                                  className="password-toggle"
+                                />
                               </div>
                             </div>
                           </Form.Group>
@@ -209,16 +209,16 @@ const PasswordsConfirm = () => {
 
       <Modal className='loader-modal text-center' show={show} centered>
         <Modal.Body>
-            <div className='error-icon'>
-              <Image
-                src="/icons/success.gif"
-                layout='fill'
-                objectFit='contain'
-                alt='Loader'
-              />
-            </div>
-            <h3 style={{ color: '#CFA935', fontSize: '18px', marginBottom: '12px' }}>{successMessage}</h3>
-            <button className='success' onClick={handleClose}>Ok</button>
+          <div className='error-icon'>
+            <Image
+              src="/icons/success.gif"
+              layout='fill'
+              objectFit='contain'
+              alt='Loader'
+            />
+          </div>
+          <h3 style={{ color: '#CFA935', fontSize: '18px', marginBottom: '12px' }}>{successMessage}</h3>
+          <button className='success' onClick={handleClose}>Ok</button>
         </Modal.Body>
       </Modal>
     </>

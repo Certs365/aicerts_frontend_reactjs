@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Button from '../../shared/button/button';
 import { Container, Row, Col, Modal, ProgressBar } from 'react-bootstrap';
 import Image from 'next/legacy/image';
-import { useRouter } from 'next/router'; 
+import { useRouter } from 'next/router';
 import { PDFDocument } from 'pdf-lib';
 
 const iconUrl = process.env.NEXT_PUBLIC_BASE_ICON_URL;
@@ -20,7 +20,7 @@ const iconUrl = process.env.NEXT_PUBLIC_BASE_ICON_URL;
  * @returns {JSX.Element} - Rendered component.
  */
 
-const UploadPdfQr = ({ cardId,setSelectedFile, selectedFile, setShowPdf }) => {
+const UploadPdfQr = ({ cardId, setSelectedFile, selectedFile, setShowPdf }) => {
   const router = useRouter();
   const fileInputRef = useRef(null);
   const [error, setError] = useState(null);
@@ -87,7 +87,7 @@ const UploadPdfQr = ({ cardId,setSelectedFile, selectedFile, setShowPdf }) => {
                       <p className='mt-4'>{selectedFile?.name}</p>
                     </div>
                   )}
-                  <div className='restriction-text'>Only <strong>PDF</strong> is supported. <br/>(100KB - 5MB)</div>
+                  <div className='restriction-text'>Only <strong>PDF</strong> is supported. <br />(100KB - 5MB)</div>
                 </div>
               </div>
             </Col>
@@ -126,7 +126,7 @@ const UploadPdfQr = ({ cardId,setSelectedFile, selectedFile, setShowPdf }) => {
                 />
               </div>
               <div className='text' style={{ color: '#ff5500' }}>{error}</div>
-              <div className='d-flex flex-row flex-wrap text-cert-wrapper'></div>   
+              <div className='d-flex flex-row flex-wrap text-cert-wrapper'></div>
               <button className='warning' onClick={handleClose}>Ok</button>
             </>
           )}

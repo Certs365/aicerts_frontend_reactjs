@@ -51,14 +51,14 @@ const Admin = () => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
 
     if (storedUser && storedUser.JWTToken) {
-        // If token is available, set it in the state
-        setToken(storedUser.JWTToken);
-        setEmail(storedUser.email);
-        fetchData(tab, storedUser.email);
+      // If token is available, set it in the state
+      setToken(storedUser.JWTToken);
+      setEmail(storedUser.email);
+      fetchData(tab, storedUser.email);
 
     } else {
-        // If token is not available, redirect to the login page
-        // router.push("/");
+      // If token is not available, redirect to the login page
+      // router.push("/");
     }
   }, []);
   /* eslint-disable */
@@ -117,9 +117,9 @@ const Admin = () => {
   };
 
   const handleSearchClick = async () => {
-    if(!searchQuery) return
+    if (!searchQuery) return
     setIsLoading(true);
-    
+
     try {
       const data = {
         email: email, 
@@ -179,7 +179,7 @@ const Admin = () => {
     // setIsBack(true)
     } catch (error) {
       console.error('Error fetching data:', error);
-    setIsLoading(false);
+      setIsLoading(false);
 
     } finally {
       setIsLoading(false);
@@ -188,19 +188,19 @@ const Admin = () => {
 console.log("responseData at admin -->",responseData);
 console.log(issuedCertificate)
   return (
-    
+
     <div className='admin-wrapper page-bg'>
-   
+
       <div className='admin-title flex-column flex-md-row'>
         {isBack &&
-      <span onClick={() => { fetchData(tab,email); }} className='back-button'>
-              <Image width={10} height={10} src={BackIcon} alt='back' /><span className=''>Back</span>
-            </span>
+          <span onClick={() => { fetchData(tab, email); }} className='back-button'>
+            <Image width={10} height={10} src={BackIcon} alt='back' /><span className=''>Back</span>
+          </span>
         }
         <span className='admin-title-name'>
           Administration
         </span>
-        <div  className='admin-button-container'>
+        <div className='admin-button-container'>
           <span onClick={() => handleChange(1)} className={`btn ${tab === 1 ? 'btn-golden' : ''}`}>Extend Expiration</span>
           <span className="vertical-line"></span>
           <span onClick={() => handleChange(2)} className={`btn ${tab === 2 ? 'btn-golden' : ''}`}>Reactivate Certification</span>
@@ -224,7 +224,7 @@ console.log(issuedCertificate)
             <Image height={10} width={10} src="/icons/search.svg" alt='search' />
           </div>
         </div> */}
-       <Search setResponseData={setResponseData} tab={tab} setLoading={setIsLoading}/>
+        <Search setResponseData={setResponseData} tab={tab} setLoading={setIsLoading} />
       </div>
       {/* {tab === 2 && filteredBatchCertificatesData && (
             <span onClick={() => { setFilteredBatchCertificatesData(null); }} className='back-button'>

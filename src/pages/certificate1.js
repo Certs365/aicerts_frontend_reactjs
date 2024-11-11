@@ -7,7 +7,7 @@ const CertificateTemplateOne = () => {
             <div className='certificate-template position-relative' id="template-3">
                 <div className='hero-logo m-auto position-relative'>
                     <Image
-                    
+
                         src='/logo-black.svg'
                         layout='fill'
                         objectFit="contain"
@@ -44,7 +44,7 @@ const CertificateTemplateOne = () => {
                     </div>
                 </div>
                 <div className='bottom-info d-flex justify-content-center align-items-center w-100 position-absolute'>
-                    <div className='certificate-info'>Certificate No.: 65432E5W</div> 
+                    <div className='certificate-info'>Certificate No.: 65432E5W</div>
                     <span>|</span>
                     <div className='certificate-info'>Grant Date: 14 March 2024</div>
                     <span>|</span>

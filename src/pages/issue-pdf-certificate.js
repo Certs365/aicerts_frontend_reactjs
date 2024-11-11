@@ -112,7 +112,7 @@ const IssueNewCertificate = () => {
             clearInterval(progressInterval);
             setNow(0); // Progress complete
         };
-    
+
         startProgress();
 
         try {
@@ -171,16 +171,16 @@ const IssueNewCertificate = () => {
                 setShow(true);
                 await UpdateLocalStorage()
 
-            } else if (response) {
-                const responseBody = await response.json();
-                const errorMessage = responseBody && responseBody.message ? responseBody.message : generalError;
-                console.error('API Error:' || generalError);
-                setErrorMessage(errorMessage);
-                setShow(true);
-            } else {
-                console.error('No response received from the server.');
+                } else if (response) {
+                    const responseBody = await response.json();
+                    const errorMessage = responseBody && responseBody.message ? responseBody.message : generalError;
+                    console.error('API Error:' || generalError);
+                    setErrorMessage(errorMessage);
+                    setShow(true);
+                } else {
+                    console.error('No response received from the server.');
+                }
             }
-        }
         } catch (error) {
             console.error('Error during API request:', error);
         } finally {
@@ -256,9 +256,9 @@ const IssueNewCertificate = () => {
         course: '',
     });
 
-    const handleRedirect=((e)=>{
+    const handleRedirect = ((e) => {
         e.preventDefault()
-window.location.href = '/issue-pdf-certificate'
+        window.location.href = '/issue-pdf-certificate'
     })
 
     const handleChange = (e, regex, minLength, maxLength, fieldName) => {
@@ -351,8 +351,8 @@ window.location.href = '/issue-pdf-certificate'
                     <div className='register issue-new-certificate'>
                         <div className='vertical-center'>
                             <Container className='mt-5 mt-md-0'>
-                                <h2 className='title mb-4'style={{fontFamily:"Montserrat"}}>Issue New Certification</h2>
-                                <Form className='register-form' onSubmit={pdfBlob?handleRedirect:handleSubmit} encType="multipart/form-data">
+                                <h2 className='title'>Issue New Certification</h2>
+                                <Form className='register-form' onSubmit={pdfBlob ? handleRedirect : handleSubmit} encType="multipart/form-data">
                                     <Card>
                                         <Card.Body>
                                             <Card.Title>Certification Details</Card.Title>

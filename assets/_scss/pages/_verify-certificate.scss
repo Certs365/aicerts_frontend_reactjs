@@ -24,12 +24,14 @@
         -ms-border-radius: 0;
         -o-border-radius: 0;
         height: 100%;
-         flex: 1; /* Fill remaining space vertically */
+        flex: 1;
+        /* Fill remaining space vertically */
         display: flex;
         flex-direction: column;
-margin-bottom: 10px;
+        margin-bottom: 10px;
+
         .card-img-top {
-            width:auto;
+            width: auto;
             height: 180px;
             margin: auto;
         }
@@ -62,6 +64,7 @@ margin-bottom: 10px;
             background: 0;
             padding: 0;
             margin-top: auto;
+            /* Push the footer to the bottom */
 
             .golden {
                 font-size: 14px;
@@ -81,7 +84,7 @@ margin-bottom: 10px;
 
             .card-body {
                 padding: 0;
-        
+
                 .card-title {
                     font-size: 18px;
                 }
@@ -91,27 +94,25 @@ margin-bottom: 10px;
                 }
             }
 
-            .card-footer {    
+            .card-footer {
                 .golden {
                     padding: 14px 0;
                 }
             }
         }
 
-        @media (min-width: $tablet-min) and (max-width: $tablet-max) { 
-            
-        }
+        @media (min-width: $tablet-min) and (max-width: $tablet-max) {}
 
-        @media (min-width: $mobile-min) and (max-width: $mobile-max) { 
+        @media (min-width: $mobile-min) and (max-width: $mobile-max) {
             padding: 14px;
-            
+
             .card-img-top {
                 height: 114px;
             }
 
             .card-body {
                 padding: 0;
-        
+
                 .card-title {
                     font-size: 18px;
                     margin: 20px 0 10px;
@@ -123,9 +124,28 @@ margin-bottom: 10px;
                 }
             }
 
-            .card-footer {    
+            .card-footer {
                 .golden {
                     padding: 14px 0;
+                }
+            }
+        }
+    }
+}
+
+.dark-mode {
+    .card-warapper {
+        .verify-landing {
+            border: 1px solid #BFC0C2;
+            background: #171A24;
+
+            .card-body {
+                .card-title {
+                    color: $white;
+                }
+
+                .card-text {
+                    color: #A9A7B0;
                 }
             }
         }

@@ -3,7 +3,7 @@ import { useInView } from 'react-intersection-observer';
 import Image from 'next/image';
 import { Col, Row, Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
-import { PDFDocument } from 'pdf-lib'; 
+import { PDFDocument } from 'pdf-lib';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import data from "./data.json";

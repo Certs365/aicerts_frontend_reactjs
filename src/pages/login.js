@@ -9,9 +9,12 @@ import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth
 import { useRouter } from 'next/router';
 import { encryptData } from '@/utils/reusableFunctions';
 import user from '@/services/userServices';
+
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL_USER;
 const secretKey = process.env.NEXT_PUBLIC_BASE_ENCRYPTION_KEY;
 import OtpModal from "../components/OtpModal";
+import ThemedImage from '@/components/ThemedImage';
+
 const Login = () => {
   const router = useRouter();
   const [show, setShow] = useState(false);
@@ -65,14 +68,14 @@ const Login = () => {
       .confirm(otp)
       // @ts-ignore: Implicit any for children prop
       .then(async (res) => {
-    
+
       })
       // @ts-ignore: Implicit any for children prop
       .catch((err) => {
         setLoginError(err?.error?.message || "Invalid Code")
         setIsLoading(false)
         setShow(true)
-         (err)
+          (err)
 
       });
   }
@@ -83,7 +86,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-  // @ts-ignore: Implicit any for children prop
+    // @ts-ignore: Implicit any for children prop
 
     const storedUser = JSON.parse(localStorage?.getItem('user'));
 
@@ -161,7 +164,7 @@ const Login = () => {
     setNow(100); // Progress complete
   };
   const login = async () => {
-   
+
     try {
       setIsLoading(true);
       startProgress();
@@ -193,7 +196,7 @@ const Login = () => {
           }
         } else if (responseData.status == "SUCCESS") {
           if (responseData?.data && responseData?.data?.JWTToken !== undefined) {
-             
+
             await handleSendEmail()
             setLoginData(responseData?.data)
           } else {
@@ -279,10 +282,10 @@ const Login = () => {
       setIsLoading(false);
     }
   };
-  
+
   const handleChangeOtp = (
-    e, 
-    index, 
+    e,
+    index,
     inputRefs
   ) => {
     const value = e.target.value;
@@ -290,17 +293,14 @@ const Login = () => {
       const newOtp = [...emailOtp];
       newOtp[index] = value;
       setEmailOtp(newOtp);
-  
+
       // Move focus to the next input field if a digit is entered
       if (value && index < 5) {
         inputRefs.current[index + 1]?.focus();
       }
     }
   };
-  
-  
 
-const handleSendEmail = async () => {
 
   // Prepare the request payload
   const payload = {
@@ -615,8 +615,9 @@ stopProgress()
               <Form className='login-form' onSubmit={handleSubmit}>
                 <Form.Group controlId="email" className='mb-3'>
                   <Form.Label>
-                    <Image
-                      src="/icons/user-icon.svg"
+                    <ThemedImage
+                      imageLight="/icons/user-icon.svg"
+                      imageDark="/icons/user-icon-dark.svg"
                       width={16}
                       height={20}
                       alt='User Name'
@@ -634,24 +635,25 @@ stopProgress()
 
                 <Form.Group controlId="password">
                   <Form.Label>
-                    <Image
-                      src="/icons/lock-icon.svg"
+                    <ThemedImage
+                      imageLight="/icons/lock-icon.svg"
+                      imageDark="/icons/lock-icon-dark.svg"
                       width={20}
                       height={20}
                       alt='Password'
                     />
                     Password
                   </Form.Label>
-                  <Form.Control className='mb-2' style={{ marginBottom: showPhone ? "20px" : "" }} 
+                  <Form.Control className='mb-2' style={{ marginBottom: showPhone ? "20px" : "" }}
                     type="password"
                     name="password"
                     required
                     value={formData.password}
                     onChange={handlePasswordChange}
                   />
-                  {passwordError ? ( 
+                  {passwordError ? (
                     <p style={{ color: '#ff5500' }}>{passwordError}</p>
-                    ) : (
+                  ) : (
                     <p>&nbsp;</p>
                   )}
                 </Form.Group>
@@ -677,26 +679,26 @@ stopProgress()
           </Card>
           <div className='golden-border-right'></div>
         </Col>
-<OtpModal modalOtp={modalOtp} setModalOtp={setModalOtp} setEmailOtp={setEmailOtp} handleLoginOtp={handleLoginOtp}emailOtp={emailOtp}handleChangeOtp={handleChangeOtp}/>
+        <OtpModal modalOtp={modalOtp} setModalOtp={setModalOtp} setEmailOtp={setEmailOtp} handleLoginOtp={handleLoginOtp} emailOtp={emailOtp} handleChangeOtp={handleChangeOtp} />
 
         {/* <Modal className='loader-modal' show={modalOtp} centered onHide={()=>{setModalOtp(false); setEmailOtp("")}}>
-  <Modal.Header closeButton>
-  </Modal.Header>
-  <Modal.Body style={{ padding: "30px 20px" }}>
-    <p className='' style={{ color: 'green', fontFamily: "monospace", fontWeight: 600 }}>
-      Please Enter OTP Sent to Your Registered Email.
-    </p>
-    <input
-      type="text"
-      className="form-control mb-4"
-      value={emailOtp}
-      onChange={handleChangeOtp}
-      name='otp'
-      placeholder="Enter OTP"
-    />
-    <Button label="Submit OTP" onClick={handleLoginOtp} className="golden" />
-  </Modal.Body>
-</Modal> */}
+            <Modal.Header closeButton>
+            </Modal.Header>
+            <Modal.Body style={{ padding: "30px 20px" }}>
+              <p className='' style={{ color: 'green', fontFamily: "monospace", fontWeight: 600 }}>
+                Please Enter OTP Sent to Your Registered Email.
+              </p>
+              <input
+                type="text"
+                className="form-control mb-4"
+                value={emailOtp}
+                onChange={handleChangeOtp}
+                name='otp'
+                placeholder="Enter OTP"
+              />
+              <Button label="Submit OTP" onClick={handleLoginOtp} className="golden" />
+            </Modal.Body>
+        </Modal> */}
         <Col md={{ span: 12 }}>
           {/* <Button label="Register" className='golden mt-5 ps-0 pe-0 w-100 d-block d-lg-none' onClick={handleClick} /> */}
           <div className='register-user-text d-block d-lg-none'>
@@ -708,7 +710,7 @@ stopProgress()
           </div>
         </Col>
       </Row>
-    
+
 
       {/* Loading Modal for API call */}
       <Modal className='loader-modal' show={isLoading} centered>
