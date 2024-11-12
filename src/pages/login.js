@@ -679,7 +679,7 @@ stopProgress()
           </Card>
           <div className='golden-border-right'></div>
         </Col>
-        {/* <OtpModal modalOtp={modalOtp} setModalOtp={setModalOtp} setEmailOtp={setEmailOtp} handleLoginOtp={handleLoginOtp} emailOtp={emailOtp} handleChangeOtp={handleChangeOtp} /> */}
+        <OtpModal modalOtp={modalOtp} setModalOtp={setModalOtp} setEmailOtp={setEmailOtp} handleLoginOtp={handleLoginOtp} emailOtp={emailOtp} handleChangeOtp={handleChangeOtp} />
 
         {/* <Modal className='loader-modal' show={modalOtp} centered onHide={()=>{setModalOtp(false); setEmailOtp("")}}>
             <Modal.Header closeButton>
