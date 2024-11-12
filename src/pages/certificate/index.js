@@ -21,17 +21,12 @@ import CertificateContext from "../../utils/CertificateContext";
 import AWS from "../../config/aws-config";
 import { getImageSize } from "react-image-size";
 import { IndexOutOfBoundsError } from "pdf-lib";
-import user from '../../services/userServices'
-// import user from '@/services/userServices';
-import certificate from '../../services/certificateServices';
-import { useTheme } from '../../context/ThemeContext';
 
 const iconUrl = process.env.NEXT_PUBLIC_BASE_ICON_URL;
 // import image from "public/images/1709909965183_Badge.png"
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL_admin;
 const apiUrl_admin = process.env.NEXT_PUBLIC_BASE_URL_USER;
 const CardSelector = () => {
-  const { isDarkMode } = useTheme();
   const router = useRouter(); // Initialize useRouter hook
   const [selectedFile, setSelectedFile] = useState(null);
   const fileInputRef = useRef(null);
@@ -55,7 +50,6 @@ const CardSelector = () => {
   const [signatureFileName, setSignatureFileName] = useState("");
   const [newTemplate, setNewTemplate] = useState("")
   const [designCerts, setDesignCerts] = useState([])
-  const [card, setCard] = useState({})
 
   const {
     setCertificateUrl,
@@ -107,7 +101,7 @@ const CardSelector = () => {
       const issuerNameFromStorage = sessionStorage.getItem("issuerName");
       const issuerDesignationFromStorage =
         sessionStorage.getItem("issuerDesignation");
-
+      
 
       if (badgeUrlFromStorage) {
         setBadgeUrl(badgeUrlFromStorage.url);
@@ -180,7 +174,6 @@ const CardSelector = () => {
     } else {
       // Show error message here, for example:
       // alert("Issuer designation must be 30 characters or less");
-      // alert("Issuer designation must be 30 characters or less");
     }
   };
 
@@ -239,7 +232,8 @@ const CardSelector = () => {
 
       if (fileSize < minSize || fileSize > maxSize) {
         setLoginError(
-          `File size for ${fileType} must be between ${minSize / 1024}KB and ${maxSize / 1024
+          `File size for ${fileType} must be between ${minSize / 1024}KB and ${
+            maxSize / 1024
           }KB.`
         );
         setShow(true);
@@ -430,189 +424,102 @@ const CardSelector = () => {
     startProgress();
 
     try {
-      // const response = await fetch(`${apiUrl}/api/upload`, {
-      //   method: "POST",
-      //   body: formData,
-      // });
-      user.upload(formData, async (response) => {
-        if (response.status === "SUCCESS") {
-          const data = response;
-          if (data.status === "SUCCESS") {
-            switch (fileType) {
-              case "badge":
-                generatePresignedUrl(selectedFile?.name)
-                  .then((url) => {
-                    setBadgeUrl(url || null);
-                    setBadgeFileName(selectedFile?.name);
-                    sessionStorage.setItem(
-                      "badgeUrl",
-                      JSON.stringify({ fileName: selectedFile?.name, url: url })
-                    );
-                    setLoginError("");
-                    setLoginSuccess("Badge uploaded successfully");
-                    setShow(true);
-                  })
-                  .catch((error) => {
-                    console.error("Error generating pre-signed URL:", error);
-                    setLoginError("Failed to generate pre-signed URL for badge");
-                  });
-                break;
-              case "logo":
-                generatePresignedUrl(selectedFile?.name)
-                  .then((url) => {
-                    setLogoUrl(url || null);
-                    setLogoFileName(selectedFile?.name);
-                    sessionStorage.setItem(
-                      "logoUrl",
-                      JSON.stringify({ fileName: selectedFile?.name, url: url })
-                    );
-                    setLoginError("");
-                    setLoginSuccess("Logo uploaded successfully");
-                    setShow(true);
-                  })
-                  .catch((error) => {
-                    console.error("Error generating pre-signed URL:", error);
-                    setLoginError("Failed to generate pre-signed URL for logo");
-                  });
-                break;
-              case "signature":
-                generatePresignedUrl(selectedFile?.name)
-                  .then((url) => {
-                    setSignatureUrl(url || null);
-                    setSignatureFileName(selectedFile?.name);
-                    sessionStorage.setItem(
-                      "signatureUrl",
-                      JSON.stringify({ fileName: selectedFile?.name, url: url })
-                    );
-                    setLoginError("");
-                    setLoginSuccess("Signature uploaded successfully");
-                    setShow(true);
-                  })
-                  .catch((error) => {
-                    console.error("Error generating pre-signed URL:", error);
-                    setLoginError(
-                      "Failed to generate pre-signed URL for signature"
-                    );
-                  });
-                break;
-              default:
-                break;
-            }
-  
-            setIsLoading(false);
-            // Save the image reference as needed in your application state or database
-          } else {
-            setLoginError(
-              "Error in Uploading " +
-                fileType.charAt(0).toUpperCase() +
-                fileType.slice(1)
-            );
-            setShow(true);
-            setIsLoading(false);
+      const response = await fetch(`${apiUrl}/api/upload`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+
+        if (data.status === "SUCCESS") {
+          switch (fileType) {
+            case "badge":
+              generatePresignedUrl(selectedFile?.name)
+                .then((url) => {
+                  setBadgeUrl(url || null);
+                  setBadgeFileName(selectedFile?.name);
+                  sessionStorage.setItem(
+                    "badgeUrl",
+                    JSON.stringify({ fileName: selectedFile?.name, url: url })
+                  );
+                  setLoginError("");
+                  setLoginSuccess("Badge uploaded successfully");
+                  setShow(true);
+                })
+                .catch((error) => {
+                  console.error("Error generating pre-signed URL:", error);
+                  setLoginError("Failed to generate pre-signed URL for badge");
+                });
+              break;
+            case "logo":
+              generatePresignedUrl(selectedFile?.name)
+                .then((url) => {
+                  setLogoUrl(url || null);
+                  setLogoFileName(selectedFile?.name);
+                  sessionStorage.setItem(
+                    "logoUrl",
+                    JSON.stringify({ fileName: selectedFile?.name, url: url })
+                  );
+                  setLoginError("");
+                  setLoginSuccess("Logo uploaded successfully");
+                  setShow(true);
+                })
+                .catch((error) => {
+                  console.error("Error generating pre-signed URL:", error);
+                  setLoginError("Failed to generate pre-signed URL for logo");
+                });
+              break;
+            case "signature":
+              generatePresignedUrl(selectedFile?.name)
+                .then((url) => {
+                  setSignatureUrl(url || null);
+                  setSignatureFileName(selectedFile?.name);
+                  sessionStorage.setItem(
+                    "signatureUrl",
+                    JSON.stringify({ fileName: selectedFile?.name, url: url })
+                  );
+                  setLoginError("");
+                  setLoginSuccess("Signature uploaded successfully");
+                  setShow(true);
+                })
+                .catch((error) => {
+                  console.error("Error generating pre-signed URL:", error);
+                  setLoginError(
+                    "Failed to generate pre-signed URL for signature"
+                  );
+                });
+              break;
+            default:
+              break;
           }
+
+          setIsLoading(false);
+          // Save the image reference as needed in your application state or database
         } else {
           setLoginError(
-            "Failed to upload " +
+            "Error in Uploading " +
               fileType.charAt(0).toUpperCase() +
               fileType.slice(1)
           );
           setShow(true);
           setIsLoading(false);
-          console.error("Failed to upload image:", response.statusText);
         }
-      })
-
-      // if (response.ok) {
-      //   const data = await response.json();
-
-      //   if (data.status === "SUCCESS") {
-      //     switch (fileType) {
-      //       case "badge":
-      //         generatePresignedUrl(selectedFile?.name)
-      //           .then((url) => {
-      //             setBadgeUrl(url || null);
-      //             setBadgeFileName(selectedFile?.name);
-      //             sessionStorage.setItem(
-      //               "badgeUrl",
-      //               JSON.stringify({ fileName: selectedFile?.name, url: url })
-      //             );
-      //             setLoginError("");
-      //             setLoginSuccess("Badge uploaded successfully");
-      //             setShow(true);
-      //           })
-      //           .catch((error) => {
-      //             console.error("Error generating pre-signed URL:", error);
-      //             setLoginError("Failed to generate pre-signed URL for badge");
-      //           });
-      //         break;
-      //       case "logo":
-      //         generatePresignedUrl(selectedFile?.name)
-      //           .then((url) => {
-      //             setLogoUrl(url || null);
-      //             setLogoFileName(selectedFile?.name);
-      //             sessionStorage.setItem(
-      //               "logoUrl",
-      //               JSON.stringify({ fileName: selectedFile?.name, url: url })
-      //             );
-      //             setLoginError("");
-      //             setLoginSuccess("Logo uploaded successfully");
-      //             setShow(true);
-      //           })
-      //           .catch((error) => {
-      //             console.error("Error generating pre-signed URL:", error);
-      //             setLoginError("Failed to generate pre-signed URL for logo");
-      //           });
-      //         break;
-      //       case "signature":
-      //         generatePresignedUrl(selectedFile?.name)
-      //           .then((url) => {
-      //             setSignatureUrl(url || null);
-      //             setSignatureFileName(selectedFile?.name);
-      //             sessionStorage.setItem(
-      //               "signatureUrl",
-      //               JSON.stringify({ fileName: selectedFile?.name, url: url })
-      //             );
-      //             setLoginError("");
-      //             setLoginSuccess("Signature uploaded successfully");
-      //             setShow(true);
-      //           })
-      //           .catch((error) => {
-      //             console.error("Error generating pre-signed URL:", error);
-      //             setLoginError(
-      //               "Failed to generate pre-signed URL for signature"
-      //             );
-      //           });
-      //         break;
-      //       default:
-      //         break;
-      //     }
-
-      //     setIsLoading(false);
-      //     // Save the image reference as needed in your application state or database
-      //   } else {
-      //     setLoginError(
-      //       "Error in Uploading " +
-      //         fileType.charAt(0).toUpperCase() +
-      //         fileType.slice(1)
-      //     );
-      //     setShow(true);
-      //     setIsLoading(false);
-      //   }
-      // } else {
-      //   setLoginError(
-      //     "Failed to upload " +
-      //       fileType.charAt(0).toUpperCase() +
-      //       fileType.slice(1)
-      //   );
-      //   setShow(true);
-      //   setIsLoading(false);
-      //   console.error("Failed to upload image:", response.statusText);
-      // }
+      } else {
+        setLoginError(
+          "Failed to upload " +
+            fileType.charAt(0).toUpperCase() +
+            fileType.slice(1)
+        );
+        setShow(true);
+        setIsLoading(false);
+        console.error("Failed to upload image:", response.statusText);
+      }
     } catch (error) {
       setLoginError(
         "Failed to upload " +
-        fileType.charAt(0).toUpperCase() +
-        fileType.slice(1)
+          fileType.charAt(0).toUpperCase() +
+          fileType.slice(1)
       );
       setIsLoading(false);
       setShow(true);
@@ -623,9 +530,8 @@ const CardSelector = () => {
     }
   };
 
-  const handleDesignCardSelect = (url,card) => {
+  const handleDesignCardSelect = (url) => {
     setCertificateUrl(url);
-    setCard(card)
     setIsDesign(true)
   }
   const handleCardSelect = (cardIndex) => {
@@ -659,63 +565,55 @@ const CardSelector = () => {
         break;
     }
     setCertificateUrl(certificateUrl);
-    setIsDesign(false)
+ setIsDesign(false)
   };
 
   const handleSelectTemplate = () => {
-    debugger
-    if (!isDesign) {
+    if(!isDesign){
 
-      if (!logoUrl) {
-        setLoginError("Please upload the logo ");
-        setShow(true);
-        return;
-      }
+    if (!logoUrl) {
+      setLoginError("Please upload the logo ");
+      setShow(true);
+      return;
+    }
 
-      if (!certificateUrl) {
-        setLoginError("Please upload the certificate ");
-        setShow(true);
-        return;
-      }
+    if (!certificateUrl) {
+      setLoginError("Please upload the certificate ");
+      setShow(true);
+      return;
+    }
 
-      if (!signatureUrl) {
-        setLoginError("Please upload the signature");
-        setShow(true);
-        return;
-      }
+    if (!signatureUrl) {
+      setLoginError("Please upload the signature");
+      setShow(true);
+      return;
+    }
 
-      if (!issuerName.trim()) {
-        setLoginError("Issuer Name cannot be empty");
-        setShow(true);
-        return;
-      } else if (issuerName.trim().length === 1) {
-        setLoginError("Issuer Name should contain more than one character");
-        setShow(true);
-        return;
-      }
+    if (!issuerName.trim()) {
+      setLoginError("Issuer Name cannot be empty");
+      setShow(true);
+      return;
+    } else if (issuerName.trim().length === 1) {
+      setLoginError("Issuer Name should contain more than one character");
+      setShow(true);
+      return;
+    }
 
-      if (!issuerDesignation.trim()) {
-        setLoginError("Issuer Designation cannot be empty");
-        setShow(true);
-        return;
-      } else if (issuerDesignation.trim().length === 1) {
-        setLoginError(
-          "Issuer Designation should contain more than one character"
-        );
-        setShow(true);
-        return;
-      }
+    if (!issuerDesignation.trim()) {
+      setLoginError("Issuer Designation cannot be empty");
+      setShow(true);
+      return;
+    } else if (issuerDesignation.trim().length === 1) {
+      setLoginError(
+        "Issuer Designation should contain more than one character"
+      );
+      setShow(true);
+      return;
     }
   }
   if (tab == 1 && !isDesign) {
     router.push(`/certificate/${selectedCard}`);
-  }else if (tab == 1 && isDesign) {
-    router.push({
-      pathname: '/placeholder', // Example route
-      query: { certificateUrl, cardId: card._id },         // You can pass any other state you need here
-    });
-  } 
-  else if (tab == 0 && isDesign) {
+  } else if (tab == 0 && isDesign) {
     // Sending route with state
     router.push({
       pathname: '/selectQrPdf', // Example route
@@ -724,13 +622,15 @@ const CardSelector = () => {
   } else {
     router.push(`/issue-certificate`);
   }
+  
+  };
 
   const customTemplate = () => {
     // remove any previos customTemplate
     sessionStorage.getItem('customTemplate') && sessionStorage.removeItem('customTemplate');
     sessionStorage.setItem('tab', tab);
     const newTab = window.open('', '_blank');
-    newTab.location.href = '/templates.html';
+    newTab.location.href = '/templates.html';    
   };
 
   const cards = [
@@ -767,45 +667,40 @@ const CardSelector = () => {
     const fetchTemplates = async () => {
       var storedUser = JSON.parse(localStorage.getItem("user") ?? "null");
       var userEmail;
-
+  
       if (storedUser && storedUser.JWTToken) {
         userEmail = storedUser.email.toLowerCase();
       }
-
+  
       // Fetch the templates from the API
       try {
-        // const response = await fetch(
-        //   `${apiUrl_admin}/api/get-certificate-templates`,
-        //   {
-        //     method: "POST",
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({
-        //       email: userEmail,
-        //     }),
-        //   }
-        // );
-        const payload = {
-          email:userEmail
-        }
-        certificate.getCertificatesTemplates(payload, async (response)=>{
-          if(response.status === 'SUCCESS'){
-              // if (response.ok) {
-              const data = response?.data;
-              setDesignCerts(data?.data );
-            } else {
-              console.error("Error fetching template: Response not ok");
-            }
-        });
+        const response = await fetch(
+          `${apiUrl_admin}/api/get-certificate-templates`,
+          {
+            method: "POST",
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: userEmail,
+            }),
+          }
+        );
   
-       } catch (error) {
+        if (response.ok) {
+          const data = await response.json();
+          setDesignCerts(data?.data); // Assuming `setDesignCerts` updates state
+        } else {
+          console.error("Error fetching template: Response not ok");
+        }
+      } catch (error) {
         console.error("Error fetching template:", error);
       }
     };
-
+  
     fetchTemplates();
-  }, []);
+  }, []); 
+  
 
   useEffect(() => {
     // Select the first card onLoad
@@ -815,43 +710,21 @@ const CardSelector = () => {
       setNewTemplate(customTemplateFromStorage);  //for preview
       setCertificateUrl(customTemplateFromStorage);
       setIsDesign(true)
-      setIsDesign(true)
       // setCertificateUrl(customTemplateFromStorage); // for later, in issue-certification, next part
-    } else {
-      handleCardSelect(0);
-    }
+    }else{
+        handleCardSelect(0);
+      }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Empty dependency array means it runs only once after the component is mounted
-
-  const InfoIcon = () => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="14"
-      height="14"
-      viewBox="0 0 14 14"
-      fill="none"
-    >
-      <path
-        d="M7 5.6C6.82694 5.6 6.65777 5.54868 6.51388 5.45254C6.36999 5.35639 6.25783 5.21974 6.19161 5.05985C6.12538 4.89997 6.10805 4.72403 6.14182 4.5543C6.17558 4.38457 6.25891 4.22865 6.38128 4.10628C6.50365 3.98391 6.65956 3.90058 6.8293 3.86682C6.99903 3.83305 7.17496 3.85038 7.33485 3.91661C7.49474 3.98283 7.63139 4.09499 7.72754 4.23888C7.82368 4.38277 7.875 4.55194 7.875 4.725C7.875 4.95707 7.78281 5.17963 7.61872 5.34372C7.45463 5.50782 7.23207 5.6 7 5.6ZM7 6.65C7.18565 6.65 7.3637 6.72375 7.49498 6.85503C7.62625 6.9863 7.7 7.16435 7.7 7.35V9.45C7.7 9.63565 7.62625 9.8137 7.49498 9.94498C7.3637 10.0763 7.18565 10.15 7 10.15C6.81435 10.15 6.6363 10.0763 6.50503 9.94498C6.37375 9.8137 6.3 9.63565 6.3 9.45V7.35C6.3 7.16435 6.37375 6.9863 6.50503 6.85503C6.6363 6.72375 6.81435 6.65 7 6.65ZM7 14C5.61553 14 4.26215 13.5895 3.11101 12.8203C1.95987 12.0511 1.06266 10.9579 0.532846 9.67879C0.00303299 8.3997 -0.13559 6.99224 0.134506 5.63437C0.404603 4.2765 1.07129 3.02922 2.05026 2.05026C3.02922 1.07129 4.2765 0.404603 5.63437 0.134506C6.99224 -0.135591 8.3997 0.00303268 9.67879 0.532846C10.9579 1.06266 12.0511 1.95987 12.8203 3.11101C13.5895 4.26216 14 5.61553 14 7C13.998 8.85589 13.2598 10.6352 11.9475 11.9475C10.6352 13.2598 8.85589 13.998 7 14ZM7 1.4C5.89243 1.4 4.80972 1.72844 3.88881 2.34377C2.96789 2.95911 2.25013 3.83371 1.82628 4.85698C1.40243 5.88024 1.29153 7.00621 1.50761 8.09251C1.72368 9.1788 2.25703 10.1766 3.0402 10.9598C3.82338 11.743 4.8212 12.2763 5.9075 12.4924C6.99379 12.7085 8.11976 12.5976 9.14303 12.1737C10.1663 11.7499 11.0409 11.0321 11.6562 10.1112C12.2716 9.19028 12.6 8.10758 12.6 7C12.5981 5.51536 12.0076 4.09205 10.9578 3.04225C9.90795 1.99245 8.48465 1.40186 7 1.4Z"
-        fill="#5B5A5F"
-      />
-    </svg>
-  );
-
-  const InfoIconDark = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <path d="M7 5.6C6.82694 5.6 6.65777 5.54868 6.51388 5.45254C6.36999 5.35639 6.25783 5.21974 6.19161 5.05985C6.12538 4.89997 6.10805 4.72403 6.14182 4.5543C6.17558 4.38457 6.25891 4.22865 6.38128 4.10628C6.50365 3.98391 6.65956 3.90058 6.8293 3.86682C6.99903 3.83305 7.17496 3.85038 7.33485 3.91661C7.49474 3.98283 7.63139 4.09499 7.72754 4.23888C7.82368 4.38277 7.875 4.55194 7.875 4.725C7.875 4.95707 7.78281 5.17963 7.61872 5.34372C7.45463 5.50782 7.23207 5.6 7 5.6ZM7 6.65C7.18565 6.65 7.3637 6.72375 7.49498 6.85503C7.62625 6.9863 7.7 7.16435 7.7 7.35V9.45C7.7 9.63565 7.62625 9.8137 7.49498 9.94498C7.3637 10.0763 7.18565 10.15 7 10.15C6.81435 10.15 6.6363 10.0763 6.50503 9.94498C6.37375 9.8137 6.3 9.63565 6.3 9.45V7.35C6.3 7.16435 6.37375 6.9863 6.50503 6.85503C6.6363 6.72375 6.81435 6.65 7 6.65ZM7 14C5.61553 14 4.26215 13.5895 3.11101 12.8203C1.95987 12.0511 1.06266 10.9579 0.532846 9.67879C0.00303299 8.3997 -0.13559 6.99224 0.134506 5.63437C0.404603 4.2765 1.07129 3.02922 2.05026 2.05026C3.02922 1.07129 4.2765 0.404603 5.63437 0.134506C6.99224 -0.135591 8.3997 0.00303268 9.67879 0.532846C10.9579 1.06266 12.0511 1.95987 12.8203 3.11101C13.5895 4.26216 14 5.61553 14 7C13.998 8.85589 13.2598 10.6352 11.9475 11.9475C10.6352 13.2598 8.85589 13.998 7 14ZM7 1.4C5.89243 1.4 4.80972 1.72844 3.88881 2.34377C2.96789 2.95911 2.25013 3.83371 1.82628 4.85698C1.40243 5.88024 1.29153 7.00621 1.50761 8.09251C1.72368 9.1788 2.25703 10.1766 3.0402 10.9598C3.82338 11.743 4.8212 12.2763 5.9075 12.4924C6.99379 12.7085 8.11976 12.5976 9.14303 12.1737C10.1663 11.7499 11.0409 11.0321 11.6562 10.1112C12.2716 9.19028 12.6 8.10758 12.6 7C12.5981 5.51536 12.0076 4.09205 10.9578 3.04225C9.90795 1.99245 8.48465 1.40186 7 1.4Z" fill="#A9A7B0"/>
-    </svg>
-  );
 
   return (
     <>
       <div className="page-bg">
         <div className="position-relative">
           <div className="dashboard mt-5">
-            <Container className="pt-5">
-              {tab == 0 && <h3 className="title mt-5">Issue Certifications</h3>}
-              {tab == 1 && <h3 className="title mt-5">Batch Issuance</h3>}
+            <Container>
+              {tab == 0 && <h3 className="title mb-4 py-2">Issue Certifications</h3>}
+              {tab == 1 && <h3 className="title">Batch Issuance</h3>}
 
               <div className="register issue-new-certificate issue-with-pdf">
                 <Form className="register-form">
@@ -946,14 +819,14 @@ const CardSelector = () => {
                                     </div>
                                     <Button
                                       label="Upload"
-                                      disabled={isDesign}
+                                  disabled={isDesign}
                                       className="golden-upload d-none d-md-block"
                                       onClick={() => uploadFile("badge")}
                                     />
                                     <Button
                                       label=""
-                                      disabled={isDesign}
-                                      className="golden-upload m-upload d-block d-md-none"
+                                  disabled={isDesign}
+                                      className="golden-upload m-upload d-flex justify-content-center align-items-center d-md-none"
                                       onClick={() => uploadFile("badge")}
                                     />
                                   </>
@@ -961,20 +834,53 @@ const CardSelector = () => {
                               </div>
                               <div className="upload-info">
                                 <div className="details">
-                                  {isDarkMode ? <InfoIconDark /> : <InfoIcon /> }                                  
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    fill="none"
+                                  >
+                                    <path
+                                      d="M7 5.6C6.82694 5.6 6.65777 5.54868 6.51388 5.45254C6.36999 5.35639 6.25783 5.21974 6.19161 5.05985C6.12538 4.89997 6.10805 4.72403 6.14182 4.5543C6.17558 4.38457 6.25891 4.22865 6.38128 4.10628C6.50365 3.98391 6.65956 3.90058 6.8293 3.86682C6.99903 3.83305 7.17496 3.85038 7.33485 3.91661C7.49474 3.98283 7.63139 4.09499 7.72754 4.23888C7.82368 4.38277 7.875 4.55194 7.875 4.725C7.875 4.95707 7.78281 5.17963 7.61872 5.34372C7.45463 5.50782 7.23207 5.6 7 5.6ZM7 6.65C7.18565 6.65 7.3637 6.72375 7.49498 6.85503C7.62625 6.9863 7.7 7.16435 7.7 7.35V9.45C7.7 9.63565 7.62625 9.8137 7.49498 9.94498C7.3637 10.0763 7.18565 10.15 7 10.15C6.81435 10.15 6.6363 10.0763 6.50503 9.94498C6.37375 9.8137 6.3 9.63565 6.3 9.45V7.35C6.3 7.16435 6.37375 6.9863 6.50503 6.85503C6.6363 6.72375 6.81435 6.65 7 6.65ZM7 14C5.61553 14 4.26215 13.5895 3.11101 12.8203C1.95987 12.0511 1.06266 10.9579 0.532846 9.67879C0.00303299 8.3997 -0.13559 6.99224 0.134506 5.63437C0.404603 4.2765 1.07129 3.02922 2.05026 2.05026C3.02922 1.07129 4.2765 0.404603 5.63437 0.134506C6.99224 -0.135591 8.3997 0.00303268 9.67879 0.532846C10.9579 1.06266 12.0511 1.95987 12.8203 3.11101C13.5895 4.26216 14 5.61553 14 7C13.998 8.85589 13.2598 10.6352 11.9475 11.9475C10.6352 13.2598 8.85589 13.998 7 14ZM7 1.4C5.89243 1.4 4.80972 1.72844 3.88881 2.34377C2.96789 2.95911 2.25013 3.83371 1.82628 4.85698C1.40243 5.88024 1.29153 7.00621 1.50761 8.09251C1.72368 9.1788 2.25703 10.1766 3.0402 10.9598C3.82338 11.743 4.8212 12.2763 5.9075 12.4924C6.99379 12.7085 8.11976 12.5976 9.14303 12.1737C10.1663 11.7499 11.0409 11.0321 11.6562 10.1112C12.2716 9.19028 12.6 8.10758 12.6 7C12.5981 5.51536 12.0076 4.09205 10.9578 3.04225C9.90795 1.99245 8.48465 1.40186 7 1.4Z"
+                                      fill="#5B5A5F"
+                                    />
+                                  </svg>
                                   <div className="info-text">
                                     <span>Please use .png on</span>
                                   </div>
                                 </div>
                                 <div className="details">
-                                  {isDarkMode ? <InfoIconDark /> : <InfoIcon /> }
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    fill="none"
+                                  >
+                                    <path
+                                      d="M7 5.6C6.82694 5.6 6.65777 5.54868 6.51388 5.45254C6.36999 5.35639 6.25783 5.21974 6.19161 5.05985C6.12538 4.89997 6.10805 4.72403 6.14182 4.5543C6.17558 4.38457 6.25891 4.22865 6.38128 4.10628C6.50365 3.98391 6.65956 3.90058 6.8293 3.86682C6.99903 3.83305 7.17496 3.85038 7.33485 3.91661C7.49474 3.98283 7.63139 4.09499 7.72754 4.23888C7.82368 4.38277 7.875 4.55194 7.875 4.725C7.875 4.95707 7.78281 5.17963 7.61872 5.34372C7.45463 5.50782 7.23207 5.6 7 5.6ZM7 6.65C7.18565 6.65 7.3637 6.72375 7.49498 6.85503C7.62625 6.9863 7.7 7.16435 7.7 7.35V9.45C7.7 9.63565 7.62625 9.8137 7.49498 9.94498C7.3637 10.0763 7.18565 10.15 7 10.15C6.81435 10.15 6.6363 10.0763 6.50503 9.94498C6.37375 9.8137 6.3 9.63565 6.3 9.45V7.35C6.3 7.16435 6.37375 6.9863 6.50503 6.85503C6.6363 6.72375 6.81435 6.65 7 6.65ZM7 14C5.61553 14 4.26215 13.5895 3.11101 12.8203C1.95987 12.0511 1.06266 10.9579 0.532846 9.67879C0.00303299 8.3997 -0.13559 6.99224 0.134506 5.63437C0.404603 4.2765 1.07129 3.02922 2.05026 2.05026C3.02922 1.07129 4.2765 0.404603 5.63437 0.134506C6.99224 -0.135591 8.3997 0.00303268 9.67879 0.532846C10.9579 1.06266 12.0511 1.95987 12.8203 3.11101C13.5895 4.26216 14 5.61553 14 7C13.998 8.85589 13.2598 10.6352 11.9475 11.9475C10.6352 13.2598 8.85589 13.998 7 14ZM7 1.4C5.89243 1.4 4.80972 1.72844 3.88881 2.34377C2.96789 2.95911 2.25013 3.83371 1.82628 4.85698C1.40243 5.88024 1.29153 7.00621 1.50761 8.09251C1.72368 9.1788 2.25703 10.1766 3.0402 10.9598C3.82338 11.743 4.8212 12.2763 5.9075 12.4924C6.99379 12.7085 8.11976 12.5976 9.14303 12.1737C10.1663 11.7499 11.0409 11.0321 11.6562 10.1112C12.2716 9.19028 12.6 8.10758 12.6 7C12.5981 5.51536 12.0076 4.09205 10.9578 3.04225C9.90795 1.99245 8.48465 1.40186 7 1.4Z"
+                                      fill="#5B5A5F"
+                                    />
+                                  </svg>
                                   <div className="info-text">
                                     Badge dimensions:{" "}
                                     <span>H 175px, W 175px</span>
                                   </div>
                                 </div>
                                 <div className="details">
-                                  {isDarkMode ? <InfoIconDark /> : <InfoIcon /> }
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    fill="none"
+                                  >
+                                    <path
+                                      d="M7 5.6C6.82694 5.6 6.65777 5.54868 6.51388 5.45254C6.36999 5.35639 6.25783 5.21974 6.19161 5.05985C6.12538 4.89997 6.10805 4.72403 6.14182 4.5543C6.17558 4.38457 6.25891 4.22865 6.38128 4.10628C6.50365 3.98391 6.65956 3.90058 6.8293 3.86682C6.99903 3.83305 7.17496 3.85038 7.33485 3.91661C7.49474 3.98283 7.63139 4.09499 7.72754 4.23888C7.82368 4.38277 7.875 4.55194 7.875 4.725C7.875 4.95707 7.78281 5.17963 7.61872 5.34372C7.45463 5.50782 7.23207 5.6 7 5.6ZM7 6.65C7.18565 6.65 7.3637 6.72375 7.49498 6.85503C7.62625 6.9863 7.7 7.16435 7.7 7.35V9.45C7.7 9.63565 7.62625 9.8137 7.49498 9.94498C7.3637 10.0763 7.18565 10.15 7 10.15C6.81435 10.15 6.6363 10.0763 6.50503 9.94498C6.37375 9.8137 6.3 9.63565 6.3 9.45V7.35C6.3 7.16435 6.37375 6.9863 6.50503 6.85503C6.6363 6.72375 6.81435 6.65 7 6.65ZM7 14C5.61553 14 4.26215 13.5895 3.11101 12.8203C1.95987 12.0511 1.06266 10.9579 0.532846 9.67879C0.00303299 8.3997 -0.13559 6.99224 0.134506 5.63437C0.404603 4.2765 1.07129 3.02922 2.05026 2.05026C3.02922 1.07129 4.2765 0.404603 5.63437 0.134506C6.99224 -0.135591 8.3997 0.00303268 9.67879 0.532846C10.9579 1.06266 12.0511 1.95987 12.8203 3.11101C13.5895 4.26216 14 5.61553 14 7C13.998 8.85589 13.2598 10.6352 11.9475 11.9475C10.6352 13.2598 8.85589 13.998 7 14ZM7 1.4C5.89243 1.4 4.80972 1.72844 3.88881 2.34377C2.96789 2.95911 2.25013 3.83371 1.82628 4.85698C1.40243 5.88024 1.29153 7.00621 1.50761 8.09251C1.72368 9.1788 2.25703 10.1766 3.0402 10.9598C3.82338 11.743 4.8212 12.2763 5.9075 12.4924C6.99379 12.7085 8.11976 12.5976 9.14303 12.1737C10.1663 11.7499 11.0409 11.0321 11.6562 10.1112C12.2716 9.19028 12.6 8.10758 12.6 7C12.5981 5.51536 12.0076 4.09205 10.9578 3.04225C9.90795 1.99245 8.48465 1.40186 7 1.4Z"
+                                      fill="#5B5A5F"
+                                    />
+                                  </svg>
                                   <div className="info-text">
                                     File size: <span>10-30kb</span>
                                   </div>
@@ -1015,14 +921,14 @@ const CardSelector = () => {
                                     </div>
                                     <Button
                                       label="Upload"
-                                      disabled={isDesign}
+                                  disabled={isDesign}
                                       className="golden-upload d-none d-md-block"
                                       onClick={() => uploadFile("logo")}
                                     />
                                     <Button
                                       label=""
-                                      disabled={isDesign}
-                                      className="golden-upload m-upload d-block d-md-none"
+                                  disabled={isDesign}
+                                      className="golden-upload m-upload d-flex justify-content-center align-items-center d-md-none"
                                       onClick={() => uploadFile("logo")}
                                     />
                                   </>
@@ -1041,20 +947,53 @@ const CardSelector = () => {
                               </div>
                               <div className="upload-info">
                                 <div className="details">
-                                  {isDarkMode ? <InfoIconDark /> : <InfoIcon /> }
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    fill="none"
+                                  >
+                                    <path
+                                      d="M7 5.6C6.82694 5.6 6.65777 5.54868 6.51388 5.45254C6.36999 5.35639 6.25783 5.21974 6.19161 5.05985C6.12538 4.89997 6.10805 4.72403 6.14182 4.5543C6.17558 4.38457 6.25891 4.22865 6.38128 4.10628C6.50365 3.98391 6.65956 3.90058 6.8293 3.86682C6.99903 3.83305 7.17496 3.85038 7.33485 3.91661C7.49474 3.98283 7.63139 4.09499 7.72754 4.23888C7.82368 4.38277 7.875 4.55194 7.875 4.725C7.875 4.95707 7.78281 5.17963 7.61872 5.34372C7.45463 5.50782 7.23207 5.6 7 5.6ZM7 6.65C7.18565 6.65 7.3637 6.72375 7.49498 6.85503C7.62625 6.9863 7.7 7.16435 7.7 7.35V9.45C7.7 9.63565 7.62625 9.8137 7.49498 9.94498C7.3637 10.0763 7.18565 10.15 7 10.15C6.81435 10.15 6.6363 10.0763 6.50503 9.94498C6.37375 9.8137 6.3 9.63565 6.3 9.45V7.35C6.3 7.16435 6.37375 6.9863 6.50503 6.85503C6.6363 6.72375 6.81435 6.65 7 6.65ZM7 14C5.61553 14 4.26215 13.5895 3.11101 12.8203C1.95987 12.0511 1.06266 10.9579 0.532846 9.67879C0.00303299 8.3997 -0.13559 6.99224 0.134506 5.63437C0.404603 4.2765 1.07129 3.02922 2.05026 2.05026C3.02922 1.07129 4.2765 0.404603 5.63437 0.134506C6.99224 -0.135591 8.3997 0.00303268 9.67879 0.532846C10.9579 1.06266 12.0511 1.95987 12.8203 3.11101C13.5895 4.26216 14 5.61553 14 7C13.998 8.85589 13.2598 10.6352 11.9475 11.9475C10.6352 13.2598 8.85589 13.998 7 14ZM7 1.4C5.89243 1.4 4.80972 1.72844 3.88881 2.34377C2.96789 2.95911 2.25013 3.83371 1.82628 4.85698C1.40243 5.88024 1.29153 7.00621 1.50761 8.09251C1.72368 9.1788 2.25703 10.1766 3.0402 10.9598C3.82338 11.743 4.8212 12.2763 5.9075 12.4924C6.99379 12.7085 8.11976 12.5976 9.14303 12.1737C10.1663 11.7499 11.0409 11.0321 11.6562 10.1112C12.2716 9.19028 12.6 8.10758 12.6 7C12.5981 5.51536 12.0076 4.09205 10.9578 3.04225C9.90795 1.99245 8.48465 1.40186 7 1.4Z"
+                                      fill="#5B5A5F"
+                                    />
+                                  </svg>
                                   <div className="info-text">
                                     <span >Please use .png on</span>
                                   </div>
                                 </div>
                                 <div className="details">
-                                  {isDarkMode ? <InfoIconDark /> : <InfoIcon /> }
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    fill="none"
+                                  >
+                                    <path
+                                      d="M7 5.6C6.82694 5.6 6.65777 5.54868 6.51388 5.45254C6.36999 5.35639 6.25783 5.21974 6.19161 5.05985C6.12538 4.89997 6.10805 4.72403 6.14182 4.5543C6.17558 4.38457 6.25891 4.22865 6.38128 4.10628C6.50365 3.98391 6.65956 3.90058 6.8293 3.86682C6.99903 3.83305 7.17496 3.85038 7.33485 3.91661C7.49474 3.98283 7.63139 4.09499 7.72754 4.23888C7.82368 4.38277 7.875 4.55194 7.875 4.725C7.875 4.95707 7.78281 5.17963 7.61872 5.34372C7.45463 5.50782 7.23207 5.6 7 5.6ZM7 6.65C7.18565 6.65 7.3637 6.72375 7.49498 6.85503C7.62625 6.9863 7.7 7.16435 7.7 7.35V9.45C7.7 9.63565 7.62625 9.8137 7.49498 9.94498C7.3637 10.0763 7.18565 10.15 7 10.15C6.81435 10.15 6.6363 10.0763 6.50503 9.94498C6.37375 9.8137 6.3 9.63565 6.3 9.45V7.35C6.3 7.16435 6.37375 6.9863 6.50503 6.85503C6.6363 6.72375 6.81435 6.65 7 6.65ZM7 14C5.61553 14 4.26215 13.5895 3.11101 12.8203C1.95987 12.0511 1.06266 10.9579 0.532846 9.67879C0.00303299 8.3997 -0.13559 6.99224 0.134506 5.63437C0.404603 4.2765 1.07129 3.02922 2.05026 2.05026C3.02922 1.07129 4.2765 0.404603 5.63437 0.134506C6.99224 -0.135591 8.3997 0.00303268 9.67879 0.532846C10.9579 1.06266 12.0511 1.95987 12.8203 3.11101C13.5895 4.26216 14 5.61553 14 7C13.998 8.85589 13.2598 10.6352 11.9475 11.9475C10.6352 13.2598 8.85589 13.998 7 14ZM7 1.4C5.89243 1.4 4.80972 1.72844 3.88881 2.34377C2.96789 2.95911 2.25013 3.83371 1.82628 4.85698C1.40243 5.88024 1.29153 7.00621 1.50761 8.09251C1.72368 9.1788 2.25703 10.1766 3.0402 10.9598C3.82338 11.743 4.8212 12.2763 5.9075 12.4924C6.99379 12.7085 8.11976 12.5976 9.14303 12.1737C10.1663 11.7499 11.0409 11.0321 11.6562 10.1112C12.2716 9.19028 12.6 8.10758 12.6 7C12.5981 5.51536 12.0076 4.09205 10.9578 3.04225C9.90795 1.99245 8.48465 1.40186 7 1.4Z"
+                                      fill="#5B5A5F"
+                                    />
+                                  </svg>
                                   <div className="info-text">
                                     Logo dimensions:{" "}
                                     <span>H 65px, W 400px</span>
                                   </div>
                                 </div>
                                 <div className="details">
-                                  {isDarkMode ? <InfoIconDark /> : <InfoIcon /> }
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    fill="none"
+                                  >
+                                    <path
+                                      d="M7 5.6C6.82694 5.6 6.65777 5.54868 6.51388 5.45254C6.36999 5.35639 6.25783 5.21974 6.19161 5.05985C6.12538 4.89997 6.10805 4.72403 6.14182 4.5543C6.17558 4.38457 6.25891 4.22865 6.38128 4.10628C6.50365 3.98391 6.65956 3.90058 6.8293 3.86682C6.99903 3.83305 7.17496 3.85038 7.33485 3.91661C7.49474 3.98283 7.63139 4.09499 7.72754 4.23888C7.82368 4.38277 7.875 4.55194 7.875 4.725C7.875 4.95707 7.78281 5.17963 7.61872 5.34372C7.45463 5.50782 7.23207 5.6 7 5.6ZM7 6.65C7.18565 6.65 7.3637 6.72375 7.49498 6.85503C7.62625 6.9863 7.7 7.16435 7.7 7.35V9.45C7.7 9.63565 7.62625 9.8137 7.49498 9.94498C7.3637 10.0763 7.18565 10.15 7 10.15C6.81435 10.15 6.6363 10.0763 6.50503 9.94498C6.37375 9.8137 6.3 9.63565 6.3 9.45V7.35C6.3 7.16435 6.37375 6.9863 6.50503 6.85503C6.6363 6.72375 6.81435 6.65 7 6.65ZM7 14C5.61553 14 4.26215 13.5895 3.11101 12.8203C1.95987 12.0511 1.06266 10.9579 0.532846 9.67879C0.00303299 8.3997 -0.13559 6.99224 0.134506 5.63437C0.404603 4.2765 1.07129 3.02922 2.05026 2.05026C3.02922 1.07129 4.2765 0.404603 5.63437 0.134506C6.99224 -0.135591 8.3997 0.00303268 9.67879 0.532846C10.9579 1.06266 12.0511 1.95987 12.8203 3.11101C13.5895 4.26216 14 5.61553 14 7C13.998 8.85589 13.2598 10.6352 11.9475 11.9475C10.6352 13.2598 8.85589 13.998 7 14ZM7 1.4C5.89243 1.4 4.80972 1.72844 3.88881 2.34377C2.96789 2.95911 2.25013 3.83371 1.82628 4.85698C1.40243 5.88024 1.29153 7.00621 1.50761 8.09251C1.72368 9.1788 2.25703 10.1766 3.0402 10.9598C3.82338 11.743 4.8212 12.2763 5.9075 12.4924C6.99379 12.7085 8.11976 12.5976 9.14303 12.1737C10.1663 11.7499 11.0409 11.0321 11.6562 10.1112C12.2716 9.19028 12.6 8.10758 12.6 7C12.5981 5.51536 12.0076 4.09205 10.9578 3.04225C9.90795 1.99245 8.48465 1.40186 7 1.4Z"
+                                      fill="#5B5A5F"
+                                    />
+                                  </svg>
                                   <div className="info-text">
                                     File size: <span>5-30kb</span>
                                   </div>
@@ -1086,7 +1025,7 @@ const CardSelector = () => {
                                         type="file"
                                         accept="image/*"
                                         ref={fileInputRefs.signature}
-                                        disabled={isDesign}
+                                  disabled={isDesign}
                                         onChange={(event) =>
                                           handleChange(event, "signature")
                                         }
@@ -1094,14 +1033,14 @@ const CardSelector = () => {
                                     </div>
                                     <Button
                                       label="Upload"
-                                      disabled={isDesign}
+                                  disabled={isDesign}
                                       className="golden-upload d-none d-md-block"
                                       onClick={() => uploadFile("signature")}
                                     />
                                     <Button
                                       label=""
-                                      disabled={isDesign}
-                                      className="golden-upload m-upload d-block d-md-none"
+                                  disabled={isDesign}
+                                      className="golden-upload m-upload d-flex justify-content-center align-items-center d-md-none"
                                       onClick={() => uploadFile("signature")}
                                     />
                                   </>
@@ -1109,20 +1048,53 @@ const CardSelector = () => {
                               </div>
                               <div className="upload-info">
                                 <div className="details">
-                                  {isDarkMode ? <InfoIconDark /> : <InfoIcon /> }
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    fill="none"
+                                  >
+                                    <path
+                                      d="M7 5.6C6.82694 5.6 6.65777 5.54868 6.51388 5.45254C6.36999 5.35639 6.25783 5.21974 6.19161 5.05985C6.12538 4.89997 6.10805 4.72403 6.14182 4.5543C6.17558 4.38457 6.25891 4.22865 6.38128 4.10628C6.50365 3.98391 6.65956 3.90058 6.8293 3.86682C6.99903 3.83305 7.17496 3.85038 7.33485 3.91661C7.49474 3.98283 7.63139 4.09499 7.72754 4.23888C7.82368 4.38277 7.875 4.55194 7.875 4.725C7.875 4.95707 7.78281 5.17963 7.61872 5.34372C7.45463 5.50782 7.23207 5.6 7 5.6ZM7 6.65C7.18565 6.65 7.3637 6.72375 7.49498 6.85503C7.62625 6.9863 7.7 7.16435 7.7 7.35V9.45C7.7 9.63565 7.62625 9.8137 7.49498 9.94498C7.3637 10.0763 7.18565 10.15 7 10.15C6.81435 10.15 6.6363 10.0763 6.50503 9.94498C6.37375 9.8137 6.3 9.63565 6.3 9.45V7.35C6.3 7.16435 6.37375 6.9863 6.50503 6.85503C6.6363 6.72375 6.81435 6.65 7 6.65ZM7 14C5.61553 14 4.26215 13.5895 3.11101 12.8203C1.95987 12.0511 1.06266 10.9579 0.532846 9.67879C0.00303299 8.3997 -0.13559 6.99224 0.134506 5.63437C0.404603 4.2765 1.07129 3.02922 2.05026 2.05026C3.02922 1.07129 4.2765 0.404603 5.63437 0.134506C6.99224 -0.135591 8.3997 0.00303268 9.67879 0.532846C10.9579 1.06266 12.0511 1.95987 12.8203 3.11101C13.5895 4.26216 14 5.61553 14 7C13.998 8.85589 13.2598 10.6352 11.9475 11.9475C10.6352 13.2598 8.85589 13.998 7 14ZM7 1.4C5.89243 1.4 4.80972 1.72844 3.88881 2.34377C2.96789 2.95911 2.25013 3.83371 1.82628 4.85698C1.40243 5.88024 1.29153 7.00621 1.50761 8.09251C1.72368 9.1788 2.25703 10.1766 3.0402 10.9598C3.82338 11.743 4.8212 12.2763 5.9075 12.4924C6.99379 12.7085 8.11976 12.5976 9.14303 12.1737C10.1663 11.7499 11.0409 11.0321 11.6562 10.1112C12.2716 9.19028 12.6 8.10758 12.6 7C12.5981 5.51536 12.0076 4.09205 10.9578 3.04225C9.90795 1.99245 8.48465 1.40186 7 1.4Z"
+                                      fill="#5B5A5F"
+                                    />
+                                  </svg>
                                   <div className="info-text">
                                     <span>Please use .png on</span>
                                   </div>
                                 </div>
                                 <div className="details">
-                                  {isDarkMode ? <InfoIconDark /> : <InfoIcon /> }
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    fill="none"
+                                  >
+                                    <path
+                                      d="M7 5.6C6.82694 5.6 6.65777 5.54868 6.51388 5.45254C6.36999 5.35639 6.25783 5.21974 6.19161 5.05985C6.12538 4.89997 6.10805 4.72403 6.14182 4.5543C6.17558 4.38457 6.25891 4.22865 6.38128 4.10628C6.50365 3.98391 6.65956 3.90058 6.8293 3.86682C6.99903 3.83305 7.17496 3.85038 7.33485 3.91661C7.49474 3.98283 7.63139 4.09499 7.72754 4.23888C7.82368 4.38277 7.875 4.55194 7.875 4.725C7.875 4.95707 7.78281 5.17963 7.61872 5.34372C7.45463 5.50782 7.23207 5.6 7 5.6ZM7 6.65C7.18565 6.65 7.3637 6.72375 7.49498 6.85503C7.62625 6.9863 7.7 7.16435 7.7 7.35V9.45C7.7 9.63565 7.62625 9.8137 7.49498 9.94498C7.3637 10.0763 7.18565 10.15 7 10.15C6.81435 10.15 6.6363 10.0763 6.50503 9.94498C6.37375 9.8137 6.3 9.63565 6.3 9.45V7.35C6.3 7.16435 6.37375 6.9863 6.50503 6.85503C6.6363 6.72375 6.81435 6.65 7 6.65ZM7 14C5.61553 14 4.26215 13.5895 3.11101 12.8203C1.95987 12.0511 1.06266 10.9579 0.532846 9.67879C0.00303299 8.3997 -0.13559 6.99224 0.134506 5.63437C0.404603 4.2765 1.07129 3.02922 2.05026 2.05026C3.02922 1.07129 4.2765 0.404603 5.63437 0.134506C6.99224 -0.135591 8.3997 0.00303268 9.67879 0.532846C10.9579 1.06266 12.0511 1.95987 12.8203 3.11101C13.5895 4.26216 14 5.61553 14 7C13.998 8.85589 13.2598 10.6352 11.9475 11.9475C10.6352 13.2598 8.85589 13.998 7 14ZM7 1.4C5.89243 1.4 4.80972 1.72844 3.88881 2.34377C2.96789 2.95911 2.25013 3.83371 1.82628 4.85698C1.40243 5.88024 1.29153 7.00621 1.50761 8.09251C1.72368 9.1788 2.25703 10.1766 3.0402 10.9598C3.82338 11.743 4.8212 12.2763 5.9075 12.4924C6.99379 12.7085 8.11976 12.5976 9.14303 12.1737C10.1663 11.7499 11.0409 11.0321 11.6562 10.1112C12.2716 9.19028 12.6 8.10758 12.6 7C12.5981 5.51536 12.0076 4.09205 10.9578 3.04225C9.90795 1.99245 8.48465 1.40186 7 1.4Z"
+                                      fill="#5B5A5F"
+                                    />
+                                  </svg>
                                   <div className="info-text">
                                     Signature dimensions:{" "}
                                     <span>H:65px W:220px</span>
                                   </div>
                                 </div>
                                 <div className="details">
-                                  {isDarkMode ? <InfoIconDark /> : <InfoIcon /> }
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    fill="none"
+                                  >
+                                    <path
+                                      d="M7 5.6C6.82694 5.6 6.65777 5.54868 6.51388 5.45254C6.36999 5.35639 6.25783 5.21974 6.19161 5.05985C6.12538 4.89997 6.10805 4.72403 6.14182 4.5543C6.17558 4.38457 6.25891 4.22865 6.38128 4.10628C6.50365 3.98391 6.65956 3.90058 6.8293 3.86682C6.99903 3.83305 7.17496 3.85038 7.33485 3.91661C7.49474 3.98283 7.63139 4.09499 7.72754 4.23888C7.82368 4.38277 7.875 4.55194 7.875 4.725C7.875 4.95707 7.78281 5.17963 7.61872 5.34372C7.45463 5.50782 7.23207 5.6 7 5.6ZM7 6.65C7.18565 6.65 7.3637 6.72375 7.49498 6.85503C7.62625 6.9863 7.7 7.16435 7.7 7.35V9.45C7.7 9.63565 7.62625 9.8137 7.49498 9.94498C7.3637 10.0763 7.18565 10.15 7 10.15C6.81435 10.15 6.6363 10.0763 6.50503 9.94498C6.37375 9.8137 6.3 9.63565 6.3 9.45V7.35C6.3 7.16435 6.37375 6.9863 6.50503 6.85503C6.6363 6.72375 6.81435 6.65 7 6.65ZM7 14C5.61553 14 4.26215 13.5895 3.11101 12.8203C1.95987 12.0511 1.06266 10.9579 0.532846 9.67879C0.00303299 8.3997 -0.13559 6.99224 0.134506 5.63437C0.404603 4.2765 1.07129 3.02922 2.05026 2.05026C3.02922 1.07129 4.2765 0.404603 5.63437 0.134506C6.99224 -0.135591 8.3997 0.00303268 9.67879 0.532846C10.9579 1.06266 12.0511 1.95987 12.8203 3.11101C13.5895 4.26216 14 5.61553 14 7C13.998 8.85589 13.2598 10.6352 11.9475 11.9475C10.6352 13.2598 8.85589 13.998 7 14ZM7 1.4C5.89243 1.4 4.80972 1.72844 3.88881 2.34377C2.96789 2.95911 2.25013 3.83371 1.82628 4.85698C1.40243 5.88024 1.29153 7.00621 1.50761 8.09251C1.72368 9.1788 2.25703 10.1766 3.0402 10.9598C3.82338 11.743 4.8212 12.2763 5.9075 12.4924C6.99379 12.7085 8.11976 12.5976 9.14303 12.1737C10.1663 11.7499 11.0409 11.0321 11.6562 10.1112C12.2716 9.19028 12.6 8.10758 12.6 7C12.5981 5.51536 12.0076 4.09205 10.9578 3.04225C9.90795 1.99245 8.48465 1.40186 7 1.4Z"
+                                      fill="#5B5A5F"
+                                    />
+                                  </svg>
                                   <div className="info-text">
                                     File size: <span>5-30kb</span>
                                   </div>
@@ -1136,32 +1108,24 @@ const CardSelector = () => {
                   </Card>
                 </Form>
               </div>
-              
               <Row>
                 <Col xs={12} md={6}>
                   <Card className="p-0 template-thumb">
-                  {designCerts &&
-                designCerts?.length > 0 &&
-                <>
                   <Card.Header>Designed Templates</Card.Header>
                     <Row className="p-3">
-
                     {designCerts?.slice(-3)?.map((card, index) => (
                         <Col key={index} xs={6} md={4}>
                           <Card
                             className="cert-thumb"
                             style={{ cursor: "pointer" }}
-                            onClick={() => handleDesignCardSelect(card?.url, card)}
+                            onClick={() => handleDesignCardSelect(card?.url)}
                           >
                             <Card.Img
-                              variant="top" src={card?.url} />
+                             variant="top" src={card?.url} />
                           </Card>
                         </Col>
                       ))}
                     </Row>
-                    </>
-              }
-
                     <Card.Header>Available Templates</Card.Header>
                     <Row className="p-3">
                       {cards.map((card, index) => (
@@ -1175,9 +1139,9 @@ const CardSelector = () => {
                           </Card>
                         </Col>
                       ))}
-
+                     
                     </Row>
-
+                   
                   </Card>
                 </Col>
                 <Col xs="12" md={6}>
@@ -1207,7 +1171,6 @@ const CardSelector = () => {
                   )}
                 </Col>
               </Row>
-
             </Container>
           </div>
           <div className="page-footer-bg"></div>
