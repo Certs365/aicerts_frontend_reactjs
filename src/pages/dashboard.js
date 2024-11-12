@@ -71,7 +71,8 @@ const Dashboard = () => {
           });
   
           if (!response.ok) {
-            throw new Error('Failed to fetch plan name');
+            console.error('Failed to fetch plan name');
+            // throw new Error('Failed to fetch plan name');
           }
   
           const data = await response.json();
