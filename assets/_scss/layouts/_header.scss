@@ -19,6 +19,56 @@
 
 
   }
+  /* Bot icon styles */
+.bot-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 1000;
+
+  img {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+/* Bot iframe container */
+.bot-iframe-container {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 400px;
+  height: 500px;
+  max-width: 90%;
+  max-height: 70vh;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 1000;
+
+  iframe {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    width: 90vw;
+    height: 60vh;
+    bottom: 60px;
+    right: 10px;
+  }
+
+  @media (max-width: 480px) {
+    width: 100vw;
+    height: 50vh;
+    bottom: 50px;
+    right: 0;
+  }
+}
+
 
   .nav-item {
     font-family: $font-family;
