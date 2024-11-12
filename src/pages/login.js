@@ -196,8 +196,7 @@ const Login = () => {
           }
         } else if (responseData.status == "SUCCESS") {
           if (responseData?.data && responseData?.data?.JWTToken !== undefined) {
-
-            await handleSendEmail()
+            await handleSendEmail();
             setLoginData(responseData?.data)
           } else {
             setShowPhone(responseData?.isPhoneNumber);
@@ -301,7 +300,7 @@ const Login = () => {
     }
   };
 
-
+  const handleSendEmail = async () => {
   // Prepare the request payload
   const payload = {
     email:formData.email , // You can replace this with the actual email input// Replace this with the actual OTP code input
@@ -343,6 +342,7 @@ const Login = () => {
     // Handle fetch error (e.g., network issues)
     console.error('Network error:', error);
   }
+};
 
 const handleLoginOtp = async (e) => {
   setIsLoading(true)

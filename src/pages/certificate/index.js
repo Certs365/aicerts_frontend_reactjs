@@ -663,6 +663,7 @@ const CardSelector = () => {
   };
 
   const handleSelectTemplate = () => {
+    debugger
     if (!isDesign) {
 
       if (!logoUrl) {

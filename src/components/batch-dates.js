@@ -87,7 +87,7 @@ console.log(dates.data);
       {batchCertificatesData ? (
         <GalleryCertificates certificatesData={batchCertificatesData}  setIsLoading={setIsLoading} isLoading={isLoading} />
       ) : (
-        dates?.map((date) => (
+        dates?.data?.map((date) => (
           <div key={date} className='batch-date-container' onClick={() => handleArrowClick(date)}>
             <div className='badge-wrapper col-3 '>
               <div className='badge-wrapper-inner '>
