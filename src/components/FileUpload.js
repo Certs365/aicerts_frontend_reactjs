@@ -77,7 +77,8 @@ const FileUpload = ({onUploadSuccess,imageType}) => {
         }
       );
       if (response.status !== 201) {
-        throw new Error("Upload failed.");
+        console.error("Upload failed.");
+        // throw new Error("Upload failed.");
       }
       // alert("Background uploaded successfully!");
       // fetchUploadedBackgrounds(); // Uncomment if this function is defined and needed

@@ -69,7 +69,8 @@ const CertificateDisplayPage = ({ cardId }) => {
             });
 
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                console.error('Network response was not ok');
+                // throw new Error('Network response was not ok');
             }
 
             const data = await response.json(); // Parse the JSON data
@@ -341,7 +342,7 @@ const handleShowImages = async (index, detail, message, polygonLink, status) => 
          return blob; // Return blob for uploading
      } else {
          console.error('Failed to generate image:', res.statusText);
-         throw new Error('Image generation failed');
+        //  throw new Error('Image generation failed');
      }
   } catch (error) {
      console.error('Error generating image:', error);

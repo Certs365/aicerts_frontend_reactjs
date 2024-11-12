@@ -92,7 +92,8 @@ const Admin = () => {
       // });
       issuance.appIssuersLog(payload, async (response)=>{
         if (response.status != 'SUCCESS') {
-          throw new Error('Failed to fetch data');
+          console.error('Failed to fetch data');
+          // throw new Error('Failed to fetch data');
         }
   
         const data = response.data;
@@ -147,7 +148,8 @@ const Admin = () => {
           setLoginError(data.message || "Network Error");
           setShow(true);
           setIsLoading(false);
-             throw new Error('Failed to fetch data');
+          console.error('Failed to fetch data');
+            //  throw new Error('Failed to fetch data');
           }
           const data = response;
           setLoginError("")
