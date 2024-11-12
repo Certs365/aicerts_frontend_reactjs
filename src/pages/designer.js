@@ -37,6 +37,7 @@ import ImagesPanel from "../components/certificate-designer/panel/ImagesPanel";
 import {  Tooltip } from "../components/certificate-designer/utils/shapeActions";
 import { setBackgroundImage, setImage } from "../components/certificate-designer/utils/templateUtils";
 import TemplatePanel from "../components/certificate-designer/panel/TemplatePanel";
+import { Spinner } from "react-bootstrap";
 
 
 const Designer = () => {
@@ -64,6 +65,7 @@ const Designer = () => {
   const [activeObject , setActiveObject]=useState(null)
   const [userEmail, setUserEmail] = useState(null);
   const [fileUrl, setFileUrl] = useState("");
+  const [loading, setLoading] = useState(false);
 
    // Use effect to fetch and load the user's email from localStorage
    useEffect(() => {
@@ -93,6 +95,7 @@ const Designer = () => {
       }
   
       // showLoader();
+      setLoading(true)
   
       const templateData = canvas.toJSON(); // Get the canvas data
   
@@ -129,7 +132,8 @@ const Designer = () => {
         console.error("Error uploading template:", error);
         alert("An error occurred while uploading the template.");
       } finally {
-        hideLoader();
+        // hideLoader();
+        setLoading(false)
       }
     };
 
@@ -150,7 +154,7 @@ const Designer = () => {
 
       if (response.ok) {
         const data = await response.json();
-        alert("Template updated successfully!");
+        // alert("Template updated successfully!");
       } else {
         alert("Failed to update template.");
       }
@@ -177,7 +181,7 @@ const Designer = () => {
 
       if (response.ok) {
         const data = await response.json();
-        alert("Template added successfully!");
+        // alert("Template added successfully!");
       } else {
         alert("Failed to add template.");
       }
@@ -499,6 +503,11 @@ const Designer = () => {
 
   return (
     <div className="page-bg position-absolute" style={{ top: "70px" }}>
+      {
+        loading && <div className="loader-overlay position-absolute">
+        <Spinner style={{width:"100px", height:"100px"}} animation="border" variant="warning" />
+      </div>
+      }
       <div className="w-100 h-100 d-flex ">
         <div className="w-25 d-flex align-items-center" >
           <div
