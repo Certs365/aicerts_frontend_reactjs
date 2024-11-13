@@ -185,8 +185,8 @@ const Login = () => {
       // });
       user.login(payload, async (response)=>{
         const responseData =  response.data;
-        if (responseData.code === 200) {
-        if (responseData.status === 'FAILED') {
+        if (responseData?.code === 200) {
+        if (responseData?.status === 'FAILED') {
           setLoginStatus('FAILED');
           setLoginError(responseData.message || 'An error occurred during login');
           setShow(true);
@@ -207,11 +207,11 @@ const Login = () => {
             }
           }
         }
-      } else if (responseData.code === 400) {
+      } else if (responseData?.code === 400) {
         setShowPhone(responseData?.isPhoneNumber);
         setLoginError('Invalid input or empty credentials');
         setShow(true);
-      } else if (responseData.code === 401) {
+      } else if (responseData?.code === 401) {
         setShowPhone(responseData?.isPhoneNumber);
         setLoginError('Invalid credentials entered');
         setShow(true);
