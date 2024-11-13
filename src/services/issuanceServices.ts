@@ -51,7 +51,7 @@ const appIssuersLog = (data: any, callback: (response: Response) => void) => {
 
   const IssueDynamicCert = (data: any, callback: (response: Response) => void) => {
     const encryptedData = encryptData(data);
-    debugger
+     
     API({
       method: "POST",
       url: `${APP_URL}/api/issue-dynamic-cert`,
@@ -60,7 +60,7 @@ const appIssuersLog = (data: any, callback: (response: Response) => void) => {
     })
       .then((response) => {
         callback({ status: "SUCCESS", data: response.data });
-        debugger
+         
       })
       .catch((error) => {
         callback({ status: "ERROR", error: error });
@@ -68,7 +68,7 @@ const appIssuersLog = (data: any, callback: (response: Response) => void) => {
   }
 
   const IssueDynamicCertByFetch = async (data: any, callback: (response: any) => void) => {
-    debugger
+     
     const token = getTokenFromLocalStorage();
     const response = await fetch(`${ADMIN_API_URL}/api/issue-dynamic-cert`, {
       method: 'POST',
@@ -290,7 +290,7 @@ const appIssuersLog = (data: any, callback: (response: Response) => void) => {
         headers: headers,
       })
       .then(response => {
-        debugger
+         
         if (response.ok) {
           // If successful, send the response with status "SUCCESS" and parsed data
           // return response.json().then(data => {
@@ -322,7 +322,7 @@ const appIssuersLog = (data: any, callback: (response: Response) => void) => {
   //     data: data,
   //   })
   //     .then((response) => {
-  //       debugger
+  //        
   //       callback( response.data );
   //     })
   //     .catch((error) => {

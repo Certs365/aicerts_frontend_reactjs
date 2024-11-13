@@ -243,7 +243,7 @@ const handleFileBatchChange = (event) => {
         // }
         // );
         issuance.dynamicBatchIssue(formData, async (response)=>{
-        //   debugger
+        //    
         //   if(response.status === 'SUCCESS'){
         //   // if(response && response.ok){
 
@@ -269,7 +269,7 @@ const handleFileBatchChange = (event) => {
         //  }
         // })
 
-      debugger
+       
         if(response && response.ok){
 
           if(flag){

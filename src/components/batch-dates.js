@@ -40,9 +40,9 @@ const BatchDates = ({ dates,batchCertificatesData, setFilteredBatchCertificatesD
       //   },
       //   body: JSON.stringify(data)
       // });
-      debugger
+       
       certificate.batchCertificates(data, async (response) => {
-        debugger
+         
         if (response.status === 'SUCCESS') {
           const result = response;
           setFilteredBatchCertificatesData(result?.data);

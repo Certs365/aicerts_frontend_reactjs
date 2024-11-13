@@ -68,7 +68,7 @@ const Search = ({ setResponseData, tab, setLoading }) => {
             // });
 
             issuance.adminFilteredIssues(dataToEncrypt, async (response)=>{
-                debugger
+                 
                 if( response.status != 'SUCCESS'){
                 // if (!response.ok) {
                     // throw new Error('Network response was not ok');

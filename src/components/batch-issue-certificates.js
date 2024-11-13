@@ -236,7 +236,7 @@ if(cardId){
         //     body: formData
         // });
         certificate.batchCertificateIssue(formData, async (response) => {
-          debugger
+           
           const responseData = response;
           console.log(response);
           if(response.status == "SUCCESS"){
@@ -355,7 +355,7 @@ const uploadToS3 = async (blob, certificateNumber) => {
   const retryLimit = parseInt(process.env.RETRY_LIMIT_BATCH_UPLOAD || "3"); // Default to 3 retries if RETRY_LIMIT is not set
   let attempt = 0;
   let success = false;
-  debugger
+   
 
   while (attempt < retryLimit && !success) {
       try {
@@ -384,7 +384,7 @@ const uploadToS3 = async (blob, certificateNumber) => {
           //     throw new Error(`Failed to upload certificate to S3 on attempt ${attempt}`);
           // }
           certificate.apiuploadCertificate(formCert, async (response) => {
-            debugger
+             
             if(response.status != 'SUCCESS'){
               console.log(`Failed to upload certificate to S3 on attempt ${attempt}`);
             }

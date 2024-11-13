@@ -165,7 +165,7 @@ const getPlanName = async (email:string) => {
 
   // todo-> can merge it in handleplanselection ??
   const makePayment = async (card:any) => {
-    debugger
+     
     console.log(card)
     console.log(typeof card.fee);
     console.log(typeof card.title);
@@ -191,13 +191,13 @@ const getPlanName = async (email:string) => {
       body: JSON.stringify(body)
     })
     const session = await response.json();
-    debugger
+     
     console.log(session);
     const result: any = stripe?.redirectToCheckout({ sessionId: session.id });   //todo-> type any is given
     if (result?.error) {
       console.error('Error redirecting to Checkout:', result.error);
     }
-    debugger
+     
     if(!window.location.href.includes('canceled=true')) {
       handlePlanSelection(card);
       

@@ -163,7 +163,7 @@ const Navigation = () => {
         },
         body: JSON.stringify({ email }),
       });
-      debugger
+       
       if (!response.ok) {
         console.error('Failed to fetch plan name');
         // throw new Error('Failed to fetch plan name');
