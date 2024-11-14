@@ -74,6 +74,8 @@ const Settings: React.FC = () => {
   const [calculatedValue, setCalculatedValue] = useState(0);
   const [planDuration, setPlanDuration] = useState(0);
   const [totalCredits, setTotalCredits] = useState(0);
+  const [paymentEmail, setPaymentEmail] = useState('')
+  const [paymentId, setPaymentId] = useState('')
 
   const isShowPricingEnabled = !isNaN(planDuration) && planDuration !== 0 && !isNaN(totalCredits) && totalCredits !== 0;
   
@@ -238,6 +240,27 @@ const getPlanName = async (email:string) => {
     makePayment(card);
     // handlePlanSelection(card);
   }
+
+  const handlePaymentGrievance = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/api/checkout-grievance`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: paymentEmail,
+          paymentID: paymentId,
+        }),
+      });
+      setPaymentEmail('');
+      setPaymentId('');
+
+    } catch (error) {
+      console.error('Error sending email:', error);
+    }
+  }
+
 
 
   return (
@@ -446,7 +469,7 @@ const getPlanName = async (email:string) => {
               <div className="last-box">
                   <div>
                     <h3>Custom</h3>
-                    <p>Need mor than 200 Certificates? Contact US.</p>
+                    <p>Need more than 200 Certificates? Contact US.</p>
                   </div>
                   <div>
                       <Form.Control
@@ -455,6 +478,33 @@ const getPlanName = async (email:string) => {
                         // value={issuanceDate.from}
                         // onChange={(e) => handleDateChange(e, "from")}
                       />
+                  </div>
+                </div>
+              <div className="last-box">
+                  <div>
+                    <h3>Plan not upgraded?</h3>
+                    <p>Send us payment details ans we will upgrade your plan.</p>
+                  </div>
+                  <div>
+                      <Form className="d-flex flex-column">
+                        <Form.Control
+                          type="email" placeholder="Enter your email"
+                          className="search-input-setting"
+                          value={paymentEmail}
+                          onChange={(e) => setPaymentEmail(e.target.value)}
+                          required
+                          />
+                        <Form.Control
+                          type="text" placeholder="Enter your payment ID"
+                          className="search-input-setting mt-3"
+                          value={paymentId}
+                          onChange={(e) => setPaymentId(e.target.value)}
+                          required
+                        />
+                         <Col md={{ span: 1 }} xs={{ span: 12 }}>
+                            <Button label="Submit" className='btn-danger' onClick={() => handlePaymentGrievance()} />
+                        </Col>
+                      </Form>
                   </div>
                 </div>
           </div>
