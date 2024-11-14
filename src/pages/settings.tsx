@@ -405,8 +405,9 @@ const getPlanName = async (email:string) => {
           <div className="d-flex flex-column  mt-4 ">
 
           <div className=" d-flex flex-row flex-wrap justify-content-center align-items-center ml-2 ">
-            {(data as any[]).map((card) => (
-            <div className="m-2" key={card.title}>
+            {/* {(data as any[]).map((card) => ( */}
+            {(data as any[]).map((card) => (card.status === true && (
+              <div className="m-2" key={card.title}>
                 <Card style={{ width: '14rem', borderRadius: '0px', }}>
                  <Card.Body>
                     <Card.Title style={{ fontSize: '20px', fontWeight: 'bolder' }}>{card.title}</Card.Title>
@@ -422,7 +423,8 @@ const getPlanName = async (email:string) => {
                   <Button label={planName === card.title ? "Current Plan" : "Upgrade"} className={planName === card.title ? "current-plan plan-button" : "global-btn golden plan-button"} onClick={() => {makePayment(card);}} />
                 </Card>
               </div>
-            ))}
+            )))}
+            {/* ))} */}
             <div className="m-2">
                 <Card style={{ width: '14rem', borderRadius: '0px', }}>
                  <Card.Body>
