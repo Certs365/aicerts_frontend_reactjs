@@ -231,7 +231,7 @@ const PlaceholderPosition: React.FC<PlaceholderPositionProps> = ({ fileUrl, scal
                             alt='Loader'
                         />
                     </div>
-                    <p>Please don't reload the page. It may take a few minutes.</p>
+                    <p>Please dont reload the page. It may take a few minutes.</p>
                 </Modal.Body>
             </Modal>
 
