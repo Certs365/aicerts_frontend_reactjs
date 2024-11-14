@@ -50,7 +50,8 @@ function BarChart() {
             // });
             chart.graphData(endpoints, (response)=>{
                 if (response.status !== "SUCCESS") {
-                    throw new Error('Failed to fetch data');
+                    console.error('Failed to fetch data');
+                    // throw new Error('Failed to fetch data');
                 }
                 const data = response.data;
                 setResponseData(data.data);

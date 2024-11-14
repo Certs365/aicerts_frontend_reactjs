@@ -125,7 +125,7 @@ const IssueNewCertificate = () => {
             formDataWithFile.append('grantDate', formatDate(formData.grantDate));
             formDataWithFile.append('expirationDate', formatDate(formData.expirationDate));
             formDataWithFile.append('file', formData.file);
-            debugger
+             
             const response = await fetch(`${apiUrl}/api/issue-pdf/`, {
                 method: 'POST',
                 body: formDataWithFile,
@@ -139,13 +139,13 @@ const IssueNewCertificate = () => {
             //   console.log(`${key}:`, value);  // This will show both the key and value in the FormData
             // }
             // issuance.issuePdf(formDataWithFile, async (response)=>{
-            //     debugger
+            //      
             //     console.log(response);
             //     console.log(response.data);
             //     const responseData = response.data;
             //     if(response.status === "SUCCESS"){
             //     // if (response && response.ok) {
-            //     debugger
+            //      
             //     const blob = await responseData.blob();
                 
                 

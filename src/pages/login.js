@@ -184,10 +184,9 @@ const Login = () => {
       //   }),
       // });
       user.login(payload, async (response)=>{
-        const responseData = await response.data;
-        console.log(responseData)
-        if (responseData.code === 200) {
-        if (responseData.status === 'FAILED') {
+        const responseData =  response.data;
+        if (responseData?.code === 200) {
+        if (responseData?.status === 'FAILED') {
           setLoginStatus('FAILED');
           setLoginError(responseData.message || 'An error occurred during login');
           setShow(true);
@@ -197,8 +196,7 @@ const Login = () => {
           }
         } else if (responseData.status == "SUCCESS") {
           if (responseData?.data && responseData?.data?.JWTToken !== undefined) {
-
-            await handleSendEmail()
+            await handleSendEmail();
             setLoginData(responseData?.data)
           } else {
             setShowPhone(responseData?.isPhoneNumber);
@@ -209,11 +207,11 @@ const Login = () => {
             }
           }
         }
-      } else if (responseData.code === 400) {
+      } else if (responseData?.code === 400) {
         setShowPhone(responseData?.isPhoneNumber);
         setLoginError('Invalid input or empty credentials');
         setShow(true);
-      } else if (responseData.code === 401) {
+      } else if (responseData?.code === 401) {
         setShowPhone(responseData?.isPhoneNumber);
         setLoginError('Invalid credentials entered');
         setShow(true);
@@ -302,7 +300,7 @@ const Login = () => {
     }
   };
 
-
+  const handleSendEmail = async () => {
   // Prepare the request payload
   const payload = {
     email:formData.email , // You can replace this with the actual email input// Replace this with the actual OTP code input
@@ -344,6 +342,7 @@ const Login = () => {
     // Handle fetch error (e.g., network issues)
     console.error('Network error:', error);
   }
+};
 
 const handleLoginOtp = async (e) => {
   setIsLoading(true)

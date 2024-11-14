@@ -58,7 +58,7 @@ const Dashboard = () => {
     // if (storedUser && storedUser.JWTToken) {
     //   setEmail(storedUser.email);
     // }
-    // debugger
+    //  
     if (flag === "true") {
       const getRemainingDays = async () => {
         try {
@@ -71,7 +71,8 @@ const Dashboard = () => {
           });
   
           if (!response.ok) {
-            throw new Error('Failed to fetch plan name');
+            console.error('Failed to fetch plan name');
+            // throw new Error('Failed to fetch plan name');
           }
   
           const data = await response.json();
@@ -188,6 +189,7 @@ const Dashboard = () => {
       <div className="main-container gap">
         {/* Rendering LineChart component */}
         <Container>
+      
           <BarChartSecond />
         </Container>
         {/* Rendering BarChart component */}
@@ -198,6 +200,7 @@ const Dashboard = () => {
           <Col xs={12} md={8}>
             <BarChart />
           </Col>
+       
         </Container>
 
          {/* { warning != false && */}

@@ -176,7 +176,7 @@ const IssueCertificate = () => {
         grantDate: formattedGrantDate,
         expirationDate: formattedExpirationDate,
       };
-      debugger
+       
       if (isDesign) {
         // Call the dynamic issuance API if isDesign is true
         Object.assign(payload, {
@@ -195,7 +195,7 @@ const IssueCertificate = () => {
         // Call issuance.issueDynamic API
         issuance.IssueDynamicCert(payload, async (response) => {
           const responseData = response;
-          debugger
+           
           if (response.status === "SUCCESS") {
             setMessage(responseData.message || "Success");
             setCertPdf(responseData); // Corrected variable name
@@ -230,7 +230,7 @@ const IssueCertificate = () => {
         // Call issuance.issue API
         issuance.issue(payload, async (response) => {
           //todo --> how to add logic of isDesign: true/false
-          debugger;
+           ;
           console.log("issuance.issue  response", response);
           console.log("issuance.issue  response.data", response.data);
           const responseData = response.data;
@@ -350,7 +350,7 @@ const IssueCertificate = () => {
   // };
 
   const generateAndUploadImage = async (formData, responseData) => {
-    debugger;
+     ;
     console.log("generateAndUploadImage payload formData", formData);
     try {
       // Generate the image
@@ -409,14 +409,14 @@ const IssueCertificate = () => {
       // Append the blob to the form data
       formCert.append("file", blob);
       console.log("blob", blob);
-      debugger
+       
       // Append additional fields
       formCert.append("certificateNumber", certificateNumber);
       console.log("cn", certificateNumber);
       formCert.append("type", type);
       console.log("type", type);
       console.log(formCert);
-      debugger
+       
 
     // Log the contents of FormData
     console.log("Logging FormData entries:");

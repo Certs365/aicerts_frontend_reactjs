@@ -40,9 +40,9 @@ const BatchDates = ({ dates,batchCertificatesData, setFilteredBatchCertificatesD
       //   },
       //   body: JSON.stringify(data)
       // });
-      debugger
+       
       certificate.batchCertificates(data, async (response) => {
-        debugger
+         
         if (response.status === 'SUCCESS') {
           const result = response;
           setFilteredBatchCertificatesData(result?.data);
@@ -87,7 +87,7 @@ console.log(dates.data);
       {batchCertificatesData ? (
         <GalleryCertificates certificatesData={batchCertificatesData}  setIsLoading={setIsLoading} isLoading={isLoading} />
       ) : (
-        dates?.map((date) => (
+        dates?.data?.map((date) => (
           <div key={date} className='batch-date-container' onClick={() => handleArrowClick(date)}>
             <div className='badge-wrapper col-3 '>
               <div className='badge-wrapper-inner '>

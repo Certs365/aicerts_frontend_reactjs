@@ -64,7 +64,7 @@ const Admin = () => {
   /* eslint-disable */
 
   const fetchData = async (tab, email) => {
-    debugger
+     
     setIsLoading(true);
 
     try {
@@ -92,7 +92,8 @@ const Admin = () => {
       // });
       issuance.appIssuersLog(payload, async (response)=>{
         if (response.status != 'SUCCESS') {
-          throw new Error('Failed to fetch data');
+          console.error('Failed to fetch data');
+          // throw new Error('Failed to fetch data');
         }
   
         const data = response.data;
@@ -140,14 +141,15 @@ const Admin = () => {
       // });
 
       issuance.getIssue(data, async (response) => {
-        debugger
+         
         console.log(response)
         if (response.status != 'SUCCESS') {
           const data = response;
           setLoginError(data.message || "Network Error");
           setShow(true);
           setIsLoading(false);
-             throw new Error('Failed to fetch data');
+          console.error('Failed to fetch data');
+            //  throw new Error('Failed to fetch data');
           }
           const data = response;
           setLoginError("")

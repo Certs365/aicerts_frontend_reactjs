@@ -96,7 +96,8 @@ const AdminTable = ({ data, tab, setResponseData, responseData,setIssuedCertific
 
       issuance.appIssuersLog(payload, (response) =>{
         if (response.status != 'SUCCESS') {
-          throw new Error('Failed to fetch data');
+          console.error('Failed to fetch data');
+          // throw new Error('Failed to fetch data');
         }
           if (response?.status === 'SUCCESS') {
             setResponseData(response.data);
@@ -158,13 +159,14 @@ const AdminTable = ({ data, tab, setResponseData, responseData,setIssuedCertific
 
       certificate.updateCertsStatus(payload, async (response) => {
       try{
-        debugger
+         
         if(response.status != 'SUCCESS'){
         // if (response.ok) {
         const error = response;
         setErrorMessage(error?.message || "Unable to update Certification.Try again Later");
         setShowErModal(true);
-        throw new Error('Failed to fetch data');
+        console.error('Failed to fetch data');
+        // throw new Error('Failed to fetch data');
       }
       if (response.status === 'SUCCESS') {
         // const data = await response.json();
@@ -251,7 +253,7 @@ const payload = {
         // });
       certificate.renewCert(payload, async (response) => {
         try {
-          debugger
+           
           console.log("renew  cert -->",response)
           if(response.status != 'SUCCESS'){
             // if (!response.ok) {
@@ -259,11 +261,12 @@ const payload = {
             setErrorMessage(response.error?.response?.data?.message || "Error in Updating certificate");
             setShowErModal(true);
             setIsLoading(false)
-            throw new Error('Failed to fetch data');
+            console.error('Failed to fetch data');
+            // throw new Error('Failed to fetch data');
         }
         if (response?.status === 'SUCCESS') {
         const data = response.data;
-        debugger
+         
         await fetchData(tab, email);
         setErrorMessage("");
         setSuccessMessage("Updated Successfully");
@@ -372,7 +375,7 @@ const handleShowImages = async (formData, responseData) => {
         //     body: JSON.stringify({ detail: details, message, polygonLink, badgeUrl:badgeUrl, status, certificateUrl:certificateUrl, logoUrl:logoUrl, signatureUrl:signatureUrl, issuerName:details?.issuerName, issuerDesignation:details?.issuerDesignation, qrCodeImage }),
         // });
         download.downloadImage(payload, async (response) => {
-          debugger
+           
           if(response.status === 'SUCCESS'){
           // if (response.ok) {
             const blob = await res.blob();
@@ -381,7 +384,8 @@ const handleShowImages = async (formData, responseData) => {
             console.error('Failed to generate image:', res.statusText);
           setIsLoading(false)
 
-            throw new Error('Image generation failed');
+          console.error('Image generation failed');
+            // throw new Error('Image generation failed');
         }
         })
 
@@ -422,7 +426,8 @@ const uploadToS3 = async (blob, certificateNumber,type) => {
           if(response.status != 'SUCCESS'){
             // if (response.ok) {
             setIsLoading(false);
-            throw new Error('Failed to upload certificate to S3');
+            console.error('Failed to upload certificate to S3');
+            // throw new Error('Failed to upload certificate to S3');
         }
         })
 

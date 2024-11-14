@@ -202,7 +202,7 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
     // }
 
       issuance.issueDynamicPdf(formData, async (response)=>{
-      //   debugger
+      //    
       //   console.log(response);
       //   if( response.status === 'SUCCESS'){
         // if (response && response.ok) {

@@ -10,7 +10,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      throw new Error('Failed to fetch the image from the URL');
+      console.error('Failed to fetch the image from the URL');
+      // throw new Error('Failed to fetch the image from the URL');
     }
 
     const arrayBuffer = await response.arrayBuffer();

@@ -37,6 +37,7 @@ import ImagesPanel from "../components/certificate-designer/panel/ImagesPanel";
 import {  Tooltip } from "../components/certificate-designer/utils/shapeActions";
 import { setBackgroundImage, setImage } from "../components/certificate-designer/utils/templateUtils";
 import TemplatePanel from "../components/certificate-designer/panel/TemplatePanel";
+import { Button, Spinner } from "react-bootstrap";
 
 
 const Designer = () => {
@@ -64,6 +65,7 @@ const Designer = () => {
   const [activeObject , setActiveObject]=useState(null)
   const [userEmail, setUserEmail] = useState(null);
   const [fileUrl, setFileUrl] = useState("");
+  const [loading, setLoading] = useState(false);
 
    // Use effect to fetch and load the user's email from localStorage
    useEffect(() => {
@@ -93,6 +95,7 @@ const Designer = () => {
       }
   
       // showLoader();
+      setLoading(true)
   
       const templateData = canvas.toJSON(); // Get the canvas data
   
@@ -122,6 +125,7 @@ const Designer = () => {
             // Otherwise, create a new template
             await createTemplate(uploadedFileUrl, templateData);
           }
+          return uploadedFileUrl
         } else {
           alert("Failed to upload template.");
         }
@@ -129,7 +133,8 @@ const Designer = () => {
         console.error("Error uploading template:", error);
         alert("An error occurred while uploading the template.");
       } finally {
-        hideLoader();
+        // hideLoader();
+        setLoading(false)
       }
     };
 
@@ -150,7 +155,7 @@ const Designer = () => {
 
       if (response.ok) {
         const data = await response.json();
-        alert("Template updated successfully!");
+        // alert("Template updated successfully!");
       } else {
         alert("Failed to update template.");
       }
@@ -177,13 +182,35 @@ const Designer = () => {
 
       if (response.ok) {
         const data = await response.json();
-        alert("Template added successfully!");
+        // alert("Template added successfully!");
       } else {
         alert("Failed to add template.");
       }
     } catch (error) {
       console.error("Error adding template:", error);
       alert("An error occurred while adding the template.");
+    }
+  };
+
+  const moveToIssuance = async () => {
+    try {
+      // First, save the template
+     const fileUrl =  await handleTemplateSave();
+  
+      // Ensure fileUrl has been set before moving to issuance
+      if (fileUrl) {
+        sessionStorage.setItem("customTemplate", fileUrl);  // Store the uploaded template URL
+        sessionStorage.setItem("cerf", "true");  // Mark as certificate-ready
+        const tab = sessionStorage.getItem("tab") || 0;
+        
+        // Redirect to the certificate page
+        window.location.href = `/certificate?tab=${tab}`;
+      } else {
+        alert("Template upload failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error during Move to Issuance:", error);
+      alert("An error occurred while processing your request.");
     }
   };
 
@@ -498,7 +525,12 @@ const Designer = () => {
   }
 
   return (
-    <div className="page-bg position-absolute" style={{ top: "70px" }}>
+    <div className="page-bg position-absolute" style={{ top: "90px" }}>
+      {
+        loading && <div className="loader-overlay position-absolute">
+        <Spinner style={{width:"100px", height:"100px"}} animation="border" variant="warning" />
+      </div>
+      }
       <div className="w-100 h-100 d-flex ">
         <div className="w-25 d-flex align-items-center" >
           <div
@@ -519,9 +551,7 @@ const Designer = () => {
               />
             ))}
              <div className="action-buttons">
-        <button onClick={handleTemplateSave} className="save-template-btn">
-          {targetId ? "Save Template" : "Save as New Template"}
-        </button>
+       
       </div>
           </div>
           <div
@@ -639,7 +669,7 @@ const Designer = () => {
               <></>
             )}
           </div>
-          <div className="w-100 d-flex px-3  ">
+          <div className="w-100 d-flex px-2  " >
             <canvas
               ref={canvasRef}
               style={{
@@ -649,6 +679,14 @@ const Designer = () => {
                 boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px"
               }}
             />
+           <div className=" d-flex flex-column gap-2 align-items-center p-2">
+         
+       <button className='golden-btn' onClick={handleTemplateSave}>
+       {targetId ? "Save Template" : "Save as New Template"}
+
+       </button>
+        <button className='golden-btn' onClick={moveToIssuance}>Move to Issuance</button>
+           </div>
           </div>
         </div>
       </div>
