@@ -117,6 +117,7 @@ const Designer = () => {
           const data = await uploadResponse.json();
           const uploadedFileUrl = data.fileUrl;
           setFileUrl(uploadedFileUrl); // Store file URL
+          console.log("file url set successfully")
   
           if (targetId) {
             // If template ID exists, update the template
@@ -125,6 +126,7 @@ const Designer = () => {
             // Otherwise, create a new template
             await createTemplate(uploadedFileUrl, templateData);
           }
+          return uploadedFileUrl
         } else {
           alert("Failed to upload template.");
         }
@@ -164,6 +166,8 @@ const Designer = () => {
     }
   };
 
+  
+
   // Function to create a new certificate template
   const createTemplate = async (fileUrl, templateData) => {
     try {
@@ -188,6 +192,29 @@ const Designer = () => {
     } catch (error) {
       console.error("Error adding template:", error);
       alert("An error occurred while adding the template.");
+    }
+  };
+
+  
+  const moveToIssuance = async () => {
+    try {
+      // First, save the template
+     const fileUrl =  await handleTemplateSave();
+  
+      // Ensure fileUrl has been set before moving to issuance
+      if (fileUrl) {
+        sessionStorage.setItem("customTemplate", fileUrl);  // Store the uploaded template URL
+        sessionStorage.setItem("cerf", "true");  // Mark as certificate-ready
+        const tab = sessionStorage.getItem("tab") || 0;
+        
+        // Redirect to the certificate page
+        window.location.href = `/certificate?tab=${tab}`;
+      } else {
+        alert("Template upload failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error during Move to Issuance:", error);
+      alert("An error occurred while processing your request.");
     }
   };
 
@@ -528,9 +555,7 @@ const Designer = () => {
               />
             ))}
              <div className="action-buttons">
-        <button onClick={handleTemplateSave} className="save-template-btn">
-          {targetId ? "Save Template" : "Save as New Template"}
-        </button>
+    
       </div>
           </div>
           <div
@@ -662,7 +687,7 @@ const Designer = () => {
         </div>
       </div>
       <Tooltip activeObject={activeObject} fabricCanvas={canvas} />
-
+    
      
     </div>
   );
