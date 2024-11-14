@@ -5,6 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import Image from 'next/image';
 import { Rnd } from 'react-rnd';
 import { PDFPageProxy } from 'pdfjs-dist/types/src/display/api';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 interface Placeholder {
     show: boolean;
@@ -25,9 +26,10 @@ interface PlaceholderPositionProps {
     scale: number;
     placeholders: Placeholders;
     setPlaceholders: React.Dispatch<React.SetStateAction<Placeholders>>;
+    isPdfGenerating: boolean;
 }
 
-const PlaceholderPosition: React.FC<PlaceholderPositionProps> = ({ fileUrl, scale, placeholders, setPlaceholders }) => {
+const PlaceholderPosition: React.FC<PlaceholderPositionProps> = ({ fileUrl, scale, placeholders, setPlaceholders, isPdfGenerating }) => {
     const [numPages, setNumPages] = useState<number | null>(null);
     const [pageNumber, setPageNumber] = useState<number>(1);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -103,6 +105,23 @@ const PlaceholderPosition: React.FC<PlaceholderPositionProps> = ({ fileUrl, scal
                 overflowX: 'auto' 
             }}
         >
+             {isPdfGenerating ? (
+                <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                    zIndex: 10
+                }}>
+                  <ClipLoader color="#555" size={40} />
+                    <p>Loading Certificate...</p>
+                </div>
+            ) : (
              <div
                 className="hide-scrollbar"
                 ref={containerRef}
@@ -201,7 +220,7 @@ const PlaceholderPosition: React.FC<PlaceholderPositionProps> = ({ fileUrl, scal
                     );
                 })}
             </div>
-            
+            )}
             <Modal className='loader-modal' show={isLoading} centered>
                 <Modal.Body style={{ display: "flex", flexDirection: "column", textAlign: "center" }}>
                     <div className='certificate-loader'>

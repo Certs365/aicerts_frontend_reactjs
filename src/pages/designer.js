@@ -508,7 +508,7 @@ const Designer = () => {
         <Spinner style={{width:"100px", height:"100px"}} animation="border" variant="warning" />
       </div>
       }
-      <div className="w-100 h-100 d-flex ">
+      <div className="w-100 h-100 d-flex mt-4">
         <div className="w-25 d-flex align-items-center" >
           <div
             className="w-25 h-100"

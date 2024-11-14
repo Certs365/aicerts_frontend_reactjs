@@ -46,6 +46,7 @@ const Placeholder: React.FC<PlaceholderProps> = () => {
     const [show, setShow] = useState(false);
     const [now, setNow] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
+    const [isPdfGenerating, setIsPdfGenerating] = useState<boolean>(true); // New state
 
     const [dimentions, setDimentions] = useState<{ width: number | null; height: number | null }>({
         width: null,
@@ -66,11 +67,13 @@ const Placeholder: React.FC<PlaceholderProps> = () => {
     useEffect(() => {
         const generatePdf = async () => {
             if (certificateUrl) {
+                setIsPdfGenerating(true)
                 const pdfFile = await createPdfFromImage(certificateUrl as string);
                 if (pdfFile) {
                     setFile(pdfFile.url);
                     setDimentions({ width: pdfFile.width, height: pdfFile.height });
                 }
+                setIsPdfGenerating(false);
             }
         };
 
@@ -124,6 +127,8 @@ const Placeholder: React.FC<PlaceholderProps> = () => {
                 scale={1}
                 placeholders={placeholders}
                 setPlaceholders={setPlaceholders}
+                isPdfGenerating={isPdfGenerating}
+                
             />
             <Button label='Submit' className='golden mt-3' onClick={submitDimentions} />
             <Modal className='loader-modal' show={isLoading} centered>
