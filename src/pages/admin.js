@@ -91,6 +91,7 @@ const Admin = () => {
       //   }),
       // });
       issuance.appIssuersLog(payload, async (response)=>{
+        debugger
         if (response.status != 'SUCCESS') {
           console.error('Failed to fetch data');
           // throw new Error('Failed to fetch data');
@@ -101,11 +102,15 @@ const Admin = () => {
         setIsBack(false);
         setSearchQuery("");
         // setshowModal(true);
-        })
+        console.log("issuance.appIssuerslog-->", response)
+        console.log("issuance.appIssuerslog-->", response.data)
+        console.log("issuance.appIssuerslog-->", response.data.length)
 
-        if(response.data == null || (response.data != null && response.data?.length == 0)) {
+        if(response.data == null || (response.data != null && response.data.data?.length == 0)) {
+          debugger
             setshowModal(true);
           }
+        })
     //     if (!response.ok) {
     //      throw new Error('Failed to fetch data');
     //     }
