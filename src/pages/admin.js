@@ -7,7 +7,7 @@ import BackIcon from "../../public/icons/back-icon.svg";
 import Search from '../components/Search';
 import { encryptData } from '../utils/reusableFunctions';
 import { useRouter } from 'next/router';
-import issuance from '@/services/issuanceServices';
+import issuance from '../services/issuanceServices';
 
 const secretKey = process.env.NEXT_PUBLIC_BASE_ENCRYPTION_KEY;
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -91,6 +91,7 @@ const Admin = () => {
       //   }),
       // });
       issuance.appIssuersLog(payload, async (response)=>{
+        debugger
         if (response.status != 'SUCCESS') {
           console.error('Failed to fetch data');
           // throw new Error('Failed to fetch data');
@@ -99,7 +100,16 @@ const Admin = () => {
         const data = response.data;
         setResponseData(data);
         setIsBack(false);
-        setSearchQuery("")
+        setSearchQuery("");
+        // setshowModal(true);
+        console.log("issuance.appIssuerslog-->", response)
+        console.log("issuance.appIssuerslog-->", response.data)
+        console.log("issuance.appIssuerslog-->", response.data.length)
+
+        if(response.data == null || (response.data != null && response.data.data?.length == 0)) {
+          debugger
+            setshowModal(true);
+          }
         })
     //     if (!response.ok) {
     //      throw new Error('Failed to fetch data');
