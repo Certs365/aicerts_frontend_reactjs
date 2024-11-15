@@ -136,7 +136,6 @@ const getPlanName = async (email:string) => {
     }
 
     const data = await response.json();
-    console.log(data);
     setPlanName(data.details.subscriptionPlanName);
   } catch (error) {
     console.error('Error fetching plan name:', error);
@@ -187,6 +186,7 @@ const getPlanName = async (email:string) => {
     const headers={
       "Content-Type": "application/json",
     }
+    try {
     const response = await fetch(`${apiUrl}/api/create-checkout-session`,{
       method: 'POST',
       headers: headers,
@@ -195,15 +195,20 @@ const getPlanName = async (email:string) => {
     const session = await response.json();
      
     console.log(session);
-    const result: any = stripe?.redirectToCheckout({ sessionId: session.id });   //todo-> type any is given
+    const result: any =  stripe?.redirectToCheckout({ sessionId: session.id });   //todo-> type any is given
+    console.log(result)
+    debugger
     if (result?.error) {
       console.error('Error redirecting to Checkout:', result.error);
     }
-     
     if(!window.location.href.includes('canceled=true')) {
-      handlePlanSelection(card);
-      
+      debugger
+      handlePlanSelection(card);    
     }
+  } catch (error) {
+    console.error('Error during payment:', error);
+    return;
+}
   }
 
   //  useEffect(() => {
