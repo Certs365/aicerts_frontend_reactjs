@@ -1,7 +1,7 @@
 import Image from 'next/legacy/image';
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
-import { Navbar, Container, NavDropdown, ButtonGroup, Nav, Modal } from 'react-bootstrap';
+import { Navbar, Container, NavDropdown, ButtonGroup, Nav, Modal, Dropdown } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import Button from '../../shared/button/button';
 import { jwtDecode } from 'jwt-decode';
@@ -55,7 +55,7 @@ const Navigation = () => {
   const [planName, setPlanName] = useState(null);
   const [creditRemaining, setcreditRemaining] = useState(0);
   const { isDarkMode } = useTheme();
-
+  const [showDropdown, setShowDropdown] = useState(false);
   const [formData, setFormData] = useState({
     organization: '',
     name: '',
@@ -356,9 +356,48 @@ const Navigation = () => {
                 <Nav.Link onClick={() => { handleClickTab(1) }} className={`nav-item ${selectedTab === 1 ? "tab-golden" : ""}`} href="/gallery">
                     Gallery
                 </Nav.Link>
-                <Nav.Link onClick={() => { handleClickTab(5) }} className={`nav-item ${selectedTab === 5 ? "tab-golden" : ""}`} href="/designer">
-                Certificate Designer
-                </Nav.Link>
+
+                <Dropdown
+      onMouseEnter={() => setShowDropdown(true)}
+      onMouseLeave={() => setShowDropdown(false)}
+      show={showDropdown}
+    >
+      <Dropdown.Toggle
+        className={`nav-item ${selectedTab === 5 ? "tab-golden" : ""}`}
+        id="dropdown-basic"
+        style={{
+          backgroundColor: "transparent",
+          border: "none",
+          boxShadow: "none",
+        }}
+      >
+        Designer
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu
+        style={{
+          border: "none",
+        }}
+      >
+        <Dropdown.Item
+          onClick={() => {
+            handleClickTab(5);
+          }}
+          href="/designer"
+        >
+          Certificate Designer
+        </Dropdown.Item>
+        <Dropdown.Item
+          onClick={() => {
+            handleClickTab(6); // Example tab number for Badge Designer
+          }}
+          href="/badge-designer"
+        >
+          Badge Designer
+        </Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
+
                 <Nav.Link onClick={() => { handleClickTab(2) }} className={`nav-item ${selectedTab === 2 ? "tab-golden" : ""}`} href="/certificates">
                   Issuance
                 </Nav.Link>
