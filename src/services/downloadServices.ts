@@ -57,7 +57,7 @@ const downloadImage = (data: any, callback: (response: Response) => void) => {
       data: { data: encryptedData },
     })
       .then((response) => {
-        debugger
+         
         callback({ status: "SUCCESS", data: response.data });
       })
       .catch((error) => {

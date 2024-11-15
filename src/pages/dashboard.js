@@ -58,7 +58,7 @@ const Dashboard = () => {
     // if (storedUser && storedUser.JWTToken) {
     //   setEmail(storedUser.email);
     // }
-    // debugger
+    //  
     if (flag === "true") {
       const getRemainingDays = async () => {
         try {
@@ -189,6 +189,7 @@ const Dashboard = () => {
       <div className="main-container gap">
         {/* Rendering LineChart component */}
         <Container>
+      
           <BarChartSecond />
         </Container>
         {/* Rendering BarChart component */}
@@ -199,6 +200,7 @@ const Dashboard = () => {
           <Col xs={12} md={8}>
             <BarChart />
           </Col>
+       
         </Container>
 
          {/* { warning != false && */}

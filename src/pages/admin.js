@@ -64,7 +64,7 @@ const Admin = () => {
   /* eslint-disable */
 
   const fetchData = async (tab, email) => {
-    debugger
+     
     setIsLoading(true);
 
     try {
@@ -151,7 +151,7 @@ const Admin = () => {
       // });
 
       issuance.getIssue(data, async (response) => {
-        debugger
+         
         console.log(response)
         if (response.status != 'SUCCESS') {
           const data = response;

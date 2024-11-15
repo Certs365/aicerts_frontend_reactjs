@@ -184,7 +184,7 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
     };
 
     const handleSuggestionClick = (suggestion) => {
-      debugger
+       
       console.log('suggestion: ', suggestion);
       setSearchTerm(suggestion); // Set suggestion as search term
       setShowSuggestions(false);
@@ -250,15 +250,15 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
           if (tab === 0) {
             setFilteredSingleWithCertificates(filteredData(data, "withpdf", "dynamic"));
             const checker =filteredData(data, "withpdf", "dynamic");
-            debugger
+             
           } else if (tab === 1) {
             setFilteredSingleWithoutCertificates(filteredData(data, "withoutpdf"));
             const checker =filteredData(data, "withoutpdfthpdf");
-            debugger
+             
           } else if (tab === 2) {
             setFilteredBatchCertificatesData(filteredData(data, "batch", "dynamic"));
             const checker =filteredData(data, "batch", "dynamic");
-            debugger
+             
           }
           setLoading(false);
         })

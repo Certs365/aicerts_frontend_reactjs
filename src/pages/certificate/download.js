@@ -133,7 +133,7 @@ const DownloadCertificate = () => {
     
       // Check if it's a design request and update the URL and request body accordingly
       if (isDesign) {
-        url = '/api/downloadDesignImage';
+        url = '/api/generateImageDesign';
         requestBody.pdfBatchDimentions = pdfBatchDimentions; // Assuming pdfBatchDimentions is defined
       }
     
@@ -180,7 +180,7 @@ const DownloadCertificate = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      debugger
+       
       if (certificatesData) {
         // Parse the JSON data if it exists
         const parsedData = certificatesData.data;
@@ -260,7 +260,7 @@ const DownloadCertificate = () => {
   }
 
   const handleSearchChange = (e) => {
-    debugger
+     
     const searchValue = e.target.value;
     setSearchQuery(searchValue);
 

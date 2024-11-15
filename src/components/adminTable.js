@@ -159,7 +159,7 @@ const AdminTable = ({ data, tab, setResponseData, responseData,setIssuedCertific
 
       certificate.updateCertsStatus(payload, async (response) => {
       try{
-        debugger
+         
         if(response.status != 'SUCCESS'){
         // if (response.ok) {
         const error = response;
@@ -253,7 +253,7 @@ const payload = {
         // });
       certificate.renewCert(payload, async (response) => {
         try {
-          debugger
+           
           console.log("renew  cert -->",response)
           if(response.status != 'SUCCESS'){
             // if (!response.ok) {
@@ -266,7 +266,7 @@ const payload = {
         }
         if (response?.status === 'SUCCESS') {
         const data = response.data;
-        debugger
+         
         await fetchData(tab, email);
         setErrorMessage("");
         setSuccessMessage("Updated Successfully");
@@ -375,7 +375,7 @@ const handleShowImages = async (formData, responseData) => {
         //     body: JSON.stringify({ detail: details, message, polygonLink, badgeUrl:badgeUrl, status, certificateUrl:certificateUrl, logoUrl:logoUrl, signatureUrl:signatureUrl, issuerName:details?.issuerName, issuerDesignation:details?.issuerDesignation, qrCodeImage }),
         // });
         download.downloadImage(payload, async (response) => {
-          debugger
+           
           if(response.status === 'SUCCESS'){
           // if (response.ok) {
             const blob = await res.blob();

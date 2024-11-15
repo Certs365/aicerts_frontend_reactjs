@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import CertificateContext from "../utils/CertificateContext"
 import Head from 'next/head';
 import { ThemeProvider, useTheme } from '@/context/ThemeContext';
-
+import ClipLoader from 'react-spinners/ClipLoader';
 import { getAuth } from 'firebase/auth';
 // @ts-ignore: Implicit any for children prop
 import { app } from "../config/firebaseConfig"
@@ -38,7 +38,8 @@ const ComponentWrapper = ({ Component, pageProps }: any) => {
   const [pdfDimentions, setPdfDimentions] = useState({})
   const [pdfFile, setPdfFile] = useState(null)
   const [pdfBatchDimentions, setPdfBatchDimentions] = useState({})
-
+  const [isBotOpen, setBotOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const isLoginPage = router.pathname === '/' || router.pathname === '/register'|| router.pathname === '/forgot-passwords' ||  router.pathname === '/passwords-confirm' ;
   // @ts-ignore: Implicit any for children prop
@@ -49,6 +50,11 @@ const ComponentWrapper = ({ Component, pageProps }: any) => {
   }, []);
   // Conditionally load CSS based on dark mode state
 
+
+  const toggleBot = () => {
+    setBotOpen(!isBotOpen);
+    setLoading(true);
+  };
    useEffect(() => {
     if (mounted) {
       const body = document.body;
@@ -88,7 +94,30 @@ const ComponentWrapper = ({ Component, pageProps }: any) => {
       </Head>
 
       {!isLoginPage && <Navigation />}
-      
+       {/* Bot icon at the bottom right */}
+       <div className="bot-icon" onClick={toggleBot}>
+        <img src="/icons/robot.png" alt="Chatbot" />
+      </div>
+
+      {/* Responsive iframe container */}
+      {isBotOpen && (
+        <div className="bot-iframe-container">
+          {/* Loader */}
+          {loading && (
+            <div className="iframe-loader">
+              <ClipLoader color="#555" size={40} />
+            </div>
+          )}
+
+          {/* Iframe with onLoad event */}
+          <iframe
+            src="https://app.xbot365.io/widget/c489775bb3824445b3291d6be38a23fb"
+            frameBorder="0"
+            allow="clipboard-read; clipboard-write"
+            onLoad={() => setLoading(false)}
+          ></iframe>
+        </div>
+      )}
         <Component {...pageProps} router={router} />
       
     </CertificateContext.Provider>

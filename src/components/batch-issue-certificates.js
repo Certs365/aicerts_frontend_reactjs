@@ -194,6 +194,7 @@ if(cardId){
   // Get the data from the API
   const issueCertificates = async () => {
     let progressInterval;
+
     const startProgress = () => {
         progressInterval = setInterval(() => {
             setNow((prev) => {
@@ -210,7 +211,8 @@ if(cardId){
 
     try {
         setIsLoading(true);
-        setNow(10)
+        setNow(10);
+
         // Construct FormData for file upload
         const formData = new FormData();
         formData.append('email', userEmail);
@@ -228,66 +230,57 @@ if(cardId){
         startProgress();
 
         // Make API call
-        // const response = await fetch(`${adminApiUrl}/api/batch-certificate-issue`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Authorization': `Bearer ${token}`,
-        //     },
-        //     body: formData
-        // });
         certificate.batchCertificateIssue(formData, async (response) => {
-          debugger
-          const responseData = response;
-          console.log(response);
-          if(response.status == "SUCCESS"){
-            setCertificatesData(responseData);
-            sessionStorage.setItem("certificatesList", JSON.stringify(responseData));
-            setResponse(responseData);
+            const responseData = response;
             console.log(response);
-            console.log(responseData);
-            // Generate images and upload to S3
-            await Promise.all(responseData.data.details.map((detail, index) =>
-              generateAndUploadImage(index, detail, responseData.message, responseData.polygonLink, responseData.status)
-          ));
-          await UpdateLocalStorage();
-            router.push({
-              pathname: '/certificate/download',
-              query:{isDesign:isDesign, templateId:templateId}
-          });
-          }else {
-            const responseData  = response.error.response.data;
-            let errorMessage;
-            if (typeof responseData.details === 'string') {
-              if(responseData.message == "Issuer restricted to perform service"){
-                errorMessage = `Issuer restricted to perform service`;
-              }else{
-  
-                errorMessage = `Error at ${truncateMessage(responseData.details, 7)}`;
-              }
-            } else if (typeof responseData.message === 'string') {
-              errorMessage = truncateMessage(responseData.message, 7);
-  
+            if(response.status == "SUCCESS"){
+                setCertificatesData(responseData);
+                sessionStorage.setItem("certificatesList", JSON.stringify(responseData));
+                setResponse(responseData);
+                
+                // Generate images and upload to S3
+                await Promise.all(responseData.data.details.map((detail, index) =>
+                    generateAndUploadImage(index, detail, responseData.message, responseData.polygonLink, responseData.status)
+                ));
+
+                await UpdateLocalStorage();
+
+                router.push({
+                    pathname: '/certificate/download',
+                    query: { isDesign: isDesign, templateId: templateId }
+                });
             } else {
-              errorMessage = 'Something went wrong';
+                const responseData  = response.error.response.data;
+                let errorMessage;
+                if (typeof responseData.details === 'string') {
+                    if(responseData.message == "Issuer restricted to perform service") {
+                        errorMessage = `Issuer restricted to perform service`;
+                    } else {
+                        errorMessage = `Error at ${truncateMessage(responseData.details, 7)}`;
+                    }
+                } else if (typeof responseData.message === 'string') {
+                    errorMessage = truncateMessage(responseData.message, 7);
+                } else {
+                    errorMessage = 'Something went wrong';
+                }
+
+                setError(errorMessage);
+                setShow(true);
+                setDetails(Array.isArray(responseData?.details) ? responseData.details : []);
             }
+            
+            // Stop progress and loading only after everything is complete
+            stopProgress();
+            setIsLoading(false);
+        });
 
-            setError(errorMessage);
-              setShow(true);
-              setDetails(Array.isArray(responseData?.details) ? responseData.details : []);
-  
-          }
-        })
-
-        
     } catch (error) {
         console.error('Error issuing certificates:', error);
         setError('An unexpected error occurred.');
         setShow(true);
-    } finally {
-        stopProgress();
-        setIsLoading(false);
     }
 };
+
 
 const generateAndUploadImage = async (index, detail, message, polygonLink, status) => {
     try {
@@ -355,7 +348,7 @@ const uploadToS3 = async (blob, certificateNumber) => {
   const retryLimit = parseInt(process.env.RETRY_LIMIT_BATCH_UPLOAD || "3"); // Default to 3 retries if RETRY_LIMIT is not set
   let attempt = 0;
   let success = false;
-  debugger
+   
 
   while (attempt < retryLimit && !success) {
       try {
@@ -384,7 +377,7 @@ const uploadToS3 = async (blob, certificateNumber) => {
           //     throw new Error(`Failed to upload certificate to S3 on attempt ${attempt}`);
           // }
           certificate.apiuploadCertificate(formCert, async (response) => {
-            debugger
+             
             if(response.status != 'SUCCESS'){
               console.log(`Failed to upload certificate to S3 on attempt ${attempt}`);
             }
