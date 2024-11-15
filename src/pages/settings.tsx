@@ -8,6 +8,7 @@ import qr1 from "/assets/img/qr-1.png";
 import qr2 from "/assets/img/qr-2.png";
 import qr3 from "/assets/img/qr-3.png";
 import qr4 from "/assets/img/qr-4.png";
+import user from '@/services/userServices';
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL_USER;
 const stripeUrl = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 interface DateRange {
@@ -17,6 +18,11 @@ interface DateRange {
 
 const Settings: React.FC = () => {
   const [issuanceDate, setIssuanceDate] = useState<DateRange>({
+    from: '',
+    to: '',
+  });
+
+  const [reportDate, setReportDate] = useState<DateRange>({
     from: '',
     to: '',
   });
@@ -32,41 +38,16 @@ const Settings: React.FC = () => {
     });
   };
 
-  // const cardContent = [
-  //   {
-  //     title: "FREE",
-  //     subheader: "Best for starters",
-  //     fee: "0",
-  //     limit: "1000",
-  //     rate: "0",
-  //     plan: "Current Plan",
-  //   },
-  //   {
-  //     title: "Basic",
-  //     subheader: "Best for small team",
-  //     fee: "1200",
-  //     limit: "10000",
-  //     rate: "4",
-  //     plan: "Upgrade",
-  //   },
-  //   {
-  //     title: "Intermediate",
-  //     subheader: "Best for mid level org",
-  //     fee: "3750",
-  //     limit: "100000",
-  //     rate: "3.75",
-  //     plan: "Upgrade",
-  //   },
-  //   {
-  //     title: "Advanced",
-  //     subheader: "Best for Big org",
-  //     fee: "7000",
-  //     limit: "2000",
-  //     rate: "3.50",
-  //     plan: "Upgrade",
-  //   },
-  // ];
-
+  const handleDateReportChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    field: keyof DateRange
+  ) => {
+    setReportDate({
+      ...reportDate,
+      [field]: e.target.value,
+    });
+  };
+ 
   const [email, setEmail] = useState('');
   const [data, setData] = useState([]);
   const [planName, setPlanName] = useState('');
@@ -98,11 +79,7 @@ const Settings: React.FC = () => {
     fetchData();
   }, []);
 
-  // useEffect(() => {
-    
 
-  //   // setSubscriptionPlan();      //todo-> make this too
-  // }, []);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -114,11 +91,6 @@ const Settings: React.FC = () => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (email) {
-  //     getPlanName(email);
-  //   }
-  // }, [email]);
 
 const getPlanName = async (email:string) => {
   try {
@@ -211,25 +183,118 @@ const getPlanName = async (email:string) => {
 }
   }
 
-  //  useEffect(() => {
-  //   const searchParams = new URLSearchParams(location.search);
+  const formatDate = (date: Date): string => {
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Get month and pad with leading zero
+    const day = date.getDate().toString().padStart(2, '0'); // Get day and pad with leading zero
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+  };
+  
+  const handleDownload = async (): Promise<void> => {
+    try {
+      // Format the start and end dates in mm/dd/yyyy format without the time
+      const startDate = formatDate(new Date(issuanceDate.from));
+      const endDate = formatDate(new Date(issuanceDate.to));
+  
+      // Prepare the payload for the API request
+      const payload = {
+        email,
+        startDate,
+        endDate,
+      };
+  
+      // Use fetch API to make the POST request
+      const response = await fetch(`${apiUrl}/api/generate-excel-report`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+  
+      // Check if the response is successful
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
+      }
+  
+      const data = await response.blob();
+  
+      // Check if the response data is valid
+      if (data) {
+        const url = URL.createObjectURL(data);
+  
+        // Create a temporary anchor element to trigger the download
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `issuance_report_${startDate}_${endDate}.xlsx`; // Dynamic file name based on the dates
+        document.body.appendChild(link);
+        link.click();
+  
+        // Clean up the temporary link and URL object
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+  
+        console.log('Report downloaded successfully');
+      }
+    } catch (error) {
+      console.error('Network error:', error);
+    }
+  };
+  
+  const handleReport = async (): Promise<void> => {
+    try {
+      // Format the start and end dates in mm/dd/yyyy format without the time
+      const startDate = formatDate(new Date(reportDate.from));
+      const endDate = formatDate(new Date(reportDate.to));
+  
+      // Prepare the payload for the API request
+      const payload = {
+        email,
+        startDate,
+        endDate,
+      };
+  
+      // Use fetch API to make the POST request
+      const response = await fetch(`${apiUrl}/api/generate-invoice-report`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+  
+      // Check if the response is successful
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
+      }
+  
+      const data = await response.blob();
+  
+      // Check if the response data is valid
+      if (data) {
+        const url = URL.createObjectURL(data);
+  
+        // Create a temporary anchor element to trigger the download
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `issuance_report_${startDate}_${endDate}.pdf`; // Change file extension to .pdf
+        document.body.appendChild(link);
+        link.click();
+  
+        // Clean up the temporary link and URL object
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+  
+        console.log('Report downloaded successfully');
+      }
+    } catch (error) {
+      console.error('Network error:', error);
+    }
+  };
+  
+  
 
-  //   // Handle successful payment
-  //   if (searchParams.get("success") === "true") {
-  //     handlePlanSelection(card); // Update plan in DB after successful payment
-  //     // Clean up URL
-  //     searchParams.delete("success");
-  //     navigate({ search: searchParams.toString() }, { replace: true });
-  //   }
-
-  //   // Handle canceled payment
-  //   if (searchParams.get("canceled") === "true") {
-  //     console.log("Payment was canceled by the user.");
-  //     searchParams.delete("canceled");
-  //     navigate({ search: searchParams.toString() }, { replace: true });
-  //   }
-  // }, [location.search, navigate]);
-
+ 
   const handleNewPrice = () =>{
     setCalculatedValue(planDuration * totalCredits*5);
   }
@@ -298,7 +363,7 @@ const getPlanName = async (email:string) => {
               />
             </Col>
             <Col className='mt-4' xs={12} md={3}>
-              <Button label="Download" className="global-btn golden" />
+              <Button onClick={handleDownload}  label="Download" className="global-btn golden" />
             </Col>
           </Row>
         </div>
@@ -312,8 +377,8 @@ const getPlanName = async (email:string) => {
               <Form.Control
                 type="date"
                 className="search-input-setting"
-                value={issuanceDate.from}
-                onChange={(e) => handleDateChange(e, 'from')}
+                value={reportDate.from}
+                onChange={(e) => handleDateReportChange(e, 'from')}
               />
             </Col>
             <Col xs={12} md={4}>
@@ -321,12 +386,12 @@ const getPlanName = async (email:string) => {
               <Form.Control
                 type="date"
                 className="search-input-setting"
-                value={issuanceDate.to}
-                onChange={(e) => handleDateChange(e, 'to')}
+                value={reportDate.to}
+                onChange={(e) => handleDateReportChange(e, 'to')}
               />
             </Col>
             <Col className='mt-4' xs={12} md={3}>
-              <Button label="Download" className="global-btn golden" />
+              <Button onClick={handleReport} label="Download" className="global-btn golden" />
             </Col>
           </Row>
         </div>
