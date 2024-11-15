@@ -149,7 +149,7 @@ const twoFactorAuth = (data: any, callback: (response: Response) => void) => {
   
   API({
     method: "POST",
-    url: `${APP_URL}/api/two-factor-auth`,
+    url: `${BASE_URL}/api/two-factor-auth`,
     data: data,
   })
     .then((response) => {
@@ -256,6 +256,23 @@ const upload = (data: any, callback: (response: Response) => void) => {
     });
   }
 
+
+const downloadIssuanceReport = (data: any, callback: (response: Response) => void) => {
+  // const encryptedData = encryptData(data);
+  
+  API({
+    method: "POST",
+    url: `${BASE_URL}/api/generate-excel-report`,
+    data: data,
+  })
+    .then((response) => {
+      callback({ status: "SUCCESS", data: response.data });
+    })
+    .catch((error) => {
+      callback({ status: "ERROR", error: error });
+    });
+  }
+
 const user = {
   register,
   verifyOtp,
@@ -271,6 +288,7 @@ const user = {
   getIssuerByEmail,
   updateIssuer,
   upload,
+  downloadIssuanceReport
 };
 
 export default user
