@@ -1,76 +1,108 @@
-.settings-container{
-    border: 1px solid #F3F3F3;
+.settings-container {
+    // border: 1px solid #F3F3F3;
     padding: 120px 250px;
     font-family: $font-family;
-.settings-title{
-    font-family: $font-family;
+
+    .settings-title {
+        font-family: $font-family;
         font-weight: 700;
-}
-.org-details {
-    border: 1px solid #BFC0C2;
-    min-height: 180px;
-    margin-top: 20px;
-   .label-settings{
-    font-family: $font-family;
-    color: #5B5A5F;
-   }.title {
-    color: #2F3847;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    // margin: 40px 0 20px;
-    background: #F3F3F3;
-    padding: 14px 20px;
-}
-.row {
-    .col-md-4 {
-        &:nth-child(n+4) {
-            margin-top: 30px;
+    }
+
+    .org-details {
+        border: 1px solid #BFC0C2;
+        min-height: 180px;
+        margin-top: 20px;
+
+        .label-settings {
+            font-family: $font-family;
+            color: #5B5A5F;
+        }
+
+        .title {
+            color: #2F3847;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            // margin: 40px 0 20px;
+            background: #F3F3F3;
+            padding: 14px 20px;
+        }
+
+        .row {
+            .col-md-4 {
+                &:nth-child(n+4) {
+                    margin-top: 30px;
+                }
+            }
+        }
+
+        .label {
+            color: #5A677E;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+            margin-bottom: 4px;
+        }
+
+        .info {
+            color: #000;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal;
+            word-wrap: break-word;
+            /* Or use overflow-wrap: break-word; */
+        }
+
+
+        // 1600
+        @media (min-width: $large-min) and (max-width: $large-max) {}
+
+        // 1440
+        @media (min-width: $medium-min) and (max-width: $medium-max) {}
+
+        // 1366
+        @media (min-width: $small-min) and (max-width: $small-max) {
+            .title {
+                font-size: 16px;
+                padding: 12px 20px;
+                margin: 20px 0;
+            }
+        }
+
+        // 1280
+        @media (min-width: $laptop-min) and (max-width: $laptop-max) {
+            .title {
+                font-size: 16px;
+                padding: 12px 20px;
+                margin: 20px 0;
+            }
         }
     }
 }
-.label {
-    color: #5A677E;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    margin-bottom: 4px;
-}
-.info {
-    color: #000;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-    word-wrap: break-word; /* Or use overflow-wrap: break-word; */
-}
 
+.dark-mode {
+    .settings-container {
+        .settings-title {
+            color: $white;
+        }
 
-// 1600
-@media (min-width: $large-min) and (max-width: $large-max) {
-    
-}
-// 1440
-@media (min-width: $medium-min) and (max-width: $medium-max) {
-    
-}
-// 1366
-@media (min-width: $small-min) and (max-width: $small-max) {
-    .title {
-        font-size: 16px;
-        padding: 12px 20px ;
-        margin: 20px 0;
+        .org-details {
+            .label-settings{
+                color: $white;
+            }
+        }
     }
-}
-// 1280
-@media (min-width: $laptop-min) and (max-width: $laptop-max) {
-    .title {
-        font-size: 16px;
-        padding: 12px 20px ;
-        margin: 20px 0;
+
+    .blockchain-button, .switch-button {
+        color: $white;
     }
-}
-}
+
+    .last-box {
+        h3, p {
+            color: $white;
+        }
+    }
 }

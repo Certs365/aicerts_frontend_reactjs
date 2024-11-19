@@ -76,10 +76,10 @@ const Dashboard = () => {
           }
   
           const data = await response.json();
-          if (data.message !== null && data.message !== undefined) {
-            // localStorage.setItem('expirydate', data.message);
-            console.log(typeof data.message)
-            setExpiryDate(data.message);
+          if (data.remainingDays !== null && data.remainingDays !== undefined) {
+            // localStorage.setItem('expirydate', data.remainingDays);
+            console.log(typeof data.remainingDays)
+            setExpiryDate(data.remainingDays);
             console.log(expiryDate)
             // setWarning(true);
           }
