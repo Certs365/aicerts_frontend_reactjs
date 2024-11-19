@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "prebuild": "node generateConfig.js"
-    },
+  },
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
@@ -17,7 +17,9 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@mui/material": "^5.15.20",
     "@mui/x-date-pickers": "^7.7.0",
+    "@stripe/stripe-js": "^4.8.0",
     "@testing-library/react": "^15.0.2",
+    "@types/fabric": "^5.3.9",
     "@types/jwt-decode": "^3.1.0",
     "aws-sdk": "^2.1576.0",
     "axios": "^1.7.5",
@@ -26,7 +28,8 @@
     "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "fabric": "^6.4.3",
+    "fabric": "^5.2.1",
+    "fabric-guideline-plugin": "^0.0.11",
     "file-saver": "^2.0.5",
     "firebase": "^10.8.1",
     "font-list": "^1.5.1",
@@ -52,8 +55,6 @@
     "react-pdf": "^7.7.1",
     "react-rnd": "^10.4.11",
     "react-scrollbars-custom": "^4.1.1",
-    "sass": "^1.69.7",
-    "@stripe/stripe-js": "^4.8.0",
     "react-spinners": "^0.14.1",
     "sass": "^1.69.7"
   },

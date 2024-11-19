@@ -31,17 +31,19 @@ import {
   onAddShape,
 } from "../components/certificate-designer/utils/shapeUtils";
 import BackgroundsPanel from "../components/certificate-designer/panel/BackgroundsPanel";
-import * as fabric from "fabric";
+import  {fabric} from "fabric"
 import ImagesPanel from "../components/certificate-designer/panel/ImagesPanel";
 
 import {  Tooltip } from "../components/certificate-designer/utils/shapeActions";
 import { setBackgroundImage, setImage } from "../components/certificate-designer/utils/templateUtils";
 import TemplatePanel from "../components/certificate-designer/panel/TemplatePanel";
 import { Button, Spinner } from "react-bootstrap";
+import { AlignGuidelines } from "fabric-guideline-plugin";
+import {setup} from "../components/certificate-designer/utils/setup"
 
 
 const Designer = () => {
-  const canvasRef = useRef(null);
+  const canvasRef = useRef(true);
   const [canvas, setCanvas] = useState(null);
   const [targetId, setTargetId] = useState(null); // For updating existing template
   const [activePanel, setActivePanel] = useState(null);
@@ -66,6 +68,7 @@ const Designer = () => {
   const [userEmail, setUserEmail] = useState(null);
   const [fileUrl, setFileUrl] = useState("");
   const [loading, setLoading] = useState(false);
+  const [guideline, setGuideline] = useState(null);
 
    // Use effect to fetch and load the user's email from localStorage
    useEffect(() => {
@@ -219,14 +222,26 @@ const Designer = () => {
 
   useEffect(() => {
     if (canvasRef.current) {
-      const fabricCanvas = new Canvas(canvasRef.current, {
-        width: 950,
-        height: 600,
+      console.log(canvasRef.current)
+      const fabricCanvas = setup({
+        normalBoxCount: 10,
+        rotateBoxCount: 2
       });
       fabricCanvas.backgroundColor = "#fff";
 
       fabricCanvas.renderAll();
       setCanvas(fabricCanvas);
+      const guidelineInstance = new AlignGuidelines({
+        canvas: fabricCanvas,
+        // pickObjTypes: [{ key: "myType", value: "box" }],
+        aligningOptions: {
+          lineColor: "#32D10A",
+          lineMargin: 8
+        }
+      });
+      guidelineInstance.init();
+      
+      setGuideline(guidelineInstance)
      
 
       fabricCanvas.on("selection:created", () => {
@@ -270,6 +285,7 @@ const Designer = () => {
 
       return () => {
         fabricCanvas.dispose();
+        
       };
     }
   }, []);
@@ -471,7 +487,7 @@ const Designer = () => {
         <ShapePanel
           canvas={canvas}
           onAddShape={(shape) => {
-            onAddShape(shape, canvas);
+            onAddShape(shape, canvas, guideline);
           }}
         />
       ),
@@ -671,6 +687,7 @@ const Designer = () => {
           </div>
           <div className="w-100 d-flex px-2  " >
             <canvas
+            id="myCanvas"
               ref={canvasRef}
               style={{
                 // border: "4px solid #ccc",
@@ -691,6 +708,7 @@ const Designer = () => {
         </div>
       </div>
       <Tooltip activeObject={activeObject} fabricCanvas={canvas} />
+     
 
      
     </div>

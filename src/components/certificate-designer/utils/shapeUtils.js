@@ -1,4 +1,4 @@
-import { Path, Polygon, Rect,Circle } from "fabric";
+import { fabric } from "fabric";
 
 
 export const onAddShape = (shape,canvas) => {
@@ -7,7 +7,7 @@ export const onAddShape = (shape,canvas) => {
     let shapeObject;
     switch (shape) {
       case "Rectangle":
-        shapeObject = new Rect({
+        shapeObject = new fabric.Rect({
           width: 100,
           height: 60,
           fill: "none",
@@ -16,7 +16,7 @@ export const onAddShape = (shape,canvas) => {
         });
         break;
         case "Polygon":
-      shapeObject = new Polygon([
+      shapeObject = new fabric.Polygon([
         {x:50 , y:0},
         {x:100, y:0},
         {x:125, y:50},
@@ -33,7 +33,7 @@ export const onAddShape = (shape,canvas) => {
       });
       break;
       case "Heart":
-        shapeObject = new Path('M 272.70141,238.71731 \
+        shapeObject = new fabric.Path('M 272.70141,238.71731 \
           C 206.46141,238.71731 152.70146,292.4773 152.70146,358.71731  \
           C 152.70146,493.47282 288.63461,528.80461 381.26391,662.02535 \
           C 468.83815,529.62199 609.82641,489.17075 609.82641,358.71731 \
@@ -45,7 +45,7 @@ export const onAddShape = (shape,canvas) => {
       shapeObject.set({ left: 20, top: 0, scaleX: scale, scaleY: scale,  fill: 'none', });
         break;
       case "Star":
-        shapeObject = new Polygon([
+        shapeObject = new fabric.Polygon([
           { x: 50, y: 0 },
           { x: 61, y: 35 },
           { x: 98, y: 35 },
@@ -63,7 +63,7 @@ export const onAddShape = (shape,canvas) => {
         });
         break;
         case "Circle":
-          shapeObject = new Circle({
+          shapeObject = new fabric.Circle({
             radius: 50,
             fill: "none",
             left: 50,
@@ -71,7 +71,7 @@ export const onAddShape = (shape,canvas) => {
           });
           break;
         case "Square":
-          shapeObject = new Rect({
+          shapeObject = new fabric.Rect({
             width: 60,
             height: 60,
             fill: "none",
@@ -86,7 +86,7 @@ export const onAddShape = (shape,canvas) => {
     // Add shape to canvas
     canvas.add(shapeObject);
     canvas.setActiveObject(shapeObject);
-    canvas.renderAll();
+    // canvas.renderAll();
   };
 
 

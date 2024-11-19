@@ -60,19 +60,21 @@ export const Tooltip = ({ activeObject, fabricCanvas }) => {
 
   // Duplicate shape functionality
   const duplicateShape = () => {
-    activeObject.clone().then((clone) => {
-      clone.set({
-        left: activeObject.left + 20, // Offset the position of the cloned object
-        top: activeObject.top + 20,
-      });
-      fabricCanvas.add(clone);
-    });
+
+    var object = fabric.util.object.clone(activeObject);
+    object.set("top", object.top+20);
+    object.set("left", object.left+20);
+     fabricCanvas.add(object);
+
+
+
+  
     setTooltipStyle({ ...tooltipStyle, display: "none" }); // Hide tooltip after duplication
   };
 
   // Send object forward
   const bringObjectForward = () => {
-    fabricCanvas.bringObjectForward(activeObject);
+    fabricCanvas.bringToFront(activeObject); 
     fabricCanvas.discardActiveObject();
     fabricCanvas.requestRenderAll();
     setTooltipStyle({ ...tooltipStyle, display: "none" }); // Hide tooltip after action
@@ -80,7 +82,7 @@ export const Tooltip = ({ activeObject, fabricCanvas }) => {
 
   // Send object backward
   const sendObjectBackward = () => {
-    fabricCanvas.sendObjectBackwards(activeObject);
+    fabricCanvas.sendToBack(activeObject);
     fabricCanvas.discardActiveObject();
     fabricCanvas.requestRenderAll();
     setTooltipStyle({ ...tooltipStyle, display: "none" }); // Hide tooltip after action

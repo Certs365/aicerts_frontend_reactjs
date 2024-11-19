@@ -1,7 +1,7 @@
-import { Textbox } from "fabric";
+import { fabric } from "fabric";
 
 export const handleAddTextBox = (canvas, text, style) => {
-    const textBox = new Textbox(text, {
+    const textBox = new fabric.Textbox(text, {
         left: 50,
         top: 50,
         fontSize: style === 'heading' ? 24 : style === 'subheading' ? 18 : 14,
