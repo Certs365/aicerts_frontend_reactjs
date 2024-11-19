@@ -10,22 +10,22 @@ const TextPanel = ({ onAddTextBox }) => {
     >
         Add a text box
     </button>
-    <div style={{ marginTop: '20px' }}>
+    <div className='add-text-button' style={{ marginTop: '20px' }}>
         <h4>Default text styles</h4>
         <button 
-            style={{ width: '100%', padding: '10px', marginTop: '10px', textAlign: 'left', fontSize:"24px", fontWeight:"bold", background:"none" , border:"1px dashed gray"  }} 
+            className='heading'
             onClick={() => onAddTextBox('Heading Text', 'heading')}
         >
             Add a heading
         </button>
         <button 
-            style={{ width: '100%', padding: '10px', marginTop: '10px', textAlign: 'left',fontSize:"18px" , fontWeight:"bold", background:"none",border:"1px dashed gray" }} 
+            className='sub-heading'
             onClick={() => onAddTextBox('Subheading Text', 'subheading')}
         >
             Add a subheading
         </button>
         <button 
-            style={{ width: '100%', padding: '10px', marginTop: '10px', textAlign: 'left',fontSize:"14px", border:"1px dashed gray" , background:"none"}} 
+            className='body-text'
             onClick={() => onAddTextBox('Body Text', 'body')}
         >
             Add a little bit of body text

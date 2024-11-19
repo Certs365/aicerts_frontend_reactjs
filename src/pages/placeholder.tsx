@@ -12,126 +12,136 @@ import Image from 'next/image';
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL_USER;
 
 type PlaceholderType = {
-    show: boolean;
-    xpos: number;
-    ypos: number;
-    width: number;
-    height: number;
-    isLocked: boolean;
+  show: boolean;
+  xpos: number;
+  ypos: number;
+  width: number;
+  height: number;
+  isLocked: boolean;
 };
 
 type Placeholders = {
-    CertificateNumber: PlaceholderType;
-    CourseName: PlaceholderType;
-    Name: PlaceholderType;
-    IssueDate: PlaceholderType;
-    ExpirationDate: PlaceholderType;
-    QrCode: PlaceholderType;
-    TemplateHeight: number;
-    TemplateWidth: number;
+  CertificateNumber: PlaceholderType;
+  CourseName: PlaceholderType;
+  Name: PlaceholderType;
+  IssueDate: PlaceholderType;
+  ExpirationDate: PlaceholderType;
+  QrCode: PlaceholderType;
+  TemplateHeight: number;
+  TemplateWidth: number;
 };
 
 interface PlaceholderProps {
-    file: string;
+  file: string;
 }
 
 const Placeholder: React.FC<PlaceholderProps> = () => {
-    const [file, setFile] = useState<string>('');
-    const router = useRouter();
-    const { certificateUrl, cardId } = router.query;
-    // @ts-ignore: Implicit any for children prop
-    const { setPdfBatchDimentions } = useContext(CertificateContext);
-    const [loginError, setLoginError] = useState('');
-    const [loginSuccess, setLoginSuccess] = useState('');
-    const [show, setShow] = useState(false);
-    const [now, setNow] = useState(0);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isPdfGenerating, setIsPdfGenerating] = useState<boolean>(true); // New state
+  const [file, setFile] = useState<string>('');
+  const router = useRouter();
+  const { certificateUrl, cardId } = router.query;
+  // @ts-ignore: Implicit any for children prop
+  const { setPdfBatchDimentions } = useContext(CertificateContext);
+  const [loginError, setLoginError] = useState('');
+  const [loginSuccess, setLoginSuccess] = useState('');
+  const [show, setShow] = useState(false);
+  const [now, setNow] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isPdfGenerating, setIsPdfGenerating] = useState<boolean>(true); // New state
 
-    const [dimentions, setDimentions] = useState<{ width: number | null; height: number | null }>({
-        width: null,
-        height: null
-    });
+  const [dimentions, setDimentions] = useState<{ width: number | null; height: number | null }>({
+    width: null,
+    height: null
+  });
 
-    const [placeholders, setPlaceholders] = useState<Placeholders>({
-        CertificateNumber: { show: true, xpos: 100, ypos: 100, width: 200, height: 50, isLocked: false },
-        CourseName: { show: true, xpos: 100, ypos: 150, width: 200, height: 50, isLocked: false },
-        Name: { show: true, xpos: 100, ypos: 200, width: 200, height: 50, isLocked: false },
-        IssueDate: { show: true, xpos: 100, ypos: 250, width: 200, height: 50, isLocked: false },
-        ExpirationDate: { show: true, xpos: 100, ypos: 300, width: 200, height: 50, isLocked: false },
-        QrCode: { show: true, xpos: 100, ypos: 400, width: 100, height: 100, isLocked: false },
-        TemplateHeight: 793,
-        TemplateWidth: 1122
-    });
+  const [placeholders, setPlaceholders] = useState<Placeholders>({
+    CertificateNumber: { show: true, xpos: 100, ypos: 100, width: 200, height: 50, isLocked: false },
+    CourseName: { show: true, xpos: 100, ypos: 150, width: 200, height: 50, isLocked: false },
+    Name: { show: true, xpos: 100, ypos: 200, width: 200, height: 50, isLocked: false },
+    IssueDate: { show: true, xpos: 100, ypos: 250, width: 200, height: 50, isLocked: false },
+    ExpirationDate: { show: true, xpos: 100, ypos: 300, width: 200, height: 50, isLocked: false },
+    QrCode: { show: true, xpos: 100, ypos: 400, width: 100, height: 100, isLocked: false },
+    TemplateHeight: 793,
+    TemplateWidth: 1122
+  });
 
-    useEffect(() => {
-        const generatePdf = async () => {
-            if (certificateUrl) {
-                setIsPdfGenerating(true)
-                const pdfFile = await createPdfFromImage(certificateUrl as string);
-                if (pdfFile) {
-                    setFile(pdfFile.url);
-                    setDimentions({ width: pdfFile.width, height: pdfFile.height });
-                }
-                setIsPdfGenerating(false);
-            }
-        };
-
-        generatePdf();
-    }, [certificateUrl]);
-
-    const submitDimentions = async () => {
-        setIsLoading(true); // Start loading state
-        setPdfBatchDimentions(placeholders);
-    
-        try {
-            const response = await fetch(`${apiUrl}/api/update-certificate-template`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    dimentions: { ...placeholders, TemplateHeight: dimentions.height, TemplateWidth: dimentions.width },
-                    id: cardId,
-                }),
-            });
-    
-            if (!response.ok) {
-                console.error('Network response was not ok');
-                throw new Error(`Error ${response.status}: ${response.statusText}`);
-            }
-    
-            const data = await response.json();
-            console.log('Placeholders updated successfully:', data);
-    
-            await router.push({
-                pathname: '/certificate/0',
-                query: { certificatePath: certificateUrl, isDesign: true, templateId: cardId },
-            });
-        } catch (error) {
-            console.error('Error updating placeholders:', error);
-        } finally {
-            setIsLoading(false); // End loading state after everything completes
+  useEffect(() => {
+    const generatePdf = async () => {
+      if (certificateUrl) {
+        setIsPdfGenerating(true)
+        const pdfFile = await createPdfFromImage(certificateUrl as string);
+        if (pdfFile) {
+          setFile(pdfFile.url);
+          setDimentions({ width: pdfFile.width, height: pdfFile.height });
         }
+        setIsPdfGenerating(false);
+      }
     };
-    
-    const handleClose = () => {
-        setShow(false);
-        setLoginError("")
-      };
-    
-    return (
-        <div className='d-flex flex-column justify-content-center align-items-center'>
+
+    generatePdf();
+  }, [certificateUrl]);
+
+  const submitDimentions = async () => {
+    setIsLoading(true); // Start loading state
+    setPdfBatchDimentions(placeholders);
+
+    try {
+      const response = await fetch(`${apiUrl}/api/update-certificate-template`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          dimentions: { ...placeholders, TemplateHeight: dimentions.height, TemplateWidth: dimentions.width },
+          id: cardId,
+        }),
+      });
+
+      if (!response.ok) {
+        console.error('Network response was not ok');
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log('Placeholders updated successfully:', data);
+
+      await router.push({
+        pathname: '/certificate/0',
+        query: { certificatePath: certificateUrl, isDesign: true, templateId: cardId },
+      });
+    } catch (error) {
+      console.error('Error updating placeholders:', error);
+    } finally {
+      setIsLoading(false); // End loading state after everything completes
+    }
+  };
+
+  const handleClose = () => {
+    setShow(false);
+    setLoginError("")
+  };
+
+  return (
+    <>
+    <div className="page-bg ">
+      <div className="position-relative h-100">
+        <div className="vertical-center">
+          <div className='d-flex flex-column justify-content-center align-items-center'>
             <PlaceholderPosition
-                fileUrl={file}
-                scale={1}
-                placeholders={placeholders}
-                setPlaceholders={setPlaceholders}
-                isPdfGenerating={isPdfGenerating}
-                
+              fileUrl={file}
+              scale={1}
+              placeholders={placeholders}
+              setPlaceholders={setPlaceholders}
+              isPdfGenerating={isPdfGenerating}
+
             />
             <Button label='Submit' className='golden mt-3' onClick={submitDimentions} />
-            <Modal className='loader-modal' show={isLoading} centered>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+      <Modal className='loader-modal' show={isLoading} centered>
         <Modal.Body>
           <div className='certificate-loader'>
             <Image
@@ -179,8 +189,9 @@ const Placeholder: React.FC<PlaceholderProps> = () => {
 
         </Modal.Body>
       </Modal>
-        </div>
-    );
+
+    </>
+  );
 };
 
 export default Placeholder;

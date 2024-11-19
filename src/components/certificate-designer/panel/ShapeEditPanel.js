@@ -36,7 +36,7 @@ const ShapeEditPanel = ({
 
 
   return (
-    <div className="d-flex gap-3 align-items-center shape-edit-panel">
+    <div className="d-flex gap-3 align-items-center shape-edit-panel bg-white w-100 p-2">
       <div className="d-flex gap-2">
         {/* Filled Circle */}
         <div
