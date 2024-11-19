@@ -248,7 +248,7 @@ const Navigation = () => {
       case '/certificate':
         setSelectedTab(2);
         break;
-      case '/template-management':
+      case '/design':
         setSelectedTab(3);
         break;
       case '/admin':
@@ -304,7 +304,7 @@ const Navigation = () => {
       handleLogout();
     }
   };
-  const routesWithLogoutButton = ['/certificates', '/issue-pdf-certificate', '/issue-certificate', '/certificate', '/certificate/[id]', '/certificate/download', '/dashboard', '/user-details', '/admin', '/gallery', '/issue-pdf-qr','/dynamic-poc', '/settings','/designer'];
+  const routesWithLogoutButton = ['/certificates', '/badge-designer','/issue-pdf-certificate', '/issue-certificate', '/certificate', '/certificate/[id]', '/certificate/download', '/dashboard', '/user-details', '/admin', '/gallery', '/issue-pdf-qr','/dynamic-poc', '/settings','/designer','/design'];
   const handleConfirm = () => {
     setShowModal(false)
     handleLogout();
@@ -357,46 +357,9 @@ const Navigation = () => {
                     Gallery
                 </Nav.Link>
 
-                <Dropdown
-      onMouseEnter={() => setShowDropdown(true)}
-      onMouseLeave={() => setShowDropdown(false)}
-      show={showDropdown}
-    >
-      <Dropdown.Toggle
-        className={`nav-item ${selectedTab === 5 ? "tab-golden" : ""}`}
-        id="dropdown-basic"
-        style={{
-          backgroundColor: "transparent",
-          border: "none",
-          boxShadow: "none",
-        }}
-      >
-        Designer
-      </Dropdown.Toggle>
-
-      <Dropdown.Menu
-        style={{
-          border: "none",
-        }}
-      >
-        <Dropdown.Item
-          onClick={() => {
-            handleClickTab(5);
-          }}
-          href="/designer"
-        >
-          Certificate Designer
-        </Dropdown.Item>
-        <Dropdown.Item
-          onClick={() => {
-            handleClickTab(6); // Example tab number for Badge Designer
-          }}
-          href="/badge-designer"
-        >
-          Badge Designer
-        </Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
+                <Nav.Link onClick={() => { handleClickTab(3) }} className={`nav-item ${selectedTab === 3 ? "tab-golden" : ""}`} href="/design">
+                    Designer
+                </Nav.Link>
 
                 <Nav.Link onClick={() => { handleClickTab(2) }} className={`nav-item ${selectedTab === 2 ? "tab-golden" : ""}`} href="/certificates">
                   Issuance

@@ -220,8 +220,8 @@ const BadgeDesigner = () => {
   useEffect(() => {
     if (canvasRef.current) {
       const fabricCanvas = new Canvas(canvasRef.current, {
-        width: 950,
-        height: 600,
+        width: 450,
+        height: 400,
       });
       fabricCanvas.backgroundColor = "#fff";
 
@@ -455,28 +455,29 @@ const BadgeDesigner = () => {
  
   // Icon data array
   const icons = [
-    { icon: LuLayoutTemplate, label: "Templates", panel:<TemplatePanel onTemplateSelect={renderTemplateOnCanvas}/> },
+    { icon: LuLayoutTemplate, label: "Templates" },
     {
       icon: FaShapes,
       label: "Bases",
       panel: (
-        <BasePanel
-          canvas={canvas}
-          onAddShape={(shape) => {
-            onAddShape(shape, canvas);
-          }}
-        />
+        
+        <BackgroundsPanel
+        onSelectBackground={(imageUrl) => {
+          setBackgroundImage(imageUrl, canvas);
+        }}
+      />
       ),
     },
     {
       icon: TbBackground,
       label: "Ribbions",
-      panel: ( 
-        <BackgroundsPanel
-          onSelectBackground={(imageUrl) => {
-            setBackgroundImage(imageUrl, canvas);
-          }}
-        />
+      panel: ( <BasePanel
+        canvas={canvas}
+        onAddShape={(shape) => {
+          onAddShape(shape, canvas);
+        }}
+      />
+      
       ),
     },
     {
@@ -685,7 +686,7 @@ const BadgeDesigner = () => {
               <></>
             )}
           </div>
-          <div className="w-100 d-flex px-2  " >
+          <div className="w-100 d-flex px-2 d-flex justify-content-center" >
             <canvas
               ref={canvasRef}
               style={{

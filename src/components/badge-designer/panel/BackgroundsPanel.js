@@ -10,33 +10,9 @@ function BackgroundsPanel({ onSelectBackground }) {
   const [loading, setLoading] = useState(true); // Loading state
 
   const predefinedBackgrounds = [
-    "./poc-assets/b1.jpg",
-    "./poc-assets/b2.png",
-    "./poc-assets/b3.png",
-    "./poc-assets/b4.png",
-    "./poc-assets/b5.jpg",
-    "./poc-assets/b6.jpg",
-    "./poc-assets/b7.png",
-    "./poc-assets/b8.jpg",
-    "./poc-assets/b9.png",
-    "./poc-assets/b10.png",
-    "./poc-assets/b11.png",
-    "./poc-assets/b12.png",
-    "./poc-assets/b13.png",
-    "./poc-assets/b14.png",
-    "./poc-assets/b15.png",
-    "./poc-assets/b16.png",
-    "./poc-assets/b17.png",
-    "./poc-assets/b18.png",
-    "./poc-assets/b19.png",
-    "./poc-assets/b20.png",
-    "./poc-assets/b21.png",
-    "./poc-assets/b22.png",
-    "./poc-assets/b23.png",
-    "./poc-assets/b24.png",
-    "./poc-assets/b25.png",
-    "./poc-assets/b26.png",
-    
+    "./badge-assets/bases/b1.jpg",
+    "./badge-assets/bases/b2.jpg",
+    "./badge-assets/bases/b3.jpg",
   ];
 
 

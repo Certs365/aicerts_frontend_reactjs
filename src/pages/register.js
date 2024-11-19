@@ -305,7 +305,7 @@ const Register = () => {
       <NavigationLogin />
 
       <div className='container pt-5'>
-        <h2 className='title'>Register here</h2>
+        <h2 className='title'>Register Your Organization</h2>
 
         <Form className='register-form'>
           <Card>
