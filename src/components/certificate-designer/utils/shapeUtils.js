@@ -1,93 +1,111 @@
-import { Path, Polygon, Rect,Circle } from "fabric";
+import { fabric } from "fabric";
 
 
-export const onAddShape = (shape,canvas) => {
-    if (!canvas) return;
+export const onAddShape = (shape, canvas) => {
+  console.log(shape)
+  if (!canvas) return;
   
-    let shapeObject;
-    switch (shape) {
-      case "Rectangle":
-        shapeObject = new Rect({
-          width: 100,
-          height: 60,
-          fill: "none",
-          left: 50,
-          top: 50,
-        });
-        break;
-        case "Polygon":
-      shapeObject = new Polygon([
-        {x:50 , y:0},
-        {x:100, y:0},
-        {x:125, y:50},
-        {x:100, y:100},
-        {x:50,y:100},
-        {x:25,y:50},
-        {x:50,y:0}
-      ], {
+  let shapeObject;
+  
+  switch (shape) {
+    case "Rectangle":
+      shapeObject = new fabric.Rect({
+        width: 100,
+        height: 60,
         fill: "none",
-        stroke:"black",
-        
-        left: 50,
-        top: 50,
+        left: canvas.width / 2 - 50,
+        top: canvas.height / 2 - 30,
       });
       break;
-      case "Heart":
-        shapeObject = new Path('M 272.70141,238.71731 \
-          C 206.46141,238.71731 152.70146,292.4773 152.70146,358.71731  \
-          C 152.70146,493.47282 288.63461,528.80461 381.26391,662.02535 \
-          C 468.83815,529.62199 609.82641,489.17075 609.82641,358.71731 \
-          C 609.82641,292.47731 556.06651,238.7173 489.82641,238.71731  \
-          C 441.77851,238.71731 400.42481,267.08774 381.26391,307.90481 \
-          C 362.10311,267.08773 320.74941,238.7173 272.70141,238.71731  \
-          z ');    
-      var scale = 100 / shapeObject.width;
-      shapeObject.set({ left: 20, top: 0, scaleX: scale, scaleY: scale,  fill: 'none', });
-        break;
-      case "Star":
-        shapeObject = new Polygon([
-          { x: 50, y: 0 },
-          { x: 61, y: 35 },
-          { x: 98, y: 35 },
-          { x: 68, y: 57 },
-          { x: 79, y: 91 },
-          { x: 50, y: 70 },
-          { x: 21, y: 91 },
-          { x: 32, y: 57 },
-          { x: 2, y: 35 },
-          { x: 39, y: 35 }
-        ], {
-          fill: "none",
-          left: 50,
-          top: 50,
-        });
-        break;
-        case "Circle":
-          shapeObject = new Circle({
-            radius: 50,
-            fill: "none",
-            left: 50,
-            top: 50,
-          });
-          break;
-        case "Square":
-          shapeObject = new Rect({
-            width: 60,
-            height: 60,
-            fill: "none",
-            left: 50,
-            top: 50,
-          });
-          break;
-      default:
-        return;
-    }
-  
-    // Add shape to canvas
-    canvas.add(shapeObject);
-    canvas.setActiveObject(shapeObject);
-    canvas.renderAll();
-  };
+    case "Polygon":
+      shapeObject = new fabric.Polygon([
+        { x: 50, y: 0 },
+        { x: 100, y: 0 },
+        { x: 125, y: 50 },
+        { x: 100, y: 100 },
+        { x: 50, y: 100 },
+        { x: 25, y: 50 },
+        { x: 50, y: 0 }
+      ], {
+        fill: "none",
+        stroke: "black",
+        left: canvas.width / 2 - 50,
+        top: canvas.height / 2 - 50,
+      });
+      break;
+    case "Heart":
+      shapeObject = new fabric.Path('M 272.70141,238.71731 C 206.46141,238.71731 152.70146,292.4773 152.70146,358.71731 C 152.70146,493.47282 288.63461,528.80461 381.26391,662.02535 C 468.83815,529.62199 609.82641,489.17075 609.82641,358.71731 C 609.82641,292.47731 556.06651,238.7173 489.82641,238.71731 C 441.77851,238.71731 400.42481,267.08774 381.26391,307.90481 C 362.10311,267.08773 320.74941,238.7173 272.70141,238.71731 z');
+      shapeObject.set({ left: canvas.width / 2 - 50, top: canvas.height / 2 - 50, scaleX: scale, scaleY: scale, fill: 'none' });
+      break;
+    case "Star":
+      shapeObject = new fabric.Polygon([
+        { x: 50, y: 0 },
+        { x: 61, y: 35 },
+        { x: 98, y: 35 },
+        { x: 68, y: 57 },
+        { x: 79, y: 91 },
+        { x: 50, y: 70 },
+        { x: 21, y: 91 },
+        { x: 32, y: 57 },
+        { x: 2, y: 35 },
+        { x: 39, y: 35 }
+      ], {
+        fill: "none",
+        left: canvas.width / 2 - 50,
+        top: canvas.height / 2 - 50,
+      });
+      break;
+    case "Circle":
+      shapeObject = new fabric.Circle({
+        radius: 50,
+        fill: "none",
+        left: canvas.width / 2 - 50,
+        top: canvas.height / 2 - 50,
+      });
+      break;
+    case "Square":
+      shapeObject = new fabric.Rect({
+        width: 60,
+        height: 60,
+        fill: "none",
+        left: canvas.width / 2 - 30,
+        top: canvas.height / 2 - 30,
+      });
+      break;
+      case "VerticalLine":
+        console.log("VerticalLine")
+      shapeObject = new fabric.Line(
+        [0, 0, 0, 100], // Vertical line from top to bottom
+        {
+          stroke: "black",
+          strokeWidth: 2,
+          left: canvas.width / 2,
+          top: canvas.height / 2 - 50,
+        }
+      );
+      break;
+    case "HorizontalLine":
+      console.log("horizontal")
+      shapeObject = new fabric.Line(
+        [0, 0, 100, 0], // Horizontal line from left to right
+        {
+          stroke: "black",
+          strokeWidth: 2,
+          left: canvas.width / 2 - 50,
+          top: canvas.height / 2,
+        }
+      );
+      break;
+    default:
+      return;
+  }
+
+  // Add shape to canvas
+  canvas.add(shapeObject);
+  canvas.setActiveObject(shapeObject);
+  canvas.renderAll();
+};
+
 
 
 export const handleShapeBgColorChange = (canvas, setShapeStyles, updateActiveObjectStyles) => (e) => {

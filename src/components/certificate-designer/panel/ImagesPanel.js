@@ -78,7 +78,7 @@ function ImagesPanel({ onSelectImage }) {
   };
 
   return (
-    <div className="backgrounds-panel">
+    <div className="backgrounds-panel  " >
       <div className="background-tabs">
         <button
           onClick={() => setActiveTab("predefined")}
