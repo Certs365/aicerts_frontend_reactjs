@@ -572,9 +572,34 @@ const BadgeDesigner = () => {
                 isActive = {isActivePanel === iconData.label}
               />
             ))}
-             <div className="action-buttons">
-       
-      </div>
+              <div className="action-buttons d-flex gap-2 flex-column px-1">
+              {/* <button
+                style={{
+                  background: "none",
+                  border: "2px solid white",
+                  borderRadius: "5px",
+                  fontSize: "13px",
+                  color: "white",
+                  fontWeight: "bold",
+                }}
+                onClick={handleTemplateSave}
+              >
+                {targetId ? "Save Template" : "Save as Template"}
+              </button> */}
+              <button
+                style={{
+                  background: "none",
+                  border: "2px solid white",
+                  borderRadius: "5px",
+                  fontSize: "13px",
+                  color: "white",
+                  fontWeight: "bold",
+                }}
+                onClick={moveToIssuance}
+              >
+                Move to Issuance
+              </button>
+            </div>
           </div>
           <div
             className="w-75 h-100 d-flex flex-column py-4 px-1"
