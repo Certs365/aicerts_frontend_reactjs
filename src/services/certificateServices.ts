@@ -180,7 +180,65 @@ const renewCert = (data: any, callback: (response: Response) => void) => {
       });
     }
   
+    const getBadgeTemplates = (data: any, callback: (response: Response) => void) => {
+      const encryptedData = encryptData(data);
+      
+      API({
+        method: "POST",
+        url: `${BASE_URL}/api/get-badge-templates`,
+        data: data,
+      })
+        .then((response) => {
+          callback({ status: "SUCCESS", data: response.data });
+        })
+        .catch((error) => {
+          callback({ status: "ERROR", error: error });
+        });
+      }
+    
+      const getBadgeTemplateDetails = (id: any, callback: (response: Response) => void) => {
+        API({
+          method: "GET",
+          url: `${BASE_URL}/api/get-badge-template/${id}`,
+        })
+          .then((response) => {
+            callback({ status: "SUCCESS", data: response.data });
+          })
+          .catch((error) => {
+            callback({ status: "ERROR", error: error });
+          });
+        }
 
+        const addBadgeTemplate = (data: any, callback: (response: Response) => void) => {
+          // const encryptedData = encryptData(data);
+          API({
+            method: "POST",
+            url: `${BASE_URL}/api/add-badge-template`,
+            data: data,
+          })
+            .then((response) => {
+              callback({ status: "SUCCESS", data: response.data });
+            })
+            .catch((error) => {
+              callback({ status: "ERROR", error: error });
+            });
+        }
+
+        const updateBadgeTemplate = (data: any, callback: (response: Response) => void) => {
+          // const encryptedData = encryptData(data);
+          API({
+            method: "POST",
+            url: `${BASE_URL}/api/update-badge-template`,
+            data: data,
+          })
+            .then((response) => {
+              callback({ status: "SUCCESS", data: response.data });
+            })
+            .catch((error) => {
+              callback({ status: "ERROR", error: error });
+            });
+        }
+      
 
 const certificate = {
     updateCertsStatus,
@@ -191,7 +249,11 @@ const certificate = {
     apiuploadCertificate,
     getSingleCertificates,
     getBatchCertificateDates,
-    getCertificatesTemplates
+    getCertificatesTemplates,
+    getBadgeTemplates,
+    getBadgeTemplateDetails,
+    updateBadgeTemplate,
+    addBadgeTemplate
 }
 
 export default certificate;

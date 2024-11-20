@@ -66,6 +66,44 @@ const BadgeDesigner = () => {
   const [userEmail, setUserEmail] = useState(null);
   const [fileUrl, setFileUrl] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const { id } = router.query;
+
+  const fetchBadgeDetails = async () => {
+    try {
+      if (id) {
+        setIsLoading(true);
+
+        certificate.getBadgeTemplateDetails(id, (response) => {
+          if (response.status === 'SUCCESS') {
+            const { title, subTitle, description, attributes } = response?.data?.data;
+            setFormData({
+              title: title || '',
+              subtitle: subTitle || '',
+              description: description || '',
+            });
+
+            setAttributes(attributes|| []);
+          } else {
+            console.error('Failed to fetch badge details:', response.error || 'Unknown error');
+            setFormData({ title: '', subtitle: '', description: '' });
+            setAttributes([]);
+          }
+
+          setIsLoading(false);
+        });
+      }
+    } catch (error) {
+      console.error('Unexpected error fetching badge details:', error);
+      setFormData({ title: '', subtitle: '', description: '' });
+      setAttributes([]);
+      setIsLoading(false);
+    }
+  };
+  
+  useEffect(() => {
+    fetchBadgeDetails();
+  }, [id]);
 
    // Use effect to fetch and load the user's email from localStorage
    useEffect(() => {

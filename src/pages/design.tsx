@@ -40,9 +40,9 @@ const Design = () => {
           boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
           cursor: 'pointer',
         }}
-        onClick={() => handleNavigate('/badge/form')}
+        onClick={() => handleNavigate('/badge/badge-dashboard')}
       >
-        <h3>Batch Designer</h3>
+        <h3>Badge Designer</h3>
       </div>
     </div>
   );
