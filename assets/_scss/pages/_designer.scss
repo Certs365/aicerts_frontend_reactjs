@@ -12,9 +12,11 @@
 
 
 .backgrounds-panel{
+    display: flex;
+    flex-direction: column;
    
     width: 100%;
-    height: 95%;
+    height: 100%;
 
     .background-tabs{
       

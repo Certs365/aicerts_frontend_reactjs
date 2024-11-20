@@ -1,4 +1,5 @@
 import { fabric } from "fabric";
+
 function generateLightColorRgb() {
   const red = Math.floor(((1 + Math.random()) * 256) / 2);
   const green = Math.floor(((1 + Math.random()) * 256) / 2);
@@ -8,20 +9,42 @@ function generateLightColorRgb() {
 export const setup = (
   {
     normalBoxCount,
-    rotateBoxCount
+    rotateBoxCount,
+    paperSize = "A4", // Default to "A4"
+    orientation = "Portrait" // Default to "Portrait"
   }: {
     normalBoxCount: number;
     rotateBoxCount: number;
-  } = {
-    normalBoxCount: 5,
-    rotateBoxCount: 1
+    paperSize?: "A4" | "US Letter"; // Explicitly type as the possible keys
+    orientation?: "Portrait" | "Landscape"; // Explicitly type as the possible values
   }
 ): fabric.Canvas => {
+  const paperSizes = {
+    A4: {
+      Portrait: { width: 595 * 1.1, height: 842 * 1.1 }, // Increased by 10%
+      Landscape: { width: 842 * 1.1, height: 595 * 1.1 } // Increased by 10%
+    },
+    "US Letter": {
+      Portrait: { width: 612 * 1.1, height: 792 * 1.1 }, // Increased by 10%
+      Landscape: { width: 792 * 1.1, height: 612 * 1.1 } // Increased by 10%
+    }
+  };
+  
+
+  // Ensure that the paperSize and orientation are valid, else default to "A4" and "Portrait"
+  const { width, height } = paperSizes[paperSize][orientation];
+  console.log("trigger", width , height)
+
+
+
   const fabricCanvas = new fabric.Canvas("myCanvas", {
-    width: 950,
-    height: 600,
+    width,
+    height,
     backgroundColor: "white"
   });
+  
+
+ 
 
   function setupObjects() {
     const outer = new fabric.Rect({
@@ -64,7 +87,7 @@ export const setup = (
       }
     }
     let allBoxes = new fabric.ActiveSelection(
-      fabricCanvas.getObjects().filter((obj) => obj.myType == "box"),
+      fabricCanvas.getObjects().filter((obj) => obj.type == "box"),
       { canvas: fabricCanvas }
     );
     allBoxes.center();
@@ -87,14 +110,14 @@ export const setup = (
     let zoom = fabricCanvas.getZoom();
     zoom = zoom - delta / 10;
 
-    if (zoom > 4) zoom = 4;
+    if (zoom > 4) zoom = 1;
 
     if (zoom < 0.2) {
       zoom = 0.2;
     }
 
     fabricCanvas.zoomToPoint(
-      new fabric.Point(fabricCanvas.width / 2, fabricCanvas.height / 2),
+      new fabric.Point(fabricCanvas.getWidth() / 2, fabricCanvas.getHeight() / 2),
       zoom
     );
 

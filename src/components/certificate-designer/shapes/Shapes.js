@@ -4,7 +4,7 @@ import React from "react";
 export const PolygonShape = () => {
   return (
     <svg
-      fill="#000000"
+      stroke="#000000"
       viewBox="0 0 24 24" // Ensure this matches the actual dimensions of the shape
       style={{ width: "100%", height: "auto" }} // Make the SVG responsive
       xmlns="http://www.w3.org/2000/svg"
@@ -21,7 +21,7 @@ export const Rectangle = () => {
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <rect x="1" y="3" width="22" height="18" fill="black" />
+      <rect x="1" y="3" width="22" height="18" stroke="black" fill="none" strokeWidth={1} />
     </svg>
   );
 };
@@ -69,10 +69,10 @@ export const Circle = () => {
     <svg
       style={{ width: "100%", height: "auto" }}
       viewBox="0 0 24 24"
-      fill="#000000"
+      fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <circle cx="12" cy="12" r="10" stroke="#000000" strokeWidth="2" />
+      <circle cx="12" cy="12" r="10" stroke="#000000" strokeWidth="1" />
     </svg>
   );
 };
@@ -82,7 +82,7 @@ export const Square = () => {
     <svg
       style={{ width: "100%", height: "auto" }}
       viewBox="0 0 24 24"
-      fill="#000000"
+      fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <rect
@@ -91,7 +91,7 @@ export const Square = () => {
         width="16"
         height="16"
         stroke="#000000"
-        strokeWidth="2"
+        strokeWidth="1"
       />
     </svg>
   );
@@ -168,5 +168,39 @@ export const DownArrow = () => {
     </svg>
   );
 };
+
+export const VerticalLine = () => {
+  return (
+    <svg
+      style={{ width: "100%", height: "auto" }}
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <line
+        x1="12" y1="0"   // Start point at the top center
+        x2="12" y2="24"  // End point at the bottom center
+        stroke="black"   // Line color
+        strokeWidth="1"  // Line thickness
+      />
+    </svg>
+  );
+};
+export const HorizontalLine = () => {
+  return (
+    <svg
+      style={{ width: "100%", height: "auto" }}
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <line
+        x1="0" y1="12"   // Start point at the middle left
+        x2="24" y2="12"  // End point at the middle right
+        stroke="black"   // Line color
+        strokeWidth="1"  // Line thickness
+      />
+    </svg>
+  );
+};
+
 
 

@@ -2,8 +2,8 @@ import { fabric } from "fabric";
 
 export const handleAddTextBox = (canvas, text, style) => {
     const textBox = new fabric.Textbox(text, {
-        left: 50,
-        top: 50,
+      left: canvas.width / 2 - 50,
+      top: canvas.height / 2 - 30,
         fontSize: style === 'heading' ? 24 : style === 'subheading' ? 18 : 14,
         fill: '#000',
         fontWeight: style === 'heading' || style === 'subheading' ? 'bold' : 'normal',

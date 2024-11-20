@@ -2,12 +2,25 @@ import React, { useState, useEffect } from "react";
 import FileUpload from "../../FileUpload";
 import Scrollbar from "react-scrollbars-custom";
 import { Spinner } from "react-bootstrap";
+import { useCanvasStore } from "../utils/canvasStore";
+
 
 function BackgroundsPanel({ onSelectBackground }) {
   const [activeTab, setActiveTab] = useState("predefined");
   const [uploadedBackgrounds, setUploadedBackgrounds] = useState([]);
   const apiUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const [loading, setLoading] = useState(true); // Loading state
+
+
+  const { paperSize, orientation, setPaperSize, setOrientation } = useCanvasStore((state) => state);
+
+  const handlePaperSizeChange = (event) => {
+    setPaperSize(event.target.value );
+  };
+
+  const handleOrientationChange = (event) => {
+    setOrientation(event.target.value);
+  };
 
   const predefinedBackgrounds = [
     "./poc-assets/b1.jpg",
@@ -101,6 +114,62 @@ function BackgroundsPanel({ onSelectBackground }) {
           Your Uploads
         </button>
       </div>
+
+      {/* Paper Size Selection */}
+<div className=" w-100 d-flex justify-content-center align-items-center">
+<div style={{ fontFamily: "Arial", padding: "10px", boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px, #CFA935 0px 0px 0px 3px", marginTop:"10px",width:"90%"  }}>
+  <div style={{ marginBottom: "10px" }}>
+    <label style={{  fontWeight: "bold", marginBottom: "5px", display: "block" }}>
+      Format
+    </label>
+    <div>
+      <span style={{fontSize:"10px", marginRight: "10px"  }}>Paper Size:</span>
+      <label style={{fontSize:"14px", marginRight: "10px" }}>
+        <input
+          type="radio"
+          value="A4"
+          checked={paperSize === "A4"}
+          onChange={handlePaperSizeChange}
+        />
+        A4
+      </label>
+      <label style={{fontSize:"14px"}}>
+        <input
+          type="radio"
+          value="US Letter"
+          checked={paperSize === "US Letter"}
+          onChange={handlePaperSizeChange}
+        />
+        US Letter
+      </label>
+    </div>
+  </div>
+
+  <div>
+    <span style={{fontSize:"10px", marginRight: "10px" }}>Orientation:</span>
+    <label style={{fontSize:"14px", marginRight: "10px" }}>
+      <input
+        type="radio"
+        value="Portrait"
+        checked={orientation === "Portrait"}
+        onChange={handleOrientationChange}
+      />
+      Portrait
+    </label>
+    <label style={{fontSize:"14px"}} >
+      <input
+        type="radio"
+        value="Landscape"
+        checked={orientation === "Landscape"}
+        onChange={handleOrientationChange}
+      />
+      Landscape
+    </label>
+  </div>
+</div>
+
+</div>
+
 
       {activeTab === "predefined" && (
         <div className="predefined-backgrounds">
