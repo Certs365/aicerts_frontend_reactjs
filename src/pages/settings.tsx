@@ -68,16 +68,23 @@ const Settings: React.FC = () => {
   }, [isShowPricingEnabled])
   
   // get all subscription plan details
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(`${apiUrl}/api/get-all-plans`);
-      const responseData = await response.json();
-      setData(responseData.details);
-      // const data = await response.json();
-      // setData(typeof data === 'string' ? JSON.parse(data) : data);
-    };
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const response = await fetch(`${apiUrl}/api/get-subscription-plans`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ email }),
+  //     });
+  //     const responseData = await response.json();
+  //     debugger
+  //     setData(responseData.details);
+  //     // const data = await response.json();
+  //     // setData(typeof data === 'string' ? JSON.parse(data) : data);
+  //   };
+  //   fetchData();
+  // }, []);
 
 
 
@@ -91,10 +98,29 @@ const Settings: React.FC = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (!email) return;
+    const fetchData = async () => {
+      const response = await fetch(`${apiUrl}/api/get-subscription-plans`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+      const responseData = await response.json();
+      console.log(responseData)
+      setData(responseData.details);
+      // const data = await response.json();
+      // setData(typeof data === 'string' ? JSON.parse(data) : data);
+    };
+    fetchData();
+  }, [email]);
+
 
 const getPlanName = async (email:string) => {
   try {
-    const response = await fetch(`${apiUrl}/api/get-subscription-details`, {
+    const response = await fetch(`${apiUrl}/api/fetch-user-subscription-details`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -108,24 +134,26 @@ const getPlanName = async (email:string) => {
     }
 
     const data = await response.json();
-    setPlanName(data.details.subscriptionPlanName);
+    setPlanName(data.details.subscriptionPlanTitle);
   } catch (error) {
     console.error('Error fetching plan name:', error);
   }
 };
 
-  const handlePlanSelection = (card: any) => {
+  const handlePlanSelection = async (card: any) => {
     try {
-      const response = fetch(`${apiUrl}/api/set-subscription-details`, {
+      debugger
+      const response = await fetch(`${apiUrl}/api/add-user-subscription-plan`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           email: email,
-          subscriptionPlanName: card.title,
-          allocatedCredentials: card.limit,
-          currentCredentials: card.limit,
+          code: card.code,
+          // subscriptionPlanName: card.title,
+          // allocatedCredentials: card.limit,
+          // currentCredentials: card.limit,
         }),
       });
       
@@ -138,7 +166,7 @@ const getPlanName = async (email:string) => {
 
   // todo-> can merge it in handleplanselection ??
   const makePayment = async (card:any) => {
-     
+     debugger
     console.log(card)
     console.log(typeof card.fee);
     console.log(typeof card.title);
@@ -158,7 +186,7 @@ const getPlanName = async (email:string) => {
     const headers={
       "Content-Type": "application/json",
     }
-    try {
+    // try {
     const response = await fetch(`${apiUrl}/api/create-checkout-session`,{
       method: 'POST',
       headers: headers,
@@ -177,10 +205,10 @@ const getPlanName = async (email:string) => {
       debugger
       handlePlanSelection(card);    
     }
-  } catch (error) {
-    console.error('Error during payment:', error);
-    return;
-}
+//   } catch (error) {
+//     console.error('Error during payment:', error);
+//     return;
+// }
   }
 
   const formatDate = (date: Date): string => {
@@ -299,7 +327,7 @@ const getPlanName = async (email:string) => {
     setCalculatedValue(planDuration * totalCredits*5);
   }
 
-  const handleEnterprisePlan = ()=>{
+  const handleEnterprisePlan = async ()=>{
     const card = {
       title: 'Enterprise',
       fee: calculatedValue,
@@ -307,7 +335,26 @@ const getPlanName = async (email:string) => {
       duration: planDuration,
       rate: 5,
     }
-    makePayment(card);
+    // makePayment(card);
+    try {
+      debugger
+      const response = await fetch(`${apiUrl}/api/add-enterprise-subscription-plan`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          subscriptionPlanName: card.title,
+          subscriptionDuration: planDuration,
+          allocatedCredentials: totalCredits,
+        }),
+      });
+      
+    } catch (error) {
+      console.error('Error selecting plan:', error);
+    }
+
     // handlePlanSelection(card);
   }
 
@@ -553,7 +600,7 @@ const getPlanName = async (email:string) => {
               <div className="last-box">
                   <div>
                     <h3>Plan not upgraded?</h3>
-                    <p>Send us payment details ans we will upgrade your plan.</p>
+                    <p>Send us payment details and we will upgrade your plan.</p>
                   </div>
                   <div>
                       <Form className="d-flex flex-column">
