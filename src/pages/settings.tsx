@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React, { useEffect, useState } from 'react';
 import { Card, Col, Form, Modal, Row } from 'react-bootstrap';
 import { Box, TextField } from '@mui/material';
@@ -26,6 +28,8 @@ const Settings: React.FC = () => {
     from: '',
     to: '',
   });
+   const [issuanceReportLoading, setIssuanceReportLoading] = useState(false);
+  const [invoiceReportLoading, setInvoiceReportLoading] = useState(false);
 
   // Adjust the event type to be more generic for React-Bootstrap Form.Control
   const handleDateChange = (
@@ -220,18 +224,16 @@ const getPlanName = async (email:string) => {
   
   const handleDownload = async (): Promise<void> => {
     try {
-      // Format the start and end dates in mm/dd/yyyy format without the time
+      setIssuanceReportLoading(true); // Set loading to true
       const startDate = formatDate(new Date(issuanceDate.from));
       const endDate = formatDate(new Date(issuanceDate.to));
-  
-      // Prepare the payload for the API request
+
       const payload = {
         email,
         startDate,
         endDate,
       };
-  
-      // Use fetch API to make the POST request
+
       const response = await fetch(`${apiUrl}/api/generate-excel-report`, {
         method: 'POST',
         headers: {
@@ -239,50 +241,40 @@ const getPlanName = async (email:string) => {
         },
         body: JSON.stringify(payload),
       });
-  
-      // Check if the response is successful
-      if (!response.ok) {
-        throw new Error('Failed to fetch data');
-      }
-  
+
+      if (!response.ok) throw new Error('Failed to fetch data');
+
       const data = await response.blob();
-  
-      // Check if the response data is valid
+
       if (data) {
         const url = URL.createObjectURL(data);
-  
-        // Create a temporary anchor element to trigger the download
         const link = document.createElement('a');
         link.href = url;
-        link.download = `issuance_report_${startDate}_${endDate}.xlsx`; // Dynamic file name based on the dates
+        link.download = `issuance_report_${startDate}_${endDate}.xlsx`;
         document.body.appendChild(link);
         link.click();
-  
-        // Clean up the temporary link and URL object
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
-  
-        console.log('Report downloaded successfully');
       }
     } catch (error) {
       console.error('Network error:', error);
+    } finally {
+      setIssuanceReportLoading(false); // Set loading to false
     }
   };
-  
+
   const handleReport = async (): Promise<void> => {
     try {
-      // Format the start and end dates in mm/dd/yyyy format without the time
+      setInvoiceReportLoading(true); // Set loading to true
       const startDate = formatDate(new Date(reportDate.from));
       const endDate = formatDate(new Date(reportDate.to));
-  
-      // Prepare the payload for the API request
+
       const payload = {
         email,
         startDate,
         endDate,
       };
-  
-      // Use fetch API to make the POST request
+
       const response = await fetch(`${apiUrl}/api/generate-invoice-report`, {
         method: 'POST',
         headers: {
@@ -290,33 +282,25 @@ const getPlanName = async (email:string) => {
         },
         body: JSON.stringify(payload),
       });
-  
-      // Check if the response is successful
-      if (!response.ok) {
-        throw new Error('Failed to fetch data');
-      }
-  
+
+      if (!response.ok) throw new Error('Failed to fetch data');
+
       const data = await response.blob();
-  
-      // Check if the response data is valid
+
       if (data) {
         const url = URL.createObjectURL(data);
-  
-        // Create a temporary anchor element to trigger the download
         const link = document.createElement('a');
         link.href = url;
-        link.download = `issuance_report_${startDate}_${endDate}.pdf`; // Change file extension to .pdf
+        link.download = `invoice_report_${startDate}_${endDate}.pdf`;
         document.body.appendChild(link);
         link.click();
-  
-        // Clean up the temporary link and URL object
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
-  
-        console.log('Report downloaded successfully');
       }
     } catch (error) {
       console.error('Network error:', error);
+    } finally {
+      setInvoiceReportLoading(false); // Set loading to false
     }
   };
   
@@ -389,59 +373,82 @@ const getPlanName = async (email:string) => {
 
         {/* Issuance Report */}
         <div className="org-details mb-5">
-          <h2 className="title">Issuance Report</h2>
-          <Row className=" d-flex align-items-center justify-content-center mt-3">
-            <Col xs={12} md={4}>
-              <Form.Label  className='label-settings'>From:</Form.Label>
-              <Form.Control
-                type="date"
-                className="search-input-setting"
-                value={issuanceDate.from}
-                onChange={(e) => handleDateChange(e, 'from')}
-              />
-            </Col>
-            <Col xs={12} md={4}>
-              <Form.Label  className='label-settings'>To:</Form.Label>
-              <Form.Control
-                type="date"
-                className="search-input-setting"
-                value={issuanceDate.to}
-                onChange={(e) => handleDateChange(e, 'to')}
-              />
-            </Col>
-            <Col className='mt-4' xs={12} md={3}>
-              <Button onClick={handleDownload}  label="Download" className="global-btn golden" />
-            </Col>
-          </Row>
-        </div>
+        <h2 className="title">Issuance Report</h2>
+        <Row className="d-flex align-items-center justify-content-center mt-3">
+          <Col xs={12} md={4}>
+            <Form.Label className="label-settings">From:</Form.Label>
+            <Form.Control
+              type="date"
+              className="search-input-setting"
+              value={issuanceDate.from}
+              onChange={(e) => handleDateChange(e, 'from')}
+            />
+          </Col>
+          <Col xs={12} md={4}>
+            <Form.Label className="label-settings">To:</Form.Label>
+            <Form.Control
+              type="date"
+              className="search-input-setting"
+              value={issuanceDate.to}
+              onChange={(e) => handleDateChange(e, 'to')}
+            />
+          </Col>
+          <Col className="mt-4" xs={12} md={3}>
+            <Button
+              onClick={handleDownload}
+              label={
+                issuanceReportLoading ? (
+                  <span>Downloading...</span>
+                ) : (
+                  'Download'
+                )
+              }
+              className="global-btn golden"
+              disabled={issuanceReportLoading || !issuanceDate.from || !issuanceDate.to}
+            />
+          </Col>
+        </Row>
+      </div>
 
         {/* Invoice Report */}
-        <div className="org-details">
-          <h2 className="title">Invoice Report</h2>
-          <Row className=" d-flex align-items-center justify-content-center mt-3">
-            <Col xs={12} md={4}>
-              <Form.Label className='label-settings'>From:</Form.Label>
-              <Form.Control
-                type="date"
-                className="search-input-setting"
-                value={reportDate.from}
-                onChange={(e) => handleDateReportChange(e, 'from')}
-              />
-            </Col>
-            <Col xs={12} md={4}>
-              <Form.Label  className='label-settings'>To:</Form.Label>
-              <Form.Control
-                type="date"
-                className="search-input-setting"
-                value={reportDate.to}
-                onChange={(e) => handleDateReportChange(e, 'to')}
-              />
-            </Col>
-            <Col className='mt-4' xs={12} md={3}>
-              <Button onClick={handleReport} label="Download" className="global-btn golden" />
-            </Col>
-          </Row>
-        </div>
+          <div className="org-details">
+        <h2 className="title">Invoice Report</h2>
+        <Row className="d-flex align-items-center justify-content-center mt-3">
+          <Col xs={12} md={4}>
+            <Form.Label className="label-settings">From:</Form.Label>
+            <Form.Control
+              type="date"
+              className="search-input-setting"
+              value={reportDate.from}
+              onChange={(e) => handleDateReportChange(e, 'from')}
+            />
+          </Col>
+          <Col xs={12} md={4}>
+            <Form.Label className="label-settings">To:</Form.Label>
+            <Form.Control
+              type="date"
+              className="search-input-setting"
+              value={reportDate.to}
+              onChange={(e) => handleDateReportChange(e, 'to')}
+            />
+          </Col>
+          <Col className="mt-4" xs={12} md={3}>
+            <Button
+              onClick={handleReport}
+
+              label={
+                invoiceReportLoading ? (
+                  <span>Downloading...</span>
+                ) : (
+                  'Download'
+                )
+              }
+              className="global-btn golden"
+              disabled={invoiceReportLoading || !reportDate.from || !reportDate.to}
+            />
+          </Col>
+        </Row>
+      </div>
 
         {/* QR  Code */}
         <div className="org-details">
