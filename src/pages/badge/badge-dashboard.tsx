@@ -7,6 +7,7 @@ interface Badge {
   _id: number;
   name: string;
   color: string;
+  title:string
 }
 
 const BadgeDashboard: React.FC = () => {
@@ -100,7 +101,7 @@ const BadgeDashboard: React.FC = () => {
                 textAlign: "center",
               }}
             >
-              {badge.name || "Badge"}
+              {badge.title || "Badge"}
             </span>
           </div>
         ))}

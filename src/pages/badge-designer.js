@@ -30,7 +30,7 @@ import {
   onAddShape,
 } from "../components/badge-designer/utils/shapeUtils";
 import BackgroundsPanel from "../components/badge-designer/panel/BackgroundsPanel";
-import * as fabric from "fabric";
+import { fabric } from 'fabric';
 import ImagesPanel from "../components/badge-designer/panel/ImagesPanel";
 
 import {  Tooltip } from "../components/badge-designer/utils/shapeActions";
@@ -66,44 +66,6 @@ const BadgeDesigner = () => {
   const [userEmail, setUserEmail] = useState(null);
   const [fileUrl, setFileUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
-  const { id } = router.query;
-
-  const fetchBadgeDetails = async () => {
-    try {
-      if (id) {
-        setIsLoading(true);
-
-        certificate.getBadgeTemplateDetails(id, (response) => {
-          if (response.status === 'SUCCESS') {
-            const { title, subTitle, description, attributes } = response?.data?.data;
-            setFormData({
-              title: title || '',
-              subtitle: subTitle || '',
-              description: description || '',
-            });
-
-            setAttributes(attributes|| []);
-          } else {
-            console.error('Failed to fetch badge details:', response.error || 'Unknown error');
-            setFormData({ title: '', subtitle: '', description: '' });
-            setAttributes([]);
-          }
-
-          setIsLoading(false);
-        });
-      }
-    } catch (error) {
-      console.error('Unexpected error fetching badge details:', error);
-      setFormData({ title: '', subtitle: '', description: '' });
-      setAttributes([]);
-      setIsLoading(false);
-    }
-  };
-  
-  useEffect(() => {
-    fetchBadgeDetails();
-  }, [id]);
 
    // Use effect to fetch and load the user's email from localStorage
    useEffect(() => {
@@ -257,7 +219,7 @@ const BadgeDesigner = () => {
 
   useEffect(() => {
     if (canvasRef.current) {
-      const fabricCanvas = new Canvas(canvasRef.current, {
+      const fabricCanvas = new fabric.Canvas(canvasRef.current, {
         width: 450,
         height: 400,
       });
@@ -410,38 +372,42 @@ const BadgeDesigner = () => {
   };
 
   const renderTemplateOnCanvas = (template) => {
-
     // Clear the canvas before rendering the new template
-    console.log("template is", template)
+    console.log("template is", template);
     canvas.clear();
-    setTargetId(template._id)
+    setTargetId(template._id);
 
     // Add background image to canvas
     const backgroundImage = template.designFields.backgroundImage;
-    
+
     if (backgroundImage && backgroundImage.src) {
-    setBackgroundImage(backgroundImage.src , canvas)
+      setBackgroundImage(backgroundImage.src, canvas);
     }
 
     // Add objects (images, text, etc.) from the designFields
-    template.designFields.objects.forEach(async(obj) => {
+    template.designFields.objects.forEach(async (obj) => {
       if (obj.type === "image" || obj.type === "Image") {
-        const img = await fabric.FabricImage.fromURL(obj.src,{
-          crossOrigin: "anonymous",
-        });
-        
-          img.set({
-            left: obj.left,
-            top: obj.top,
-            width: obj.width,
-            height: obj.height,
-            scaleX: obj.scaleX || 1,
-            scaleY: obj.scaleY || 1,
-            opacity: obj.opacity,
-          });
-          canvas.add(img);
-   
-      } else if (obj.type === "textbox" ||obj.type === "Textbox") {
+        fabric.Image.fromURL(
+          obj.src,
+          function (img) {
+            img.set({
+              left: obj.left,
+              top: obj.top,
+              width: obj.width,
+              height: obj.height,
+              scaleX: obj.scaleX || 1,
+              scaleY: obj.scaleY || 1,
+              opacity: obj.opacity,
+            });
+
+            canvas.add(img);
+          },
+
+          {
+            crossOrigin: "anonymous",
+          }
+        );
+      } else if (obj.type === "textbox" || obj.type === "Textbox") {
         const text = new fabric.Textbox(obj.text, {
           left: obj.left,
           top: obj.top,
@@ -451,7 +417,7 @@ const BadgeDesigner = () => {
           width: obj.width,
         });
         canvas.add(text);
-      } else if (obj.type === "Rect" || obj.type ==="rect") {
+      } else if (obj.type === "Rect" || obj.type === "rect") {
         const rect = new fabric.Rect({
           left: obj.left,
           top: obj.top,
@@ -462,7 +428,7 @@ const BadgeDesigner = () => {
           strokeWidth: obj.strokeWidth,
         });
         canvas.add(rect);
-      }else if (obj.type === "Polygon" ||obj.type === "polygon") {
+      } else if (obj.type === "Polygon" || obj.type === "polygon") {
         // Check if points are available for the polygon
         if (obj.points && Array.isArray(obj.points)) {
           const polygon = new fabric.Polygon(obj.points, {
@@ -475,7 +441,7 @@ const BadgeDesigner = () => {
           });
           canvas.add(polygon);
         }
-      } else if (obj.type === "Circle" ||obj.type === "circle") {
+      } else if (obj.type === "Circle" || obj.type === "circle") {
         const circle = new fabric.Circle({
           left: obj.left,
           top: obj.top,
@@ -488,12 +454,12 @@ const BadgeDesigner = () => {
         canvas.add(circle);
       }
     });
-  }
+  };
 
  
   // Icon data array
   const icons = [
-    { icon: LuLayoutTemplate, label: "Templates" },
+    { icon: LuLayoutTemplate, label: "Templates", panel: <TemplatePanel onTemplateSelect={renderTemplateOnCanvas}/> },
     {
       icon: FaShapes,
       label: "Bases",
@@ -513,6 +479,7 @@ const BadgeDesigner = () => {
         canvas={canvas}
         onAddShape={(shape) => {
           onAddShape(shape, canvas);
+           
         }}
       />
       

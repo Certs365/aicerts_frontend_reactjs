@@ -66,7 +66,8 @@ const BadgeForm = () => {
     setAttributes((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault()
     try {
       if (id) {
         setIsLoading(true);
@@ -75,7 +76,7 @@ const BadgeForm = () => {
         certificate.updateBadgeTemplate({ ...formData,id, attributes }, (response) => {
           if (response.status === 'SUCCESS') {
             console.log('Badge updated successfully');
-            router.push('/badge-designer'); // Navigate on success
+            router.push(`/badge-designer?id=${id}`); // Navigate on success
           } else {
             console.error('Failed to update badge:', response.error || 'Unknown error');
           }
@@ -89,7 +90,7 @@ const BadgeForm = () => {
         certificate.addBadgeTemplate({ ...formData, attributes }, (response) => {
           if (response.status === 'SUCCESS') {
             console.log('Badge created successfully');
-            router.push('/badge-designer'); // Navigate on success
+            router.push(`/badge-designer?id=${response?.data?.data._id}`); // Navigate on success
           } else {
             console.error('Failed to create badge:', response.error || 'Unknown error');
           }
@@ -200,7 +201,7 @@ const BadgeForm = () => {
         </button>
 
         {/* Submit Button */}
-        <Button onClick={handleSubmit} className="golden" label={id ? 'Update' : 'Submit'} />
+        <Button onClick={(e)=>{handleSubmit(e)}} className="golden" label={id ? 'Update' : 'Submit'} />
       </form>
     </div>
   );

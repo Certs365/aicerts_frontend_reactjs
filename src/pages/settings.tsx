@@ -173,12 +173,12 @@ const getPlanName = async (email:string) => {
     console.log(session);
     const result: any =  stripe?.redirectToCheckout({ sessionId: session.id });   //todo-> type any is given
     console.log(result)
-    debugger
+     
     if (result?.error) {
       console.error('Error redirecting to Checkout:', result.error);
     }
     if(!window.location.href.includes('canceled=true')) {
-      debugger
+       
       handlePlanSelection(card);    
     }
   } catch (error) {

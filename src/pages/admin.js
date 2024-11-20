@@ -91,7 +91,7 @@ const Admin = () => {
       //   }),
       // });
       issuance.appIssuersLog(payload, async (response)=>{
-        debugger
+         
         if (response.status != 'SUCCESS') {
           console.error('Failed to fetch data');
           // throw new Error('Failed to fetch data');
@@ -107,7 +107,7 @@ const Admin = () => {
         console.log("issuance.appIssuerslog-->", response.data.length)
 
         if(response.data == null || (response.data != null && response.data.data?.length == 0)) {
-          debugger
+           
             setshowModal(true);
           }
         })
