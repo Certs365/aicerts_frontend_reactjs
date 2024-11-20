@@ -156,20 +156,20 @@ const Navigation = () => {
 
   const getPlanName = async (email: string) => {
     try {
-      const response = await fetch(`${apiUrl}/api/get-subscription-details`, {
+      const response = await fetch(`${apiUrl}/api/fetch-user-subscription-details`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email }),
       });
-
+      console.log(response);
       if (!response.ok) {
         console.error('Failed to fetch plan name');
         // throw new Error('Failed to fetch plan name');
       }
       const data = await response.json();
-      setPlanName(data.details.subscriptionPlanName);
+      setPlanName(data.details.subscriptionPlanTitle);
       setcreditRemaining(data.details.currentCredentials);
     } catch (error) {
       console.error('Error fetching plan name:', error);
