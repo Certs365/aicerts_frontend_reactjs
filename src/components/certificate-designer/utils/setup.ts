@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { fabric } from "fabric";
 
 function generateLightColorRgb() {
@@ -29,11 +31,11 @@ export const setup = (
       Landscape: { width: 792 * 1.1, height: 612 * 1.1 } // Increased by 10%
     }
   };
-  
+
 
   // Ensure that the paperSize and orientation are valid, else default to "A4" and "Portrait"
   const { width, height } = paperSizes[paperSize][orientation];
-  console.log("trigger", width , height)
+  console.log("trigger", width, height)
 
 
 
@@ -42,9 +44,9 @@ export const setup = (
     height,
     backgroundColor: "white"
   });
-  
 
- 
+
+
 
   function setupObjects() {
     const outer = new fabric.Rect({
@@ -128,7 +130,7 @@ export const setup = (
     fabricCanvas.calcOffset();
   });
 
-//   setupObjects();
+  //   setupObjects();
 
   return fabricCanvas;
 };
