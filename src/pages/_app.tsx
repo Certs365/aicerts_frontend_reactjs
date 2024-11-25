@@ -96,7 +96,7 @@ const ComponentWrapper = ({ Component, pageProps }: any) => {
       {!isLoginPage && <Navigation />}
        {/* Bot icon at the bottom right */}
        <div className="bot-icon" onClick={toggleBot}>
-        <img src="/icons/robot.png" alt="Chatbot" />
+        <img src={isBotOpen?"/BotCross.png":"/BotIcon.png"} alt="Chatbot"  />
       </div>
 
       {/* Responsive iframe container */}

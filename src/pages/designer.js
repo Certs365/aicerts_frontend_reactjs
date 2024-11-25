@@ -45,6 +45,8 @@ import { AlignGuidelines } from "fabric-guideline-plugin";
 import { setup } from "../components/certificate-designer/utils/setup";
 import { useCanvasStore } from "../components/certificate-designer/utils/canvasStore";
 import ElementPanel from "../components/certificate-designer/panel/ElementPanel";
+import { useRouter } from "next/router";
+import UnsavedChangesPopup from "../components/certificate-designer/UnsavedChangesPopup";
 
 const Designer = () => {
   const canvasRef = useRef(true);
@@ -73,6 +75,10 @@ const Designer = () => {
   const [fileUrl, setFileUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [guideline, setGuideline] = useState(null);
+  const [showPopup, setShowPopup] = useState(false); // Control popup visibility
+  const [pendingRoute, setPendingRoute] = useState(null); // Store pending navigation route
+  const router = useRouter();
+  const [currentRoute, setCurrentRoute] = useState(null); // Store the current route
 
   // Use effect to fetch and load the user's email from localStorage
   useEffect(() => {
@@ -134,6 +140,7 @@ const Designer = () => {
           // Otherwise, create a new template
           await createTemplate(uploadedFileUrl, templateData);
         }
+       
         return uploadedFileUrl;
       } else {
         alert("Failed to upload template.");
@@ -146,6 +153,102 @@ const Designer = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!canvas) return;
+
+    const saveCanvasState = () => {
+      const canvasState = JSON.stringify(canvas.toJSON());
+      localStorage.setItem("fabricCanvasState", canvasState);
+    };
+
+    // Listen to object addition/modification/removal
+    canvas.on("object:modified", saveCanvasState);
+    canvas.on("object:added", saveCanvasState);
+    canvas.on("object:removed", saveCanvasState);
+
+    return () => {
+      canvas.off("object:modified", saveCanvasState);
+      canvas.off("object:added", saveCanvasState);
+      canvas.off("object:removed", saveCanvasState);
+    };
+  }, [canvas]);
+
+  useEffect(() => {
+    setCurrentRoute(router.asPath); // Set the initial route when the component mounts
+    const handleRouteChangeStart = (url) => {
+      if (!canvas || canvas.isEmpty()) {
+        return; // Allow navigation
+      }
+    
+      setShowPopup(true); // Show the confirmation popup
+      setPendingRoute(url); // Store the route user wants to navigate to
+      return false; // Prevent the route change temporarily
+    };
+    
+    
+
+    // Listen to route change start to show the popup
+    router.events.on("routeChangeStart", handleRouteChangeStart);
+
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChangeStart);
+    };
+  }, [router,canvas, currentRoute]);
+
+  useEffect(() => {
+
+    // Use beforePopState to capture navigation (back/forward)
+    router.beforePopState(({ url }) => {
+      if (!canvas || canvas.isEmpty()) {
+        return true; // Allow navigation
+      }
+    
+      setShowPopup(true);
+      setPendingRoute(url);
+      return false; // Prevent the default behavior
+    });
+    
+
+    return () => {
+      router.beforePopState(() => true); // Reset to default behavior
+    };
+  }, [router,canvas, currentRoute]);
+
+  const handleDiscardChanges = () => {
+    localStorage.removeItem("fabricCanvasState"); // Clear saved canvas state
+    // setIsSaved(true);
+    setShowPopup(false);
+  
+    if (pendingRoute) {
+      router.push(pendingRoute); // Navigate to the pending route
+      setPendingRoute(null); // Clear the pending route
+    }
+  };
+  
+
+  const handlePopupClose = () => {
+    setShowPopup(false);
+    setPendingRoute(null); // Reset pending navigation if the user cancels
+  };
+
+  const handleSavedChanges = async () => {
+    try {
+      console.log("Saving changes...");
+      const url = await handleTemplateSave();
+  
+      localStorage.removeItem("fabricCanvasState");
+      setShowPopup(false);
+  
+      if (pendingRoute) {
+        router.push(pendingRoute); // Navigate to the pending route
+        setPendingRoute(null);
+      }
+    } catch (error) {
+      console.error("Failed to save changes:", error);
+    }
+  };
+  
 
   // Function to update an existing certificate template
   const updateTemplate = async (id, fileUrl, templateData) => {
@@ -247,8 +350,16 @@ const Designer = () => {
       });
       fabricCanvas.backgroundColor = "#fff";
 
-      fabricCanvas.renderAll();
+      // fabricCanvas.renderAll();
       setCanvas(fabricCanvas);
+
+      // Load saved state from localStorage
+      const savedCanvasState = localStorage.getItem("fabricCanvasState");
+      if (savedCanvasState) {
+        fabricCanvas.loadFromJSON(savedCanvasState, () => {
+          fabricCanvas.renderAll(); // Ensure canvas is rendered after loading
+        });
+      }
       const guidelineInstance = new AlignGuidelines({
         canvas: fabricCanvas,
         // pickObjTypes: [{ key: "myType", value: "box" }],
@@ -334,7 +445,6 @@ const Designer = () => {
 
   useEffect(() => {
     if (canvas) {
-      console.log("rendi");
       const { width, height } = paperSizes[paperSize][orientation];
       canvas.setWidth(width);
       canvas.setHeight(height);
@@ -685,7 +795,7 @@ const Designer = () => {
             {activePanel}
           </div>
         </div>
-        <div className="w-75 d-flex gap-3 align-items-center flex-column overflow-y-auto mt-4" >
+        <div className="w-75 d-flex gap-3 align-items-center flex-column overflow-y-auto mt-4">
           <div
             className="  px-3 d-flex align-items-center"
             style={{ height: "10%", width: "85%" }}
@@ -796,8 +906,8 @@ const Designer = () => {
               width: "93%",
               justifyContent: "center",
               alignItems: "center",
-              boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px, #CFA935 0px 0px 0px 3px",
-              
+              boxShadow:
+                "rgba(0, 0, 0, 0.16) 0px 1px 4px, #CFA935 0px 0px 0px 3px",
             }}
           >
             <canvas
@@ -813,6 +923,12 @@ const Designer = () => {
         </div>
       </div>
       <Tooltip activeObject={activeObject} fabricCanvas={canvas} />
+      <UnsavedChangesPopup
+        show={showPopup}
+        handleSave={handleSavedChanges}
+        // handleDiscard={handleDiscardChanges}
+        handleClose={handleDiscardChanges}
+      />
     </div>
   );
 };
