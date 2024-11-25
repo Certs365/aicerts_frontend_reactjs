@@ -111,7 +111,7 @@ const BadgeForm = () => {
   }, [id]);
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 mb-4">
       <h2 className="text-center mb-4">Badge Details</h2>
       <form className="p-4 border rounded shadow-sm" style={{ maxWidth: '600px', margin: '0 auto' }}>
         {/* Title */}
@@ -168,7 +168,9 @@ const BadgeForm = () => {
           Add Field
         </button>
         {/* Attributes */}
-        <h5 className="mt-4">Custom Fields</h5>
+        {attributes && attributes?.length > 0 &&
+          <h5 className="my-4">Custom Fields</h5>
+        }
         {attributes.map((attr, index) => (
           <div key={index} className="mb-3">
             <div className="d-flex gap-3">
@@ -201,7 +203,10 @@ const BadgeForm = () => {
         ))}
 
         {/* Submit Button */}
-        <Button onClick={(e) => { handleSubmit(e) }} className="golden" label={id ? 'Update' : 'Submit'} />
+        <div className='d-flex justify-content-center mt-4'>
+
+          <Button onClick={(e) => { handleSubmit(e) }} className="golden" label={id ? 'Update' : 'Submit'} />
+        </div>
       </form>
     </div>
   );

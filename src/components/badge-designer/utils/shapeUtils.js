@@ -1,13 +1,5 @@
 import { fabric } from "fabric";
 
-// Tooltip component
-export const Tooltip = ({ activeObject, fabricCanvas }) => {
-  const [tooltipStyle, setTooltipStyle] = useState({
-    display: "none",
-    left: "0px",
-    top: "0px",
-  });
-  const [isLocked, setIsLocked] = useState(false); // Track lock state
 
 export const onAddShape = (shape, canvas) => {
   console.log(shape)
@@ -115,99 +107,83 @@ export const onAddShape = (shape, canvas) => {
 };
 
 
-  // Lock shape functionality
-  const lockShape = () => {
-    activeObject.lockMovementX = true;
-    activeObject.lockMovementY = true;
-    activeObject.lockScalingX = true;
-    activeObject.lockScalingY = true;
-    activeObject.lockRotation = true;
-    setIsLocked(true); // Set lock state to true
-    // alert("Shape locked!");
-  };
 
-  // Unlock shape functionality
-  const unlockShape = () => {
-    activeObject.lockMovementX = false;
-    activeObject.lockMovementY = false;
-    activeObject.lockScalingX = false;
-    activeObject.lockScalingY = false;
-    activeObject.lockRotation = false;
-    setIsLocked(false); // Set lock state to false
-    // alert("Shape unlocked!");
-  };
+export const handleShapeBgColorChange = (canvas, setShapeStyles, updateActiveObjectStyles) => (e) => {
+    const activeObject = canvas?.getActiveObject();
+    if (activeObject && ["rect", "circle", "polygon"].includes(activeObject.type)) {
+        const newColor = e.target.value; // Get new color from event
+        activeObject.set({ fill: newColor });
+        setShapeStyles((prevStyles) => ({
+            ...prevStyles,
+            bgColor: newColor,
+        }));
+        if (updateActiveObjectStyles) updateActiveObjectStyles(activeObject);
+        canvas.renderAll();
+    }
+};
 
-  // Delete shape functionality
-  const deleteShape = () => {
-    fabricCanvas.remove(activeObject);
-    setTooltipStyle({ ...tooltipStyle, display: "none" }); // Hide tooltip after deletion
-  };
+export const handleShapeBorderColorChange = (canvas, setShapeStyles, updateActiveObjectStyles) => (e) => {
+    const activeObject = canvas?.getActiveObject();
+    if (activeObject && ["rect", "circle", "polygon"].includes(activeObject.type)) {
+        const newColor = e.target.value; // Get new color from event
+        activeObject.set({ stroke: newColor });
+        setShapeStyles((prevStyles) => ({
+            ...prevStyles,
+            borderColor: newColor,
+        }));
+        if (updateActiveObjectStyles) updateActiveObjectStyles(activeObject);
+        canvas.renderAll();
+    }
+};
 
-  // Duplicate shape functionality
-  const duplicateShape = () => {
+export const handleShapeBorderRadiusChange = (canvas, setShapeStyles, updateActiveObjectStyles) => (value) => {
+    const activeObject = canvas?.getActiveObject();
+    
+    if (activeObject) {
+        if (activeObject.type === "rect") {
+            // Set rounded corners for rectangles
+            activeObject.set({ rx: value, ry: value });
+        } else if (activeObject.type === "circle") {
+            // Scaling the circle may give a "rounded" appearance, but won't use `borderRadius`
+            activeObject.set({ scaleX: 1 + value / 100, scaleY: 1 + value / 100 });
+        } else {
+            console.warn("Border radius is not supported for this shape type.");
+        }
 
-    var object = fabric.util.object.clone(activeObject);
-    object.set("top", object.top+20);
-    object.set("left", object.left+20);
-     fabricCanvas.add(object);
+        // Update the shape styles
+        setShapeStyles((prevStyles) => ({
+            ...prevStyles,
+            borderRadius: value,
+        }));
 
-
-
-  
-    setTooltipStyle({ ...tooltipStyle, display: "none" }); // Hide tooltip after duplication
-  };
-
-  // Send object forward
-  const bringObjectForward = () => {
-    fabricCanvas.bringToFront(activeObject); 
-    fabricCanvas.discardActiveObject();
-    fabricCanvas.requestRenderAll();
-    setTooltipStyle({ ...tooltipStyle, display: "none" }); // Hide tooltip after action
-  };
-
-  // Send object backward
-  const sendObjectBackward = () => {
-    fabricCanvas.sendToBack(activeObject);
-    fabricCanvas.discardActiveObject();
-    fabricCanvas.requestRenderAll();
-    setTooltipStyle({ ...tooltipStyle, display: "none" }); // Hide tooltip after action
-  };
-
-  // Run the tooltip positioning when the active object changes
-  useEffect(() => {
-    updateTooltipPosition();
-  }, [activeObject]);
-
-  
+        if (updateActiveObjectStyles) updateActiveObjectStyles(activeObject);
+        canvas.renderAll();
+    }
+};
 
 
-  if (!activeObject) return null; // Don't render tooltip if there's no active object
+export const handleShapeBorderWeightChange = (canvas, setShapeStyles, updateActiveObjectStyles) => (value) => {
+    const activeObject = canvas?.getActiveObject();
+    if (activeObject && ["rect", "circle", "polygon"].includes(activeObject.type)) {
+        activeObject.set({ strokeWidth: parseInt(value) });
+        setShapeStyles((prevStyles) => ({
+            ...prevStyles,
+            borderWeight: value,
+        }));
+        if (updateActiveObjectStyles) updateActiveObjectStyles(activeObject);
+        canvas.renderAll();
+    }
+};
 
-  return (
-    <div
-      id="tooltip"
-      style={{
-        position: "absolute",
-        display: tooltipStyle.display,
-        left: tooltipStyle.left,
-        top: tooltipStyle.top,
-      }}
-    >
-      <button id="lockShape" onClick={isLocked ? unlockShape : lockShape}>
-        {isLocked ? <CiUnlock /> : <CiLock />} {/* Show unlock icon if locked, else lock */}
-      </button>
-      <button id="deleteShape" onClick={deleteShape}>
-        <RiDeleteBinLine />
-      </button>
-      <button id="duplicateShape" onClick={duplicateShape}>
-        <IoDuplicateOutline />
-      </button>
-      <button id="obj-forward" onClick={bringObjectForward}>
-        <BsLayerForward />
-      </button>
-      <button id="obj-backword" onClick={sendObjectBackward}>
-        <BsLayerBackward />
-      </button>
-    </div>
-  );
+export const handleShapeTransparencyChange = (canvas, setShapeStyles, updateActiveObjectStyles) => (value) => {
+    const activeObject = canvas?.getActiveObject();
+    if (activeObject) {
+        activeObject.set({ opacity: value });
+        setShapeStyles((prevStyles) => ({
+            ...prevStyles,
+            transparency: value,
+        }));
+        if (updateActiveObjectStyles) updateActiveObjectStyles(activeObject);
+        canvas.renderAll();
+    }
 };

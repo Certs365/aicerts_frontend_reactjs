@@ -126,7 +126,6 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
             // throw new Error('Network response was not ok');
             console.log('Network response was not ok');
           }
-    
           const data = response.data;
           setSuggestions(data?.details);
           setShowSuggestions(true);
@@ -230,18 +229,13 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
         // });
   
         issuance.filteredIssues( dataToEncrypt, async (response) => {
-          if( response.status != 'SUCCESS'){
+          if( response.status == 'SUCCESS'){
+
           // if (!response.ok) {
             // throw new Error('Network response was not ok');
-            console.log('Network response was not ok');
-          }
-    
-          const responseData = response;
+            const responseData = response;
           const data = responseData?.data?.details;
-          console.log("filteredissue of handlesearch responseData", responseData);
-          console.log("filteredissue of handlesearch response.data", response.data);
-          console.log("filteredissue of handlesearch  data", data);
-  
+        
           if (!data) {
             // throw new Error("No data returned from the server.");
             console.log("No data returned from the server.");
@@ -261,7 +255,14 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
              
           }
           setLoading(false);
+          }else{
+          setError(response?.data?.message || "Please Try After Sometime")
+          setShow(true)
+          }
+    
         })
+          
+  
   
         // if (!response.ok) {
         //   throw new Error('Network response was not ok');

@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { useRouter } from 'next/router';// Assuming React Router is used
+import { useRouter } from 'next/router'; // Assuming React Router is used
 import certificate from "@/services/certificateServices";
+import styles from './BadgeDashboard.module.scss'; // Import SCSS file
+import Button from "../../../shared/button/button";
 
 // Define the type for the badge object
 interface Badge {
   _id: number;
   name: string;
   color: string;
-  title:string
+  title: string;
 }
 
 const BadgeDashboard: React.FC = () => {
   const [badges, setBadges] = useState<Badge[]>([]); // State to store badge data
   const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null); // State to store selected badge
   const router = useRouter();
+
   // Function to fetch badges
   const getAllBadges = async () => {
     try {
@@ -48,63 +51,35 @@ const BadgeDashboard: React.FC = () => {
 
   // Handle badge click
   const handleBadgeClick = (badge: Badge) => {
-    
     setSelectedBadge(badge);
-    router.push(`/badge/badge-form?id=${badge._id}`)  };
+    router.push(`/badge/badge-form?id=${badge._id}`);
+  };
+  const handleNewBadge = () => {
+    router.push(`/badge/badge-form`);
+  };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexWrap: "wrap",
-        gap: "20px",
-        minHeight: "100vh", // Center vertically
-        backgroundColor: "#f9f9f9", // Add a light background
-      }}
-    >
-      {badges?.length > 0 &&
-        badges.map((badge) => (
-          <div
-            key={badge.id}
-            onClick={() => handleBadgeClick(badge)}
-            style={{
-              width: "300px", // Increased size
-              height: "300px", // Increased size
-              backgroundColor: badge.color || "gray", // Example property for color
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              border: "2px solid #ddd", // Thicker border for better visibility
-              borderRadius: "10px", // Rounded corners
-              cursor: "pointer", // Pointer cursor for clickability
-              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // Subtle shadow
-              transition: "transform 0.2s, box-shadow 0.2s", // Add animation
-            }}
-            onMouseEnter={(e) => {
-              (e.target as HTMLDivElement).style.transform = "scale(1.05)";
-              (e.target as HTMLDivElement).style.boxShadow =
-                "0 8px 12px rgba(0, 0, 0, 0.2)";
-            }}
-            onMouseLeave={(e) => {
-              (e.target as HTMLDivElement).style.transform = "scale(1)";
-              (e.target as HTMLDivElement).style.boxShadow =
-                "0 4px 6px rgba(0, 0, 0, 0.1)";
-            }}
-          >
-            <span
-              style={{
-                fontSize: "16px", // Larger font size
-                fontWeight: "bold", // Bold font for visibility
-                color: "#fff", // White text color for contrast
-                textAlign: "center",
-              }}
+    <div className="dashboard-badge mt-3">
+      <div className="d-flex flex-row justify-content-between">
+        <h3 className="mx-5 mt-4">Badge Dashboard</h3>
+        <Button onClick={() => { handleNewBadge() }} className='golden me-3' label='Create New Badge' />
+
+      </div>
+      <h4 className="mx-5 mt-4">Select Your Badge Template</h4>
+      <div className="d-flex flex-row m-3">
+        {badges?.length > 0 &&
+          badges.map((badge) => (
+            <div
+              key={badge._id}
+              onClick={() => handleBadgeClick(badge)}
+              className="badge-Card-dashboard ms-4"
             >
-              {badge.title || "Badge"}
-            </span>
-          </div>
-        ))}
+              <span className="badge-title">
+                {badge.title || "Badge"}
+              </span>
+            </div>
+          ))}
+      </div>
     </div>
   );
 };

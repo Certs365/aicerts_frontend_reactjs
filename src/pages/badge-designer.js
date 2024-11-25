@@ -7,6 +7,7 @@ import { TbBackground } from "react-icons/tb";
 import { IoBookmark, IoReturnUpBackOutline } from "react-icons/io5";
 import { FaImages } from "react-icons/fa";
 import { TbIcons } from "react-icons/tb";
+import certificate from '../services/certificateServices';
 import TextPanel from "../components/badge-designer/panel/TextPanel";
 import {
   handleAddTextBox,
@@ -46,10 +47,10 @@ const apiAdminUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const BadgeDesigner = () => {
   const canvasRef = useRef(null);
   const [canvas, setCanvas] = useState(null);
-  const [targetId, setTargetId] = useState(null); // For updating existing template
   const [activePanel, setActivePanel] = useState(null);
   const [isActivePanel, setIsActivePanel]=useState()
   const [activeShape, setActiveShape] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [textStyles, setTextStyles] = useState({
     isBold: false,
     isItalic: false,
@@ -122,14 +123,7 @@ const BadgeDesigner = () => {
           const data = await uploadResponse.json();
           const uploadedFileUrl = data.fileUrl;
           setFileUrl(uploadedFileUrl); // Store file URL
-  
-          if (targetId) {
-            // If template ID exists, update the template
-            await updateTemplate(targetId, uploadedFileUrl, templateData);
-          } else {
-            // Otherwise, create a new template
-            await createTemplate(uploadedFileUrl, templateData);
-          }
+          await updateTemplate(id, uploadedFileUrl, templateData);
           return uploadedFileUrl
         } else {
           alert("Failed to upload template.");
@@ -146,54 +140,17 @@ const BadgeDesigner = () => {
     // Function to update an existing certificate template
   const updateTemplate = async (id, fileUrl, templateData) => {
     try {
-      const response = await fetch(`${apiUserUrl}/api/update-certificate-template`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id,
-          url: fileUrl,
-          designFields: templateData,
-        }),
+      certificate.updateBadgeTemplate({  id,url:fileUrl, designFields:templateData }, (response) => {
+        if (response.status === 'SUCCESS') {
+          console.log('Badge updated successfully');
+        } else {
+          console.error('Failed to update badge:', response.error || 'Unknown error');
+        }
+        setIsLoading(false);
       });
-
-      if (response.ok) {
-        const data = await response.json();
-        // alert("Template updated successfully!");
-      } else {
-        alert("Failed to update template.");
-      }
     } catch (error) {
       console.error("Error updating template:", error);
       alert("An error occurred while updating the template.");
-    }
-  };
-
-  // Function to create a new certificate template
-  const createTemplate = async (fileUrl, templateData) => {
-    try {
-      const response = await fetch(`${apiUserUrl}/api/add-certificate-template`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: userEmail,
-          url: fileUrl,
-          designFields: templateData,
-        }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        // alert("Template added successfully!");
-      } else {
-        alert("Failed to add template.");
-      }
-    } catch (error) {
-      console.error("Error adding template:", error);
-      alert("An error occurred while adding the template.");
     }
   };
 
@@ -204,11 +161,6 @@ const BadgeDesigner = () => {
   
       // Ensure fileUrl has been set before moving to issuance
       if (fileUrl) {
-        sessionStorage.setItem("customTemplate", fileUrl);  // Store the uploaded template URL
-        sessionStorage.setItem("cerf", "true");  // Mark as certificate-ready
-        const tab = sessionStorage.getItem("tab") || 0;
-        
-        // Redirect to the certificate page
         window.location.href = `/badge/badgeDisplay?id=${id}`;
       } else {
         alert("Template upload failed. Please try again.");
@@ -220,6 +172,32 @@ const BadgeDesigner = () => {
   };
 
 
+  const fetchBadgeDetails = async () => {
+    try {
+      if (id) {
+        setIsLoading(true);
+
+        certificate.getBadgeTemplateDetails(id, (response) => {
+          if (response.status === 'SUCCESS') {
+            const  data  = response?.data?.data;
+            renderTemplateOnCanvas(data)
+             
+          } else {
+            console.error('Failed to fetch badge details:', response.error || 'Unknown error');
+          }
+
+          setIsLoading(false);
+        });
+      }
+    } catch (error) {
+      console.error('Unexpected error fetching badge details:', error);
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(()=>{
+    fetchBadgeDetails()
+  },[id])
 
 
   useEffect(() => {
@@ -380,8 +358,6 @@ const BadgeDesigner = () => {
     // Clear the canvas before rendering the new template
     console.log("template is", template);
     canvas.clear();
-    setTargetId(template._id);
-
     // Add background image to canvas
     const backgroundImage = template.designFields.backgroundImage;
 
@@ -464,7 +440,7 @@ const BadgeDesigner = () => {
  
   // Icon data array
   const icons = [
-    { icon: LuLayoutTemplate, label: "Templates", panel: <TemplatePanel onTemplateSelect={renderTemplateOnCanvas}/> },
+    // { icon: LuLayoutTemplate, label: "Templates", panel: <TemplatePanel onTemplateSelect={renderTemplateOnCanvas}/> },
     {
       icon: FaShapes,
       label: "Bases",
@@ -484,21 +460,21 @@ const BadgeDesigner = () => {
         canvas={canvas}
         onAddShape={(shape) => {
           onAddShape(shape, canvas);
-          debugger
+           
         }}
       />
       
       ),
     },
-    {
-      icon: CiStar,
-      label: "Icons",
-      panel: (
-        <TextPanel
-          onAddTextBox={(text, style) => handleAddTextBox(canvas, text, style)}
-        />
-      ),
-    },
+    // {
+    //   icon: CiStar,
+    //   label: "Icons",
+    //   panel: (
+    //     <TextPanel
+    //       onAddTextBox={(text, style) => handleAddTextBox(canvas, text, style)}
+    //     />
+    //   ),
+    // },
     {
       icon: FaImages,
       label: "Images",
@@ -518,16 +494,7 @@ const BadgeDesigner = () => {
           onAddTextBox={(text, style) => handleAddTextBox(canvas, text, style)}
         />
       ),
-    },
-    {
-      icon: IoBookmark,
-      label: "Save",
-      panel: (
-        <TextPanel
-          onAddTextBox={(text, style) => handleAddTextBox(canvas, text, style)}
-        />
-      ),
-    },
+    }
   ];
 
   const SidebarIcon = ({ icon: Icon, label, onClick, isActive }) => {
@@ -577,9 +544,34 @@ const BadgeDesigner = () => {
                 isActive = {isActivePanel === iconData.label}
               />
             ))}
-             <div className="action-buttons">
-       
-      </div>
+              <div className="action-buttons d-flex gap-2 flex-column px-1">
+              <button
+                style={{
+                  background: "none",
+                  border: "2px solid white",
+                  borderRadius: "5px",
+                  fontSize: "13px",
+                  color: "white",
+                  fontWeight: "bold",
+                }}
+                onClick={handleTemplateSave}
+              >
+                Save
+              </button>
+              <button
+                style={{
+                  background: "none",
+                  border: "2px solid white",
+                  borderRadius: "5px",
+                  fontSize: "13px",
+                  color: "white",
+                  fontWeight: "bold",
+                }}
+                onClick={moveToIssuance}
+              >
+                Move to Issuance
+              </button>
+            </div>
           </div>
           <div
             className="w-75 h-100 d-flex flex-column py-4 px-1"

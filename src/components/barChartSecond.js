@@ -275,7 +275,7 @@ function BarChartSecond() {
     }, []);
 
     return (
-        <div  className="container outer-container p-0" style={{height:"300px"}}>
+        <div  className="container outer-container p-0" style={{height:"300px", width:"100%"}}>
             <div className="chart-date">
                 <DatePicker
                     selected={selectedDate}
@@ -340,7 +340,7 @@ function BarChartSecond() {
                 </div>
             </div>
             ) : (
-                    <Bar data={chartData} options={chartOptions} width={"100%"}height={"90%"}/>
+                    <Bar data={chartData} options={chartOptions} height={"90%"}/>
             )}
         </div>
     );

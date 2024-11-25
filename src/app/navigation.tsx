@@ -248,7 +248,12 @@ const Navigation = () => {
       case '/certificate':
         setSelectedTab(2);
         break;
-      case '/design':
+      case ('/design'):
+      case ('/badge/badge-dashboard'):
+      case ('/badge/badge-form'):
+      case ('/badge-designer'):
+      case ('/badge/badgeDisplay'):
+      case ('/designer'):
         setSelectedTab(3);
         break;
       case '/admin':
@@ -304,7 +309,7 @@ const Navigation = () => {
       handleLogout();
     }
   };
-  const routesWithLogoutButton = ['/certificates', '/badge-designer', '/issue-pdf-certificate', '/issue-certificate', '/certificate', '/certificate/[id]', '/certificate/download', '/dashboard', '/user-details', '/admin', '/gallery', '/issue-pdf-qr', '/dynamic-poc', '/settings', '/designer', '/design', '/badge/badge-dashboard'];
+  const routesWithLogoutButton = ['/certificates', '/badge-designer', '/issue-pdf-certificate', '/issue-certificate', '/certificate', '/certificate/[id]', '/certificate/download', '/dashboard', '/user-details', '/admin', '/gallery', '/issue-pdf-qr', '/dynamic-poc', '/settings', '/designer', '/design', '/badge/badge-dashboard', '/badge/badge-form', '/badge/badgeDisplay'];
   const handleConfirm = () => {
     setShowModal(false)
     handleLogout();
