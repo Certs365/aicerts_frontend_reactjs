@@ -9,12 +9,13 @@ import certificate from '@/services/certificateServices';
 const BadgeForm = () => {
   const [formData, setFormData] = useState({
     title: '',
-    subtitle: '',
+    subTitle: '',
     description: '',
   });
   const [attributes, setAttributes] = useState<{ key: string; value: string }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const [userEmail, setUserEmail] = useState(null);
   const { id } = router.query;
 
   const fetchBadgeDetails = async () => {
@@ -27,14 +28,14 @@ const BadgeForm = () => {
             const { title, subTitle, description, attributes } = response?.data?.data;
             setFormData({
               title: title || '',
-              subtitle: subTitle || '',
+              subTitle: subTitle || '',
               description: description || '',
             });
 
             setAttributes(attributes || []);
           } else {
             console.error('Failed to fetch badge details:', response.error || 'Unknown error');
-            setFormData({ title: '', subtitle: '', description: '' });
+            setFormData({ title: '', subTitle: '', description: '' });
             setAttributes([]);
           }
 
@@ -43,12 +44,17 @@ const BadgeForm = () => {
       }
     } catch (error) {
       console.error('Unexpected error fetching badge details:', error);
-      setFormData({ title: '', subtitle: '', description: '' });
+      setFormData({ title: '', subTitle: '', description: '' });
       setAttributes([]);
       setIsLoading(false);
     }
   };
-
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user") ?? "null");
+    if (storedUser && storedUser.JWTToken) {
+      setUserEmail(storedUser.email.toLowerCase());
+    }
+  }, []);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -89,7 +95,7 @@ const BadgeForm = () => {
         setIsLoading(true);
 
         // Using the certificate service for creating
-        certificate.addBadgeTemplate({ ...formData, attributes }, (response) => {
+        certificate.addBadgeTemplate({ ...formData, email: userEmail, attributes }, (response) => {
           if (response.status === 'SUCCESS') {
             console.log('Badge created successfully');
             router.push(`/badge-designer?id=${response?.data?.data._id}`); // Navigate on success
@@ -131,14 +137,14 @@ const BadgeForm = () => {
 
         {/* Subtitle */}
         <div className="mb-3">
-          <label htmlFor="subtitle" className="form-label">Subtitle</label>
+          <label htmlFor="subTitle" className="form-label">Subtitle</label>
           <input
             type="text"
             className="form-control"
-            id="subtitle"
-            name="subtitle"
+            id="subTitle"
+            name="subTitle"
             placeholder="Enter subtitle"
-            value={formData.subtitle}
+            value={formData.subTitle}
             onChange={handleInputChange}
             disabled={isLoading}
           />

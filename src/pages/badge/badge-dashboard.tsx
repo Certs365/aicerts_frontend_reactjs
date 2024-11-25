@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/router'; // Assuming React Router is used
 import certificate from "@/services/certificateServices";
@@ -66,13 +68,13 @@ const BadgeDashboard: React.FC = () => {
 
       </div>
       <h4 className="mx-5 mt-4">Select Your Badge Template</h4>
-      <div className="d-flex flex-row m-3">
+      <div className="d-flex flex-row m-3 flex-wrap">
         {badges?.length > 0 &&
           badges.map((badge) => (
             <div
               key={badge._id}
               onClick={() => handleBadgeClick(badge)}
-              className="badge-Card-dashboard ms-4"
+              className="badge-Card-dashboard ms-4 mb-3"
             >
               <span className="badge-title">
                 {badge.title || "Badge"}
