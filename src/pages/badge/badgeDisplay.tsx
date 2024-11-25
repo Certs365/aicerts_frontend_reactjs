@@ -1,0 +1,239 @@
+// @ts-nocheck
+import React, { useState, useEffect } from "react";
+import { Rnd } from "react-rnd";
+import html2canvas from "html2canvas";
+import axios from "axios";
+import { useRouter } from "next/router";
+
+const apiUserUrl = process.env.NEXT_PUBLIC_BASE_URL_USER;
+
+const CertificateEditor: React.FC = () => {
+    const [placeholders, setPlaceholders] = useState([]);
+    const [badge, setBadge] = useState(null);
+    const [canvasBackground, setCanvasBackground] = useState("#ffffff");
+    const [isLoading, setIsLoading] = useState(true);
+    const router = useRouter();
+    const { id } = router.query;
+
+    useEffect(() => {
+        const fetchDetails = async () => {
+            try {
+                const response = await axios.get(
+                    `${apiUserUrl}/api/get-badge-template/${id}`
+                );
+                const { designFields, url, title, subTitle, description } = response?.data?.data;
+
+                // Combine title, subtitle, and description into placeholders
+                const initialPlaceholders = [
+                    { text: title, posx: 100, posy: 50, width: 300, height: 40, isLocked: false },
+                    { text: subTitle, posx: 100, posy: 100, width: 300, height: 40, isLocked: false },
+                    { text: description, posx: 100, posy: 150, width: 400, height: 60, isLocked: false },
+                    ...designFields.map((field) => ({
+                        text: field.name,
+                        posx: field.x,
+                        posy: field.y,
+                        width: 150,
+                        height: 40,
+                        isLocked: false,
+                        fontSize: field.fontSize,
+                        fontColor: field.fontColor,
+                    })),
+                ];
+
+                setPlaceholders(initialPlaceholders);
+
+                // Set badge data separately
+                setBadge({
+                    url,
+                    posx: 200,
+                    posy: 200,
+                    width: 100,
+                    height: 100,
+                });
+            } catch (error) {
+                console.error("Error fetching details:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        if (id) {
+            fetchDetails();
+        }
+    }, [id]);
+
+    const handleFieldChange = (index, field, value) => {
+        const updatedPlaceholders = [...placeholders];
+        updatedPlaceholders[index] = { ...updatedPlaceholders[index], [field]: value };
+        setPlaceholders(updatedPlaceholders);
+    };
+
+    const handleSaveImage = async () => {
+        const canvas = document.getElementById("working-area");
+
+        if (canvas && badge) {
+            // Create an image element for the badge
+            const badgeImage = new Image();
+            badgeImage.src = "https://images.unsplash.com/photo-1576158113928-4c240eaaf360?q=80&w=2960&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+            badgeImage.style.position = "absolute";
+            badgeImage.style.left = `${badge.posx}px`;
+            badgeImage.style.top = `${badge.posy}px`;
+            badgeImage.style.width = `${badge.width}px`;
+            badgeImage.style.height = `${badge.height}px`;
+
+            // Wait for the badge image to load
+            badgeImage.onload = async () => {
+                // Add the badge image to the working area temporarily for the snapshot
+                canvas.appendChild(badgeImage);
+
+                // Take the snapshot
+                const snapshot = await html2canvas(canvas, {
+                    useCORS: true,
+                    allowTaint: true,
+                    x: 0,
+                    y: 0,
+                    width: canvas.offsetWidth,
+                    height: canvas.offsetHeight,
+                });
+
+                // Remove the badge image after snapshot
+                canvas.removeChild(badgeImage);
+
+                // Download the image
+                const link = document.createElement("a");
+                link.download = "certificate.png";
+                link.href = snapshot.toDataURL();
+                link.click();
+            };
+        }
+    };
+
+
+    return (
+        <div style={{ padding: "20px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <h2>Certificate Editor</h2>
+            <div style={{ marginBottom: "20px" }}>
+                <label htmlFor="background-color">Background Color:</label>
+                <input
+                    type="color"
+                    id="background-color"
+                    value={canvasBackground}
+                    onChange={(e) => setCanvasBackground(e.target.value)}
+                    style={{ marginLeft: "10px" }}
+                />
+            </div>
+
+            {isLoading ? (
+                <p>Loading...</p>
+            ) : (
+                <div
+                    id="working-area"
+                    style={{
+                        position: "relative",
+                        width: "70vw",
+                        height: "70vh",
+                        backgroundColor: canvasBackground,
+                        border: "1px solid #ccc",
+                        overflow: "hidden",
+                    }}
+                >
+                    {/* Render placeholders */}
+                    {placeholders.map((placeholder, index) => (
+                        <Rnd
+                            key={index}
+                            size={{ width: placeholder.width, height: placeholder.height }}
+                            position={{ x: placeholder.posx, y: placeholder.posy }}
+                            onDragStop={(e, d) => {
+                                const updatedPlaceholders = [...placeholders];
+                                updatedPlaceholders[index].posx = d.x;
+                                updatedPlaceholders[index].posy = d.y;
+                                setPlaceholders(updatedPlaceholders);
+                            }}
+                            onResizeStop={(e, direction, ref, delta, position) => {
+                                const updatedPlaceholders = [...placeholders];
+                                updatedPlaceholders[index].width = ref.offsetWidth;
+                                updatedPlaceholders[index].height = ref.offsetHeight;
+                                updatedPlaceholders[index].posx = position.x;
+                                updatedPlaceholders[index].posy = position.y;
+                                setPlaceholders(updatedPlaceholders);
+                            }}
+                            bounds="parent"
+                            className="placeholder"
+                            style={{
+                                backgroundColor: "transparent",
+                            }}
+                        >
+                            <input
+                                type="text"
+                                value={placeholder.text}
+                                onChange={(e) => handleFieldChange(index, "text", e.target.value)}
+                                style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    border: "none",
+                                    background: "transparent",
+                                    fontSize: `${placeholder.fontSize || 16}px`,
+                                    textAlign: "center",
+                                    color: placeholder.fontColor || "#000",
+                                }}
+                            />
+                        </Rnd>
+                    ))}
+
+                    {/* Render badge image */}
+                    {badge && (
+                        <Rnd
+                            size={{ width: badge.width, height: badge.height }}
+                            position={{ x: badge.posx, y: badge.posy }}
+                            onDragStop={(e, d) => {
+                                setBadge((prev) => ({ ...prev, posx: d.x, posy: d.y }));
+                            }}
+                            onResizeStop={(e, direction, ref, delta, position) => {
+                                setBadge((prev) => ({
+                                    ...prev,
+                                    width: ref.offsetWidth,
+                                    height: ref.offsetHeight,
+                                    posx: position.x,
+                                    posy: position.y,
+                                }));
+                            }}
+                            bounds="parent"
+                            dragHandleClassName="badge-drag"
+                            style={{
+                                cursor: "move",
+                                zIndex: 2,
+                                border: "1px dashed #333",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                backgroundColor: "rgba(200, 200, 200, 0.3)",
+                            }}
+                            id="badge-placeholder"
+                        >
+                            <div className="badge-drag" style={{ width: "100%", height: "100%" }}>
+                                {/* The badge content goes here */}
+                            </div>
+                        </Rnd>
+
+                    )}
+                </div>
+            )}
+
+            <button
+                onClick={handleSaveImage}
+                style={{
+                    marginTop: "20px",
+                    padding: "10px 20px",
+                    backgroundColor: "#4CAF50",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                }}
+            >
+                Download Certificate
+            </button>
+        </div>
+    );
+};
+
+export default CertificateEditor;
