@@ -3,6 +3,7 @@ import { Bar } from "react-chartjs-2";
 import { CategoryScale, LinearScale, BarElement, Title } from "chart.js";
 import Chart from "chart.js/auto";
 import { useRouter } from 'next/router';
+import chart from '../services/chartServices';
 
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -37,23 +38,38 @@ function BarChart() {
         try {
             setLoading(true); // Set loading to true before making the API call
             const encodedEmail = encodeURIComponent(email);
-            const response = await fetch(`${apiUrl}/api/get-graph-data/${selectedYear}/${encodedEmail}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch data');
+            const endpoints ={
+                selectedYear: selectedYear,
+                encodedEmail
             }
+            // const response = await fetch(`${apiUrl}/api/get-graph-data/${selectedYear}/${encodedEmail}`, {
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     }
+            // });
+            chart.graphData(endpoints, (response)=>{
+                if (response.status !== "SUCCESS") {
+                    console.error('Failed to fetch data');
+                    // throw new Error('Failed to fetch data');
+                }
+                const data = response.data;
+                setResponseData(data.data);
+            })
 
-            const data = await response.json();
-            setResponseData(data.data);
+
+            // if (!response.ok) {
+            //     throw new Error('Failed to fetch data');
+            // }
+
+            // const data = await response.json();
+            // setResponseData(data.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         } finally {
+            // setTimeout(() => setLoading(false), 100);
             setLoading(false); // Set loading to false after the API call
+
         }
     };
 

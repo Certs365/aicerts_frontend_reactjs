@@ -1,0 +1,42 @@
+{
+    "batchDetails": {
+      "code": 200,
+      "status": "SUCCESS",
+      "message": "Batch of Credentials issued successfully",
+      "details": {
+        "email": "parimi.sandeep@aicerts.io",
+        "issuerId": "0x6c41C257996F3F5a30A44152919E5B00F415a008",
+        "dimensions": {
+          "height": 708.66142,
+          "width": 992.12598
+        },
+        "urls": [
+          "https://certs365-live.s3.amazonaws.com/1728327321460.png1728327413403.png",
+          "https://certs365-live.s3.amazonaws.com/dynamic_bulk_issues/1V260K1232310.png",
+          "https://certs365-live.s3.amazonaws.com/dynamic_bulk_issues/1V260K1232400.png",
+          "https://certs365-live.s3.amazonaws.com/dynamic_bulk_issues/1V260K1232401.png",
+          "https://certs365-live.s3.amazonaws.com/1728327321460.png1728327413403.png",
+          "https://certs365-live.s3.amazonaws.com/dynamic_bulk_issues/1V260K1232403.png",
+          "https://certs365-live.s3.amazonaws.com/dynamic_bulk_issues/1V260K1232404.png",
+          "https://certs365-live.s3.amazonaws.com/dynamic_bulk_issues/1V260K1232405.png",
+          "https://certs365-live.s3.amazonaws.com/dynamic_bulk_issues/1V260K1232406.png",
+          "https://certs365-live.s3.amazonaws.com/dynamic_bulk_issues/1V260K1232407.png",
+          "https://certs365-live.s3.amazonaws.com/dynamic_bulk_issues/1V260K1232408.png",
+          "https://certs365-live.s3.amazonaws.com/1728327321460.png1728327413403.png",
+          "https://certs365-live.s3.amazonaws.com/dynamic_bulk_issues/1V260K1232311.png",
+          "https://certs365-live.s3.amazonaws.com/dynamic_bulk_issues/1V260K1232410.png",
+          "https://certs365-live.s3.amazonaws.com/dynamic_bulk_issues/1V260K1232411.png",
+          "https://certs365-live.s3.amazonaws.com/dynamic_bulk_issues/1V260K1232412.png",
+          "https://certs365-live.s3.amazonaws.com/dynamic_bulk_issues/1V260K1232413.png",
+          "https://certs365-live.s3.amazonaws.com/dynamic_bulk_issues/1V260K1232414.png",
+          "https://certs365-live.s3.amazonaws.com/dynamic_bulk_issues/1V260K1232415.png",
+          "https://certs365-live.s3.amazonaws.com/1728327321460.png1728327413403.png",
+          "https://certs365-live.s3.amazonaws.com/dynamic_bulk_issues/1V260K1232417.png",
+          "https://certs365-live.s3.amazonaws.com/dynamic_bulk_issues/1V260K1232418.png",
+          "https://certs365-live.s3.amazonaws.com/dynamic_bulk_issues/1V260K1232419.png",
+          "https://certs365-live.s3.amazonaws.com/dynamic_bulk_issues/1V260K1232312.png"
+        ]
+      }
+    }
+  }
+  

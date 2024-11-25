@@ -48,14 +48,15 @@ const DownloadCertificate = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [keyUrl, setKeyUrl] = useState("");
   // const [badgeUrl, setBadgeUrl] = useState("");
-  const [singleDetail, setSingleDetail] = useState({});
-  const { badgeUrl, certificateUrl, logoUrl, signatureUrl, issuerName, issuerDesignation, certificatesData, setCertificatesDatasetBadgeUrl, setIssuerName, setissuerDesignation, setCertificatesData, setSignatureUrl, setBadgeUrl, setLogoUrl } = useContext(CertificateContext);
-  // Get the selected template from the previous screeen
+  const { isDesign } = router.query;
 
+  const [singleDetail, setSingleDetail] = useState({});
+  const { badgeUrl, certificateUrl, logoUrl, signatureUrl, issuerName, issuerDesignation, certificatesData, setCertificatesDatasetBadgeUrl, setIssuerName, setissuerDesignation, setCertificatesData, setSignatureUrl, setBadgeUrl, setLogoUrl,pdfBatchDimentions  } = useContext(CertificateContext);
+  // Get the selected template from the previous screeen
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
   };
-  
+
   const generatePresignedUrl = async (key) => {
     const s3 = new AWS.S3();
     const params = {
@@ -116,17 +117,38 @@ const DownloadCertificate = () => {
 
 
     try {
-      const res = await fetch('/api/generateImage', {
+      let url = '/api/generateImage'; // Default endpoint
+      const requestBody = {
+        detail,
+        message,
+        polygonLink,
+        status,
+        badgeUrl,
+        certificateUrl,
+        logoUrl,
+        signatureUrl,
+        issuerName,
+        issuerDesignation,
+      };
+    
+      // Check if it's a design request and update the URL and request body accordingly
+      if (isDesign) {
+        url = '/api/generateImageDesign';
+        requestBody.pdfBatchDimentions = pdfBatchDimentions; // Assuming pdfBatchDimentions is defined
+      }
+    
+      const res = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({detail, message, polygonLink, status,badgeUrl, certificateUrl, logoUrl, signatureUrl, issuerName, issuerDesignation }),
+        body: JSON.stringify(requestBody),
       });
+    
       if (res.ok) {
         const blob = await res.blob();
         const imageUrl = URL.createObjectURL(blob);
-        setImageUrlList(prevList => {
+        setImageUrlList((prevList) => {
           const newList = [...prevList];
           newList[index] = imageUrl; // Maintain order based on index
           return newList;
@@ -139,6 +161,7 @@ const DownloadCertificate = () => {
     } finally {
       // setIsLoading(false);
     }
+    
   };
 
   useEffect(() => {
@@ -157,10 +180,10 @@ const DownloadCertificate = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-
+       
       if (certificatesData) {
         // Parse the JSON data if it exists
-        const parsedData = certificatesData;
+        const parsedData = certificatesData.data;
 
         setApiResponseData(certificatesData);
         setFilteredCertificatesArray(parsedData.details)
@@ -215,13 +238,13 @@ const DownloadCertificate = () => {
   const parsedCardId = typeof cardId === 'string' ? parseInt(cardId) : cardId || 0;
 
   useEffect(() => {
-    if(badgeUrl){
-     
-    const fetchImageUrl = async () => {
+    if (badgeUrl) {
+
+      const fetchImageUrl = async () => {
         const url = await badgeUrl;
         if (url) {
           setKeyUrl(url);
-           (url, "url")
+          (url, "url")
         }
       }
 
@@ -237,6 +260,7 @@ const DownloadCertificate = () => {
   }
 
   const handleSearchChange = (e) => {
+     
     const searchValue = e.target.value;
     setSearchQuery(searchValue);
 
@@ -244,10 +268,10 @@ const DownloadCertificate = () => {
     let filteredDetails;
     if (searchValue.trim() === "") {
       // If the search value is empty, show all data
-      filteredDetails = apiResponseData.details;
+      filteredDetails = apiResponseData.data.details;
     } else {
       // Otherwise, filter based on the certificateNumber or name
-      filteredDetails = apiResponseData?.details.filter((detail) =>
+      filteredDetails = apiResponseData?.data?.details?.filter((detail) =>
         (detail?.certificateNumber && detail.certificateNumber.toString().toLowerCase().includes(searchValue.toLowerCase())) ||
         (detail?.name && detail.name.toLowerCase().includes(searchValue.toLowerCase()))
       );
@@ -262,18 +286,31 @@ const DownloadCertificate = () => {
 
 
 
-  // Handle download PDF for a single certificate
   const handleDownloadPDF = async (detail, message, polygonLink, status) => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const res = await fetch('/api/generatePDF', {
+      // Determine endpoint and additional data based on isDesign
+      const isDesign = new URLSearchParams(window.location.search).get('isDesign');
+      const endpoint = isDesign ? '/api/generatePDFBatch' : '/api/generatePDF';
+      const bodyData = {
+        detail,
+        certificateUrl,
+        logoUrl,
+        signatureUrl,
+        badgeUrl,
+        issuerName,
+        issuerDesignation,
+        ...(isDesign && { pdfBatchDimentions }) // Only include if isDesign is true
+      };
+
+      const res = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ detail, certificateUrl, logoUrl, signatureUrl, badgeUrl, issuerName, issuerDesignation }),
+        body: JSON.stringify(bodyData),
       });
-      
+
       if (res.ok) {
         const blob = await res.blob();
         const url = window.URL.createObjectURL(blob);
@@ -283,22 +320,23 @@ const DownloadCertificate = () => {
         document.body.appendChild(link);
         link.click();
         link.parentNode.removeChild(link);
-        setLoginError("")
-        setLoginSuccess("Certification Downloaded")
-        setShow(true)
+        setLoginError("");
+        setLoginSuccess("Certification Downloaded");
+        setShow(true);
       } else {
         console.error('Failed to fetch PDF:', res.statusText);
-        setLoginError("Error downloading PDF")
-        setShow(true)
+        setLoginError("Error downloading PDF");
+        setShow(true);
       }
     } catch (error) {
       console.error('Error downloading PDF:', error);
-      setLoginError("Error downloading PDF")
-      setShow(true)
+      setLoginError("Error downloading PDF");
+      setShow(true);
     } finally {
       setIsLoading(false);
     }
-  };
+};
+
 
   // Handle download PDFs for multiple certificates
   const handleDownloadPDFs = async () => {
@@ -306,16 +344,26 @@ const DownloadCertificate = () => {
 
     try {
       const zip = new JSZip();
-      const { message, polygonLink, status } = apiResponseData
+      const endpoint = isDesign ? '/api/generatePDFBatch' : '/api/generatePDF';
+
       for (const detail of detailsArray) {
-        const res = await fetch('/api/generatePDF', {
+        const bodyData = {
+          detail,
+          certificateUrl,
+          logoUrl,
+          signatureUrl,
+          badgeUrl,
+          issuerName,
+          issuerDesignation,
+          ...(isDesign && { pdfBatchDimentions }) // Only include if isDesign is true
+        };
+
+        const res = await fetch(endpoint, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            detail, certificateUrl, logoUrl, signatureUrl, badgeUrl, issuerName, issuerDesignation
-          }),
+          body: JSON.stringify(bodyData),
         });
 
         if (res.ok) {
@@ -347,7 +395,8 @@ const DownloadCertificate = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+};
+
 
   // Toggle Grid / List view
   const toggleViewMode = () => {
@@ -374,16 +423,17 @@ const DownloadCertificate = () => {
       [index]: isChecked,
     }));
 
-    const selectedDetail = apiResponseData?.details?.find(
+    const selectedDetail = apiResponseData?.data?.details?.find(
       (detail, i) => i === index
     );
 
     if (isChecked) {
       setDetailsArray((prevDetails) => [...prevDetails, selectedDetail]);
     } else {
+      // console.log(prevDetails);
       setDetailsArray((prevDetails) =>
         prevDetails.filter(
-          (detail) => detail.certificateNumber !== selectedDetail?.certificateNumber
+          (detail) => detail?.certificateNumber !== selectedDetail?.certificateNumber
         )
       );
     }
@@ -397,9 +447,9 @@ const DownloadCertificate = () => {
 
     if (newSelectAll) {
       // If "Select All" is checked, store all details in the state
-      setDetailsArray(apiResponseData?.details || []);
+      setDetailsArray(apiResponseData?.data?.details || []);
       setCheckedItems(
-        apiResponseData?.details.reduce((acc, _, index) => {
+        apiResponseData?.data?.details?.reduce((acc, _, index) => {
           acc[index] = true;
           return acc;
         }, {})
@@ -418,10 +468,12 @@ const DownloadCertificate = () => {
           <div className='vertical-center batchDashboard'>
             <div className='dashboard pb-5 pt-5'>
               <Container className='mt-5 mt-md-0'>
-              <span onClick={() => { window.location.href = "/certificate?tab=1" }} className='back-button'>
-              <Image width={10} height={10} src={BackIcon} alt='back' /><span className=''>Back</span>
-            </span>
-                <h3 className='title'>Batch Issuance</h3>
+                <div className='d-flex align-items-center mb-4'>
+                  <span onClick={() => { window.location.href = "/certificate?tab=1" }} className='back-button'>
+                    <Image width={10} height={10} src={BackIcon} alt='back' /><span className=''>Back</span>
+                  </span>
+                  <h3 className='title mb-0'>Batch Issuance</h3>
+                </div>
                 <Row>
                   <Col xs={12} md={4} className='mb-4 mb-md-0'>
                     <Card className='p-0 h-auto d-none d-md-block'>
@@ -598,7 +650,7 @@ const DownloadCertificate = () => {
                                         type="checkbox"
                                         aria-label={`option ${index}`}
                                         checked={checkedItems[index] || false}
-                                        
+
                                         onChange={(event) => handleCheckboxChange(event, index)}
                                       />
                                       {/* <span>{index + 1}.</span> */}
@@ -663,7 +715,7 @@ const DownloadCertificate = () => {
             <Image
               src={imageUrl}
               layout='fill'
-              objectFit='contain'
+              objectFit='cover'
               alt='Certificate'
             />
           </div>

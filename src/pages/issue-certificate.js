@@ -17,6 +17,11 @@ import { useRouter } from "next/router";
 import moment from "moment";
 import CertificateContext from "../utils/CertificateContext";
 import { UpdateLocalStorage } from "../utils/UpdateLocalStorage";
+import download from "../services/downloadServices";
+import certificate from "../services/certificateServices";
+
+import issuance from "../services/issuanceServices";
+import fileDownload from "react-file-download";
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const adminUrl = process.env.NEXT_PUBLIC_BASE_URL_admin;
 const generalError = process.env.NEXT_PUBLIC_BASE_GENERAL_ERROR;
@@ -31,6 +36,7 @@ const IssueCertificate = () => {
   const [token, setToken] = useState(null);
   const [email, setEmail] = useState(null);
   const [details, setDetails] = useState(null);
+  const [certPdf, setCertPdf] = useState(null);
   const [errors, setErrors] = useState({
     certificateNumber: "",
     name: "",
@@ -55,6 +61,15 @@ const IssueCertificate = () => {
     });
   };
 
+  const handleDownload = (e) => {
+    e.preventDefault();
+    // setIsLoading(true);
+    if (certPdf) {
+      const fileData = new Blob([certPdf], { type: "application/pdf" });
+      fileDownload(fileData, `Certificate_${formData.certificateNumber}.pdf`);
+    }
+  };
+
   const {
     badgeUrl,
     certificateUrl,
@@ -71,6 +86,8 @@ const IssueCertificate = () => {
     setSignatureUrl,
     setBadgeUrl,
     setLogoUrl,
+    pdfDimentions,
+    pdfFile,
   } = useContext(CertificateContext);
 
   useEffect(() => {
@@ -98,8 +115,6 @@ const IssueCertificate = () => {
     return errorFields.some((error) => error !== "");
   };
 
-             
-
   function formatDate(date) {
     return `${(date?.getMonth() + 1).toString().padStart(2, "0")}/${date
       ?.getDate()
@@ -109,11 +124,11 @@ const IssueCertificate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (hasErrors()) {
       // If there are errors, display them and stop the submission
       setShow(false);
       setIsLoading(false);
-
       return;
     }
 
@@ -152,6 +167,7 @@ const IssueCertificate = () => {
     setNow(10);
 
     try {
+      // Prepare the payload for both design and non-design cases
       const payload = {
         email: formData.email,
         certificateNumber: formData.certificateNumber,
@@ -160,69 +176,92 @@ const IssueCertificate = () => {
         grantDate: formattedGrantDate,
         expirationDate: formattedExpirationDate,
       };
-      
-      if (!isDesign) {
-        // Append additional fields when `isDesign` is true
-        Object.assign(payload, {
-          templateUrl: new URL(certificateUrl)?.origin + new URL(certificateUrl)?.pathname,
-          logoUrl: new URL(logoUrl)?.origin + new URL(logoUrl)?.pathname,
-          signatureUrl: new URL(signatureUrl)?.origin + new URL(signatureUrl)?.pathname,
-          badgeUrl: badgeUrl ? new URL(badgeUrl)?.origin + new URL(badgeUrl)?.pathname : null,
-          issuerName: issuerName,
-          issuerDesignation: issuerDesignation,
-        });
-      }else{
+       
+      if (isDesign) {
+        // Call the dynamic issuance API if isDesign is true
         Object.assign(payload, {
           templateUrl: "",
           logoUrl: "",
           signatureUrl: "",
-          badgeUrl:"",
+          badgeUrl: "",
           issuerName: "",
-          issuerDesignation:"",
+          issuerDesignation: "",
+          qrsize: pdfDimentions.width,
+          posx: pdfDimentions.x,
+          posy: pdfDimentions.y,
+          flag: 0,
+        });
+
+        // Call issuance.issueDynamic API
+        issuance.IssueDynamicCert(payload, async (response) => {
+          const responseData = response;
+           
+          if (response.status === "SUCCESS") {
+            setMessage(responseData.message || "Success");
+            setCertPdf(responseData); // Corrected variable name
+          } else if (response) {
+            console.error("API Error:", responseData.message || generalError);
+            setMessage(responseData.message || generalError);
+            setDetails(responseData.details || null);
+            setShow(true);
+          } else {
+            setMessage(
+              responseData.message || "No response received from the server."
+            );
+            console.error("No response received from the server.");
+            setShow(true);
+          }
+        });
+      } else {
+        // Call the regular issuance API if isDesign is false
+        Object.assign(payload, {
+          templateUrl:
+            new URL(certificateUrl)?.origin + new URL(certificateUrl)?.pathname,
+          logoUrl: new URL(logoUrl)?.origin + new URL(logoUrl)?.pathname,
+          signatureUrl:
+            new URL(signatureUrl)?.origin + new URL(signatureUrl)?.pathname,
+          badgeUrl: badgeUrl
+            ? new URL(badgeUrl)?.origin + new URL(badgeUrl)?.pathname
+            : null,
+          issuerName: issuerName,
+          issuerDesignation: issuerDesignation,
+        });
+
+        // Call issuance.issue API
+        issuance.issue(payload, async (response) => {
+          //todo --> how to add logic of isDesign: true/false
+           ;
+          console.log("issuance.issue  response", response);
+          console.log("issuance.issue  response.data", response.data);
+          const responseData = response.data;
+          if (response.status === "SUCCESS") {
+            setMessage(responseData.message || "Success");
+            setIssuedCertificate(responseData); // Corrected variable name
+            await generateAndUploadImage(formData, responseData); // Pass formData and responseData
+            await UpdateLocalStorage();
+          } else if (response) {
+            const responseData = response.error.response.data;
+            console.error("API Error:", responseData.message || generalError);
+            setMessage(responseData.message || generalError);
+            setDetails(responseData.details || null);
+            setShow(true);
+          } else {
+            setMessage(
+              responseData.message || "No response received from the server."
+            );
+            console.error("No response received from the server.");
+            setShow(true);
+          }
         });
       }
-      
-     
-      const response = await fetch(`${adminUrl}/api/issue/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
-      const responseData = await response.json();
-
-      if (response && response.ok) {
-        setMessage(responseData.message || "Success");
-        setIssuedCertificate(responseData); // Corrected variable name
-        // Call the function to generate and upload the image
-        await generateAndUploadImage(formData, responseData); // Pass formData and responseData
-        // Handle success (e.g., show a success message)
-        await UpdateLocalStorage();
-      } else if (response) {
-        console.error("API Error:", responseData.message || generalError);
-        setMessage(responseData.message || generalError);
-        setDetails(responseData.details || null);
-
-        setShow(true);
-        // Handle error (e.g., show an error message)
-      } else {
-        setMessage(
-          responseData.message || "No response received from the server."
-        );
-        console.error("No response received from the server.");
-        setShow(true);
-      }
     } catch (error) {
-      console.log(error)
+      console.error(error);
       setMessage(generalError);
-      // console.error('Error during API request:', error);
       setShow(true);
     } finally {
       stopProgress();
       setIsLoading(false);
-      sessionStorage.removeItem("customTemplate"); //remove the custom template from session storage
+      sessionStorage.removeItem("customTemplate"); // remove the custom template from session storage
     }
   };
 
@@ -311,6 +350,8 @@ const IssueCertificate = () => {
   // };
 
   const generateAndUploadImage = async (formData, responseData) => {
+     ;
+    console.log("generateAndUploadImage payload formData", formData);
     try {
       // Generate the image
       const blob = await handleShowImages(formData, responseData);
@@ -350,8 +391,8 @@ const IssueCertificate = () => {
         const blob = await res.blob();
         return blob; // Return blob for uploading
       } else {
-        return;
         console.error("Failed to generate image:", res.statusText);
+        return;
         throw new Error("Image generation failed");
       }
     } catch (error) {
@@ -362,23 +403,48 @@ const IssueCertificate = () => {
 
   const uploadToS3 = async (blob, certificateNumber) => {
     try {
+      const type = 2;
       // Create a new FormData object
       const formCert = new FormData();
       // Append the blob to the form data
       formCert.append("file", blob);
+      console.log("blob", blob);
+       
       // Append additional fields
       formCert.append("certificateNumber", certificateNumber);
-      formCert.append("type", 2);
+      console.log("cn", certificateNumber);
+      formCert.append("type", type);
+      console.log("type", type);
+      console.log(formCert);
+       
+
+    // Log the contents of FormData
+    console.log("Logging FormData entries:");
+    for (let [key, value] of formCert.entries()) {
+      console.log(`${key}:`, value);  // This will show both the key and value in the FormData
+    }
 
       // Make the API call to send the form data
-      const uploadResponse = await fetch(`${adminUrl}/api/upload-certificate`, {
-        method: "POST",
-        body: formCert,
-      });
-
-      if (!uploadResponse.ok) {
-        throw new Error("Failed to upload certificate to S3");
+      // const uploadResponse = await fetch(`${adminUrl}/api/upload-certificate`, {
+      //   method: "POST",
+      //   body: formCert,
+      // });
+      try {
+        certificate.apiuploadCertificate(formCert, (response) => {
+          console.log("API Response:", response);
+          if (response.status !== "SUCCESS") {
+            console.error("Failed to upload certificate to S3");
+          } else {
+            console.log("Upload successful");
+          }
+        });
+      } catch (apiError) {
+        console.error("Error during API call:", apiError);  // Log the exact API error
       }
+
+      // if (!uploadResponse.ok) {
+      //   throw new Error("Failed to upload certificate to S3");
+      // }
     } catch (error) {
       console.error("Error uploading to S3:", error);
     }
@@ -461,8 +527,8 @@ const IssueCertificate = () => {
             ? `Input length must be between ${minLength} and ${maxLength} characters`
             : ""
           : name === "certificateNumber"
-          ? "Certificate Number must be alphanumeric"
-          : `Input length must be between ${minLength} and ${maxLength} characters`,
+            ? "Certificate Number must be alphanumeric"
+            : `Input length must be between ${minLength} and ${maxLength} characters`,
       }));
     }
   };
@@ -490,7 +556,7 @@ const IssueCertificate = () => {
                   )}
                 </>
               ) : (
-                <Container>
+                <Container className="pt-5">
                   <h2 className="title">Issue New Certification</h2>
                   <Form
                     className="register-form"
@@ -712,6 +778,17 @@ const IssueCertificate = () => {
                         }
                       />
                     </div>
+                    {isDesign && certPdf && (
+                      <div className="text-center">
+                        <Button
+                          label="Download Certificate"
+                          className="golden"
+                          onClick={(e) => {
+                            handleDownload(e);
+                          }}
+                        />
+                      </div>
+                    )}
                   </Form>
                 </Container>
               )}
@@ -771,6 +848,6 @@ const IssueCertificate = () => {
       </Modal>
     </>
   );
-}
+};
 
 export default IssueCertificate;

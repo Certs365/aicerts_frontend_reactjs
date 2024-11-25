@@ -61,15 +61,15 @@ const DisplayPdf = ({ file, scale, isLocked, setRectangle, rectangle }) => {
     }, [pdfDimensions, currentScale]);
 
     return (
-        <div 
-        className="hide-scrollbar"
-            style={{ 
-                height: 'fit-content', 
-                display: 'flex', 
-                flexDirection: 'column', 
+        <div
+            className="hide-scrollbar"
+            style={{
+                height: 'fit-content',
+                display: 'flex',
+                flexDirection: 'column',
                 alignItems: 'center',
-                maxWidth: '100%', 
-                overflowX: 'auto' 
+                maxWidth: '100%',
+                overflowX: 'auto'
             }}
         >
             <div
@@ -78,21 +78,21 @@ const DisplayPdf = ({ file, scale, isLocked, setRectangle, rectangle }) => {
                 style={{
                     overflow: 'auto',
                     position: 'relative',
-                    maxWidth: '100%', 
+                    maxWidth: '100%',
                     maxHeight: '80vh',
                     touchAction: 'pan-y'
                 }}
             >
-                <Document 
-                    file={file} 
-                    onLoadSuccess={onDocumentLoadSuccess} 
+                <Document
+                    file={file}
+                    onLoadSuccess={onDocumentLoadSuccess}
                     onLoadError={console.error}
                 >
-                    <Page 
-                        pageNumber={pageNumber} 
-                        scale={currentScale} 
-                        renderTextLayer={false} 
-                        onLoadSuccess={onPageLoadSuccess} 
+                    <Page
+                        pageNumber={pageNumber}
+                        scale={currentScale}
+                        renderTextLayer={false}
+                        onLoadSuccess={onPageLoadSuccess}
                     />
                 </Document>
                 {rectangle && (

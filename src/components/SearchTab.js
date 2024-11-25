@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
-
+import issuance from '../services/issuanceServices';
 const adminUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const generalError = process.env.NEXT_PUBLIC_BASE_GENERAL_ERROR;
 
@@ -34,35 +34,60 @@ const SearchTab = () => {
       return;
     }
 
-    fetch(`${adminUrl}/api/get-bulk-files`, {
-      method: 'POST',
-      body: JSON.stringify({ search: searchQuery, category: searchMode }),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.status === "SUCCESS") {
-        setCertData(data.details);
-        setSuccess("Certificates Retrived Successfully"); // Set success message
-      setShow(true)
-
-      } else if (data.status === "FAILED") {
-        setError(data.message);
-      setShow(true)
-
-      }
-    })
-    .catch(error => {
+    const data={
+      search: searchQuery, 
+      category: searchMode 
+    }
+    
+    try {
+      issuance.getbulkFiles(data, (response) => {
+        if(response.status === "SUCCESS") {
+          setCertData(response.data.details);
+          setSuccess("Certificates Retrived Successfully"); // Set success message
+          setShow(true)
+        }
+        else if(response?.data?.status === "FAILED") {
+          setError(response.data.message);
+          setShow(true)
+        }
+      })
+    } catch (error) {
       console.error('Error:', error);
       setError(generalError); // Set error message for fetch error
       setShow(true)
-
-    })
-    .finally(() => {
+    } finally{
       setIsLoading(false);
-    });
+    };
+
+    // fetch(`${adminUrl}/api/get-bulk-files`, {
+    //   method: 'POST',
+    //   body: JSON.stringify({ search: searchQuery, category: searchMode }),
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    // })
+    // .then(response => response.json())
+    // .then(data => {
+    //   if (data.status === "SUCCESS") {
+    //     setCertData(data.details);
+    //     setSuccess("Certificates Retrived Successfully"); // Set success message
+    //   setShow(true)
+
+    //   } else if (data.status === "FAILED") {
+    //     setError(data.message);
+    //   setShow(true)
+
+    //   }
+    // })
+    // .catch(error => {
+    //   console.error('Error:', error);
+    //   setError(generalError); // Set error message for fetch error
+    //   setShow(true)
+
+    // })
+    // .finally(() => {
+    //   setIsLoading(false);
+    // });
   };
 
   const handleClose = () => {
@@ -85,34 +110,34 @@ const SearchTab = () => {
           <option value="1">Single</option>
           <option value="2">Bulk</option>
         </select>
-        <input 
-          type="text" 
-          placeholder="mm-dd-yyyy" 
-          className="search-input" 
+        <input
+          type="text"
+          placeholder="mm-dd-yyyy"
+          className="search-input"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
         <div className='search-icon-container' onClick={handleSearch}>
-          <Image width={10} height={10} src="/icons/search.svg" alt='search'/>
+          <Image width={10} height={10} src="/icons/search.svg" alt='search' />
         </div>
       </div>
 
       <div className="certificate-list">
-      <h2>Certificates</h2>
-      <ul>
-        {certData && certData.map((link, index) => {
-          const fileName = `certificate_${index + 1}.zip`; // You can generate file names dynamically
-          return (
-            <li key={index}>
-              <div className="certificate-info">
-                <span className="certificate-name">{fileName}</span>
-                <a href={link} download={fileName} className="download-link">Download</a>
-              </div>
-            </li>
-          )
-        })}
-      </ul>
-    </div>
+        <h2>Certificates</h2>
+        <ul>
+          {certData && certData.map((link, index) => {
+            const fileName = `certificate_${index + 1}.zip`; // You can generate file names dynamically
+            return (
+              <li key={index}>
+                <div className="certificate-info">
+                  <span className="certificate-name">{fileName}</span>
+                  <a href={link} download={fileName} className="download-link">Download</a>
+                </div>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
 
 
 
@@ -125,11 +150,11 @@ const SearchTab = () => {
           <div className='certificate-loader'>
             {/* Loading spinner or animation */}
             <Image
-            src="/backgrounds/login-loading.gif"
-            layout='fill'
-            objectFit='contain'
-            alt='Loader'
-          />
+              src="/backgrounds/login-loading.gif"
+              layout='fill'
+              objectFit='contain'
+              alt='Loader'
+            />
           </div>
           <p>Please dont reload the Page. It may take a few minutes.</p>
         </Modal.Body>
@@ -143,11 +168,11 @@ const SearchTab = () => {
               <div className='error-icon'>
                 {/* Error icon */}
                 <Image
-                                src="/icons/close.svg"
-                                layout='fill'
-                                objectFit='contain'
-                                alt='Loader'
-                            />
+                  src="/icons/close.svg"
+                  layout='fill'
+                  objectFit='contain'
+                  alt='Loader'
+                />
               </div>
               <h3 style={{ color: '#ff5500' }}>{error}</h3>
               <button className='warning' onClick={handleClose}>Ok</button>

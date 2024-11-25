@@ -7,7 +7,7 @@
     -moz-border-radius: 0 !important;
     -ms-border-radius: 0 !important;
     -o-border-radius: 0 !important;
-    
+
     &.golden {
         color: $white;
         font-style: normal;
@@ -39,7 +39,7 @@
         -moz-transition: 0.5s;
         -ms-transition: 0.5s;
         -o-transition: 0.5s;
-        
+
         &::before {
             content: '';
             position: absolute;
@@ -54,7 +54,7 @@
         }
     }
 
-  
+
     &.golden-upload {
         color: $golden;
         font-style: normal;
@@ -74,7 +74,7 @@
         -moz-transition: 0.5s;
         -ms-transition: 0.5s;
         -o-transition: 0.5s;
-        
+
         &:before {
             content: '';
             position: absolute;
@@ -112,7 +112,7 @@
         -moz-transition: 0.5s;
         -ms-transition: 0.5s;
         -o-transition: 0.5s;
-        
+
         &::after {
             content: '';
             position: absolute;
@@ -161,7 +161,6 @@
         }
     }
 
-    
 
     &:disabled {
         pointer-events: none;
@@ -196,39 +195,43 @@
     -ms-transition: 0.5s;
     -o-transition: 0.5s;
     border-radius: 8px;
-border: none;
+    border: none;
+
     &:hover {
         background: rgba(186, 152, 47, 1);
     }
+
     .custom-dropdown-toggle {
-        height: 40px; 
+        height: 40px;
         background-color: $golden;
         border-radius: 8px;
-        color: #fff; 
-        font-weight: bold; 
-border: none;
+        color: #fff;
+        font-weight: bold;
+        border: none;
 
     }
-    
+
     .custom-dropdown-menu {
         // background-color: #fff8e1;
         border-radius: 0 !important;
     }
-    
+
     /* Add more custom styles as needed */
-    
+
 }
 
-.search-input-admin{
-  
+.search-input-admin {
     margin-right: 10px;
-    height: 40px; 
+    height: 40px;
     width: 600px;
+
     @media (min-width: $mobile-min) and (max-width: $mobile-max) {
         width: 300px;
     }
-    .pd-220{
+
+    .pd-220 {
         padding-left: 220px;
+
         @media (min-width: $mobile-min) and (max-width: $mobile-max) {
             padding-left: 0px;
 
@@ -236,14 +239,17 @@ border: none;
     }
 }
 
-.search-input-setting{
+.search-input-setting {
     margin-right: 10px;
-    height: 40px; 
+    height: 40px;
+
     @media (min-width: $mobile-min) and (max-width: $mobile-max) {
         width: 300px;
     }
-    .pd-220{
+
+    .pd-220 {
         padding-left: 220px;
+
         @media (min-width: $mobile-min) and (max-width: $mobile-max) {
             padding-left: 0px;
 
@@ -251,26 +257,27 @@ border: none;
     }
 }
 
-.search-input-admin-page{
-    margin-right: 10px;
-    height: 40px; 
+.search-input-admin-page {
+    height: 41px;
     width: 300px;
 }
 
 .search-input-admin:focus,
 .search-input:focus {
-  padding-left: 220px;
-  outline: none; /* Optional, removes the default outline when focused */
-  @media (min-width: $mobile-min) and (max-width: $mobile-max) {
-    padding-left: 0px;
+    padding-left: 220px;
+    outline: none;
 
-}
+    /* Optional, removes the default outline when focused */
+    @media (min-width: $mobile-min) and (max-width: $mobile-max) {
+        padding-left: 0px;
+
+    }
 }
 
-.search-input{
+.search-input {
     margin-right: 8px;
-    height: 40px; 
-    width: 265px;
+    height: 40px;
+    width: 280px;
 }
 
 .error-icon {
@@ -289,19 +296,21 @@ border: none;
         height: 150px;
     }
 }
-.red-btn{
+
+.red-btn {
     background-color: #dc3545;
     color: white;
     padding: 11px 7px;
     font-weight: 700;
     font-family: $font-family;
 }
+
 .warning {
     border: none;
     color: #fff;
     font-size: 16px;
     padding: 8px 20px;
-    margin : 10px 0;
+    margin: 10px 0;
     border-radius: 6px;
     background-color: #dc3545;
 
@@ -328,5 +337,11 @@ border: none;
     background-color: #F3F3F3 !important;
     color: #fff !important;
     border-color: #F3F3F3 !important;
-  }
-  
+}
+
+.dark-mode {
+    .search-input-admin-page {
+        background: #000;
+        color: #fff;
+    }
+}

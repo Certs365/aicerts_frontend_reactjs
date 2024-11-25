@@ -8,7 +8,6 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
 
     .back-button {
         display: flex;
@@ -89,17 +88,20 @@
     .gallery-wrapper {
         padding: 120px 20px;
     }
-    .gallery-title{
+
+    .gallery-title {
         flex-direction: column;
-        
+
     }
-    .cert-container{
+
+    .cert-container {
         margin-top: 30px;
         display: flex;
         justify-content: center;
         align-items: center;
-        // padding-right: 3.5rem;   //add-mine
+        padding-right: 3.5rem; //add-mine
     }
+
     .gallery-title {
         padding: 0 5px;
         flex-direction: column;
@@ -121,14 +123,14 @@
 
             .btn {
                 text-align: center;
-            height: 100%;
+                height: 100%;
 
                 margin: 0px 0;
                 font-size: 20px;
-                font-family: $font-family;
-font-size: 14px;
-font-weight: 600;
-text-align: center;
+                font-family: "Montserrat";
+                font-size: 14px;
+                font-weight: 600;
+                text-align: center;
 
 
             }
@@ -191,10 +193,18 @@ text-align: center;
     max-width: 443px;
     max-height: 397px;
     position: absolute;
-    border-radius: 26px;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    -o-border-radius: 0;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
 
     .extend-modal-header {
         display: flex;
@@ -202,9 +212,12 @@ text-align: center;
         text-align: center;
         justify-content: space-between;
         height: 60px;
-
-        border-radius: 26px 26px 0px 0px;
         background: #F3F3F3;
+        border-radius: 0;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        -ms-border-radius: 0;
+        -o-border-radius: 0;
 
         .extend-modal-header-text {
             font-family: $font-family;
@@ -365,16 +378,17 @@ text-align: center;
     flex-wrap: wrap;
     justify-content: flex-start;
 
-    .title-bg{
+    .title-bg {
         width: 100%;
         padding: 10px 20px;
-       background-color:  #F3F3F3;
-.expire-typo{
-    font-family: $font-family;
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 16.82px;
-}
+        background-color: #F3F3F3;
+
+        .expire-typo {
+            font-family: $font-family;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 16.82px;
+        }
     }
 
     .batch-date-container {
@@ -432,74 +446,194 @@ text-align: center;
 }
 
 @media (max-width: 768px) {
-    .table-title{
-    margin-top: 70px;
-    flex-direction: column;
-    height: auto;
-    padding: 10px 0px;
+    .table-title {
+        margin-top: 70px;
+        flex-direction: column;
+        height: auto;
+        padding: 4px 0px;
 
-    .expire-typo {
-        font-size: 12px;
-        font-weight: 600;
-        line-height: 12.82px;
-        margin-bottom: 0.625rem 0rem;
-    }
-
-    .gallery-search-container {
-        input {
-            max-width: 200px;
-            height:34px;
-            margin-left: 10px;
-            // border-radius: 10px;
-            padding-left: 10px;
-            font-family: $font-family;
-            font-size: 16px;
-            border: 1px solid #D5DDEA;
+        .expire-typo {
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 12.82px;
+            margin-bottom: 0.625rem 0rem;
         }
-    
+
+        .gallery-search-container {
+            input {
+                max-width: 200px;
+                height: 34px;
+                margin-left: 10px;
+                // border-radius: 10px;
+                padding-left: 10px;
+                font-family: $font-family;
+                font-size: 16px;
+                border: 1px solid #D5DDEA;
+            }
+
+        }
     }
-}
 
-.search-icon-container-mobile{
-    width: 40px;
-    height: 40px;
-    margin-right: 6px;
-    background: #CFA935;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
+    .search-icon-container-mobile {
+        width: 40px;
+        height: 40px;
+        margin-right: 6px;
+        background: #CFA935;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
 
-    img {
-        padding: 1px 0px;
-        width: 18px;
-        height: 18px; 
+        img {
+            padding: 1px 0px;
+            width: 18px;
+            height: 18px;
+        }
     }
-}
 
-.search{
-    margin-top: 2px;
-flex-direction: column;
-justify-content: flex-start;
-flex-wrap: wrap;
-gap: 5px;
-}
+    .search {
+        margin-top: 2px;
+        flex-direction: column;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
     .batch-wrapper-dates {
-        display:flex;
+        display: flex;
         justify-content: center;
         margin-top: 30px;
         border: 1px solid #BFC0C2;
         padding: 0;
 
-      .batch-date-container{
-        // min-width: 100%;
-        display: flex;
-        flex-direction: row;
-        border: 1px solid #BFC0C2;
-        margin: 10px;
-        background-color: white;
+        .batch-date-container {
+            // min-width: 100%;
+            display: flex;
+            flex-direction: row;
+            border: 1px solid #BFC0C2;
+            margin: 10px;
+            background-color: white;
 
         }
     }
 }
 
+.dark-mode {
+    .modal-content {
+        .extend-modal-header {
+            color: $white;
+            background: #171A24;
+        }
+
+        .label-modal {
+            color: #A9A7B0;
+        }
+
+        .modal-body {
+            background: #000;
+
+            .extend-modal-body-text {
+                color: #A9A7B0;
+            }
+
+            hr {
+                background: #BFC0C2 !important;
+                opacity: 5;
+            }
+
+            .extend-modal-body-expire {
+                color: #A9A7B0;
+            }
+
+            .css-z3c6am-MuiFormControl-root-MuiTextField-root {
+                border: 1px solid #BFC0C2;
+                border-radius: 0;
+                -webkit-border-radius: 0;
+                -moz-border-radius: 0;
+                -ms-border-radius: 0;
+                -o-border-radius: 0;
+
+                .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
+                    color: $white;
+                }
+
+                .css-i4bv87-MuiSvgIcon-root {
+                    fill: $golden
+                }
+            }
+        }
+
+        .modal-footer {
+            background: #171A24;
+            border-radius: 0;
+            -webkit-border-radius: 0;
+            -moz-border-radius: 0;
+            -ms-border-radius: 0;
+            -o-border-radius: 0;
+        }
+    }
+
+    .gallery-title {
+        color: $white;
+
+        .gallery-button-container {
+            background-color: #2A2E36 !important;
+        }
+    }
+
+    .table-title {
+        color: $white;
+        background: #2A2E36;
+
+        .search {
+            .golden-dropdown-button {
+                .custom-dropdown-toggle {
+                    color: #A9A7B0 !important;
+                    background-color: #2A2E36 !important;
+                }
+            }
+
+            .search-input-admin {
+                color: $white;
+                background-color: #2A2E36 !important;
+            }
+        }
+    }
+
+    .cert-container {
+        .prev-cert-card {
+            p {
+                color: $white;
+            }
+        }
+    }
+
+    .otp-modal {
+        .modal-content {
+            background-color: #000;
+
+            .modal-header {
+                background-color: #000 !important;
+                color: #FFF;
+                font-family: $font-family;
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+            }
+
+            .modal-body {
+                background-color: #000;
+
+                p {
+                    color: $white;
+                }
+
+                .form-control {
+                    color: $white;
+                    background-color: #000;
+                }
+            }
+        }
+    }
+}

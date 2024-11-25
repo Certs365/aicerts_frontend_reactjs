@@ -5,6 +5,7 @@ import Image from 'next/legacy/image';
 import Button from '../../shared/button/button';
 import { useRouter } from 'next/router';
 import { encryptData } from '../utils/reusableFunctions';
+import user from '@/services/userServices';
 const apiUrl_Admin = process.env.NEXT_PUBLIC_BASE_URL_admin;
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL_USER;
 const secretKey = process.env.NEXT_PUBLIC_BASE_ENCRYPTION_KEY;
@@ -66,34 +67,35 @@ const ProfileDetails = () => {
 
         let progressInterval;
         const startProgress = () => {
-          progressInterval = setInterval(() => {
-            setNow((prev) => {
-              if (prev < 90) return prev + 5;
-              return prev;
-            });
-          }, 100);
+            progressInterval = setInterval(() => {
+                setNow((prev) => {
+                    if (prev < 90) return prev + 5;
+                    return prev;
+                });
+            }, 100);
         };
-    
+
         const stopProgress = () => {
-          clearInterval(progressInterval);
-          setNow(100); // Progress complete
+            clearInterval(progressInterval);
+            setNow(100); // Progress complete
         };
-    
+
         startProgress();
-        const encryptedData = encryptData(data);
+        // const encryptedData = encryptData(data);
 
         try {
-            const response = await fetch(`${apiUrl_Admin}/api/get-issuer-by-email`, {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    data:encryptedData
-                })
-            });
-            const userData = await response.json();
+            // const response = await fetch(`${apiUrl_Admin}/api/get-issuer-by-email`, {
+            //     method: "POST",
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'Authorization': `Bearer ${token}`,
+            //     },
+            //     body: JSON.stringify({
+            //         data:encryptedData
+            //     })
+            // });
+            user.getIssuerByEmail(data, async (response)=>{
+            const userData = response.data;
             const userDetails = userData?.data;
             setEmail(userDetails.email || "")
             setUsername(userDetails.username || "")
@@ -135,6 +137,49 @@ const ProfileDetails = () => {
                 designation: userDetails.designation || "",
 
             }));
+            })
+            // const userData = await response.json();
+            // const userDetails = userData?.data;
+            // setEmail(userDetails.email || "")
+            // setUsername(userDetails.username || "")
+
+
+            // // Assuming response is in JSON format
+            // setFormData({
+            //     id: userDetails?.issuerId,
+            //     organization: userDetails.organization || "",
+            //     address: userDetails.address || "",
+            //     country: userDetails.country || "",
+            //     organizationType: userDetails.organizationType || "",
+            //     city: userDetails.city || "",
+            //     zip: userDetails.zip || "",
+            //     industrySector: userDetails.industrySector || "",
+            //     state: userDetails.state || "",
+            //     websiteLink: userDetails.websiteLink || "",
+            //     name: userDetails.name || "",
+            //     phoneNumber: userDetails.phoneNumber || "",
+            //     designation: userDetails.designation || ""
+            // });
+
+            // const storedUser = JSON.parse(localStorage.getItem('user'));
+            // localStorage.setItem('user', JSON.stringify({
+            //     ...storedUser,
+            //     // Update the necessary fields with the new data
+            //     id: userDetails?._id,
+            //     organization: userDetails.organization || "",
+            //     address: userDetails.address || "",
+            //     country: userDetails.country || "",
+            //     organizationType: userDetails.organizationType || "",
+            //     city: userDetails.city || "",
+            //     zip: userDetails.zip || "",
+            //     industrySector: userDetails.industrySector || "",
+            //     state: userDetails.state || "",
+            //     websiteLink: userDetails.websiteLink || "",
+            //     name: userDetails.name || "",
+            //     phoneNumber: userDetails.phoneNumber || "",
+            //     designation: userDetails.designation || "",
+
+            // }));
 
         } catch (error) {
             console.error('Error Verifying Certificate:', error);
@@ -147,7 +192,7 @@ const ProfileDetails = () => {
 
     const handleClose = () => {
         setShow(false);
-        
+
     };
 
     const handleInputChange = (e) => {
@@ -165,35 +210,35 @@ const ProfileDetails = () => {
 
         let progressInterval;
         const startProgress = () => {
-          progressInterval = setInterval(() => {
-            setNow((prev) => {
-              if (prev < 90) return prev + 5;
-              return prev;
-            });
-          }, 100);
+            progressInterval = setInterval(() => {
+                setNow((prev) => {
+                    if (prev < 90) return prev + 5;
+                    return prev;
+                });
+            }, 100);
         };
-    
+
         const stopProgress = () => {
-          clearInterval(progressInterval);
-          setNow(100); // Progress complete
+            clearInterval(progressInterval);
+            setNow(100); // Progress complete
         };
-    
+
         startProgress();
-      const encryptedData = encryptData({email, ...formData}
-      );
+      const data = {email, ...formData};
         try {
-            const response = await fetch(`${apiUrl}/api/update-issuer`, {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    data:encryptedData 
-                })
-            });
-            const userData = await response.json();
-            const userDetails =
+            // const response = await fetch(`${apiUrl}/api/update-issuer`, {
+            //     method: "POST",
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'Authorization': `Bearer ${token}`,
+            //     },
+            //     body: JSON.stringify({
+            //         data:encryptedData 
+            //     })
+            // });
+            user.updateIssuer(data, async (response)=>{
+            const userData = response.data;
+            const userDetails = userData?.data;
             setLoginSuccess("Details Updated Successfully")
             setShow(true)
             setEditable(false);
@@ -213,6 +258,28 @@ const ProfileDetails = () => {
                 phoneNumber: userDetails.phoneNumber || "",
                 designation: userDetails.designation || "",
             });
+            })
+            // const userData = await response.json();
+            // const userDetails =
+            // setLoginSuccess("Details Updated Successfully")
+            // setShow(true)
+            // setEditable(false);
+            // // Assuming response is in JSON format
+            // setFormData({
+            //     id: userDetails.issuerId,
+            //     // organization: userDetails.organization || "",
+            //     address: userDetails.address || "",
+            //     country: userDetails.country || "",
+            //     // organizationType: userDetails.organizationType || "",
+            //     city: userDetails.city || "",
+            //     zip: userDetails.zip || "",
+            //     industrySector: userDetails.industrySector || "",
+            //     state: userDetails.state || "",
+            //     websiteLink: userDetails.websiteLink || "",
+            //     name: userDetails.name || "",
+            //     phoneNumber: userDetails.phoneNumber || "",
+            //     designation: userDetails.designation || "",
+            // });
 
         } catch (error) {
             console.error('Error Verifying Certificate:', error);
@@ -415,7 +482,7 @@ const ProfileDetails = () => {
                     </Container>
                 </div>
             </div>
-                    <div className='page-footer-bg'></div>
+            <div className='page-footer-bg'></div>
 
             {/* Loading Modal for API call */}
             <Modal className='loader-modal' show={isLoading} centered>

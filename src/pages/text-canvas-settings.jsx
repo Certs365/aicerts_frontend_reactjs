@@ -9,7 +9,7 @@ import canvas_bottom_color from "../../public/templateAsset/canvas_bottom_color.
 import Image from "next/image";
 const TextCanvasSettings = ({
   type,
-  
+
   handleText,
   handleCanvas,
   setText,

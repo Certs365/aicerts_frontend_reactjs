@@ -3,6 +3,7 @@ import { Form, Dropdown, Modal, DropdownButton, InputGroup, FormControl } from '
 import Image from 'next/image';
 import axios from 'axios';
 import { encryptData } from '../utils/reusableFunctions';
+import issuance from '../services/issuanceServices';
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const secretKey = process.env.NEXT_PUBLIC_BASE_ENCRYPTION_KEY;
 
@@ -57,6 +58,7 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
       }
     }}
   /> */}
+
 </InputGroup>
         </>
       );
@@ -76,70 +78,84 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
         }
     }, [searchTerm, isDateInput]);
 
-    const handleClose = () => {
-        setShow(false);
-        setError("")
-        setSuccess("")
-      };
+  const handleClose = () => {
+    setShow(false);
+    setError("")
+    setSuccess("")
+  };
 
-    useEffect(() => {
-        const storedUser = JSON.parse(localStorage.getItem('user') ?? 'null');
-        if (storedUser && storedUser.JWTToken) {
-            setEmail(storedUser.email);
-        }
-    }, []);
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user') ?? 'null');
+    if (storedUser && storedUser.JWTToken) {
+      setEmail(storedUser.email);
+    }
+  }, []);
 
- 
-  
-  const fetchSuggestions = async (term, criterion) => {
+
+
+    const fetchSuggestions = async (term, criterion) => {
       if (!term.trim() || isDateInput) {
-          setSuggestions([]);
-          return;
+        setSuggestions([]);
+        return;
       }
   
       const dataToEncrypt = {
-          email: email,
-          input: term,
-          filter: criterion,
-          flag: 1,
+        email: email,
+        input: term,
+        filter: criterion,
+        flag: 1,
       };
   
       // Your AES secret key (ensure both front-end and back-end use the same key)
-    
-      const encryptedData = encryptData(dataToEncrypt);
+  
+      // const encryptedData = encryptData(dataToEncrypt);
+  
       try {
-          const response = await fetch(`${apiUrl}/api/get-filtered-issues`, {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                  data: encryptedData, 
-              }),
-          });
-  
-          if (!response.ok) {
-              throw new Error('Network response was not ok');
+        // const response = await fetch(`${apiUrl}/api/get-filtered-issues`, {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify({
+        //     data: encryptedData,
+        //   }),
+        // });
+        issuance.filteredIssues( dataToEncrypt, async (response) => {
+          if( response.status != 'SUCCESS'){
+          // if (!response.ok) {
+            // throw new Error('Network response was not ok');
+            console.log('Network response was not ok');
           }
-  
-          const data = await response.json();
+          const data = response.data;
           setSuggestions(data?.details);
           setShowSuggestions(true);
+        })
+  
+  
+        // if (!response.ok) {
+        //   throw new Error('Network response was not ok');
+        // }
+  
+        // const data = await response.json();
+        // setSuggestions(data?.details);
+        // setShowSuggestions(true);
       } catch (error) {
-          console.error('Error fetching suggestions:', error);
-          setSuggestions([]);
+        console.error('Error fetching suggestions:', error);
+        setSuggestions([]);
       }
-  };
+    };
 
-    useEffect(() => {
-        if (!isDateInput) {
-            const debounceFetch = setTimeout(() => {
-                fetchSuggestions(searchTerm, searchBy);
-            }, 300);
+      /* eslint-disable */
+  useEffect(() => {
+    if (!isDateInput) {
+      const debounceFetch = setTimeout(() => {
+        fetchSuggestions(searchTerm, searchBy);
+      }, 300);
 
-            return () => clearTimeout(debounceFetch);
-        }
-    }, [searchTerm, searchBy]);
+      return () => clearTimeout(debounceFetch);
+    }
+  }, [searchTerm, searchBy]);
+  /* eslint-disable */
 
     const handleSearchTermChange = (e) => {
         const value = e.target.value;
@@ -147,94 +163,135 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
     };
 
     const handleDateChange = (e) => {
-        const value = e.target.value;
-        setRawDate(value); // Store raw date in 'yyyy-mm-dd' format
-        setSearchTerm(formatDate(value)); // Format date for API call
-    };
+      const value = e.target.value;
+      setRawDate(value); // Store raw date in 'yyyy-mm-dd' format
+      setSearchTerm(formatDate(value)); // Format date for API call
+  };
 
     const handleSearchBySelect = (eventKey) => {
-        setSearchBy(eventKey);
-        setSearchTerm(''); // Reset search term when search criterion changes
-        setSuggestions([]);
-        setShowSuggestions(false);
-
-        // Toggle date picker for certain searchBy options
-        if (eventKey === 'grantDate' || eventKey === 'expirationDate') {
-            setIsDateInput(true);
-        } else {
-            setIsDateInput(false);
-        }
+      setSearchBy(eventKey);
+      setSearchTerm(''); // Reset search term when search criterion changes
+      setSuggestions([]);
+      setShowSuggestions(false);
+  
+      // Toggle date picker for certain searchBy options
+      if (eventKey === 'grantDate' || eventKey === 'expirationDate') {
+        setIsDateInput(true);
+      } else {
+        setIsDateInput(false);
+      }
     };
 
     const handleSuggestionClick = (suggestion) => {
-        setSearchTerm(suggestion); // Set suggestion as search term
-        setShowSuggestions(false);
+       
+      console.log('suggestion: ', suggestion);
+      setSearchTerm(suggestion); // Set suggestion as search term
+      setShowSuggestions(false);
     };
-
-    const filteredData = (data, type, second="") => {
-        return data.filter(item => {
-            if (type === "batch") {
-                // Return items that have no 'type' property
-                return item.hasOwnProperty('batchId');
-            }
-            // Return items that match the specified 'type'
-            return item.type === type || second;
-        });
+   
+    const filteredData = (data, type, second = "") => {
+      console.log('filtereddata: ', data);
+      // console.log('filtereddata: data.data ', data?.data);
+      return data?.data?.filter(item => {
+        if (type === "batch") {
+          // Return items that have no 'type' property
+          return item.hasOwnProperty('batchId');
+        }
+        // Return items that match the specified 'type'
+        return item.type === type || second;
+      });
     };
-    
+ 
 
     const handleSearch = async (e) => {
-        e.preventDefault();
-        setError("");
-    
-        try {
-            // setLoading(true);
+      e.preventDefault();
+      setError("");
+  
+      try {
+        // setLoading(true);
+  
+        const dataToEncrypt = {
+          email: email,
+          input: searchTerm,
+          filter: searchBy,
+          flag: 2,
+        }
+        // const encryptedData = encryptData(dataToEncrypt);
+  
+        // const response = await fetch(`${apiUrl}/api/get-filtered-issues`, {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify({
+        //     data: encryptedData,
+        //   }),
+        // });
+  
+        issuance.filteredIssues( dataToEncrypt, async (response) => {
+          if( response.status == 'SUCCESS'){
 
-           const dataToEncrypt = {
-              email: email,
-              input: searchTerm,
-              filter: searchBy,
-              flag: 2,
+          // if (!response.ok) {
+            // throw new Error('Network response was not ok');
+            const responseData = response;
+          const data = responseData?.data?.details;
+        
+          if (!data) {
+            // throw new Error("No data returned from the server.");
+            console.log("No data returned from the server.");
           }
-      const encryptedData = encryptData(dataToEncrypt);
-            const response = await fetch(`${apiUrl}/api/get-filtered-issues`, {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                  data: encryptedData, 
-              }),
-          } );
-
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-
-        const responseData = await response.json();
-          const data = responseData?.details?.data;
-            if (!data) {
-                throw new Error("No data returned from the server.");
-            }
     
-            if (tab === 0) {
-                setFilteredSingleWithCertificates(filteredData(data, "withpdf", "dynamic"));
-            } else if (tab === 1) {
-                setFilteredSingleWithoutCertificates(filteredData(data, "withoutpdf"));
-            } else if (tab === 2) {
-                setFilteredBatchCertificatesData(filteredData(data, "batch", "dynamic"));
-            }
-            setLoading(false);
-        } catch (error) {
-            if (error.response && error.response.status === 400) {
-                setError(error.response.data.message || "Not able to Search");
-                setShow(true);
-            } else {
-                setError('An unexpected error occurred.');
-                console.error('Error during search:', error);
-            }
-            setLoading(false);
+          if (tab === 0) {
+            setFilteredSingleWithCertificates(filteredData(data, "withpdf", "dynamic"));
+            const checker =filteredData(data, "withpdf", "dynamic");
+             
+          } else if (tab === 1) {
+            setFilteredSingleWithoutCertificates(filteredData(data, "withoutpdf"));
+            const checker =filteredData(data, "withoutpdfthpdf");
+             
+          } else if (tab === 2) {
+            setFilteredBatchCertificatesData(filteredData(data, "batch", "dynamic"));
+            const checker =filteredData(data, "batch", "dynamic");
+             
+          }
+          setLoading(false);
+          }else{
+          setError(response?.data?.message || "Please Try After Sometime")
+          setShow(true)
+          }
+    
+        })
+          
+  
+  
+        // if (!response.ok) {
+        //   throw new Error('Network response was not ok');
+        // }
+  
+        // const responseData = await response.json();
+        // const data = responseData?.details?.data;
+        // if (!data) {
+        //   throw new Error("No data returned from the server.");
+        // }
+  
+        // if (tab === 0) {
+        //   setFilteredSingleWithCertificates(filteredData(data, "withpdf", "dynamic"));
+        // } else if (tab === 1) {
+        //   setFilteredSingleWithoutCertificates(filteredData(data, "withoutpdf"));
+        // } else if (tab === 2) {
+        //   setFilteredBatchCertificatesData(filteredData(data, "batch", "dynamic"));
+        // }
+        // setLoading(false);
+      } catch (error) {
+        if (error.response && error.response.status === 400) {
+          setError(error.response.data.message || "Not able to Search");
+          setShow(true);
+        } else {
+          setError('An unexpected error occurred.');
+          console.error('Error during search:', error);
         }
+        setLoading(false);
+      }
     };
     
 
@@ -300,11 +357,10 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
       {` ${searchBy.length ? searchBy.charAt(0).toUpperCase() + searchBy.slice(1) : 'Select Search For'}`}
     </Dropdown.Toggle>
 
-    <Dropdown.Menu style={{borderRadius:0}} className="custom-dropdown-menu">
-      {getSearchByOptions()}
-    </Dropdown.Menu>
-  </Dropdown>
-    </div>
+            <Dropdown.Menu style={{ borderRadius: 0 }} className="custom-dropdown-menu">
+              {getSearchByOptions()}
+            </Dropdown.Menu>
+          </Dropdown>
 
 {/* Wrapper div to hold the input and dropdown */}
 <div style={{ position: 'relative', display: 'flex', alignItems: 'center',justifyContent:"center" }}>
@@ -344,26 +400,26 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
       </>
     )}
 
-    {/* Suggestions List */}
-    {!isDateInput && showSuggestions && (
-      <ul className="suggestions-list" style={suggestionsListStyle}>
-        {suggestions?.length > 0 ? (
-          suggestions.map((suggestion, index) => (
-            <li
-              key={index}
-              onClick={() => handleSuggestionClick(suggestion)}
-              style={suggestionItemStyle}
-              onMouseDown={(e) => e.preventDefault()} // Prevents input blur
-            >
-              {suggestion}
-            </li>
-          ))
-        ) : (
-          <li style={suggestionItemStyle}>No suggestions found</li>
-        )}
-      </ul>
-    )}
-  </div>
+              {/* Suggestions List */}
+              {!isDateInput && showSuggestions && (
+                <ul className="suggestions-list" style={suggestionsListStyle}>
+                  {suggestions?.length > 0 ? (
+                    suggestions.map((suggestion, index) => (
+                      <li
+                        key={index}
+                        onClick={() => handleSuggestionClick(suggestion)}
+                        style={suggestionItemStyle}
+                        onMouseDown={(e) => e.preventDefault()} // Prevents input blur
+                      >
+                        {suggestion}
+                      </li>
+                    ))
+                  ) : (
+                    <li style={suggestionItemStyle}>No suggestions found</li>
+                  )}
+                </ul>
+              )}
+            </div>
 
   {/* Dropdown (placed inside the input container) */}
   <Dropdown onSelect={handleSearchBySelect} className="golden-dropdown-button d-none d-md-flex" style={{ position: 'absolute', left: 2, width:"200px" }}>
@@ -372,27 +428,25 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
       {` ${searchBy.length ? searchBy.charAt(0).toUpperCase() + searchBy.slice(1) : 'Select Search For'}`}
     </Dropdown.Toggle>
 
-    <Dropdown.Menu style={{borderRadius:0}} className="custom-dropdown-menu">
-      {getSearchByOptions()}
-    </Dropdown.Menu>
-  </Dropdown>
-     {/* Search Icon */}
-     <div className='d-none d-md-flex search-icon-container' onClick={handleSearch}>
-                        <Image width={10} height={10} src="/icons/search.svg" alt='search' />
-                    </div>
-                    <div className='d-flex d-md-none search-icon-container-mobile' onClick={handleSearch}>
-                        <Image width={10} height={10} src="/icons/search.svg" alt='search' />
-                    </div>
-  
-</div>
+              <Dropdown.Menu style={{ borderRadius: 0 }} className="custom-dropdown-menu">
+                {getSearchByOptions()}
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
 
 
-                 
-                   
-                </div>
-            </Form.Group>
-            
-<Modal onHide={handleClose} className='loader-modal text-center' show={show} centered>
+          {/* Search Icon */}
+          <div className='d-none d-md-flex search-icon-container' onClick={handleSearch}>
+            <Image width={10} height={10} src="/icons/search.svg" alt='search' />
+          </div>
+          <div className='d-flex d-md-none search-icon-container-mobile' onClick={handleSearch}>
+            <Image width={10} height={10} src="/icons/search.svg" alt='search' />
+          </div>
+        </div>
+        </div>
+      </Form.Group>
+
+      <Modal onHide={handleClose} className='loader-modal text-center' show={show} centered>
         <Modal.Body>
           {error !== '' ? (
             <>
@@ -425,7 +479,7 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
       </Modal>
         </Form>
     );
-};
+  };
 
 // Inline styles for suggestions list and items
 const suggestionsListStyle = {

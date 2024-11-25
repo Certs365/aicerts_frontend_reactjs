@@ -17,8 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'POST') {
     // Retrieve data from request body
-    const { detail,certificateUrl,logoUrl,signatureUrl,badgeUrl,issuerName,issuerDesignation,qrCodeImage, isCustomCerf } = req.body;
-    console.log("iscerf there",isCustomCerf);
+    const { detail,certificateUrl,logoUrl,signatureUrl,badgeUrl,issuerName,issuerDesignation,qrCodeImage, isCustomCerf,pdfDimentions } = req.body;
 
     if (!detail) {
       return res.status(400).json({ error: 'Certificate data not available.' });
@@ -175,16 +174,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                        
                 <div style="
                         position: absolute;
-                        right: 120px;
-                        bottom: 210px;
+                         left: ${pdfDimentions?.x ? `${pdfDimentions.x}px` : "120px"};
+                        top: ${pdfDimentions?.y ? `${pdfDimentions.y}px` : "210px"};
                     "
                 >
                     <img 
                         src=${detail?.qrImage?detail?.qrImage:detail?.qrCodeImage || qrCodeImage} 
                         alt='QR info' 
                         style="
-                          width: 210px;
-                          height: 210px;
+                           width: ${pdfDimentions?.width ? `${pdfDimentions.width}px` : "210px"};
+            height: ${pdfDimentions?.height ? `${pdfDimentions.height}px` : "210px"};
                         "
                     />
                 </div> 

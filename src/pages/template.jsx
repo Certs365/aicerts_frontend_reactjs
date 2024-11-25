@@ -28,13 +28,13 @@ const Template = () => {
   const [text, setText] = useState(false);
   const [canvas, setCanvas] = useState(false);
 
-  const handleText=()=>{
+  const handleText = () => {
     setText(!text);
   }
-  const handleCanvas=()=>{
+  const handleCanvas = () => {
     setCanvas(!canvas);
   }
-  
+
   return (
     <>
 
@@ -43,27 +43,27 @@ const Template = () => {
           <div className="d-flex flex-row ">
             <div className="sidebar">
               <div className="tools">
-                <div className="tools-box" onClick={() => {open ? setOpen(false) : setOpen(true);setSidebarOption("templates"); }} >
-                  <Image width={20} height={20} src={template} alt="Templates"/>
+                <div className="tools-box" onClick={() => { open ? setOpen(false) : setOpen(true); setSidebarOption("templates"); }} >
+                  <Image width={20} height={20} src={template} alt="Templates" />
                   <p>Templates</p>
                 </div>
-                <div className="tools-box" onClick={() => {open ? setOpen(false) : setOpen(true);setSidebarOption("shapes"); }} >
+                <div className="tools-box" onClick={() => { open ? setOpen(false) : setOpen(true); setSidebarOption("shapes"); }} >
                   <Image width={20} height={20} src={shapes} alt="Shapes" />
                   <p>Shapes</p>
                 </div>
-                <div className="tools-box" onClick={() => {open ? setOpen(false) : setOpen(true);setSidebarOption("canvas"); }}>
+                <div className="tools-box" onClick={() => { open ? setOpen(false) : setOpen(true); setSidebarOption("canvas"); }}>
                   <Image width={20} height={20} src={text_img} alt="Text" />
                   <p>Texts</p>
                 </div>
-                <div className="tools-box" onClick={() => {open ? setOpen(false) : setOpen(true);setSidebarOption("images"); }}>
+                <div className="tools-box" onClick={() => { open ? setOpen(false) : setOpen(true); setSidebarOption("images"); }}>
                   <Image width={20} height={20} src={image} alt="Image" />
                   <p>Images</p>
                 </div>
-                <div className="tools-box" onClick={() => {open ? setOpen(false) : setOpen(true);setSidebarOption("background"); }}>
+                <div className="tools-box" onClick={() => { open ? setOpen(false) : setOpen(true); setSidebarOption("background"); }}>
                   <Image width={20} height={20} src={background} alt="Background" />
                   <p>Background</p>
                 </div>
-                <div className="tools-box" onClick={() => {open ? setOpen(false) : setOpen(true);setSidebarOption("canvas"); }}>
+                <div className="tools-box" onClick={() => { open ? setOpen(false) : setOpen(true); setSidebarOption("canvas"); }}>
                   <Image width={20} height={20} src={canvas_img} alt="Canvas" />
                   <p>Canvas</p>
                 </div>
@@ -77,14 +77,14 @@ const Template = () => {
             </div>
             <div className={`${open ? "active-sidebar" : ""} sidebar-div`}>
               {/* templates */}
-              <TemplateSidebarSlider  type={sidebarOption} open={open} setOpen={setOpen} />
+              <TemplateSidebarSlider type={sidebarOption} open={open} setOpen={setOpen} />
             </div>
           </div>
-          
+
           <div className="canvas-content ">
             <div className="top-bar">
               <div>
-              <TextCanvasSettings type={sidebarOption}  setText={setText} setCanvas={setCanvas} handleText={handleText} handleCanvas = {handleCanvas} />
+                <TextCanvasSettings type={sidebarOption} setText={setText} setCanvas={setCanvas} handleText={handleText} handleCanvas={handleCanvas} />
               </div>
 
               <div className="move-to">

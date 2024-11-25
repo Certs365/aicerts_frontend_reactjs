@@ -11,7 +11,9 @@ interface Response {
 }
 
 // Set the base URL for the app server using the configuration
+const APP_URL = serverConfig.appServerUrl;
 const BASE_URL = serverConfig.appUserUrl;
+const ADMIN_API_URL = serverConfig.appApiUrl;
 
 // Define the encryption key from the environment variable
 const secretKey = process.env.NEXT_PUBLIC_BASE_ENCRYPTION_KEY;
@@ -31,7 +33,7 @@ const secretKey = process.env.NEXT_PUBLIC_BASE_ENCRYPTION_KEY;
  */
 const register = (data: any, callback: (response: Response) => void) => {
   const encryptedData = encryptData(data);
-  
+
   API({
     method: "POST",
     url: `${BASE_URL}/api/signup`,
@@ -47,7 +49,7 @@ const register = (data: any, callback: (response: Response) => void) => {
 
 const verifyOtp = (data: any, callback: (response: Response) => void) => {
   const encryptedData = encryptData(data);
-  
+
   API({
     method: "POST",
     url: `${BASE_URL}/api/verify-issuer`,
@@ -57,13 +59,13 @@ const verifyOtp = (data: any, callback: (response: Response) => void) => {
       callback({ status: "SUCCESS", data: response.data });
     })
     .catch((error) => {
-      callback({ status: "ERROR", error: error.response.data });
+      callback({ status: "ERROR", error: error?.response });
     });
 };
 
 const sendLink = (data: any, callback: (response: Response) => void) => {
   const encryptedData = encryptData({ email: data });
-  
+
   API({
     method: "POST",
     url: `${BASE_URL}/api/forgot-password`,
@@ -79,7 +81,7 @@ const sendLink = (data: any, callback: (response: Response) => void) => {
 
 const changePassword = (data: any, callback: (response: Response) => void) => {
   const encryptedData = encryptData(data);
-  
+
   API({
     method: "POST",
     url: `${BASE_URL}/api/reset-password`,
@@ -95,10 +97,10 @@ const changePassword = (data: any, callback: (response: Response) => void) => {
 
 const refreshToken = (data: any, callback: (response: Response) => void) => {
   const encryptedData = encryptData({ token: data?.refreshToken, email: data?.email });
-  
+
   API({
     method: "POST",
-    url: `${BASE_URL}/api/refresh`,
+    url: `${APP_URL}/api/refresh`,
     data: { data: encryptedData },
   })
     .then((response) => {
@@ -109,12 +111,184 @@ const refreshToken = (data: any, callback: (response: Response) => void) => {
     });
 };
 
+const creditLimit = (data: any, callback: (response: Response) => void) => {
+  // const encryptedData = encryptData(data);
+  
+  API({
+    method: "POST",
+    url: `${APP_URL}/api/get-credits-by-email`,
+    data: data,
+  })
+    .then((response) => {
+      callback({ status: "SUCCESS", data: response.data });
+    })
+    .catch((error) => {
+      callback({ status: "ERROR", error: error });
+    });
+}
+
+const login = (data: any, callback: (response: Response) => void) => {
+  const encryptedData = encryptData(data);
+  
+  API({
+    method: "POST",
+    url: `${BASE_URL}/api/login`,
+    data: { data: encryptedData },
+    // data: data,
+  })
+    .then((response) => {
+      callback({ status: "SUCCESS", data: response.data });
+    })
+    .catch((error) => {
+      callback({ status: "ERROR", error: error });
+    });
+}
+
+const twoFactorAuth = (data: any, callback: (response: Response) => void) => {
+  // const encryptedData = encryptData(data);
+  
+  API({
+    method: "POST",
+    url: `${BASE_URL}/api/two-factor-auth`,
+    data: data,
+  })
+    .then((response) => {
+      callback({ status: "SUCCESS", data: response.data });
+    })
+    .catch((error) => {
+      callback({ status: "ERROR", error: error });
+    });
+}
+
+const verifyIssuer = (data: any, callback: (response: Response) => void) => {
+  // const encryptedData = encryptData(data);
+  
+  API({
+    method: "POST",
+    url: `${APP_URL}/api/verify-issuer`,
+    data: data,
+  })
+    .then((response) => {
+      callback({ status: "SUCCESS", data: response.data });
+    })
+    .catch((error) => {
+      callback({ status: "ERROR", error: error });
+    });
+}
+
+const loginWithPhone = (data: any, callback: (response: Response) => void) => {
+  const encryptedData = encryptData(data);
+  
+  API({
+    method: "POST",
+    url: `${APP_URL}/api/login-with-phone`,
+    data: { data: encryptedData },
+  })
+    .then((response) => {
+      callback({ status: "SUCCESS", data: response.data });
+    })
+    .catch((error) => {
+      callback({ status: "ERROR", error: error });
+    });
+}
+
+const createValidateIssuer = (data: any, callback: (response: Response) => void) => {
+  const encryptedData = encryptData(data);
+  
+  API({
+    method: "POST",
+    url: `${APP_URL}/api/create-validate-issuer`,
+    data: { data: encryptedData },
+  })
+    .then((response) => {
+      callback({ status: "SUCCESS", data: response.data });
+    })
+    .catch((error) => {
+      callback({ status: "ERROR", error: error });
+    });
+}
+
+const getIssuerByEmail = (data: any, callback: (response: Response) => void) => {
+  const encryptedData = encryptData(data);
+  
+  API({
+    method: "POST",
+    url: `${ADMIN_API_URL}/api/get-issuer-by-email`,
+    data: { data: encryptedData },
+  })
+    .then((response) => {
+      callback({ status: "SUCCESS", data: response.data });
+    })
+    .catch((error) => {
+      callback({ status: "ERROR", error: error });
+    });
+}
+
+const updateIssuer = (data: any, callback: (response: Response) => void) => {
+  const encryptedData = encryptData(data);
+  
+  API({
+    method: "POST",
+    url: `${APP_URL}/api/update-issuer`,
+    data: { data: encryptedData },
+  })
+    .then((response) => {
+      callback({ status: "SUCCESS", data: response.data });
+    })
+    .catch((error) => {
+      callback({ status: "ERROR", error: error });
+    });
+}
+
+const upload = (data: any, callback: (response: Response) => void) => {
+  // const encryptedData = encryptData(data);
+  
+  API({
+    method: "POST",
+    url: `${ADMIN_API_URL}/api/upload`,
+    data: data,
+  })
+    .then((response) => {
+      callback({ status: "SUCCESS", data: response.data });
+    })
+    .catch((error) => {
+      callback({ status: "ERROR", error: error });
+    });
+  }
+
+
+const downloadIssuanceReport = (data: any, callback: (response: Response) => void) => {
+  // const encryptedData = encryptData(data);
+  
+  API({
+    method: "POST",
+    url: `${BASE_URL}/api/generate-excel-report`,
+    data: data,
+  })
+    .then((response) => {
+      callback({ status: "SUCCESS", data: response.data });
+    })
+    .catch((error) => {
+      callback({ status: "ERROR", error: error });
+    });
+  }
+
 const user = {
   register,
   verifyOtp,
   sendLink,
   changePassword,
   refreshToken,
+  creditLimit,
+  login,
+  twoFactorAuth,
+  verifyIssuer,
+  loginWithPhone,
+  createValidateIssuer,
+  getIssuerByEmail,
+  updateIssuer,
+  upload,
+  downloadIssuanceReport
 };
 
-export default user;
+export default user

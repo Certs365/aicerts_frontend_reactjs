@@ -18,7 +18,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === 'POST') {
     // Retrieve data from request body
     const { detail,certificateUrl,logoUrl,signatureUrl,badgeUrl,issuerName,issuerDesignation,qrCodeImage, isCustomCerf } = req.body;
-    console.log("iscerf there",isCustomCerf);
 
     if (!detail) {
       return res.status(400).json({ error: 'Certificate data not available.' });

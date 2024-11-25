@@ -89,7 +89,7 @@ const SelectQrPdf = () => {
     setShowForm(true)
     
   };
-
+/* eslint-disable */
   useEffect(() => {
 
     if (certificateUrl) {
@@ -97,6 +97,7 @@ const SelectQrPdf = () => {
       convertImageToPdf(certificateUrl);
     }
   }, [certificateUrl]);
+  /* eslint-disable */
 
   return (
     <div>

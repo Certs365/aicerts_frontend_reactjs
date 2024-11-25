@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import eyeIcon from '../../public/icons/eye.svg';
 import eyeSlashIcon from '../../public/icons/eye-slash.svg';
 import NavigationLogin from '../app/navigation-login';
+import ThemedImage from '@/components/ThemedImage';
 
 const Register = () => {
   const router = useRouter();
@@ -20,17 +21,17 @@ const Register = () => {
   const [loginSuccess, setLoginSuccess] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [now, setNow] = useState(0);
-        
+
   const togglePasswordVisibility = () => {
-      setPasswordVisible(!passwordVisible);
+    setPasswordVisible(!passwordVisible);
   };
 
   const handleClose = () => {
-      setFieldErrors({
-          userEmail: ''
-      });
-      setShow(false);
-      setLoginError('');
+    setFieldErrors({
+      userEmail: ''
+    });
+    setShow(false);
+    setLoginError('');
   };
 
   const handleSuccessClose = () => {
@@ -51,7 +52,7 @@ const Register = () => {
       formData.password !== formData.confirmPassword || // Check if passwords match
       Object.keys(fieldErrors).some((key) => fieldErrors[key] !== '')
     );
-  };  
+  };
 
   // State for form data
   const [formData, setFormData] = useState({
@@ -115,7 +116,7 @@ const Register = () => {
         }));
         return;
       }
-  
+
       // Prevent entering numbers
       if (/\d/.test(value)) {
         // Remove numbers from the value
@@ -126,7 +127,7 @@ const Register = () => {
         }));
         return;
       }
-  
+
       // Prevent adding space at the start
       if (value.trimStart() !== value) {
         // Remove leading spaces from the value
@@ -161,15 +162,15 @@ const Register = () => {
     // Check if passwords match
     if (field === 'confirmPassword') {
       if (value !== formData.password) {
-          setFieldErrors((prevErrors) => ({
-              ...prevErrors,
-              confirmPassword: 'Passwords do not match',
-          }));
+        setFieldErrors((prevErrors) => ({
+          ...prevErrors,
+          confirmPassword: 'Passwords do not match',
+        }));
       } else {
-          setFieldErrors((prevErrors) => ({
-              ...prevErrors,
-              confirmPassword: '',
-          }));
+        setFieldErrors((prevErrors) => ({
+          ...prevErrors,
+          confirmPassword: '',
+        }));
       }
     }
   };
@@ -192,7 +193,7 @@ const Register = () => {
         });
       }, 100);
     };
-  
+
     const stopProgress = () => {
       clearInterval(progressInterval);
       setNow(100); // Progress complete
@@ -240,7 +241,7 @@ const Register = () => {
       }
       // Call the register API with the form data
       user?.register(data, (response) => {
-       
+
         // Handle the API response here (success or error)
         if (response?.data?.status === 'SUCCESS') {
           // successful registration
@@ -301,10 +302,10 @@ const Register = () => {
 
   return (
     <div className='register page-bg position-relative'>
-            <NavigationLogin />
+      <NavigationLogin />
 
-      <div className='container'>
-        <h2 className='title'>Register your Organization</h2>
+      <div className='container pt-5'>
+        <h2 className='title'>Register Your Organization</h2>
 
         <Form className='register-form'>
           <Card>
@@ -499,14 +500,15 @@ const Register = () => {
                         >
                         </i>
                         <div className='eye-icon position-absolute'>
-                            <Image
-                                src={passwordVisible ? eyeSlashIcon : eyeIcon}
-                                width={20}
-                                height={20}
-                                alt={passwordVisible ? 'Hide password' : 'Show password'}
-                                onClick={togglePasswordVisibility}
-                                className="password-toggle"
-                            />
+                          <ThemedImage
+                            imageLight={passwordVisible ? eyeSlashIcon : eyeIcon}
+                            imageDark={passwordVisible ? eyeSlashIcon : eyeIcon}
+                            width={20}
+                            height={20}
+                            alt={passwordVisible ? 'Hide password' : 'Show password'}
+                            onClick={togglePasswordVisibility}
+                            className="password-toggle"
+                          />
                         </div>
                       </div>
                       {fieldErrors.password && <p className='error-message' style={{ color: '#ff5500' }}>{fieldErrors.password}</p>}
@@ -527,15 +529,16 @@ const Register = () => {
                           className={`bi bi-eye${showPassword ? '-slash' : ''}`}
                           onClick={() => setShowPassword((prevShowPassword) => ({ ...prevShowPassword, confirmPassword: !prevShowPassword?.confirmPassword }))}
                         ></i>
-                         <div className='eye-icon position-absolute'>
-                            <Image
-                                src={passwordVisible ? eyeSlashIcon : eyeIcon}
-                                width={20}
-                                height={20}
-                                alt={passwordVisible ? 'Hide password' : 'Show password'}
-                                onClick={togglePasswordVisibility}
-                                className="password-toggle"
-                            />
+                        <div className='eye-icon position-absolute'>
+                          <ThemedImage
+                            imageLight={passwordVisible ? eyeSlashIcon : eyeIcon}
+                            imageDark={passwordVisible ? eyeSlashIcon : eyeIcon}
+                            width={20}
+                            height={20}
+                            alt={passwordVisible ? 'Hide password' : 'Show password'}
+                            onClick={togglePasswordVisibility}
+                            className="password-toggle"
+                          />
                         </div>
                       </div>
                       {fieldErrors.confirmPassword && (
@@ -581,52 +584,52 @@ const Register = () => {
 
       {/* Loading Modal for API call */}
       <Modal className='loader-modal' show={isLoading} centered>
-          <Modal.Body>
-              <div className='certificate-loader'>
-                  <Image
-                      src="/backgrounds/login-loading.gif"
-                      layout='fill'
-                      objectFit='contain'
-                      alt='Loader'
-                  />
-              </div>
-              <div className='text'>Updating user details</div>
-              <ProgressBar now={now} label={`${now}%`} />
-          </Modal.Body>
+        <Modal.Body>
+          <div className='certificate-loader'>
+            <Image
+              src="/backgrounds/login-loading.gif"
+              layout='fill'
+              objectFit='contain'
+              alt='Loader'
+            />
+          </div>
+          <div className='text'>Updating user details</div>
+          <ProgressBar now={now} label={`${now}%`} />
+        </Modal.Body>
       </Modal>
 
       <Modal className='loader-modal register-success-modal text-center' show={show} centered>
-          <Modal.Body>
-              {loginSuccess && 
-                  <>
-                    <div className='error-icon success-image'>
-                        <Image
-                            src="/icons/success.gif"
-                            layout='fill'
-                            objectFit='contain'
-                            alt='Loader'
-                        />
-                    </div>
-                    <div className='text' style={{ color: '#CFA935' }}>Thank you for choosing to join us.</div>
-                    <p className='text-success'><strong>We are currently reviewing your application, and once it is approved, you will receive a notification via email.</strong></p>
-                    <button className='success mt-2' onClick={handleSuccessClose}>Ok</button>
-                </>
-              }
-              {loginError &&   
-                  <>
-                    <div className='error-icon'>
-                        <Image
-                            src="/icons/invalid-password.gif"
-                            layout='fill'
-                            objectFit='contain'
-                            alt='Loader'
-                        />
-                    </div>
-                    <div className='text' style={{ color: '#ff5500' }}>{loginError}</div>
-                    <button className='warning' onClick={handleClose}>Ok</button>
-                </>
-              }
-          </Modal.Body>
+        <Modal.Body>
+          {loginSuccess &&
+            <>
+              <div className='error-icon success-image'>
+                <Image
+                  src="/icons/success.gif"
+                  layout='fill'
+                  objectFit='contain'
+                  alt='Loader'
+                />
+              </div>
+              <div className='text' style={{ color: '#CFA935' }}>Thank you for choosing to join us.</div>
+              <p className='text-success'><strong>We are currently reviewing your application, and once it is approved, you will receive a notification via email.</strong></p>
+              <button className='success mt-2' onClick={handleSuccessClose}>Ok</button>
+            </>
+          }
+          {loginError &&
+            <>
+              <div className='error-icon'>
+                <Image
+                  src="/icons/invalid-password.gif"
+                  layout='fill'
+                  objectFit='contain'
+                  alt='Loader'
+                />
+              </div>
+              <div className='text' style={{ color: '#ff5500' }}>{loginError}</div>
+              <button className='warning' onClick={handleClose}>Ok</button>
+            </>
+          }
+        </Modal.Body>
       </Modal>
     </div>
   );

@@ -40,7 +40,7 @@ const ForgotPassword = () => {
     // Call the sendLink API with the form data
     user.sendLink(email, (response) => {
       if (response.data.status === 'PASSED') {
-              // if (true) {
+        // if (true) {
         // Successful link sent
         setShow2FA(true); // Show OTP field after sending link
         setEmailErrors('');
@@ -59,7 +59,7 @@ const ForgotPassword = () => {
     };
     user.verifyOtp(data, (response) => {
       if (response.data.status === 'PASSED') {
-      // if (true) {
+        // if (true) {
         // Successful OTP verification
         // Pass email to /reset-password route
         router.push(`/passwords-confirm?email=${encodeURIComponent(email)}`);
