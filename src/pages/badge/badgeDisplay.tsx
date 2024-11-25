@@ -21,17 +21,17 @@ const CertificateEditor: React.FC = () => {
                 const response = await axios.get(
                     `${apiUserUrl}/api/get-badge-template/${id}`
                 );
-                const { designFields, url, title, subTitle, description } = response?.data?.data;
+                const { designFields, url, title, subTitle, description, attributes } = response?.data?.data;
 
                 // Combine title, subtitle, and description into placeholders
                 const initialPlaceholders = [
                     { text: title, posx: 100, posy: 50, width: 300, height: 40, isLocked: false },
                     { text: subTitle, posx: 100, posy: 100, width: 300, height: 40, isLocked: false },
                     { text: description, posx: 100, posy: 150, width: 400, height: 60, isLocked: false },
-                    ...designFields.map((field) => ({
-                        text: field.name,
-                        posx: field.x,
-                        posy: field.y,
+                    ...attributes.map((field) => ({
+                        text: field.value,
+                        posx: field.x || 150,
+                        posy: field.y || 150,
                         width: 150,
                         height: 40,
                         isLocked: false,
@@ -39,7 +39,6 @@ const CertificateEditor: React.FC = () => {
                         fontColor: field.fontColor,
                     })),
                 ];
-
                 setPlaceholders(initialPlaceholders);
 
                 // Set badge data separately
