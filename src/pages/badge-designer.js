@@ -38,6 +38,9 @@ import { setBackgroundImage, setImage } from "../components/badge-designer/utils
 import TemplatePanel from "../components/badge-designer/panel/TemplatePanel";
 import { Button, Spinner } from "react-bootstrap";
 import BasePanel from "../components/badge-designer/panel/BasePanel";
+import { useRouter } from "next/router";
+const apiUserUrl = process.env.NEXT_PUBLIC_BASE_URL_USER;
+const apiAdminUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 
 const BadgeDesigner = () => {
@@ -66,6 +69,8 @@ const BadgeDesigner = () => {
   const [userEmail, setUserEmail] = useState(null);
   const [fileUrl, setFileUrl] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const { id } = router.query;
 
    // Use effect to fetch and load the user's email from localStorage
    useEffect(() => {
@@ -108,7 +113,7 @@ const BadgeDesigner = () => {
   
       try {
         // Upload image to server (S3)
-        const uploadResponse = await fetch(`https://adminapidev.certs365.io/api/upload`, {
+        const uploadResponse = await fetch(`${apiAdminUrl}/api/upload`, {
           method: "POST",
           body: fd,
         });
@@ -141,7 +146,7 @@ const BadgeDesigner = () => {
     // Function to update an existing certificate template
   const updateTemplate = async (id, fileUrl, templateData) => {
     try {
-      const response = await fetch(`https://userdevapi.certs365.io/api/update-certificate-template`, {
+      const response = await fetch(`${apiUserUrl}/api/update-certificate-template`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -168,7 +173,7 @@ const BadgeDesigner = () => {
   // Function to create a new certificate template
   const createTemplate = async (fileUrl, templateData) => {
     try {
-      const response = await fetch(`https://userdevapi.certs365.io/api/add-certificate-template`, {
+      const response = await fetch(`${apiUserUrl}/api/add-certificate-template`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -204,7 +209,7 @@ const BadgeDesigner = () => {
         const tab = sessionStorage.getItem("tab") || 0;
         
         // Redirect to the certificate page
-        window.location.href = `/certificate?tab=${tab}`;
+        window.location.href = `/badge-placeholder?id=${id}`;
       } else {
         alert("Template upload failed. Please try again.");
       }

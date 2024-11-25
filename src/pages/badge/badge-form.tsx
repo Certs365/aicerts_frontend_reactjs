@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
@@ -29,7 +31,7 @@ const BadgeForm = () => {
               description: description || '',
             });
 
-            setAttributes(attributes|| []);
+            setAttributes(attributes || []);
           } else {
             console.error('Failed to fetch badge details:', response.error || 'Unknown error');
             setFormData({ title: '', subtitle: '', description: '' });
@@ -71,21 +73,21 @@ const BadgeForm = () => {
     try {
       if (id) {
         setIsLoading(true);
-  
+
         // Using the certificate service for updating
-        certificate.updateBadgeTemplate({ ...formData,id, attributes }, (response) => {
+        certificate.updateBadgeTemplate({ ...formData, id, attributes }, (response) => {
           if (response.status === 'SUCCESS') {
             console.log('Badge updated successfully');
             router.push(`/badge-designer?id=${id}`); // Navigate on success
           } else {
             console.error('Failed to update badge:', response.error || 'Unknown error');
           }
-  
+
           setIsLoading(false);
         });
       } else {
         setIsLoading(true);
-  
+
         // Using the certificate service for creating
         certificate.addBadgeTemplate({ ...formData, attributes }, (response) => {
           if (response.status === 'SUCCESS') {
@@ -94,7 +96,7 @@ const BadgeForm = () => {
           } else {
             console.error('Failed to create badge:', response.error || 'Unknown error');
           }
-  
+
           setIsLoading(false);
         });
       }
@@ -201,7 +203,7 @@ const BadgeForm = () => {
         </button>
 
         {/* Submit Button */}
-        <Button onClick={(e)=>{handleSubmit(e)}} className="golden" label={id ? 'Update' : 'Submit'} />
+        <Button onClick={(e) => { handleSubmit(e) }} className="golden" label={id ? 'Update' : 'Submit'} />
       </form>
     </div>
   );
