@@ -209,7 +209,7 @@ const BadgeDesigner = () => {
         const tab = sessionStorage.getItem("tab") || 0;
         
         // Redirect to the certificate page
-        window.location.href = `/badge-placeholder?id=${id}`;
+        window.location.href = `/badge/badgeDisplay?id=${id}`;
       } else {
         alert("Template upload failed. Please try again.");
       }

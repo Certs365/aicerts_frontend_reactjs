@@ -6,8 +6,8 @@ import CertificateContext from '@/utils/CertificateContext';
 import { Modal, ProgressBar } from 'react-bootstrap';
 import Image from 'next/image';
 import { FaTrash } from 'react-icons/fa';
-import PlaceholderPosition from '@/components/placeholderPosition';
 import Button from '../../../shared/button/button';
+import BadgeDisplay from './badgeDisplay';
 
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL_USER;
 
@@ -124,7 +124,7 @@ const Placeholder: React.FC = () => {
                 <div className="position-relative h-100">
                     <div className="vertical-center">
                         <div className="d-flex flex-column justify-content-center align-items-center">
-                            <PlaceholderPosition
+                            <BadgeDisplay
                                 fileUrl={file}
                                 scale={1}
                                 placeholders={placeholders}

@@ -158,7 +158,15 @@ const BadgeForm = () => {
             disabled={isLoading}
           ></textarea>
         </div>
-
+        {/* Add Field Button */}
+        <button
+          type="button"
+          className="btn btn-primary mb-4"
+          onClick={handleAddField}
+          disabled={isLoading}
+        >
+          Add Field
+        </button>
         {/* Attributes */}
         <h5 className="mt-4">Custom Fields</h5>
         {attributes.map((attr, index) => (
@@ -191,16 +199,6 @@ const BadgeForm = () => {
             </div>
           </div>
         ))}
-
-        {/* Add Field Button */}
-        <button
-          type="button"
-          className="btn btn-primary mb-4"
-          onClick={handleAddField}
-          disabled={isLoading}
-        >
-          Add Field
-        </button>
 
         {/* Submit Button */}
         <Button onClick={(e) => { handleSubmit(e) }} className="golden" label={id ? 'Update' : 'Submit'} />
