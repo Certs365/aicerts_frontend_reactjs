@@ -23,6 +23,7 @@ const Gallery = () => {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState(''); // New state for search query
   const [searchLoading, setSearchLoading] = useState(false); // New state for search loading
   const [filteredSingleWithCertificates, setFilteredSingleWithCertificates] = useState([]);
@@ -45,18 +46,18 @@ const Gallery = () => {
   }, []);
 
   const fetchData = async (storedUser) => {
-    setIsLoading(true);
-    
+    setShowLoading(true);
     try {
       // fetchBatchDates(storedUser);
       await Promise.all([
         fetchSingleWithPdfCertificates(storedUser),
         fetchSingleWithoutCertificates(storedUser),
       ]);
+      setShowLoading(false);
+
     } catch (error) {
       console.error("Error fetching data: ", error);
     } finally {
-      setIsLoading(false);
     }
   };
 
@@ -80,61 +81,45 @@ const Gallery = () => {
   const fetchSingleWithoutCertificates = async (storedUser) => {
     const data = {
       issuerId: storedUser.issuerId,
-      type: 2
+      type: 2,
     };
-    // const encryptedData = encryptData(data)
-
-    try {
-      // const response = await fetch(`${apiUrl_Admin}/api/get-single-certificates`, {
-      //   method: "POST",
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'Authorization': `Bearer ${storedUser.token}`,
-      //   },
-      //   body: JSON.stringify({data:encryptedData})
-      // });
-      await certificate.getSingleCertificates(data, async (response)=>{
-        const certificatesData = response;
-        console.log("gallery->getsinglecerf-->", certificatesData);
-      setSingleWithoutCertificates(certificatesData?.data);
-      setFilteredSingleWithoutCertificates(certificatesData?.data);
-      })
-      // const certificatesData = await response.json();
-      // setSingleWithoutCertificates(certificatesData?.data);
-      // setFilteredSingleWithoutCertificates(certificatesData?.data);
-    } catch (error) {
-      console.error('Error ', error);
-    } 
+  
+    return new Promise((resolve, reject) => {
+      try {
+        certificate.getSingleCertificates(data, (response) => {
+          const certificatesData = response;
+          setSingleWithoutCertificates(certificatesData?.data);
+          setFilteredSingleWithoutCertificates(certificatesData?.data);
+          resolve(certificatesData);
+        });
+      } catch (error) {
+        console.error('Error in fetchSingleWithoutCertificates:', error);
+        reject(error);
+      }
+    });
   };
-
+  
   const fetchSingleWithPdfCertificates = async (storedUser) => {
     const data = {
       issuerId: storedUser.issuerId,
-      type: 1
+      type: 1,
     };
-    // const encryptedData = encryptData(data)
-
-    try {
-      // const response = await fetch(`${apiUrl_Admin}/api/get-single-certificates`, {
-      //   method: "POST",
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'Authorization': `Bearer ${storedUser.token}`,
-      //   },
-      //   body: JSON.stringify({data:encryptedData})
-      // });
-      await certificate.getSingleCertificates(data, (response)=>{
-        const certificatesData =  response;
-      setSingleWithCertificates(certificatesData?.data);
-      setFilteredSingleWithCertificates(certificatesData?.data);
-      })
-      // const certificatesData = await response.json();
-      // setSingleWithCertificates(certificatesData?.data);
-      // setFilteredSingleWithCertificates(certificatesData?.data);
-    } catch (error) {
-      console.error('Error ', error);
-    } 
+  
+    return new Promise((resolve, reject) => {
+      try {
+        certificate.getSingleCertificates(data, (response) => {
+          const certificatesData = response;
+          setSingleWithCertificates(certificatesData?.data);
+          setFilteredSingleWithCertificates(certificatesData?.data);
+          resolve(certificatesData);
+        });
+      } catch (error) {
+        console.error('Error in fetchSingleWithPdfCertificates:', error);
+        reject(error);
+      }
+    });
   };
+  
 
   const fetchBatchDates = async (storedUser) => {
     const data = {
@@ -250,7 +235,18 @@ const Gallery = () => {
           </div> */}
 
           <SearchAdmin setFilteredSingleWithCertificates={setFilteredSingleWithCertificates} setFilteredSingleWithoutCertificates={setFilteredSingleWithoutCertificates} setFilteredBatchCertificatesData={setFilteredBatchCertificatesData} tab={tab} setLoading={setLoading} />
-
+          <Modal className='loader-modal' show={showLoading} centered>
+                <Modal.Body>
+                    <div className='certificate-loader'>
+                        <Image
+                            src="/backgrounds/login-loading.gif"
+                            layout='fill'
+                            objectFit='contain'
+                            alt='Loader'
+                        />
+                    </div>
+                </Modal.Body>
+            </Modal>
         </div>
       )}
       {searchLoading ? (
