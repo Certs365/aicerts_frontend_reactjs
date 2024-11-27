@@ -83,6 +83,43 @@
     }
 }
 
+.subscription-wrapper {
+    width: 100%;
+}
+
+.last-box {
+    border: 1px solid #BFC0C2;
+    margin: 30px;
+    border-radius: 4px;
+
+    h3,
+    p {
+        font-family: $font-family;
+    }
+
+    p {
+        color: #5B5A5F;
+    }
+
+    .search-input-setting {
+        width: 300px;
+    }
+
+    .search-input-setting:focus {
+        outline: none;
+        /* Removes the default outline */
+        box-shadow: none;
+        /* Removes the shadow */
+    }
+
+    .arrow-container {
+        width: 40px;
+        height: 40px;
+        background-color: #CFA935;
+        position: absolute;
+    }
+}
+
 .dark-mode {
     .settings-container {
         .settings-title {
@@ -90,19 +127,14 @@
         }
 
         .org-details {
-            .label-settings{
+            .label-settings {
                 color: $white;
             }
         }
     }
 
-    .blockchain-button, .switch-button {
+    .blockchain-button,
+    .switch-button {
         color: $white;
-    }
-
-    .last-box {
-        h3, p {
-            color: $white;
-        }
     }
 }

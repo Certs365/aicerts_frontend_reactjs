@@ -45,13 +45,19 @@ const Gallery = () => {
   }, []);
 
   const fetchData = async (storedUser) => {
-    setIsLoading(true)
-    fetchBatchDates(storedUser)
-    await Promise.all([
-      fetchSingleWithPdfCertificates(storedUser),
-      fetchSingleWithoutCertificates(storedUser),
-    ]);
-    setIsLoading(false);
+    setIsLoading(true);
+    
+    try {
+      // fetchBatchDates(storedUser);
+      await Promise.all([
+        fetchSingleWithPdfCertificates(storedUser),
+        fetchSingleWithoutCertificates(storedUser),
+      ]);
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleChange = (value) => {
@@ -87,7 +93,7 @@ const Gallery = () => {
       //   },
       //   body: JSON.stringify({data:encryptedData})
       // });
-      certificate.getSingleCertificates(data, async (response)=>{
+      await certificate.getSingleCertificates(data, async (response)=>{
         const certificatesData = response;
         console.log("gallery->getsinglecerf-->", certificatesData);
       setSingleWithoutCertificates(certificatesData?.data);
@@ -117,7 +123,7 @@ const Gallery = () => {
       //   },
       //   body: JSON.stringify({data:encryptedData})
       // });
-      certificate.getSingleCertificates(data, (response)=>{
+      await certificate.getSingleCertificates(data, (response)=>{
         const certificatesData =  response;
       setSingleWithCertificates(certificatesData?.data);
       setFilteredSingleWithCertificates(certificatesData?.data);
@@ -131,7 +137,6 @@ const Gallery = () => {
   };
 
   const fetchBatchDates = async (storedUser) => {
-    setLoading(true)
     const data = {
       issuerId: storedUser.issuerId,
     };
@@ -155,7 +160,6 @@ const Gallery = () => {
     } catch (error) {
       console.error('Error ', error);
     } finally {
-      setLoading(false)
     }
   };
 

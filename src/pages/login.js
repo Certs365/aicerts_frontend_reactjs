@@ -164,6 +164,7 @@ const Login = () => {
     setNow(100); // Progress complete
   };
   const login = async () => {
+    setIsLoading(true);
 
     try {
       setIsLoading(true);
@@ -183,7 +184,7 @@ const Login = () => {
       //    data:encryptedData
       //   }),
       // });
-      user.login(payload, async (response)=>{
+      await user.login(payload, async (response)=>{
         const responseData =  response.data;
         if (responseData?.code === 200) {
         if (responseData?.status === 'FAILED') {
@@ -209,7 +210,7 @@ const Login = () => {
         }
       } else if (responseData?.code === 400) {
         setShowPhone(responseData?.isPhoneNumber);
-        setLoginError('Invalid input or empty credentials');
+        setLoginError(responseData?.message || 'Please Try After Some Time');
         setShow(true);
       } else if (responseData?.code === 401) {
         setShowPhone(responseData?.isPhoneNumber);

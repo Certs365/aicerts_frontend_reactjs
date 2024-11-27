@@ -263,7 +263,7 @@ const Navigation = () => {
         setSelectedTab(5);
         break;
       default:
-        setSelectedTab(2); // Default to the first tab
+        setSelectedTab(10); // Default to the first tab
     }
   }, [router.pathname]);
 

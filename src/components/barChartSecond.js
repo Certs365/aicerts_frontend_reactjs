@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { CategoryScale, LinearScale, BarElement } from "chart.js";
 import Chart from "chart.js/auto";
@@ -33,6 +33,7 @@ function BarChartSecond() {
     const [selectedFilter, setSelectedFilter] = useState("All");
 
     const [barThickness, setBarThickness] = useState(20); // Default bar thickness
+    const chartRef = useRef(null);
 
     // Determine screen size and adjust bar thickness
     useEffect(() => {
@@ -274,8 +275,24 @@ function BarChartSecond() {
         });
     }, []);
 
+    useEffect(() => {
+        const resizeChart = () => {
+            const chartInstance = Chart.getChart(chartRef.current);
+            if (chartInstance) {
+                chartInstance.resize();
+            }
+        };
+    
+        // Ensure the chart resizes after the component has fully loaded
+        setTimeout(resizeChart, 100);
+    
+        return () => {
+            window.removeEventListener('resize', resizeChart);
+        };
+    }, []);
+    
     return (
-        <div  className="container outer-container p-0" style={{height:"300px", width:"100%"}}>
+        <div  className="container outer-container p-0" style={{height:"300px"}}>
             <div className="chart-date">
                 <DatePicker
                     selected={selectedDate}
@@ -340,7 +357,7 @@ function BarChartSecond() {
                 </div>
             </div>
             ) : (
-                    <Bar data={chartData} options={chartOptions} height={"90%"}/>
+                    <Bar ref={chartRef} data={chartData} options={chartOptions} width={"100%"}height={"90%"}/>
             )}
         </div>
     );

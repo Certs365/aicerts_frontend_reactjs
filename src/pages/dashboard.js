@@ -188,8 +188,7 @@ const Dashboard = () => {
       </div>
       <div className="main-container gap">
         {/* Rendering LineChart component */}
-        <Container>
-      
+        <Container >
           <BarChartSecond />
         </Container>
         {/* Rendering BarChart component */}
