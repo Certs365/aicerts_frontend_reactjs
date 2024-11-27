@@ -300,7 +300,7 @@ console.log(issuedCertificate)
                   alt='Loader'
                 />
               </div>
-              <div className='text mt-3'>No certificates have been issued yet. Please generate a certificate and revisit later!</div>
+              <div style={{ color: '#CFA935' }} className='text mt-3'>No certificates have been issued yet. Please generate a certificate and revisit later!</div>
               <button className='warning' onClick={handleRedirect}>Ok</button>
              </Modal.Body>
             </Modal>

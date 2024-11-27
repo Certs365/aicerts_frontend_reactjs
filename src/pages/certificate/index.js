@@ -728,7 +728,7 @@ const CardSelector = () => {
   return (
     <>
       <div className="page-bg">
-        <div className="position-relative">
+        <div className="position-relative settings-container h-100">
           <div className="dashboard mt-5">
             <Container>
               {tab == 0 && <h3 className="title mb-4 py-2">Issue Certifications</h3>}
