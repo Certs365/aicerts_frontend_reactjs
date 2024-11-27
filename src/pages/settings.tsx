@@ -518,9 +518,9 @@ const Settings: React.FC = () => {
               )))}
               {/* ))} */}
               <div className="subscription-wrapper m-2 d-flex flex-row justify-content-evenly">
-                {[0, 1, 2].map(() => {
+                {[0, 1, 2].map((e) => {
                   return (
-                    <Card style={{ width: '14rem', borderRadius: '0px', }}>
+                    <Card key={e} style={{ width: '14rem', borderRadius: '0px', }}>
                       <Card.Body>
                         <Card.Title style={{ fontSize: '20px', fontWeight: 'bolder' }}>Custom(Enterprise)</Card.Title>
                         <Card.Subtitle className="mb-2 text-muted" style={{ fontSize: '14px', fontWeight: 'bold' }}>Customised Plans</Card.Subtitle>
