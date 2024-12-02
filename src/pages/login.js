@@ -379,7 +379,7 @@ const handleLoginOtp = async (e) => {
         // console.log('Success:', data);
       } else {
         // Handle error (e.g., show error message)
-        setLoginError('Invalid Otp');
+        setLoginError(response?.data?.message|| 'Please Try After Sometime');
         setShow(true);
         console.error('Error:', data);
   

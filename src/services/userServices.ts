@@ -113,7 +113,7 @@ const refreshToken = (data: any, callback: (response: Response) => void) => {
 
 const creditLimit = (data: any, callback: (response: Response) => void) => {
   // const encryptedData = encryptData(data);
-  
+
   API({
     method: "POST",
     url: `${APP_URL}/api/get-credits-by-email`,
@@ -129,7 +129,7 @@ const creditLimit = (data: any, callback: (response: Response) => void) => {
 
 const login = (data: any, callback: (response: Response) => void) => {
   const encryptedData = encryptData(data);
-  
+
   API({
     method: "POST",
     url: `${BASE_URL}/api/login`,
@@ -146,7 +146,7 @@ const login = (data: any, callback: (response: Response) => void) => {
 
 const twoFactorAuth = (data: any, callback: (response: Response) => void) => {
   // const encryptedData = encryptData(data);
-  
+
   API({
     method: "POST",
     url: `${BASE_URL}/api/two-factor-auth`,
@@ -162,23 +162,23 @@ const twoFactorAuth = (data: any, callback: (response: Response) => void) => {
 
 const verifyIssuer = (data: any, callback: (response: Response) => void) => {
   // const encryptedData = encryptData(data);
-  
+
   API({
     method: "POST",
-    url: `${APP_URL}/api/verify-issuer`,
+    url: `${BASE_URL}/api/verify-issuer`,
     data: data,
   })
     .then((response) => {
       callback({ status: "SUCCESS", data: response.data });
     })
     .catch((error) => {
-      callback({ status: "ERROR", error: error });
+      callback({ status: "ERROR", data: error?.response?.data });
     });
 }
 
 const loginWithPhone = (data: any, callback: (response: Response) => void) => {
   const encryptedData = encryptData(data);
-  
+
   API({
     method: "POST",
     url: `${APP_URL}/api/login-with-phone`,
@@ -194,7 +194,7 @@ const loginWithPhone = (data: any, callback: (response: Response) => void) => {
 
 const createValidateIssuer = (data: any, callback: (response: Response) => void) => {
   const encryptedData = encryptData(data);
-  
+
   API({
     method: "POST",
     url: `${APP_URL}/api/create-validate-issuer`,
@@ -210,7 +210,7 @@ const createValidateIssuer = (data: any, callback: (response: Response) => void)
 
 const getIssuerByEmail = (data: any, callback: (response: Response) => void) => {
   const encryptedData = encryptData(data);
-  
+
   API({
     method: "POST",
     url: `${ADMIN_API_URL}/api/get-issuer-by-email`,
@@ -226,7 +226,7 @@ const getIssuerByEmail = (data: any, callback: (response: Response) => void) => 
 
 const updateIssuer = (data: any, callback: (response: Response) => void) => {
   const encryptedData = encryptData(data);
-  
+
   API({
     method: "POST",
     url: `${APP_URL}/api/update-issuer`,
@@ -242,7 +242,7 @@ const updateIssuer = (data: any, callback: (response: Response) => void) => {
 
 const upload = (data: any, callback: (response: Response) => void) => {
   // const encryptedData = encryptData(data);
-  
+
   API({
     method: "POST",
     url: `${ADMIN_API_URL}/api/upload`,
@@ -254,12 +254,12 @@ const upload = (data: any, callback: (response: Response) => void) => {
     .catch((error) => {
       callback({ status: "ERROR", error: error });
     });
-  }
+}
 
 
 const downloadIssuanceReport = (data: any, callback: (response: Response) => void) => {
   // const encryptedData = encryptData(data);
-  
+
   API({
     method: "POST",
     url: `${BASE_URL}/api/generate-excel-report`,
@@ -271,7 +271,7 @@ const downloadIssuanceReport = (data: any, callback: (response: Response) => voi
     .catch((error) => {
       callback({ status: "ERROR", error: error });
     });
-  }
+}
 
 const user = {
   register,
