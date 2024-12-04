@@ -82,7 +82,7 @@ const Settings: React.FC = () => {
   //       body: JSON.stringify({ email }),
   //     });
   //     const responseData = await response.json();
-  //     debugger
+  //      
   //     setData(responseData.details);
   //     // const data = await response.json();
   //     // setData(typeof data === 'string' ? JSON.parse(data) : data);
@@ -146,7 +146,7 @@ const Settings: React.FC = () => {
 
   const handlePlanSelection = async (card: any) => {
     try {
-      debugger
+       
       const response = await fetch(`${apiUrl}/api/add-user-subscription-plan`, {
         method: 'POST',
         headers: {
@@ -170,7 +170,7 @@ const Settings: React.FC = () => {
 
   // todo-> can merge it in handleplanselection ??
   const makePayment = async (card: any) => {
-    debugger
+     
     console.log(card)
     console.log(typeof card.fee);
     console.log(typeof card.title);
@@ -201,12 +201,12 @@ const Settings: React.FC = () => {
     console.log(session);
     const result: any = stripe?.redirectToCheckout({ sessionId: session.id });   //todo-> type any is given
     console.log(result)
-    debugger
+     
     if (result?.error) {
       console.error('Error redirecting to Checkout:', result.error);
     }
     if (!window.location.href.includes('canceled=true')) {
-      debugger
+       
       handlePlanSelection(card);
     }
     //   } catch (error) {
@@ -321,7 +321,7 @@ const Settings: React.FC = () => {
     }
     // makePayment(card);
     try {
-      debugger
+       
       const response = await fetch(`${apiUrl}/api/add-enterprise-subscription-plan`, {
         method: 'POST',
         headers: {
@@ -500,24 +500,14 @@ const Settings: React.FC = () => {
         {/* Default Blockchain */}
         <div className="org-details mb-5">
           <h2 className="title">Default Blockchain</h2>
-          <Row className=" d-flex align-items-center ml-3">
-            <Col className="mt-4" xs={12} md={3}>
-              <Row className=" d-flex align-items-center justify-content-center mt-3 gap-5">
-                <Col xs={12} md={4} >
+              <div className=" d-flex flex-row align-items-center ps-3 gap-5">
                   <div className="blockchain-button polygon">
-                    {/* <img src="../../assets/img/qr-1.png" alt="asasa" /> */}
-                    polygon
+                    <img src="../../icons/polygon-icon.svg" alt="asasa" />
                   </div>
-                </Col>
-                <Col xs={12} md={4}>
                   <div className="blockchain-button optimism">
-                    {/* <img src="../../assets/img/qr-1.png" alt="asasa" /> */}
-                    Optimism
+                    <img src="../../icons/optism-icon.svg" alt="asasa" />
                   </div>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+              </div>
         </div>
 
         {/* App view mode */}
@@ -595,7 +585,9 @@ const Settings: React.FC = () => {
                 // value={issuanceDate.from}
                 // onChange={(e) => handleDateChange(e, "from")}
                 />
-                <div className="arrow-container position-absolute end-0"></div>
+                <div className="arrow-container position-absolute end-0 d-flex justify-content-center align-items-center">
+                  <img src='../../icons/arrow-white.svg'/>
+                </div>
               </div>
 
             </div>
