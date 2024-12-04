@@ -41,10 +41,10 @@ const ComponentWrapper = ({ Component, pageProps }: any) => {
   const [isBotOpen, setBotOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const isLoginPage = router.pathname === '/' || router.pathname === '/register'|| router.pathname === '/forgot-passwords' ||  router.pathname === '/passwords-confirm' ;
+  const isLoginPage = router.pathname === '/' || router.pathname === '/register' || router.pathname === '/forgot-passwords' || router.pathname === '/passwords-confirm';
   // @ts-ignore: Implicit any for children prop
   const auth = getAuth(app)
-  
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -55,7 +55,7 @@ const ComponentWrapper = ({ Component, pageProps }: any) => {
     setBotOpen(!isBotOpen);
     setLoading(true);
   };
-   useEffect(() => {
+  useEffect(() => {
     if (mounted) {
       const body = document.body;
       if (isDarkMode) {
@@ -71,32 +71,32 @@ const ComponentWrapper = ({ Component, pageProps }: any) => {
   if (!mounted) {
     return null;
   }
-  
+
   return (
     // @ts-ignore: Implicit any for children prop
-    <CertificateContext.Provider value={{badgeUrl, logoUrl, signatureUrl,certificateUrl,tab,selectedCard, issuerName, issuerDesignation,certificatesData,isDesign,pdfDimentions,pdfFile,pdfBatchDimentions, setBadgeUrl:setBadgeUrl,setSignatureUrl:setSignatureUrl, setLogoUrl:setLogoUrl, setCertificateUrl:setCertificateUrl,setTab:setTab,setSelectedCard:setSelectedCard, setIssuerName:setIssuerName, setissuerDesignation:setissuerDesignation,setCertificatesData:setCertificatesData,setIsDesign:setIsDesign,setPdfBatchDimentions:setPdfBatchDimentions, setPdfDimentions:setPdfDimentions,setPdfFile}}>
-     <Head>
-    <title>Certs365 Blockchain Issuance: Secure, Fast, and Reliable</title>
-    <meta name="description" content="Blockchain-based issuance is revolutionizing asset management. Explore its benefits and potential in enhancing transparency and security." />
+    <CertificateContext.Provider value={{ badgeUrl, logoUrl, signatureUrl, certificateUrl, tab, selectedCard, issuerName, issuerDesignation, certificatesData, isDesign, pdfDimentions, pdfFile, pdfBatchDimentions, setBadgeUrl: setBadgeUrl, setSignatureUrl: setSignatureUrl, setLogoUrl: setLogoUrl, setCertificateUrl: setCertificateUrl, setTab: setTab, setSelectedCard: setSelectedCard, setIssuerName: setIssuerName, setissuerDesignation: setissuerDesignation, setCertificatesData: setCertificatesData, setIsDesign: setIsDesign, setPdfBatchDimentions: setPdfBatchDimentions, setPdfDimentions: setPdfDimentions, setPdfFile }}>
+      <Head>
+        <title>Certs365 Blockchain Issuance: Secure, Fast, and Reliable</title>
+        <meta name="description" content="Blockchain-based issuance is revolutionizing asset management. Explore its benefits and potential in enhancing transparency and security." />
 
-    {/* Favicon */}
-    <link rel="icon" href="https://images.netcomlearning.com/ai-certs/favIcon.svg" />
+        {/* Favicon */}
+        <link rel="icon" href="https://images.netcomlearning.com/ai-certs/favIcon.svg" />
 
-    {/* Open Graph Meta Tags */}
-    <meta property="og:title" content="Certs365 Blockchain Issuance: Secure, Fast, and Reliable" />
-    <meta property="og:description" content="Blockchain-based issuance is revolutionizing asset management. Explore its benefits and potential in enhancing transparency and security." />
-  
-    {/* Twitter Meta Tags */}
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Certs365 Blockchain Issuance: Secure, Fast, and Reliable" />
-    <meta name="twitter:description" content="Blockchain-based issuance is revolutionizing asset management. Explore its benefits and potential in enhancing transparency and security." />
+        {/* Open Graph Meta Tags */}
+        <meta property="og:title" content="Certs365 Blockchain Issuance: Secure, Fast, and Reliable" />
+        <meta property="og:description" content="Blockchain-based issuance is revolutionizing asset management. Explore its benefits and potential in enhancing transparency and security." />
+
+        {/* Twitter Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Certs365 Blockchain Issuance: Secure, Fast, and Reliable" />
+        <meta name="twitter:description" content="Blockchain-based issuance is revolutionizing asset management. Explore its benefits and potential in enhancing transparency and security." />
 
       </Head>
 
       {!isLoginPage && <Navigation />}
-       {/* Bot icon at the bottom right */}
-       <div className="bot-icon" onClick={toggleBot}>
-        <img src={isBotOpen?"/BotCross.png":"/BotIcon.png"} alt="Chatbot"  />
+      {/* Bot icon at the bottom right */}
+      <div className="bot-icon" onClick={toggleBot}>
+        <img src={isBotOpen ? "/BotCross.png" : "/BotIcon.png"} alt="Chatbot" />
       </div>
 
       {/* Responsive iframe container */}
@@ -118,8 +118,8 @@ const ComponentWrapper = ({ Component, pageProps }: any) => {
           ></iframe>
         </div>
       )}
-        <Component {...pageProps} router={router} />
-      
+      <Component {...pageProps} router={router} />
+
     </CertificateContext.Provider>
   );
 };

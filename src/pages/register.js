@@ -20,10 +20,14 @@ const Register = () => {
   const [loginError, setLoginError] = useState('');
   const [loginSuccess, setLoginSuccess] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [passwordVisible1, setPasswordVisible1] = useState(false);
   const [now, setNow] = useState(0);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
+  };
+  const togglePasswordVisibility1 = () => {
+    setPasswordVisible1(!passwordVisible1);
   };
 
   const handleClose = () => {
@@ -520,7 +524,7 @@ const Register = () => {
                       <Form.Label>Confirm Password <span className='text-danger'>*</span></Form.Label>
                       <div className="password-input position-relative">
                         <Form.Control
-                          type={passwordVisible ? 'text' : 'password'}
+                          type={passwordVisible1 ? 'text' : 'password'}
                           name='confirmPassword'
                           value={formData.confirmPassword}
                           onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
@@ -531,12 +535,12 @@ const Register = () => {
                         ></i>
                         <div className='eye-icon position-absolute'>
                           <ThemedImage
-                            imageLight={passwordVisible ? eyeSlashIcon : eyeIcon}
-                            imageDark={passwordVisible ? eyeSlashIcon : eyeIcon}
+                            imageLight={passwordVisible1 ? eyeSlashIcon : eyeIcon}
+                            imageDark={passwordVisible1 ? eyeSlashIcon : eyeIcon}
                             width={20}
                             height={20}
-                            alt={passwordVisible ? 'Hide password' : 'Show password'}
-                            onClick={togglePasswordVisibility}
+                            alt={passwordVisible1 ? 'Hide password' : 'Show password'}
+                            onClick={togglePasswordVisibility1}
                             className="password-toggle"
                           />
                         </div>

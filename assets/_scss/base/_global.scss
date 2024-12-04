@@ -1,10 +1,17 @@
+html {
+    font-size: 10px;
+    // background-color: $secondary;
+    scroll-behavior: smooth;
+}
+
+
 html,
 body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: $font-family;
-    
+
 
     * {
         box-sizing: inherit;
@@ -71,7 +78,7 @@ a {
             border: 1px solid $golden;
             box-shadow: none;
         }
-   
+
 
     }
 
@@ -212,7 +219,7 @@ a {
 
 .title {
     font-family: Montserrat;
-    
+
     color: #2F3847;
     font-size: 32px;
     font-style: normal;
@@ -250,6 +257,7 @@ a {
 
     // padding: 10%;
     height: 100%;
+
     h3 {
         font-family: "Manrope", sans-serif !important;
         font-size: 28px;
@@ -293,19 +301,19 @@ a {
         width: 100%;
         padding: 10px;
         margin-top: 10px;
-        text-align: left; 
+        text-align: left;
         font-size: bold;
-        background: none; 
+        background: none;
         border: 1px dashed gray;
-    
+
         &.heading {
             font-size: 24px;
         }
-    
+
         &.sub-heading {
             font-size: 18px;
         }
-    
+
         &.body-text {
             font-size: 14px;
         }
@@ -371,8 +379,9 @@ a {
     }
 
     .add-text-button {
-        
-        h4, button {
+
+        h4,
+        button {
             color: $white;
         }
     }

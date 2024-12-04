@@ -11,7 +11,7 @@ import ThemedImage from '@/components/ThemedImage';
 const NavigationLogin = () => {
   const router = useRouter();
   const logoSrc = router.pathname === '/register' || router.pathname === '/forgot-passwords' || router.pathname === '/passwords-confirm'
-    ? 'https://images.netcomlearning.com/ai-certs/Certs365-logo.svg' 
+    ? 'https://images.netcomlearning.com/ai-certs/Certs365-logo.svg'
     : 'https://images.netcomlearning.com/ai-certs/Certs365-white-logo.svg';
 
 
@@ -35,7 +35,7 @@ const NavigationLogin = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (  
+  return (
     <nav className="global-header navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
         <div className='nav-logo'>
@@ -54,7 +54,7 @@ const NavigationLogin = () => {
             <div className="collapse navbar-collapse">
               <Navbar.Collapse className="justify-content-end">
                 <Navbar.Text>
-                  <span className='nav-text text-decoration-none'>Dont have an account?</span>
+                  <span className='nav-text text-decoration-none'>Don&apos;t have an account?</span>
                 </Navbar.Text>
                 <Navbar.Text>
                   <Button label="Apply for Account" onClick={handleClick} className="golden" />

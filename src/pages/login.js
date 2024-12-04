@@ -702,7 +702,7 @@ stopProgress()
         <Col md={{ span: 12 }}>
           {/* <Button label="Register" className='golden mt-5 ps-0 pe-0 w-100 d-block d-lg-none' onClick={handleClick} /> */}
           <div className='register-user-text d-block d-lg-none'>
-            Dont have an account?&nbsp;&nbsp;
+            Don&apos;t have an account?&nbsp;&nbsp;
             <span onClick={handleClick}>Register Here</span>
           </div>
           <div className='copy-right text-center'>

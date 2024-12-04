@@ -82,7 +82,7 @@ const Settings: React.FC = () => {
   //       body: JSON.stringify({ email }),
   //     });
   //     const responseData = await response.json();
-  //     debugger
+  //      
   //     setData(responseData.details);
   //     // const data = await response.json();
   //     // setData(typeof data === 'string' ? JSON.parse(data) : data);
@@ -146,7 +146,7 @@ const Settings: React.FC = () => {
 
   const handlePlanSelection = async (card: any) => {
     try {
-      debugger
+
       const response = await fetch(`${apiUrl}/api/add-user-subscription-plan`, {
         method: 'POST',
         headers: {
@@ -170,7 +170,7 @@ const Settings: React.FC = () => {
 
   // todo-> can merge it in handleplanselection ??
   const makePayment = async (card: any) => {
-    debugger
+
     console.log(card)
     console.log(typeof card.fee);
     console.log(typeof card.title);
@@ -201,12 +201,12 @@ const Settings: React.FC = () => {
     console.log(session);
     const result: any = stripe?.redirectToCheckout({ sessionId: session.id });   //todo-> type any is given
     console.log(result)
-    debugger
+
     if (result?.error) {
       console.error('Error redirecting to Checkout:', result.error);
     }
     if (!window.location.href.includes('canceled=true')) {
-      debugger
+
       handlePlanSelection(card);
     }
     //   } catch (error) {
@@ -321,7 +321,7 @@ const Settings: React.FC = () => {
     }
     // makePayment(card);
     try {
-      debugger
+
       const response = await fetch(`${apiUrl}/api/add-enterprise-subscription-plan`, {
         method: 'POST',
         headers: {
