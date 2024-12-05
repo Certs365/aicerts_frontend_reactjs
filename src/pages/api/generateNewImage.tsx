@@ -149,7 +149,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           </style>
         </head>
         <body style="padding: 0; margin: 0; font-style: normal;">
-            <div
+           <div
   style="
     height: 100vh;
     width: 100%;   
@@ -185,7 +185,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       style="
         text-align: center;
         color: #CFA935;
-        font-size: 23px;
+        font-size: 30px;
         font-weight: 600;
         line-height: 60px;
         letter-spacing: 0.04em;
@@ -201,12 +201,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       style="
         text-align: center;
         color: #0C393D;
-        font-size: 12px;
+        font-size: 16px;
         font-weight: 600;
         text-transform: capitalize;
         font-family: 'Kanit', sans-serif;
         margin-bottom:10px;
         padding:0 20px;
+        word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 80%; 
+    margin: 0 auto; 
       "
     >
       ${detail?.course || 'Advanced Blockchain Technology'}
@@ -218,8 +222,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         src=${detail?.qrImage || qrCodeImage} 
         alt="QR Code" 
         style="
-          width: 70px;
-          height: 70px;
+          width: 125px;
+          height: 126px;
+          margin-top:20px;
         "
       />
     </div>
@@ -229,7 +234,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   <div
     style="
       position: absolute;
-      bottom: 50px;
+      bottom: 70px;
       width: 100%;
       text-align: center;
     "

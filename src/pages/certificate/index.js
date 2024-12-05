@@ -562,7 +562,7 @@ const CardSelector = () => {
         certificateUrl = "https://html.aicerts.io/Background.png";
         break;
       case 6:
-        certificateUrl = "https://certs365-live.s3.amazonaws.com/uploads/certificate_7.png";
+        certificateUrl = "https://certs365-live.s3.amazonaws.com/uploads/Certificate_template_07.png";
         break;
       default:
         certificateUrl = "https://html.aicerts.io/Background123.png";
