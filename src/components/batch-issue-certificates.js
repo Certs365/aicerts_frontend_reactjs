@@ -219,13 +219,34 @@ if(cardId){
         formData.append('excelFile', selectedFile);
         
         if (!isDesign) {
-            formData.append('templateUrl', new URL(certificateUrl || certificatePath)?.origin + new URL(certificateUrl)?.pathname);
-            formData.append('logoUrl', new URL(logoUrl)?.origin + new URL(logoUrl)?.pathname);
-            formData.append('signatureUrl', new URL(signatureUrl)?.origin + new URL(signatureUrl)?.pathname);
-            formData.append('badgeUrl', badgeUrl ? new URL(badgeUrl)?.origin + new URL(badgeUrl)?.pathname : null);
-            formData.append('issuerName', issuerName);
-            formData.append('issuerDesignation', issuerDesignation);
-        }
+          if (certificateUrl || certificatePath) {
+              const certificate = certificateUrl || certificatePath;
+              formData.append('templateUrl', new URL(certificate)?.origin + new URL(certificate)?.pathname);
+          }
+          
+          if (logoUrl) {
+              formData.append('logoUrl', new URL(logoUrl)?.origin + new URL(logoUrl)?.pathname);
+          }
+          
+          if (signatureUrl) {
+              formData.append('signatureUrl', new URL(signatureUrl)?.origin + new URL(signatureUrl)?.pathname);
+          }
+          
+          if (badgeUrl) {
+              formData.append('badgeUrl', new URL(badgeUrl)?.origin + new URL(badgeUrl)?.pathname);
+          } else {
+              formData.append('badgeUrl', null);
+          }
+          
+          if (issuerName) {
+              formData.append('issuerName', issuerName);
+          }
+          
+          if (issuerDesignation) {
+              formData.append('issuerDesignation', issuerDesignation);
+          }
+      }
+      
 
         startProgress();
 
@@ -299,7 +320,7 @@ const generateAndUploadImage = async (index, detail, message, polygonLink, statu
 };
 
 const handleShowImages = async (index, detail, message, polygonLink, status) => {
-  let url = '/api/downloadImage';
+  let url = '/api/downloadNewImage';
   let certificateUrl = certificatePath; // Start with certificatePath as the default
   const requestBody = {
       detail,

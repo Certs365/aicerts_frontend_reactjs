@@ -367,7 +367,7 @@ const IssueCertificate = () => {
   const handleShowImages = async (formData, responseData) => {
     const { details, polygonLink, message, status, qrCodeImage } = responseData;
     try {
-      const res = await fetch("/api/downloadImage", {
+      const res = await fetch("/api/downloadNewImage", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

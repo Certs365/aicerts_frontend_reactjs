@@ -117,7 +117,7 @@ const DownloadCertificate = () => {
 
 
     try {
-      let url = '/api/generateImage'; // Default endpoint
+      let url = '/api/generateNewImage'; // Default endpoint
       const requestBody = {
         detail,
         message,
@@ -186,7 +186,7 @@ const DownloadCertificate = () => {
         const parsedData = certificatesData.data;
 
         setApiResponseData(certificatesData);
-        setFilteredCertificatesArray(parsedData.details)
+        setFilteredCertificatesArray(parsedData?.details)
         if (parsedData && parsedData.details && Array.isArray(parsedData.details)) {
           setCertificateNumber(parsedData.details.length);
         } else {
