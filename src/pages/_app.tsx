@@ -78,6 +78,7 @@ const ComponentWrapper = ({ Component, pageProps }: any) => {
       <Head>
         <title>Certs365 Blockchain Issuance: Secure, Fast, and Reliable</title>
         <meta name="description" content="Blockchain-based issuance is revolutionizing asset management. Explore its benefits and potential in enhancing transparency and security." />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
 
         {/* Favicon */}
         <link rel="icon" href="https://images.netcomlearning.com/ai-certs/favIcon.svg" />

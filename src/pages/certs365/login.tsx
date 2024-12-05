@@ -5,14 +5,24 @@ import FormElement from '@/common/form/inputElement';
 import messageIcon from '../../../public/new_assets/icons/message.svg';
 import lockIcon from '../../../public/new_assets/icons/lock.svg';
 import PrimaryButton from '@/common/button/primaryButton';
+import Switch from '@/common/form/switch';
 
 const Login: React.FC = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [error, setError] = useState('');
+    const [isChecked, setIsChecked] = useState(false);
+
 
     const handleChange = (field: string, value: string) => {
         setFormData({ ...formData, [field]: value });
     };
+
+
+
+    const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setIsChecked(event.target.checked);
+    };
+
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -83,8 +93,14 @@ const Login: React.FC = () => {
                     {/* Error Message */}
                     {error && <p className="error-message text-danger">{error}</p>}
 
+                    <div className='d-flex flex-row justify-content-between'>
+                        <Switch label="Remember Me" onChange={handleSwitchChange} />
+                        <p className='fs-16-14 golden'>Forgot Password?</p>
+                    </div>
+
                     {/* Submit Button */}
                     <PrimaryButton label='Sign Up for Free' type='submit' onClick={() => { }} width='100%' />
+
                 </form>
             </div>
         </div>
