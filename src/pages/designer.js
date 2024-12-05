@@ -111,14 +111,13 @@ const Designer = () => {
 
     const templateData = canvas.toJSON(); // Get the canvas data
 
-    const multiplier = 4; // You can adjust this value to make the image even higher resolution
+    const multiplier = 2; // You can adjust this value to make the image even higher resolution
   const dataURL = canvas.toDataURL({
     format: "png",
     multiplier: multiplier, // Multiplies the canvas resolution
   }); // Convert canvas to PNG data URL
     const blob = dataURLToBlob(dataURL);
     const fd = new FormData();
-     
     const date = new Date().getTime();
     const filename = `template_${date}.png`; // Create a filename based on the timestamp
     fd.append("file", blob, filename);
