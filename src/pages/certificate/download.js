@@ -186,7 +186,7 @@ const DownloadCertificate = () => {
         const parsedData = certificatesData.data;
 
         setApiResponseData(certificatesData);
-        setFilteredCertificatesArray(parsedData.details)
+        setFilteredCertificatesArray(parsedData?.details)
         if (parsedData && parsedData.details && Array.isArray(parsedData.details)) {
           setCertificateNumber(parsedData.details.length);
         } else {
