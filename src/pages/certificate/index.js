@@ -561,7 +561,9 @@ const CardSelector = () => {
       case 5:
         certificateUrl = "https://html.aicerts.io/Background.png";
         break;
-
+      case 6:
+        certificateUrl = "https://certs365-live.s3.amazonaws.com/uploads/certificate_7.png";
+        break;
       default:
         certificateUrl = "https://html.aicerts.io/Background123.png";
         break;
@@ -571,7 +573,7 @@ const CardSelector = () => {
   };
 
   const handleSelectTemplate = () => {
-    if(!isDesign){
+    if(false){
 
     if (!logoUrl) {
       setLoginError("Please upload the logo ");
@@ -668,6 +670,10 @@ const CardSelector = () => {
     {
       id: 6,
       imageUrl: "/backgrounds/Certificate_template_5.png",
+    },
+    {
+      id: 6,
+      imageUrl: "/backgrounds/Certificate_template_7.png",
     },
   ];
 
