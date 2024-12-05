@@ -47,7 +47,7 @@ const CertificateTemplateThree = ({ certificateData }) => {
             if(isDesign){
                 url="/api/generatePDFDesign"
             }else{
-                url="/api/generatePDF"
+                url="/api/generateNewPDF"
             }
             const res = await fetch(url, {
                 method: 'POST',

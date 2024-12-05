@@ -184,7 +184,6 @@ const DownloadCertificate = () => {
       if (certificatesData) {
         // Parse the JSON data if it exists
         const parsedData = certificatesData.data;
-
         setApiResponseData(certificatesData);
         setFilteredCertificatesArray(parsedData?.details)
         if (parsedData && parsedData.details && Array.isArray(parsedData.details)) {
@@ -291,7 +290,7 @@ const DownloadCertificate = () => {
     try {
       // Determine endpoint and additional data based on isDesign
       const isDesign = new URLSearchParams(window.location.search).get('isDesign');
-      const endpoint = isDesign ? '/api/generatePDFBatch' : '/api/generatePDF';
+      const endpoint = isDesign ? '/api/generatePDFBatch' : '/api/generateNewPDF';
       const bodyData = {
         detail,
         certificateUrl,
@@ -344,7 +343,7 @@ const DownloadCertificate = () => {
 
     try {
       const zip = new JSZip();
-      const endpoint = isDesign ? '/api/generatePDFBatch' : '/api/generatePDF';
+      const endpoint = isDesign ? '/api/generatePDFBatch' : '/api/generateNewPDF';
 
       for (const detail of detailsArray) {
         const bodyData = {

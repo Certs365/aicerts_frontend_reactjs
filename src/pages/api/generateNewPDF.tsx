@@ -1,7 +1,9 @@
-// pages/api/pdf.js
+const batchUrl = process.env.NEXT_PUBLIC_BASE_BATCH_URL;
 
 import { NextApiRequest, NextApiResponse } from 'next';
-const puppeteer = require('puppeteer');
+import puppeteer from 'puppeteer';
+const { readFileSync } = require('fs');
+import path from "path";
 // Define the CertificateData interface
 interface CertificateData {
   certificateNumber: string;
@@ -12,25 +14,27 @@ interface CertificateData {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+
   if (req.method === 'POST') {
     // Retrieve data from request body
-    const { detail,certificateUrl,logoUrl,signatureUrl,badgeUrl,issuerName,issuerDesignation,qrCodeImage } = req.body;
+    const { detail,certificateUrl,logoUrl,signatureUrl,badgeUrl,issuerName,issuerDesignation,qrCodeImage, isCustomCerf } = req.body;
+
     if (!detail) {
       return res.status(400).json({ error: 'Certificate data not available.' });
     }
 
-
    
-    let number = detail.certificateNumber; 
-    let numberString = number.toString(); 
-    let trimmedNumber = numberString.substring(0, 7);
-    trimmedNumber += '...';
-
   const backgroundImage = certificateUrl;
     // const logoUrl = 'https://images.netcomlearning.com/ai-certs/Certs365-white-logo.svg';
-    const russelSignature = 'https://images.netcomlearning.com/ai-certs/russel-signature.png'
-    const bitcoinBadge = 'https://images.netcomlearning.com/ai-certs/bitcoin-certified-trainer-badge.svg'
+    // const russelSignature = 'https://images.netcomlearning.com/ai-certs/russel-signature.png'
+    // const bitcoinBadge = 'https://images.netcomlearning.com/ai-certs/bitcoin-certified-trainer-badge.svg'
+    // const bitcoinBadge = badgeUrl;
 
+    // const bitcoinBadge = badgeUrl ? `${baseURL}${badgeUrl}` : '';
+    // const bitcoinBadge = keyUrl;
+    // const bitcoinBadge = '/images/1709910082424_Badge.png';
+
+    //  (bitcoinBadge,"bbas")
     // Generate HTML content for the certificate
     const htmlContent = `
     <html>
@@ -151,7 +155,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           </style>
         </head>
         <body style="padding: 0; margin: 0; font-style: normal;">
-              <div
+           <div
   style="
     height: 100vh;
     width: 100%;   
@@ -299,33 +303,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     `;
 
     try {
-     // Launch a headless browser
-     const browser = await puppeteer.launch();
-     const page = await browser.newPage();
- 
-     // Set the viewport to A4 size in landscape mode
-     await page.setViewport({
-       width: 1122, // A4 width in pixels for 96 DPI in landscape
-       height: 793, // A4 height in pixels for 96 DPI in landscape
-     });
- 
-     // Set the content of the page
-     await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
- 
-     // Capture the screenshot
-     const screenshotBuffer = await page.screenshot({ type: 'png' });
- 
-     await browser.close();
- 
-     // Set response headers
-     res.setHeader('Content-Type', 'image/png');
-     res.setHeader('Content-Disposition', 'attachment; filename=output.png');
- 
-     // Send the image buffer
-     res.send(screenshotBuffer);
+       // Launch Puppeteer browser instance
+  // Launch Puppeteer browser instance
+  // const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({headless: true, args: ['--no-sandbox']});
+
+  // Create a new page
+  const page = await browser.newPage();
+  page.setDefaultNavigationTimeout(0);
+  // Set the content of the page
+  await page.setContent(htmlContent);
+  // Generate PDF buffer
+  const pdfBuffer = await page.pdf({ format: 'A4', landscape: true });
+  // Close the browser
+  await browser.close();
+  // Send PDF buffer as response
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', 'attachment; filename=certificate.pdf');
+  res.send(pdfBuffer);
     } catch (error) {
-      console.error('Error generating image:', error);
-      res.status(500).json({ error: 'Image generation failed' });
+      console.error('Error generating PDF:', error);
+      res.status(500).json({ error: 'PDF generation failed' });
     }
   } else {
     res.status(405).end(); // Method Not Allowed
