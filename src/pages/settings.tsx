@@ -11,6 +11,9 @@ import qr2 from "/assets/img/qr-2.png";
 import qr3 from "/assets/img/qr-3.png";
 import qr4 from "/assets/img/qr-4.png";
 import user from '@/services/userServices';
+import PrimaryButton from '@/common/button/primaryButton';
+import SecondaryButton from '@/common/button/secondaryButton';
+import QrCodeSelector from '@/components/qrCodeSelector';
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL_USER;
 const stripeUrl = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 interface DateRange {
@@ -60,16 +63,92 @@ const Settings: React.FC = () => {
   const [planDuration, setPlanDuration] = useState(0);
   const [totalCredits, setTotalCredits] = useState(0);
   const [paymentEmail, setPaymentEmail] = useState('')
-  const [paymentId, setPaymentId] = useState('')
+  const [paymentId, setPaymentId] = useState('');
+  const [selectedQr, setSelectedQr] = useState(null);
+
 
   const isShowPricingEnabled = !isNaN(planDuration) && planDuration !== 0 && !isNaN(totalCredits) && totalCredits !== 0;
 
+  const handleQrClick = (qr) => {
+    setSelectedQr(qr);
+  };
 
   useEffect(() => {
     if (!isShowPricingEnabled) {
       setCalculatedValue(0);
     }
   }, [isShowPricingEnabled])
+
+
+  const handleChangeQr = async () => {
+    if (selectedQr) {
+      try {
+        const response = await fetch('/api/change-qr', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ qrPrefrence: selectedQr }),
+        });
+
+        if (response.ok) {
+          alert('QR code updated successfully!');
+        } else {
+          console.error('Failed to update QR code:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error while making API call:', error);
+      }
+    } else {
+      alert('Please select a QR code first.');
+    }
+  };
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    setNow(10)
+
+    let progressInterval;
+    const startProgress = () => {
+      progressInterval = setInterval(() => {
+        setNow((prev) => {
+          if (prev < 90) return prev + 5;
+          return prev;
+        });
+      }, 100);
+    };
+
+    const stopProgress = () => {
+      clearInterval(progressInterval);
+      setNow(100); // Progress complete
+    };
+
+    startProgress();
+    const data = { email, ...formData };
+    try {
+      // const response = await fetch(`${apiUrl}/api/update-issuer`, {
+      //     method: "POST",
+      //     headers: {
+      //         'Content-Type': 'application/json',
+      //         'Authorization': `Bearer ${token}`,
+      //     },
+      //     body: JSON.stringify({
+      //         data:encryptedData 
+      //     })
+      // });
+      user.updateIssuer(data, async (response) => {
+        const userData = response.data;
+        const userDetails = userData?.data;
+        setLoginSuccess("Details Updated Successfully")
+        setShow(true);
+      })
+
+    } catch (error) {
+      console.error('Error Verifying Certificate:', error);
+      // Handle error
+    } finally {
+      stopProgress();
+      setIsLoading(false);
+    }
+  };
 
   // get all subscription plan details
   // useEffect(() => {
@@ -451,51 +530,7 @@ const Settings: React.FC = () => {
         </div>
 
         {/* QR  Code */}
-        <div className="org-details">
-          <h2 className="title">QR Code</h2>
-          <Row className=" d-flex align-items-center justify-content-start m-3">
-            <Col xs={16} md={2}>
-              {/* //todo-> Image not added */}
-              <Image
-                src={qr1}
-                height={100}
-                width={100}
-                objectFit='contain'
-                alt="QR code"
-              />
-            </Col>
-            <Col xs={16} md={2}>
-              {/* //todo-> Image not added */}
-              <Image
-                src={qr2}
-                height={100}
-                width={100}
-                objectFit='contain'
-                alt="QR code"
-              />
-            </Col>
-            <Col xs={16} md={2}>
-              {/* //todo-> Image not added */}
-              <Image
-                src={qr3}
-                height={100}
-                width={100}
-                objectFit='contain'
-                alt="QR code"
-              />
-            </Col>
-            <Col xs={16} md={2}>
-              {/* //todo-> Image not added */}
-              <Image
-                src={qr4}
-                height={100}
-                width={100}
-                objectFit='contain'
-                alt="QR code"
-              />
-            </Col>
-          </Row>
-        </div>
+        <QrCodeSelector qrCodes={[qr1, qr2, qr3, qr4]} />
 
         {/* Default Blockchain */}
         <div className="org-details mb-5">
@@ -585,7 +620,7 @@ const Settings: React.FC = () => {
             <div className="last-box mb-4 d-flex flex-row justify-content-between">
               <div className='d-flex flex-column p-2'>
                 <h3 className='bold mb-2'>Custom</h3>
-                <p>Need more than 200 Certificates? Contact US.</p>
+                <p>Need more than 200 Certificates? Contact us on support@Certs365.io</p>
               </div>
               <div className="d-flex align-items-center position-relative me-2 cursor-pointer">
                 <Form.Control

@@ -225,12 +225,12 @@ const getIssuerByEmail = (data: any, callback: (response: Response) => void) => 
 }
 
 const updateIssuer = (data: any, callback: (response: Response) => void) => {
-  const encryptedData = encryptData(data);
+  // const encryptedData = encryptData(data);
 
   API({
     method: "POST",
-    url: `${APP_URL}/api/update-issuer`,
-    data: { data: encryptedData },
+    url: `${BASE_URL}/api/update-issuer`,
+    data: data,
   })
     .then((response) => {
       callback({ status: "SUCCESS", data: response.data });

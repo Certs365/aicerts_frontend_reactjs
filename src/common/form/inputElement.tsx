@@ -2,14 +2,16 @@ import React from "react";
 import Image from "next/image";
 
 interface FormElementProps {
-    icon: string; // Icon can now be passed as an image path
+    icon?: string; // Icon can now be passed as an image path
     title: string; // Label for the input
     placeholder: string; // Placeholder text for the input
-    type: string; // Input type (e.g., text, email, password)
+    type?: string; // Input type (e.g., text, email, password)
     required?: boolean; // Whether the input is required
     message?: string; // Message below the input (e.g., error or helper text)
     classes?: string; // Message below the input (e.g., error or helper text)
+    value?: any; // Message below the input (e.g., error or helper text)
     onChange: (value: string) => void; // Callback function to handle input changes
+
 }
 
 const FormElement: React.FC<FormElementProps> = ({
@@ -20,6 +22,7 @@ const FormElement: React.FC<FormElementProps> = ({
     required = false,
     message,
     onChange,
+    value,
     classes
 }) => {
     return (
@@ -38,6 +41,7 @@ const FormElement: React.FC<FormElementProps> = ({
 
             {/* Input */}
             <input
+                value={value}
                 type={type}
                 placeholder={placeholder}
                 required={required}

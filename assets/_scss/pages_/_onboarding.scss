@@ -1,12 +1,12 @@
-.login_wrapper {
+.onboarding_wrapper {
     height: calc(100vh - 30rem);
 
-    .login_banner_wrapper,
-    .login_form_wrapper {
+    .onboarding_banner_wrapper,
+    .onboarding_form_wrapper {
         flex: 1;
     }
 
-    .login_banner_wrapper {
+    .onboarding_banner_wrapper {
         background-color: $gray-bg;
 
         .banner_text_wrapper {
@@ -14,12 +14,14 @@
         }
     }
 
-    .login_form_wrapper {
+    .onboarding_form_wrapper {
         padding: 12.6rem 10rem;
 
         .text-signin {
             margin-bottom: 4rem;
         }
+
+        .navigation-buttons {}
     }
 
     .or-container {

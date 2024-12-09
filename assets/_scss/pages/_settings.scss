@@ -56,6 +56,16 @@
             /* Or use overflow-wrap: break-word; */
         }
 
+        .qr-container {
+            cursor: pointer;
+            border: 2px solid transparent;
+            padding: 5px;
+            transition: border-color 0.3s;
+        }
+
+        .qr-container.selected {
+            border-color: $golden;
+        }
 
         // 1600
         @media (min-width: $large-min) and (max-width: $large-max) {}

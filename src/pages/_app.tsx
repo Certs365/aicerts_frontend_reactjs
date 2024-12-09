@@ -12,7 +12,8 @@ import ClipLoader from 'react-spinners/ClipLoader';
 import { getAuth } from 'firebase/auth';
 // @ts-ignore: Implicit any for children prop
 import { app } from "../config/firebaseConfig"
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App({ Component, pageProps }: any) {
   return (
@@ -99,7 +100,7 @@ const ComponentWrapper = ({ Component, pageProps }: any) => {
       <div className="bot-icon" onClick={toggleBot}>
         <img src={isBotOpen ? "/BotCross.png" : "/BotIcon.png"} alt="Chatbot" />
       </div>
-
+      <ToastContainer />
       {/* Responsive iframe container */}
       {isBotOpen && (
         <div className="bot-iframe-container">

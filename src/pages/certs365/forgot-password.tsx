@@ -9,10 +9,9 @@ import Switch from '@/common/form/switch';
 import SecondaryButton from '@/common/button/secondaryButton';
 import googleIcon from "../../../public/new_assets/icons/google-icon.svg";
 import linkedInIcon from "../../../public/new_assets/icons/linkedin-icon.svg";
-import { toast } from 'react-toastify';
 
-const Login: React.FC = () => {
-    const [formData, setFormData] = useState({ email: '', password: '' });
+const ForgetPassword: React.FC = () => {
+    const [formData, setFormData] = useState({ email: '' });
     const [error, setError] = useState('');
     const [isChecked, setIsChecked] = useState(false);
 
@@ -33,8 +32,8 @@ const Login: React.FC = () => {
         setError('');
 
         // Validation
-        if (!formData.email || !formData.password) {
-            toast.error('Both email and password are required.');
+        if (!formData.email) {
+            setError('Both email and password are required.');
             return;
         }
 
@@ -60,9 +59,9 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className='login_wrapper d-flex flex-row'>
+        <div className='forgot_wrapper d-flex flex-row'>
             {/* Banner Section */}
-            <div className='login_banner_wrapper'>
+            <div className='forgot_banner_wrapper'>
                 <Image width={800} height={510} src={loginBackground} alt='background Image' />
                 <div className='banner_text_wrapper'>
                     <h3 className='fs-24-12 fw-600 mb-4'>Generate up to 2000 certificates at once</h3>
@@ -71,8 +70,9 @@ const Login: React.FC = () => {
             </div>
 
             {/* Form Section */}
-            <div className='login_form_wrapper'>
-                <h2 className='text-signin fw-700'>Sign In</h2>
+            <div className='forgot_form_wrapper'>
+                <h2 className='text-signin fs-36-24 fs fw-700'>Forgot Password</h2>
+                <p className='fs-12-8'>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
                 <form onSubmit={handleSubmit}>
                     {/* Email Field */}
                     <FormElement
@@ -84,37 +84,12 @@ const Login: React.FC = () => {
                         onChange={(value) => handleChange('email', value)}
                     />
 
-                    {/* Password Field */}
-                    <FormElement
-                        icon={lockIcon.src}
-                        title='Password'
-                        placeholder='Enter Your Password...'
-                        type='password'
-                        required
-                        onChange={(value) => handleChange('password', value)}
-                    />
-
-                    {/* Error Message */}
-                    {error && <p className="error-message text-danger">{error}</p>}
-
-                    <div className='d-flex flex-row justify-content-between'>
-                        <Switch label="Remember Me" onChange={handleSwitchChange} />
-                        <p className='fs-16-14 golden'>Forgot Password?</p>
-                    </div>
 
                     {/* Submit Button */}
-                    <PrimaryButton label='Sign In' type='submit' onClick={() => { }} width='100%' />
-                    <div className="or-container my-5">
-                        <hr className="line" />
-                        <p className='fs-12-8'>or</p>
-                        <hr className="line" />
-                    </div>
-                    <div className='d-flex flex-row'>
-                        <SecondaryButton icon={<Image height={24} width={24} src={googleIcon} alt="LinkedIn Icon" />} classes='mx-2' label='Sign In with Google' type='submit' onClick={() => { }} width='100%' />
-                        <SecondaryButton icon={<Image height={24} width={24} src={linkedInIcon} alt="LinkedIn Icon" />} classes='mx-2' label='Sign In with Linked In' type='submit' onClick={() => { }} width='100%' />
-                    </div>
+                    <PrimaryButton label='Get OTP' type='submit' onClick={() => { }} width='100%' />
+
                     <div className='d-flex flex-row justify-content-center text-center mt-4'>
-                        <p className='fs-12-8'>Already a member? <a className='golden underline'>Sign In</a></p>
+                        <p className='fs-14-10'>Remember Your Password? <a className='golden underline'>Sign In</a></p>
                     </div>
 
                 </form>
@@ -123,4 +98,4 @@ const Login: React.FC = () => {
     );
 };
 
-export default Login;
+export default ForgetPassword;
