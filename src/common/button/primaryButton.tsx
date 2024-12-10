@@ -8,7 +8,9 @@ interface PrimaryButtonProps {
     width?: string;
     disabled?: boolean;
     classes?: string;
-    onClick: () => void; // Click handler
+    onClick?: () => void; // Click handler
+    loading?: boolean; // Loading state
+    loadingText?: string; // Text to show while loading
 }
 
 const PrimaryButton: React.FC<PrimaryButtonProps> = ({
@@ -18,20 +20,28 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
     iconPosition = "front", // Default icon position is 'front'
     width = "auto",
     onClick,
-    classes,
-    disabled
+    classes = "",
+    disabled = false,
+    loading = false, // Default loading state is false
+    loadingText = "Loading...", // Default loading text
 }) => {
     return (
         <button
             className={`primary-btn d-flex align-items-center justify-content-center ${classes}`}
             style={{ width }}
             onClick={onClick}
-            disabled={disabled}
+            disabled={disabled || loading}
             type={type} // Dynamically set the button type
         >
-            {icon && iconPosition === "front" && <span className="me-2">{icon}</span>}
-            {label}
-            {icon && iconPosition === "back" && <span className="ms-2">{icon}</span>}
+            {loading ? (
+                <span>{loadingText}</span> // Show loading text if loading is true
+            ) : (
+                <>
+                    {icon && iconPosition === "front" && <span className="me-2">{icon}</span>}
+                    {label}
+                    {icon && iconPosition === "back" && <span className="ms-2">{icon}</span>}
+                </>
+            )}
         </button>
     );
 };

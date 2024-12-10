@@ -32,6 +32,10 @@ a:hover {
     cursor: pointer !important;
 }
 
+.underline {
+    text-decoration: underline !important;
+}
+
 .main-content-wrapper {
     margin-top: 4.5rem;
     padding-top: 3rem;
@@ -425,6 +429,8 @@ a:hover {
     }
 }
 
+
+
 .radio-wrapper {
     cursor: pointer;
 
@@ -475,5 +481,27 @@ a:hover {
         /* Prevent interaction with the entire wrapper */
         opacity: 0.5;
         /* Dim the entire wrapper */
+    }
+}
+
+
+.otp-input-wrapper {
+    .input-wrapper {
+        gap: 0.8rem;
+
+    }
+
+    .otp-input {
+        width: 6rem;
+        height: 40px;
+        text-align: center;
+        font-size: 18px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .otp-input:focus {
+        outline: 2px solid #007bff;
+        border-color: #007bff;
     }
 }

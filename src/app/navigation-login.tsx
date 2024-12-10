@@ -54,7 +54,7 @@ const NavigationLogin = () => {
             <div className="collapse navbar-collapse">
               <Navbar.Collapse className="justify-content-end">
                 <Navbar.Text>
-                  <span className='nav-text text-decoration-none'>Don&apos;t have an account?</span>
+                  <span className='nav-text text-decoration-none'>Dont have an account?</span>
                 </Navbar.Text>
                 <Navbar.Text>
                   <Button label="Apply for Account" onClick={handleClick} className="golden" />
