@@ -1,5 +1,5 @@
 
    window.CONFIG = {
-      NEXT_PUBLIC_BASE_URL_USER: "http://localhost:8002",
-      NEXT_PUBLIC_BASE_URL: "http://localhost:8000"
+      NEXT_PUBLIC_BASE_URL_USER: "https://api2.certs365.io",
+      NEXT_PUBLIC_BASE_URL: "https://api1.certs365.io"
    };

@@ -76,24 +76,40 @@ const ComponentWrapper = ({ Component, pageProps }: any) => {
   return (
     // @ts-ignore: Implicit any for children prop
     <CertificateContext.Provider value={{ badgeUrl, logoUrl, signatureUrl, certificateUrl, tab, selectedCard, issuerName, issuerDesignation, certificatesData, isDesign, pdfDimentions, pdfFile, pdfBatchDimentions, setBadgeUrl: setBadgeUrl, setSignatureUrl: setSignatureUrl, setLogoUrl: setLogoUrl, setCertificateUrl: setCertificateUrl, setTab: setTab, setSelectedCard: setSelectedCard, setIssuerName: setIssuerName, setissuerDesignation: setissuerDesignation, setCertificatesData: setCertificatesData, setIsDesign: setIsDesign, setPdfBatchDimentions: setPdfBatchDimentions, setPdfDimentions: setPdfDimentions, setPdfFile }}>
-      <Head>
-        <title>Certs365 Blockchain Issuance: Secure, Fast, and Reliable</title>
-        <meta name="description" content="Blockchain-based issuance is revolutionizing asset management. Explore its benefits and potential in enhancing transparency and security." />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <Head>
+  <title>Certs365 Blockchain Issuance: Secure, Fast, and Reliable</title>
+  <meta
+    name="description"
+    content="Blockchain-based issuance is revolutionizing asset management. Explore its benefits and potential in enhancing transparency and security."
+  />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
 
-        {/* Favicon */}
-        <link rel="icon" href="https://images.netcomlearning.com/ai-certs/favIcon.svg" />
+  {/* Favicon */}
+  <link rel="icon" href="https://images.netcomlearning.com/ai-certs/favIcon.svg" />
 
-        {/* Open Graph Meta Tags */}
-        <meta property="og:title" content="Certs365 Blockchain Issuance: Secure, Fast, and Reliable" />
-        <meta property="og:description" content="Blockchain-based issuance is revolutionizing asset management. Explore its benefits and potential in enhancing transparency and security." />
+  {/* Open Graph Meta Tags */}
+  <meta property="og:title" content="Certs365 Blockchain Issuance: Secure, Fast, and Reliable" />
+  <meta
+    property="og:description"
+    content="Blockchain-based issuance is revolutionizing asset management. Explore its benefits and potential in enhancing transparency and security."
+  />
+  <meta property="og:image" content="/new_assets/backgrounds/aicerts.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
 
-        {/* Twitter Meta Tags */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Certs365 Blockchain Issuance: Secure, Fast, and Reliable" />
-        <meta name="twitter:description" content="Blockchain-based issuance is revolutionizing asset management. Explore its benefits and potential in enhancing transparency and security." />
+  {/* Twitter Meta Tags */}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Certs365 Blockchain Issuance: Secure, Fast, and Reliable" />
+  <meta
+    name="twitter:description"
+    content="Blockchain-based issuance is revolutionizing asset management. Explore its benefits and potential in enhancing transparency and security."
+  />
+  <meta name="twitter:image" content="/new_assets/backgrounds/aicerts.png" />
+</Head>
 
-      </Head>
 
       {!isLoginPage && <Navigation />}
       {/* Bot icon at the bottom right */}

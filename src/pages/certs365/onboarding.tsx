@@ -8,7 +8,7 @@ import PrimaryButton from '@/common/button/primaryButton';
 import SecondaryButton from '@/common/button/secondaryButton';
 import googleIcon from "../../../public/new_assets/icons/google-icon.svg";
 
-const onBoarding: React.FC = () => {
+const OnBoarding: React.FC = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [error, setError] = useState('');
 
@@ -105,4 +105,4 @@ const onBoarding: React.FC = () => {
     );
 };
 
-export default onBoarding;
+export default OnBoarding;
