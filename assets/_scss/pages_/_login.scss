@@ -23,16 +23,30 @@
         background-color: $gray-bg;
         padding: 6.2rem 1rem;
 
+
+
         .banner_text_wrapper {
             padding: 5.2rem 10rem;
+
         }
     }
 
     .login_form_wrapper {
         padding: 12.6rem 10rem;
 
+        // Styles for small devices
+        @include xs {
+            padding: 10rem 2rem;
+        }
+
         .text-signin {
             margin-bottom: 4rem;
+
+            @include xs {
+                margin-bottom: 1rem;
+
+            }
+
         }
     }
 

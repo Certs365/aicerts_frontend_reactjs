@@ -101,7 +101,7 @@ const Login: React.FC = () => {
     return (
         <div className='login_wrapper d-flex flex-row'>
             {/* Banner Section */}
-            <div className='login_banner_wrapper'>
+            <div className='d-none d-lg-flex flex-column login_banner_wrapper'>
                 <Image width={800} height={510} src={loginBackground} alt='background Image' />
                 <div className='banner_text_wrapper'>
                     <h3 className='fs-24-12 fw-600 mb-4'>Generate up to 2000 certificates at once</h3>
@@ -110,10 +110,10 @@ const Login: React.FC = () => {
             </div>
 
             {/* Form Section */}
-            <div className='login_form_wrapper'>
+            <div className='login_form_wrapper d-flex flex-column text-center justify-content-center'>
                 {!showVerify ? (
                     <>
-                        <h2 className='text-signin fw-700'>Sign In</h2>
+                        <h2 className='text-signin fx-24 fw-700'>Sign In</h2>
                         <form onSubmit={handleLoginSubmit}>
                             {/* Email Field */}
                             <FormElement
