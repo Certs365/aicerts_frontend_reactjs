@@ -39,19 +39,24 @@ export const loginApi = async (
 
         const response = await preLoginUserInstance.post<LoginResponse>('/api/login', data);
         const responseData = response?.data?.data;
-        if (responseData.JWTToken) {
+        if (responseData?.JWTToken) {
             const response = await commonApi(TWO_FACTOR_AUTH, { email: data?.email }, 'post');
             toast.success("OTP send to your registered email successfully")
             stateSetters?.setUser?.(responseData);
             stateSetters?.setTimer?.(60);
             stateSetters?.setShowVerify?.(true);
+
             return responseData;
         } else {
-            toast.error(responseData.message || "Login failed");
+             
+            toast.error(response?.data?.message || "Login failed");
+
             return null;
         }
     } catch (error: any) {
         toast.error(error?.response?.data?.message || "Something went wrong");
+        
+ 
         return null;
     } finally {
         if (stateSetters?.setLoading) stateSetters.setLoading(false);

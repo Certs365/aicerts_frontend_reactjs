@@ -309,7 +309,7 @@ const Navigation = () => {
       handleLogout();
     }
   };
-  const routesWithLogoutButton = ['/certificates', '/badge-designer', '/issue-pdf-certificate', '/issue-certificate', '/certificate', '/certificate/[id]', '/certificate/download', '/dashboard', '/user-details', '/admin', '/gallery', '/issue-pdf-qr', '/dynamic-poc', '/settings', '/designer', '/design', '/badge/badge-dashboard', '/badge/badge-form', '/badge/badgeDisplay'];
+  const routesWithLogoutButton = ['/certificates','/placeholder', '/badge-designer', '/issue-pdf-certificate', '/issue-certificate', '/certificate', '/certificate/[id]', '/certificate/download', '/dashboard', '/user-details', '/admin', '/gallery', '/issue-pdf-qr', '/dynamic-poc', '/settings', '/designer', '/design', '/badge/badge-dashboard', '/badge/badge-form', '/badge/badgeDisplay'];
   const handleConfirm = () => {
     setShowModal(false)
     handleLogout();

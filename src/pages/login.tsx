@@ -105,7 +105,7 @@ const Login: React.FC = () => {
                 <Image width={800} height={510} src={loginBackground} alt='background Image' />
                 <div className='banner_text_wrapper'>
                     <h3 className='fs-24-12 fw-600 mb-4'>Generate up to 2000 certificates at once</h3>
-                    <p className='fs-18-12 grey-light'>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <p className='fs-18-12 grey-light'>Certs365: Empowering Blockchain Certification and Document Issuance (CertiDocIssuance) - Over 10,000+ Credentials Issued, 7,000+ Verified, Supporting Batch Issuance of 2,000 Credentials, Certificate Design, Lifecycle Management, Analytics, and Multi-Chain Issuance and Verification.</p>
                 </div>
             </div>
 
