@@ -10,6 +10,11 @@ import qr1 from "/assets/img/qr-1.png";
 import qr2 from "/assets/img/qr-2.png";
 import qr3 from "/assets/img/qr-3.png";
 import qr4 from "/assets/img/qr-4.png";
+import qr5 from "/assets/img/qr-5.png";
+import qr6 from "/assets/img/qr-6.png";
+import qr7 from "/assets/img/qr-7.png";
+import p1 from "/assets/img/p1.png";
+import p2 from "/assets/img/p2.png";
 import user from '@/services/userServices';
 import PrimaryButton from '@/common/button/primaryButton';
 import SecondaryButton from '@/common/button/secondaryButton';
@@ -530,27 +535,26 @@ const Settings: React.FC = () => {
         </div>
 
         {/* QR  Code */}
-        <QrCodeSelector qrCodes={[qr1, qr2, qr3, qr4]} />
+        <QrCodeSelector qrCodes={[qr1, qr2, qr3, qr4,qr5,qr6,qr7]} />
 
         {/* Default Blockchain */}
         <div className="org-details mb-5">
           <h2 className="title">Default Blockchain</h2>
           <Row className=" d-flex align-items-center ml-3">
             <Col className="mt-4" xs={12} md={3}>
-              <Row className=" d-flex align-items-center justify-content-center mt-3 gap-5">
-                <Col xs={12} md={4} >
-                  <div className="blockchain-button polygon">
-                    {/* <img src="../../assets/img/qr-1.png" alt="asasa" /> */}
-                    polygon
-                  </div>
-                </Col>
-                <Col xs={12} md={4}>
-                  <div className="blockchain-button optimism">
-                    {/* <img src="../../assets/img/qr-1.png" alt="asasa" /> */}
-                    Optimism
-                  </div>
-                </Col>
-              </Row>
+            <Row className="d-flex align-items-center justify-content-center mt-3 gap-5">
+  <Col xs={12} md={4}>
+    <div className="blockchain-button polygon">
+      <Image width={80} height={40} src={p1} alt="Polygon logo" />
+    </div>
+  </Col>
+  <Col xs={12} md={4}>
+    <div className="blockchain-button optimism">
+      <Image width={80} height={40} src={p2} alt="Optimism logo" />
+    </div>
+  </Col>
+</Row>
+
             </Col>
           </Row>
         </div>
@@ -622,7 +626,7 @@ const Settings: React.FC = () => {
                 <h3 className='bold mb-2'>Custom</h3>
                 <p>Need more than 200 Certificates? Contact us on support@Certs365.io</p>
               </div>
-              <div className="d-flex align-items-center position-relative me-2 cursor-pointer">
+              {/* <div className="d-flex align-items-center position-relative me-2 cursor-pointer">
                 <Form.Control
                   type="email"
                   placeholder="Enter your email"
@@ -631,7 +635,7 @@ const Settings: React.FC = () => {
                 // onChange={(e) => handleDateChange(e, "from")}
                 />
                 <div className="arrow-container position-absolute end-0"></div>
-              </div>
+              </div> */}
 
             </div>
             {/* <div className="last-box">

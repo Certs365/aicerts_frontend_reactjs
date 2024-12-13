@@ -3,6 +3,7 @@ import { Row, Col } from 'react-bootstrap';
 import Image from 'next/image';
 import PrimaryButton from '@/common/button/primaryButton';
 import user from '@/services/userServices';
+import { toast } from 'react-toastify';
 
 // Define the props for the component
 interface QrCodeSelectorProps {
@@ -11,7 +12,7 @@ interface QrCodeSelectorProps {
 
 const QrCodeSelector: React.FC<QrCodeSelectorProps> = ({ qrCodes }) => {
     // State to track the selected QR code and loading state
-    const [selectedQr, setSelectedQr] = useState<string | null>(null);
+    const [selectedQr, setSelectedQr] = useState<number | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [qrPrefrence, setQrPrefrence] = useState<string | null>(null);
     const [now, setNow] = useState(0);
@@ -69,7 +70,7 @@ const QrCodeSelector: React.FC<QrCodeSelectorProps> = ({ qrCodes }) => {
     }, []);
 
     // Handle QR code selection
-    const handleQrClick = (qr: string) => {
+    const handleQrClick = (qr: number) => {
         setSelectedQr(qr);
     };
 
@@ -77,16 +78,18 @@ const QrCodeSelector: React.FC<QrCodeSelectorProps> = ({ qrCodes }) => {
     const handleChangeQr = async () => {
         setIsLoading(true);
         const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
-
-        const data = { email: storedUser.email, qrPrefrence: selectedQr };
+        const data = { email: storedUser.email, qrPrefrence: selectedQr, id:storedUser?.issuerId, name:storedUser?.name
+             };
         try {
             await user.updateIssuer(data, (response) => {
                 const userData = response.data;
                 const userDetails = userData?.data;
+                toast.success(userData?.message || "Updated Successfully")
                 setShow(true); // Assuming this triggers a success message
             });
         } catch (error) {
-            console.error('Error updating QR preference:', error);
+            toast.error('Error updating QR preference');
+            
         } finally {
             setIsLoading(false);
         }
@@ -101,8 +104,8 @@ const QrCodeSelector: React.FC<QrCodeSelectorProps> = ({ qrCodes }) => {
                         key={index}
                         xs={16}
                         md={2}
-                        onClick={() => handleQrClick(qr)}
-                        className={`qr-container ${selectedQr === qr ? 'selected' : ''}`}
+                        onClick={() => handleQrClick(index)}
+                        className={`qr-container mx-2 ${selectedQr == index ? 'selected' : ''}`}
                     >
                         <Image
                             src={qr}
@@ -117,9 +120,11 @@ const QrCodeSelector: React.FC<QrCodeSelectorProps> = ({ qrCodes }) => {
             <div className="d-flex flex-row justify-content-end m-2">
                 <PrimaryButton
                     classes="p-3"
-                    label={isLoading ? 'Loading...' : 'Change QR'}
+                    label={'Change QR'}
+                    loading={isLoading}
+                    loadingText='Updating...'
                     onClick={handleChangeQr}
-                    disabled={isLoading || selectedQr === null}
+                    disabled={ !selectedQr }
                 />
             </div>
         </div>
