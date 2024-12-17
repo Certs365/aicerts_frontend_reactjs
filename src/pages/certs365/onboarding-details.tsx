@@ -6,8 +6,8 @@ import PrimaryButton from '@/common/button/primaryButton';
 import SecondaryButton from '@/common/button/secondaryButton';
 import { toast } from 'react-toastify';
 import RadioButton from '@/common/form/radioButton';
-import arrowIcon from "../../../public/new_assets/icons/arrow-icon.svg";
-import arrowIconBack from "../../../public/new_assets/icons/arrow-icon-back.svg";
+import arrowIcon from "/new_assets/icons/arrow-icon.svg";
+import arrowIconBack from "/new_assets/icons/arrow-icon-back.svg";
 
 // Step 1: Tell us about yourself
 const Step1: React.FC<{ formData: any, handleChange: Function, error: string }> = ({ formData, handleChange, error }) => {
