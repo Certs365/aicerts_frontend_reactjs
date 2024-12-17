@@ -263,12 +263,6 @@ const Settings: React.FC = () => {
   // todo-> can merge it in handleplanselection ??
   const makePayment = async (card: any) => {
 
-    console.log(card)
-    console.log(typeof card.fee);
-    console.log(typeof card.title);
-    console.log(typeof card.limit);
-    console.log(typeof card.rate);
-
     const stripe = await loadStripe(`${stripeUrl}`);
     const body = {
       plan: {
@@ -515,6 +509,12 @@ const Settings: React.FC = () => {
                 className="search-input-setting"
                 value={issuanceDate.to}
                 onChange={(e) => handleDateChange(e, 'to')}
+                disabled={!issuanceDate?.from}
+                min={
+                  issuanceDate.from 
+                    ? issuanceDate.from 
+                    : new Date().toISOString().split('T')[0] // Today's date if "From" is empty
+                }
               />
             </Col>
             <Col className="mt-4" xs={12} md={3}>
@@ -554,6 +554,13 @@ const Settings: React.FC = () => {
                 className="search-input-setting"
                 value={reportDate.to}
                 onChange={(e) => handleDateReportChange(e, 'to')}
+                disabled={!reportDate?.from}
+                min={
+                  reportDate?.from 
+                    ? reportDate?.from 
+                    : new Date().toISOString().split('T')[0] // Today's date if "From" is empty
+                }
+                
               />
             </Col>
             <Col className="mt-4" xs={12} md={3}>
