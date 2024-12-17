@@ -146,8 +146,13 @@ const Login: React.FC = () => {
                             
                             <PrimaryButton loadingText='Logging In...' loading={loading} label='Sign In' type='submit' width='100%' />
                             <div className='d-flex flex-row justify-content-center text-center mt-4'>
-                        <p className='fs-12-8'>Not a member? <a href='/register' className='golden underline'>Create an account</a></p>
-                    </div>
+  <p className='fs-12-8'>
+    Not a member?{' '}
+    <Link href='/register' className='golden underline'>
+      Create an account
+    </Link>
+  </p>
+</div>
                        
                         </form>
                     </>
