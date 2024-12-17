@@ -13,6 +13,8 @@ import Link from 'next/link';
 import OTPInput from '@/common/form/otpInput';
 import { commonApi } from '@/services/common';
 import { TWO_FACTOR_AUTH } from '@/utils/Constants';
+import EmblaCarousel from '@/common/courousel/embla';
+import { page1, page2, page3, page4 } from '@/common/images';
 
 const Login: React.FC = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
@@ -102,7 +104,8 @@ const Login: React.FC = () => {
         <div className='login_wrapper d-flex flex-row'>
             {/* Banner Section */}
             <div className='d-none d-lg-flex flex-column login_banner_wrapper'>
-                <Image width={800} height={510} src={loginBackground} alt='background Image' />
+                {/* <Image width={800} height={510} src={loginBackground} alt='background Image' /> */}
+                <EmblaCarousel slides={[page1, page2, page3, page4]} />
                 <div className='banner_text_wrapper'>
                     <h3 className='fs-24-12 fw-600 mb-4'>Generate up to 2000 certificates at once</h3>
                     <p className='fs-18-12 grey-light'>Certs365: Empowering Blockchain Certification and Document Issuance (CertiDocIssuance) - Over 10,000+ Credentials Issued, 7,000+ Verified, Supporting Batch Issuance of 2,000 Credentials, Certificate Design, Lifecycle Management, Analytics, and Multi-Chain Issuance and Verification.</p>
@@ -142,18 +145,18 @@ const Login: React.FC = () => {
                             </div>
 
                             {/* Submit Button */}
-                            
-                            
+
+
                             <PrimaryButton loadingText='Logging In...' loading={loading} label='Sign In' type='submit' width='100%' />
                             <div className='d-flex flex-row justify-content-center text-center mt-4'>
-  <p className='fs-12-8'>
-    Not a member?{' '}
-    <Link href='/register' className='golden underline'>
-      Create an account
-    </Link>
-  </p>
-</div>
-                       
+                                <p className='fs-12-8'>
+                                    Not a member?{' '}
+                                    <Link href='/register' className='golden underline'>
+                                        Create an account
+                                    </Link>
+                                </p>
+                            </div>
+
                         </form>
                     </>
                 ) : (
