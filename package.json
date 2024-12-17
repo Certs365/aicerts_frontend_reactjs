@@ -58,15 +58,18 @@
     "react-pdf": "^7.7.1",
     "react-rnd": "^10.4.11",
     "react-scrollbars-custom": "^4.1.1",
+    "react-slick": "^0.30.2",
     "react-spinners": "^0.14.1",
     "react-toastify": "^10.0.6",
     "sass": "^1.69.7",
+    "slick-carousel": "^1.8.1",
     "zustand": "^5.0.1"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.2.2",
     "@types/node": "^20",
     "@types/react": "^18.2.55",
+    "@types/react-slick": "^0.23.13",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
     "typescript": "^5"

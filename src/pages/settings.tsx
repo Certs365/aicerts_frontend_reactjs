@@ -638,33 +638,6 @@ const Settings: React.FC = () => {
               </div> */}
 
             </div>
-            {/* <div className="last-box">
-              <div>
-                <h3>Plan not upgraded?</h3>
-                <p>Send us payment details and we will upgrade your plan.</p>
-              </div>
-              <div>
-                <Form className="d-flex flex-column">
-                  <Form.Control
-                    type="email" placeholder="Enter your email"
-                    className="search-input-setting"
-                    value={paymentEmail}
-                    onChange={(e) => setPaymentEmail(e.target.value)}
-                    required
-                  />
-                  <Form.Control
-                    type="text" placeholder="Enter your payment ID"
-                    className="search-input-setting mt-3"
-                    value={paymentId}
-                    onChange={(e) => setPaymentId(e.target.value)}
-                    required
-                  />
-                  <Col md={{ span: 1 }} xs={{ span: 12 }}>
-                    <Button label="Submit" className='btn-danger' onClick={() => handlePaymentGrievance()} />
-                  </Col>
-                </Form>
-              </div>
-            </div> */}
           </div>
         </div>
       </div>
