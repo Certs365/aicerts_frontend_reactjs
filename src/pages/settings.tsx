@@ -19,6 +19,9 @@ import user from '@/services/userServices';
 import PrimaryButton from '@/common/button/primaryButton';
 import SecondaryButton from '@/common/button/secondaryButton';
 import QrCodeSelector from '@/components/qrCodeSelector';
+import { toast } from 'react-toastify';
+import { GET_USER_BY_EMAIL } from '@/utils/Constants';
+import { commonAuthApi } from '@/services/common';
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL_USER;
 const stripeUrl = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 interface DateRange {
@@ -38,6 +41,7 @@ const Settings: React.FC = () => {
   });
   const [issuanceReportLoading, setIssuanceReportLoading] = useState(false);
   const [invoiceReportLoading, setInvoiceReportLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // Adjust the event type to be more generic for React-Bootstrap Form.Control
   const handleDateChange = (
@@ -70,6 +74,7 @@ const Settings: React.FC = () => {
   const [paymentEmail, setPaymentEmail] = useState('')
   const [paymentId, setPaymentId] = useState('');
   const [selectedQr, setSelectedQr] = useState(null);
+  const [selectedBlockchain, setSelectedBlockchain] = useState(null);
 
 
   const isShowPricingEnabled = !isNaN(planDuration) && planDuration !== 0 && !isNaN(totalCredits) && totalCredits !== 0;
@@ -85,27 +90,27 @@ const Settings: React.FC = () => {
   }, [isShowPricingEnabled])
 
 
-  const handleChangeQr = async () => {
-    if (selectedQr) {
-      try {
-        const response = await fetch('/api/change-qr', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ qrPrefrence: selectedQr }),
-        });
 
-        if (response.ok) {
-          alert('QR code updated successfully!');
-        } else {
-          console.error('Failed to update QR code:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error while making API call:', error);
-      }
-    } else {
-      alert('Please select a QR code first.');
+  const handlePolygon = async () => {
+    setLoading(true);
+    const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+    const data = {
+      email: storedUser.email, blockchainPreference: selectedBlockchain, id: storedUser?.issuerId, name: storedUser?.name
+    };
+    try {
+      await user.updateIssuer(data, (response) => {
+        const userData = response.data;
+        const userDetails = userData?.data;
+        toast.success(userData?.message || "Updated Successfully")
+      });
+    } catch (error) {
+      toast.error('Error updating QR preference');
+
+    } finally {
+      setLoading(false);
     }
   };
+
 
   const handleSubmit = async () => {
     setIsLoading(true);
@@ -174,6 +179,9 @@ const Settings: React.FC = () => {
   //   fetchData();
   // }, []);
 
+  const handleBlockchainClick = (blockchain) => {
+    setSelectedBlockchain(blockchain);
+  };
 
 
   useEffect(() => {
@@ -388,6 +396,32 @@ const Settings: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchData = async (email: string) => {
+      const data = { email: email };
+      try {
+        const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+        if (storedUser?.email) {
+          // Fetch the issuer data using the user service
+          user.getIssuerByEmail(data, (response) => {
+            const userData = response.data;
+            const userDetails = userData?.data;
+            setSelectedBlockchain(userDetails?.blockchainPreference)
+            setSelectedQr(userDetails?.qrPreference)
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching issuer data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+    if (storedUser?.email) {
+      fetchData(storedUser.email);
+    }
+  }, []);
 
 
 
@@ -425,6 +459,12 @@ const Settings: React.FC = () => {
 
     // handlePlanSelection(card);
   }
+
+  const handleGetUser = async (email) => {
+
+    setSelectedQr(1)
+    setSelectedBlockchain(1)
+  };
 
   const handlePaymentGrievance = async () => {
     try {
@@ -535,29 +575,50 @@ const Settings: React.FC = () => {
         </div>
 
         {/* QR  Code */}
-        <QrCodeSelector qrCodes={[qr1, qr2, qr3, qr4,qr5,qr6,qr7]} />
+        <QrCodeSelector qrCodes={[qr1, qr2, qr3, qr4, qr5, qr6, qr7]} />
 
         {/* Default Blockchain */}
         <div className="org-details mb-5">
           <h2 className="title">Default Blockchain</h2>
-          <Row className=" d-flex align-items-center ml-3">
+          <Row className="d-flex align-items-center ml-3">
             <Col className="mt-4" xs={12} md={3}>
-            <Row className="d-flex align-items-center justify-content-center mt-3 gap-5">
-  <Col xs={12} md={4}>
-    <div className="blockchain-button polygon">
-      <Image width={80} height={40} src={p1} alt="Polygon logo" />
-    </div>
-  </Col>
-  <Col xs={12} md={4}>
-    <div className="blockchain-button optimism">
-      <Image width={80} height={40} src={p2} alt="Optimism logo" />
-    </div>
-  </Col>
-</Row>
+              <Row className="d-flex align-items-center justify-content-center mt-3 gap-5">
+                <Col xs={12} md={6}>
+                  <div
+                    className={`blockchain-button polygon ${selectedBlockchain === 0 ? 'selected' : ''}`}
+                    onClick={() => handleBlockchainClick(0)}
+                  >
+                    <Image width={110} height={60} src={p1} alt="Polygon logo" />
+                  </div>
+                </Col>
+                <Col xs={12} md={4}>
+                  <div
+                    className={`blockchain-button optimism ${selectedBlockchain === 1 ? 'selected' : ''}`}
+                    onClick={() => handleBlockchainClick(1)}
+                  >
+                    <Image width={110} height={60} src={p2} alt="Optimism logo" />
+                  </div>
+
+                </Col>
+
+              </Row>
+
+              {/* Button aligned to the right */}
 
             </Col>
           </Row>
+          <div className="d-flex justify-content-end mt-4 p-2">
+            <PrimaryButton
+              classes="p-3"
+              label="Change Blockchain"
+              loading={loading}
+              loadingText="Updating..."
+              onClick={handlePolygon}
+            />
+          </div>
         </div>
+
+
 
         {/* App view mode */}
         {/* <div className="org-details mb-5">

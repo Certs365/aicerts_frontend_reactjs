@@ -19,19 +19,25 @@ const postLoginAdminInstance = axios.create({
 const configureInterceptors = (instance: any) => {
     // Request interceptor to set the Authorization token
     instance.interceptors.request.use((config: any) => {
-        config.headers.Authorization = `Bearer ${getToken()}`;
+        const token = getToken();
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
         return config;
     });
 
     // Response interceptor to handle 401 errors (token expiration)
     instance.interceptors.response.use(
-        (response: any) => response,
+        (response: any) => {
+            // Return the response if successful
+            return response;
+        },
         (error: any) => {
             if (error.response && error.response.status === 401) {
                 deleteToken();
-                window.location.href = '/';
+                window.location.href = '/'; // Redirect to login page
             }
-            return Promise.reject(error);
+            return Promise.reject(error); // Reject the error for further handling
         }
     );
 };

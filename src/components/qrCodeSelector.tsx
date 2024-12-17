@@ -51,8 +51,8 @@ const QrCodeSelector: React.FC<QrCodeSelectorProps> = ({ qrCodes }) => {
                     user.getIssuerByEmail(data, (response) => {
                         const userData = response.data;
                         const userDetails = userData?.data;
-                        setQrPrefrence(userDetails?.qrPrefrence || null);
-                        setSelectedQr(userDetails?.qrPrefrence || null);  // Set selected QR based on fetched preference
+                        setQrPrefrence(userDetails?.qrPreference || null);
+                        setSelectedQr(userDetails?.qrPreference || null);  // Set selected QR based on fetched preference
                     });
                 }
             } catch (error) {
@@ -78,8 +78,9 @@ const QrCodeSelector: React.FC<QrCodeSelectorProps> = ({ qrCodes }) => {
     const handleChangeQr = async () => {
         setIsLoading(true);
         const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
-        const data = { email: storedUser.email, qrPrefrence: selectedQr, id:storedUser?.issuerId, name:storedUser?.name
-             };
+        const data = {
+            email: storedUser.email, qrPreference: selectedQr, id: storedUser?.issuerId, name: storedUser?.name
+        };
         try {
             await user.updateIssuer(data, (response) => {
                 const userData = response.data;
@@ -89,7 +90,7 @@ const QrCodeSelector: React.FC<QrCodeSelectorProps> = ({ qrCodes }) => {
             });
         } catch (error) {
             toast.error('Error updating QR preference');
-            
+
         } finally {
             setIsLoading(false);
         }
@@ -124,7 +125,7 @@ const QrCodeSelector: React.FC<QrCodeSelectorProps> = ({ qrCodes }) => {
                     loading={isLoading}
                     loadingText='Updating...'
                     onClick={handleChangeQr}
-                    disabled={ !selectedQr }
+                    disabled={!selectedQr}
                 />
             </div>
         </div>
