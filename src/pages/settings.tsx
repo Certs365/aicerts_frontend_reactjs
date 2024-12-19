@@ -417,7 +417,12 @@ const Settings: React.FC = () => {
     }
   }, []);
 
-
+  const handleClose = (() => {
+    setShow(false);
+    setPlanDuration(0)
+    setCalculatedValue(0)
+    setTotalCredits(0)
+  })
 
   const handleNewPrice = () => {
     setCalculatedValue(planDuration * totalCredits * 5);
@@ -446,6 +451,10 @@ const Settings: React.FC = () => {
           allocatedCredentials: totalCredits,
         }),
       });
+
+      if (response.ok) {
+        toast.success("Plan Updated Successfully")
+      }
 
     } catch (error) {
       console.error('Error selecting plan:', error);
@@ -511,8 +520,8 @@ const Settings: React.FC = () => {
                 onChange={(e) => handleDateChange(e, 'to')}
                 disabled={!issuanceDate?.from}
                 min={
-                  issuanceDate.from 
-                    ? issuanceDate.from 
+                  issuanceDate.from
+                    ? issuanceDate.from
                     : new Date().toISOString().split('T')[0] // Today's date if "From" is empty
                 }
               />
@@ -556,11 +565,11 @@ const Settings: React.FC = () => {
                 onChange={(e) => handleDateReportChange(e, 'to')}
                 disabled={!reportDate?.from}
                 min={
-                  reportDate?.from 
-                    ? reportDate?.from 
+                  reportDate?.from
+                    ? reportDate?.from
                     : new Date().toISOString().split('T')[0] // Today's date if "From" is empty
                 }
-                
+
               />
             </Col>
             <Col className="mt-4" xs={12} md={3}>
@@ -709,12 +718,12 @@ const Settings: React.FC = () => {
           </div>
         </div>
       </div>
-      <Modal style={{ borderRadius: "26px" }} className='enterprise-modal extend-modal' show={show} centered>
+      <Modal onHide={handleClose} style={{ borderRadius: "26px" }} className='enterprise-modal extend-modal' show={show} centered>
         <Modal.Header className='extend-modal-header'>
           <span className='extend-modal-header-text'>Enter your details</span>
           <div className='close-modal'>
             <Image
-              onClick={() => { setShow(false); }}
+              onClick={() => { handleClose() }}
               className='cross-icon'
               src="/icons/close-icon.svg"
               layout='fill'
@@ -742,16 +751,62 @@ const Settings: React.FC = () => {
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              gap: 2,  // Adjust this value to set the desired spacing
+              gap: 2, // Adjust this value to set the desired spacing
             }}
           >
-            <TextField id="outlined-required" label="Plan Duration in days" variant="outlined" required onChange={(e) => setPlanDuration(Number(e.target.value))} />
-
-            {/* <span className='extend-modal-body-expire'>New Expiration Date</span> */}
-            <TextField id="outlined-basic" label="Total Credits" variant="outlined" required onChange={(e) => setTotalCredits(Number(e.target.value))} />
-            {/* <span className='extend-modal-body-expire'>New Expiration Date</span> */}
-            <TextField id="outlined-basic" disabled label={calculatedValue === 0 ? "Pricing in $" : `${calculatedValue}`} variant="outlined" />
+            <TextField
+              type="number"
+              id="outlined-required"
+              label="Plan Duration in days"
+              variant="outlined"
+              required
+              value={planDuration}
+              onChange={(e) => {
+                if (e.target.value.length < 11) {
+                  setPlanDuration(Number(e.target.value));
+                }
+              }}
+              InputProps={{
+                sx: { fontSize: '1.5rem' }, // Increase font size
+              }}
+              InputLabelProps={{
+                sx: { fontSize: '1.2rem' }, // Increase label font size
+              }}
+            />
+            <TextField
+              type="number"
+              id="outlined-basic"
+              label="Total Credits"
+              variant="outlined"
+              required
+              value={totalCredits}
+              onChange={(e) => {
+                if (e.target.value.length < 11) {
+                  setTotalCredits(Number(e.target.value));
+                }
+              }}
+              InputProps={{
+                sx: { fontSize: '1.5rem' }, // Increase font size
+              }}
+              InputLabelProps={{
+                sx: { fontSize: '1.2rem' }, // Increase label font size
+              }}
+            />
+            <TextField
+              id="outlined-basic"
+              disabled
+              label={calculatedValue === 0 ? "Pricing in $" : `${calculatedValue}`}
+              variant="outlined"
+              InputProps={{
+                sx: { fontSize: '1.5rem' }, // Increase font size
+              }}
+              InputLabelProps={{
+                sx: { fontSize: '1.2rem' }, // Increase label font size
+              }}
+            />
           </Box>
+
+
           {/* <div className='checkbox-container-modal'> */}
           {/* <input
         type="checkbox"
@@ -766,7 +821,7 @@ const Settings: React.FC = () => {
         <Modal.Footer >
 
           <button className="update-button-modal" style={{ opacity: !isShowPricingEnabled ? 0.8 : 1 }} disabled={!isShowPricingEnabled} onClick={() => { handleNewPrice(); }}>Show Pricing</button>
-          <button className="update-button-modal" onClick={() => { handleEnterprisePlan(); setShow(false); }}>Upgrade</button>
+          <button style={{ opacity: (!totalCredits || !planDuration || !calculatedValue) ? 0.8 : 1 }} disabled={!totalCredits || !planDuration || !calculatedValue} className="update-button-modal" onClick={() => { handleEnterprisePlan(); handleClose(); }}>Upgrade</button>
         </Modal.Footer>
       </Modal>
     </div>
