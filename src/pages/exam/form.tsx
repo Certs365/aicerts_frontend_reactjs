@@ -1,14 +1,18 @@
-import React, { useState, useRef, useEffect } from 'react';
+// components/CertificateDisplayPage.tsx
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import Image from 'next/legacy/image';
 import PrimaryButton from '@/common/button/primaryButton';
 import SecondaryButton from '@/common/button/secondaryButton';
+import { toast } from 'react-toastify';
+import ShowImages from '@/components/exam/showImages';
 
 const CertificateDisplayPage: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [s3Urls, setS3Urls] = useState<string[]>([]);
+    const [s3Urls, setS3Urls] = useState<string[]>([]);  // To hold the image URLs
+    const [isImagesReady, setIsImagesReady] = useState<boolean>(false);  // Flag to track image loading
     const ADMIN_API_URL = process.env.NEXT_PUBLIC_BASE_URL_admin;
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const iconUrl = process.env.NEXT_PUBLIC_BASE_ICON_URL;
@@ -18,259 +22,41 @@ const CertificateDisplayPage: React.FC = () => {
         if (file) setSelectedFile(file);
     };
 
-    const dummyApiCall = async () => {
-        // Dummy data simulating API response
-        return [
-            {
-                "Name": "Hiren Patel",
-                "EnrollmentNo": "J0869750",
-                "Programme": "Computer Science",
-                "Semester": "7",
-                "Examination": "B.Tech",
-                "School": "JG University",
-                "TotalMarks": "464",
-                "TGP": "278",
-                "TCr": "18",
-                "TCP": "196",
-                "Result": "Pass",
-                "Max": "80",
-                "Min": "20",
-                "Subjects": [
-                    {
-                        "Name": "Data Structures and Algorithms",
-                        "Marks": "70",
-                        "Grade": "A",
-                        "PassingMarks": "36",
-                        "Credits": "40",
-                        "Weightage": "4"
-                    },
-                    {
-                        "Name": "Database Management Systems",
-                        "Marks": "62",
-                        "Grade": "B+",
-                        "PassingMarks": "36",
-                        "Credits": "4",
-                        "Weightage": "40"
-                    },
-                    {
-                        "Name": "Operating Systems",
-                        "Marks": "75",
-                        "Grade": "A",
-                        "PassingMarks": "40",
-                        "Credits": "40",
-                        "Weightage": "2"
-                    },
-                    {
-                        "Name": "Computer Networks",
-                        "Marks": "62",
-                        "Grade": "B+",
-                        "PassingMarks": "28",
-                        "Credits": "24",
-                        "Weightage": "1"
-                    },
-                    {
-                        "Name": "Software Engineering",
-                        "Marks": "76",
-                        "Grade": "A",
-                        "PassingMarks": "40",
-                        "Credits": "40",
-                        "Weightage": "2"
-                    },
-                    {
-                        "Name": "DBMS Lab",
-                        "Marks": "59",
-                        "Grade": "B",
-                        "PassingMarks": "22",
-                        "Credits": "14",
-                        "Weightage": "2"
-                    }
-                ]
-            },
-            {
-                "Name": "Hiren Patel",
-                "EnrollmentNo": "J0869750",
-                "Programme": "Computer Science",
-                "Semester": "7",
-                "Examination": "B.Tech",
-                "School": "JG University",
-                "TotalMarks": "464",
-                "TGP": "278",
-                "TCr": "18",
-                "TCP": "196",
-                "Result": "Pass",
-                "Max": "80",
-                "Min": "20",
-                "Subjects": [
-                    {
-                        "Name": "Data Structures and Algorithms",
-                        "Marks": "70",
-                        "Grade": "A",
-                        "PassingMarks": "36",
-                        "Credits": "40",
-                        "Weightage": "4"
-                    },
-                    {
-                        "Name": "Database Management Systems",
-                        "Marks": "62",
-                        "Grade": "B+",
-                        "PassingMarks": "36",
-                        "Credits": "4",
-                        "Weightage": "40"
-                    },
-                    {
-                        "Name": "Operating Systems",
-                        "Marks": "75",
-                        "Grade": "A",
-                        "PassingMarks": "40",
-                        "Credits": "40",
-                        "Weightage": "2"
-                    },
-                    {
-                        "Name": "Computer Networks",
-                        "Marks": "62",
-                        "Grade": "B+",
-                        "PassingMarks": "28",
-                        "Credits": "24",
-                        "Weightage": "1"
-                    },
-                    {
-                        "Name": "Software Engineering",
-                        "Marks": "76",
-                        "Grade": "A",
-                        "PassingMarks": "40",
-                        "Credits": "40",
-                        "Weightage": "2"
-                    },
-                    {
-                        "Name": "DBMS Lab",
-                        "Marks": "59",
-                        "Grade": "B",
-                        "PassingMarks": "22",
-                        "Credits": "14",
-                        "Weightage": "2"
-                    }
-                ]
-            },
-            {
-                "Name": "Hiren Patel",
-                "EnrollmentNo": "J0869750",
-                "Programme": "Computer Science",
-                "Semester": "7",
-                "Examination": "B.Tech",
-                "School": "JG University",
-                "TotalMarks": "464",
-                "TGP": "278",
-                "TCr": "18",
-                "TCP": "196",
-                "Result": "Pass",
-                "Max": "80",
-                "Min": "20",
-                "Subjects": [
-                    {
-                        "Name": "Data Structures and Algorithms",
-                        "Marks": "70",
-                        "Grade": "A",
-                        "PassingMarks": "36",
-                        "Credits": "40",
-                        "Weightage": "4"
-                    },
-                    {
-                        "Name": "Database Management Systems",
-                        "Marks": "62",
-                        "Grade": "B+",
-                        "PassingMarks": "36",
-                        "Credits": "4",
-                        "Weightage": "40"
-                    },
-                    {
-                        "Name": "Operating Systems",
-                        "Marks": "75",
-                        "Grade": "A",
-                        "PassingMarks": "40",
-                        "Credits": "40",
-                        "Weightage": "2"
-                    },
-                    {
-                        "Name": "Computer Networks",
-                        "Marks": "62",
-                        "Grade": "B+",
-                        "PassingMarks": "28",
-                        "Credits": "24",
-                        "Weightage": "1"
-                    },
-                    {
-                        "Name": "Software Engineering",
-                        "Marks": "76",
-                        "Grade": "A",
-                        "PassingMarks": "40",
-                        "Credits": "40",
-                        "Weightage": "2"
-                    },
-                    {
-                        "Name": "DBMS Lab",
-                        "Marks": "59",
-                        "Grade": "B",
-                        "PassingMarks": "22",
-                        "Credits": "14",
-                        "Weightage": "2"
-                    }
-                ]
+    // Merge details with student data
+    const mergeDetailsWithData = (studentData: Record<string, StudentData>, details: CertificateDetail[]): MergedCertificate[] => {
+        return details.map((detail) => {
+            const enrollmentNumber = detail.enrollmentNumber;
+            const student = studentData[enrollmentNumber]; // Get corresponding student data using enrollmentNumber
+
+            if (student) {
+                // Merge details and student data
+                return {
+                    ...detail,
+                    studentData: student,  // Adds all student data fields
+                };
             }
-        ];
+            return null;  // Return null if no matching data found
+        }).filter(item => item !== null) as MergedCertificate[]; // Filter out null items and assert type
     };
 
-    const handleGenerateCertificates = async () => {
-        setIsLoading(true);
-        try {
-            const data = await dummyApiCall(); // Dummy API call
-            const s3UrlsTemp: string[] = [];
-
-            for (let index = 0; index < data.length; index++) {
-                const detail = data[index];
-                const blob = await fetchBlobForCertificate(detail); // Fetch blob
-                const s3Url = await uploadToS3(blob, index); // Pass index instead of certificateNumber
-                if (s3Url) s3UrlsTemp.push(s3Url);
-            }
-
-            setS3Urls(s3UrlsTemp); // Save S3 URLs in state
-            setIsLoading(false);
-
-            // Pass s3UrlsTemp to another component if needed
-        } catch (error) {
-            console.error('Error during certificate generation:', error);
-            setIsLoading(false);
-        }
-    };
-
-    const handleDownloadSample = () => {
-        // Create a new anchor element
-        const anchor = document.createElement('a');
-        // Set the href attribute to the path of the file to be downloaded
-        anchor.href = '/download-sample.xlsx';
-        // Set the download attribute to the desired filename for the downloaded file
-        anchor.download = 'sample.xlsx';
-        // Append the anchor element to the document body
-        document.body.appendChild(anchor);
-        // Trigger a click event on the anchor element to initiate the download
-        anchor.click();
-        // Remove the anchor element from the document body
-        document.body.removeChild(anchor);
-    };
-
+    // Fetch the image blob for the certificate
     const fetchBlobForCertificate = async (data: any): Promise<Blob> => {
-        const requestBody = {
-            data
-        }
+        const requestBody = { data };
 
         const response = await fetch('/api/downloadMarksCertificate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(requestBody),
         });
-        if (response.ok) return response.blob();
+
+        if (response.ok) {
+            return response.blob();
+        }
+
         throw new Error('Failed to fetch blob');
     };
 
+    // Upload the blob to S3 and return the URL
     const uploadToS3 = async (blob: Blob, certificateNumber: string): Promise<string | null> => {
         const formData = new FormData();
         formData.append('file', blob);
@@ -293,70 +79,139 @@ const CertificateDisplayPage: React.FC = () => {
         }
     };
 
+    // Handle certificate generation
+    const handleGenerateCertificates = async () => {
+        if (!selectedFile) {
+            toast.error('Please upload a valid file.');
+            return;
+        }
+
+        setIsLoading(true);
+
+        try {
+            // Create a FormData object to send the file in the request
+            const formData = new FormData();
+            formData.append('email', 'basit@aicerts.io'); // Replace with actual email if dynamic
+            formData.append('excelFile', selectedFile);
+
+            // Send the file to the API for processing
+            const response = await fetch('http://10.2.3.55:2010/api/jg-issuance', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json', // Ensure correct headers
+                },
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to process the Excel file');
+            }
+
+            const responseData = await response.json();
+
+            // Send the API response data to /api/downloadMarksCertificate
+            const blob = await fetchBlobForCertificate(mergeDetailsWithData(responseData));  // Fetch image blob for the certificate
+
+            // Now upload the blob to S3
+            const s3Url = await uploadToS3(blob, responseData.certificateNumber);  // Assume certificateNumber is available in the response
+
+            if (s3Url) {
+                // Add the S3 URL to the list of URLs
+                setS3Urls((prevUrls) => [...prevUrls, s3Url]);
+            }
+
+            setIsImagesReady(true); // Flag indicating images are ready
+        } catch (error) {
+            console.error('Error during certificate generation:', error);
+            toast.error('Error during certificate generation');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    // Handle the sample download
+    const handleDownloadSample = () => {
+        const anchor = document.createElement('a');
+        anchor.href = '/download-sample.xlsx';
+        anchor.download = 'sample.xlsx';
+        document.body.appendChild(anchor);
+        anchor.click();
+        document.body.removeChild(anchor);
+    };
+
+    // Handle file input click
     const handleClick = () => fileInputRef.current?.click();
-    const certificateUrl = "https://certs365-live.s3.amazonaws.com/uploads/01_JG%20University.png"
+
     return (
         <>
-            <div className="page-bg">
-                <div className="position-relative mt-4">
-                    <div className='dashboard py-5'>
-                        <Container className='mt-5'>
-                            <Row className="justify-content-md-center">
-                                <h3 className='title'>Batch Issuance</h3>
-                                <Col xs={12} md={4}>
-                                    <Card className='p-0'>
-                                        <Card.Header>Selected Template</Card.Header>
-                                        <Card.Body>
-                                            <div className='batch-cert-temp'>
-                                                <Image
-                                                    src={certificateUrl}
-                                                    layout='fill'
-                                                    objectFit='contain'
-                                                    alt={`Certificate`} />
-                                            </div>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                                <Col xs={12} md={8}>
-                                    <div className='bulk-upload'>
-                                        <div className='download-sample d-block d-md-flex justify-content-between align-items-center text-center'>
-                                            <div className='tagline mb-3 mb-md-0'>Please refer to our sample file for batch upload.</div>
-                                            <PrimaryButton label="Download Sample &nbsp; &nbsp;" classes='golden position-relative' onClick={handleDownloadSample} />
-                                        </div>
-                                        <div style={{ position: "relative" }} className='browse-file text-center'>
-                                            <h6 style={{ position: "absolute", top: "10px", left: "10px", color: "gray" }}>
-                                                Note: Date should be in format - MM/DD/YYYY
-                                            </h6>
-                                            <div className='download-icon position-relative'>
-                                                <Image
-                                                    src={`${iconUrl}/cloud-upload.svg`}
-                                                    layout='fill'
-                                                    objectFit='contain'
-                                                    alt='Upload icon'
-                                                />
-                                            </div>
-                                            <h4 className='tagline'>Upload  your batch issue certification file here.</h4>
-                                            <input type="file" ref={fileInputRef} onChange={handleFileChange} hidden accept=".xlsx" />
-                                            <SecondaryButton label="Choose File" onClick={handleClick} />
-                                            {!selectedFile && (
-                                                <div>
-                                                    <p className='mt-4'>{selectedFile?.name}</p>
-                                                    <PrimaryButton label="Validate and Issue"
-                                                        onClick={() =>
-                                                            handleGenerateCertificates()
-                                                        }
+            {isImagesReady ? (
+                <ShowImages imageUrls={s3Urls} />  // Render ShowImages component if images are ready
+            ) : (
+                <div className="page-bg">
+                    <div className="position-relative mt-4">
+                        <div className="dashboard py-5">
+                            <Container className="mt-5">
+                                <Row className="justify-content-md-center">
+                                    <h3 className="title">Batch Issuance</h3>
+                                    <Col xs={12} md={4}>
+                                        <Card className="p-0">
+                                            <Card.Header>Selected Template</Card.Header>
+                                            <Card.Body>
+                                                <div className="batch-cert-temp">
+                                                    <Image
+                                                        src="https://certs365-live.s3.amazonaws.com/uploads/01_JG%20University.png"
+                                                        layout="fill"
+                                                        objectFit="contain"
+                                                        alt="Certificate"
                                                     />
                                                 </div>
-                                            )}
-                                            <div className='restriction-text'>Only <strong>XLSX</strong> is supported. <br />(10KB - 50KB)</div>
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                    <Col xs={12} md={8}>
+                                        <div className="bulk-upload">
+                                            <div className="download-sample d-block d-md-flex justify-content-between align-items-center text-center">
+                                                <div className="tagline mb-3 mb-md-0">Please refer to our sample file for batch upload.</div>
+                                                <PrimaryButton label="Download Sample" onClick={handleDownloadSample} />
+                                            </div>
+                                            <div style={{ position: 'relative' }} className="browse-file text-center">
+                                                <h6 style={{ position: 'absolute', top: '10px', left: '10px', color: 'gray' }}>
+                                                    Note: Date should be in format - MM/DD/YYYY
+                                                </h6>
+                                                <div className="download-icon position-relative">
+                                                    <Image
+                                                        src={`${iconUrl}/cloud-upload.svg`}
+                                                        layout="fill"
+                                                        objectFit="contain"
+                                                        alt="Upload icon"
+                                                    />
+                                                </div>
+                                                <h4 className="tagline">Upload your batch issue certification file here.</h4>
+                                                <input type="file" ref={fileInputRef} onChange={handleFileChange} hidden accept=".xlsx" />
+                                                <div className="d-flex justify-content-center align-items-center">
+                                                    <SecondaryButton label="Choose File" onClick={handleClick} />
+                                                </div>
+                                                {selectedFile && (
+                                                    <div className="d-flex flex-column justify-content-center align-items-center">
+                                                        <p className="mt-4">{selectedFile?.name}</p>
+                                                        <PrimaryButton
+                                                            label="Validate and Issue"
+                                                            onClick={handleGenerateCertificates}
+                                                            loading={isLoading}
+                                                            loadingText="Generating Certificates..."
+                                                        />
+                                                    </div>
+                                                )}
+                                                <div className="restriction-text">Only <strong>XLSX</strong> is supported. <br />(10KB - 50KB)</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </Col>
-                            </Row>
-                        </Container>
+                                    </Col>
+                                </Row>
+                            </Container>
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
         </>
     );
 };
