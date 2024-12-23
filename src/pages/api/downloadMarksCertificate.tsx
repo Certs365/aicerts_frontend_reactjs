@@ -175,12 +175,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
            <div style="
             position: absolute;
             right: 40px;
-            top: 45px;
+            top: 75px;
           ">
     <img 
         src="${data.qrData}" 
         alt="QR info" 
-        style="width: 67px; height: 87px;" 
+        style="width: 70px; height: 70px;" 
     />
   </div> 
             <table class="table-container">
@@ -259,15 +259,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
-      await page.setViewport({ width: 722, height: 893 });
+      
+      await page.setViewport({
+          width: 722, // Double the original dimensions
+          height: 893,
+          deviceScaleFactor: 6 // Simulates a high-DPI screen
+      });
+      
       await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
-
-      const screenshotBuffer = await page.screenshot({ type: 'png' });
+      
+      const screenshotBuffer = await page.screenshot({
+          type: 'png' // PNG is already lossless, so no quality setting needed
+      });
+      
       await browser.close();
-
+      
       res.setHeader('Content-Type', 'image/png');
       res.setHeader('Content-Disposition', 'attachment; filename=output.png');
       res.send(screenshotBuffer);
+      
     } catch (error) {
       console.error('Error generating image:', error);
       res.status(500).json({ error: 'Image generation failed' });

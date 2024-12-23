@@ -57,6 +57,23 @@ const DownloadCertificate = () => {
     setIsOpen(!isOpen);
   };
 
+  const generatePresignedUrl = async (key) => {
+    const s3 = new AWS.S3();
+    const params = {
+      Bucket: process.env.NEXT_PUBLIC_BUCKET,
+      Key: key,
+      Expires: 3600,
+    };
+
+    try {
+      const url = await s3.getSignedUrlPromise('getObject', params);
+      return url;
+    } catch (error) {
+      console.error('Error generating pre-signed URL:', error);
+      return null;
+    }
+  };
+
   useEffect(() => {
     // Function to retrieve data from session storage and set local state
     const retrieveDataFromSessionStorage = () => {

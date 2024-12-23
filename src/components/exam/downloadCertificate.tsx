@@ -64,41 +64,51 @@ const DownloadCertificate: React.FC<DownloadCertificateProps> = ({ data }) => {
     };
 
 
-    const handleDownloadPDF = async (imageUrl: string) => {
-        setIsLoading(true);
-        try {
-            // Fetch the image from the S3 URL
-            const res = await fetch(imageUrl);
-            if (!res.ok) {
-                throw new Error('Failed to fetch image');
-            }
-
-            // Convert the image to a blob
-            const imageBlob = await res.blob();
-            const imageUrlObject = URL.createObjectURL(imageBlob);
-
-            // Create a new jsPDF instance
-            const pdf = new jsPDF();
-
-            // Add the image to the PDF (you can adjust the position, width, and height as needed)
-            pdf.addImage(imageUrlObject, 'JPEG', 10, 10, 180, 200);  // Adjust the size and position
-
-            // Save the PDF
-            pdf.save('Certification.pdf');
-
-            // Clean up the image URL object
-            URL.revokeObjectURL(imageUrlObject);
-
-            setLoginError('');
-            setLoginSuccess('Certification Downloaded');
-            setShow(true);
-        } catch (error) {
-            setLoginError("Error downloading PDF");
-            setShow(true);
-        } finally {
-            setIsLoading(false);
+const handleDownloadPDF = async (imageUrl: string) => {
+    setIsLoading(true);
+    try {
+        // Fetch the image from the S3 URL
+        const res = await fetch(imageUrl);
+        if (!res.ok) {
+            throw new Error('Failed to fetch image');
         }
-    };
+
+        // Convert the image to a blob
+        const imageBlob = await res.blob();
+        const imageUrlObject = URL.createObjectURL(imageBlob);
+
+        // Convert the dimensions (px to mm) while maintaining aspect ratio
+        const pxToMm = 0.264583; // Conversion factor: 1 px = 0.264583 mm
+        const pdfWidth = 722 * pxToMm; // Convert width from px to mm
+        const pdfHeight = 893 * pxToMm; // Convert height from px to mm
+
+        // Create a new jsPDF instance with specific dimensions
+        const pdf = new jsPDF({
+            orientation: 'portrait',
+            unit: 'mm',
+            format: [pdfWidth, pdfHeight],
+        });
+
+        // Add the image to the PDF to cover the entire area
+        pdf.addImage(imageUrlObject, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+
+        // Save the PDF
+        pdf.save('Certification.pdf');
+
+        // Clean up the image URL object
+        URL.revokeObjectURL(imageUrlObject);
+
+        setLoginError('');
+        setLoginSuccess('Certification Downloaded');
+        setShow(true);
+    } catch (error) {
+        setLoginError('Error downloading PDF');
+        setShow(true);
+    } finally {
+        setIsLoading(false);
+    }
+};
+
 
 
     const handleDownloadPDFs = async () => {
