@@ -7,6 +7,7 @@ import PrimaryButton from '@/common/button/primaryButton';
 import SecondaryButton from '@/common/button/secondaryButton';
 import { toast } from 'react-toastify';
 import ShowImages from '@/components/exam/showImages';
+import responseAPI from './response.json';
 
 const CertificateDisplayPage: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -42,7 +43,6 @@ const CertificateDisplayPage: React.FC = () => {
     // Fetch the image blob for the certificate
     const fetchBlobForCertificate = async (data: any): Promise<Blob> => {
         const requestBody = { data };
-
         const response = await fetch('/api/downloadMarksCertificate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -57,12 +57,16 @@ const CertificateDisplayPage: React.FC = () => {
     };
 
     // Upload the blob to S3 and return the URL
-    const uploadToS3 = async (blob: Blob, certificateNumber: string): Promise<string | null> => {
+    const uploadToS3 = async (blob: Blob): Promise<string | null> => {
+        const timestamp = new Date().toISOString(); // Generate a timestamp
+        const originalFileName = blob.name || 'file'; // Get the original name or use 'file' as a fallback
+        const dynamicFileName = `${originalFileName.split('.')[0]}_${timestamp}.png`; // Append timestamp to name
+    
+        const renamedBlob = new File([blob], dynamicFileName, { type: blob.type }); // Create a new File with the updated name
+    
         const formData = new FormData();
-        formData.append('file', blob);
-        formData.append('certificateNumber', certificateNumber);
-        formData.append('type', '3');
-
+        formData.append('file', renamedBlob);
+    
         try {
             const response = await fetch(`${ADMIN_API_URL}/api/upload`, {
                 method: 'POST',
@@ -71,6 +75,7 @@ const CertificateDisplayPage: React.FC = () => {
                 },
                 body: formData,
             });
+    
             const result = await response.json();
             return result?.fileUrl || null;
         } catch (error) {
@@ -78,6 +83,7 @@ const CertificateDisplayPage: React.FC = () => {
             return null;
         }
     };
+    
 
     // Handle certificate generation
     const handleGenerateCertificates = async () => {
@@ -85,42 +91,58 @@ const CertificateDisplayPage: React.FC = () => {
             toast.error('Please upload a valid file.');
             return;
         }
-
+    
         setIsLoading(true);
-
+    
         try {
-            // Create a FormData object to send the file in the request
             const formData = new FormData();
-            formData.append('email', 'basit@aicerts.io'); // Replace with actual email if dynamic
+            formData.append('email', 'basit@aicerts.io'); // Replace with dynamic email if necessary
             formData.append('excelFile', selectedFile);
-
-            // Send the file to the API for processing
-            const response = await fetch('http://10.2.3.55:2010/api/jg-issuance', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json', // Ensure correct headers
-                },
-                body: formData,
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to process the Excel file');
+    
+            // Simulate API response for batch data and details
+            // const response = await fetch('http://10.2.3.55:2010/api/jg-issuance', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Accept': 'application/json',
+            //     },
+            //     body: formData,
+            // });
+    
+            // if (!response.ok) {
+            //     throw new Error('Failed to process the Excel file');
+            // }
+    
+            // const responseData = await response.json();
+            const responseData = responseAPI; // Simulated response for testing
+    
+            if (!responseData?.data || !responseData?.details) {
+                throw new Error('Invalid response data structure');
             }
-
-            const responseData = await response.json();
-
-            // Send the API response data to /api/downloadMarksCertificate
-            const blob = await fetchBlobForCertificate(mergeDetailsWithData(responseData));  // Fetch image blob for the certificate
-
-            // Now upload the blob to S3
-            const s3Url = await uploadToS3(blob, responseData.certificateNumber);  // Assume certificateNumber is available in the response
-
-            if (s3Url) {
-                // Add the S3 URL to the list of URLs
-                setS3Urls((prevUrls) => [...prevUrls, s3Url]);
+    
+            const newS3Urls = [];
+    
+            // Iterate over the data and details
+            for (let i = 0; i < responseData.data.length; i++) {
+                const currentData = responseData.data[i];
+                const currentDetails = responseData.details[i];
+    
+                // Merge details with data
+                const mergedDetails = mergeDetailsWithData(currentData, currentDetails);
+    
+                // Generate the image blob for the certificate
+                const blob = await fetchBlobForCertificate(mergedDetails);
+    
+                // Upload the blob to S3
+                const s3Url = await uploadToS3(blob);
+    
+                if (s3Url) {
+                    newS3Urls.push(s3Url);
+                }
             }
-
+    
+            setS3Urls((prevUrls) => [...prevUrls, ...newS3Urls]); // Add new S3 URLs to state
             setIsImagesReady(true); // Flag indicating images are ready
+            debugger
         } catch (error) {
             console.error('Error during certificate generation:', error);
             toast.error('Error during certificate generation');
@@ -128,6 +150,7 @@ const CertificateDisplayPage: React.FC = () => {
             setIsLoading(false);
         }
     };
+    
 
     // Handle the sample download
     const handleDownloadSample = () => {

@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const subjects = data?.studentData?.Subjects;
     const semesterRecords = data?.studentData?.SemesterRecords || [];
-
+console.log(data)
     // Destructure subjects and create an array of objects with subjectName and other details
     const subjectArray = subjects
       ? Object.entries(subjects).map(([subjectName, subjectData]) => ({
