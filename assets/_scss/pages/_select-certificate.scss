@@ -238,7 +238,7 @@
                 counter-increment: step-counter; // Increment custom counter
 
                 &:before {
-                    content: "Step "counter(step-counter) ": "; // Use custom counter for steps
+                    content: "Step " counter(step-counter) ": "; // Use custom counter for steps
                     font-weight: bold;
                     color: #CFA935;
                 }
@@ -293,7 +293,7 @@
 
     .issued-info {
         .label {
-            
+
             color: #5A677E;
             font-size: 16px;
             font-style: normal;
@@ -468,8 +468,8 @@
 
                 .cert-prev {
                     position: relative;
-                    width: 100%;
-                    height: 167px;
+                    width: fit-content;
+                    min-height: 167px;
                     margin: auto;
                     margin-bottom: 16px;
 
@@ -647,7 +647,7 @@
         }
 
         .info-text {
-            
+
             color: #5A677E;
             font-size: 16px;
             font-style: normal;
@@ -848,9 +848,9 @@
 }
 
 .upload-badge-container {
- 
-   
-    
+
+
+
     .upload-info {
         font-family: $font-family;
         background: #F7F7F7;
@@ -864,7 +864,7 @@
             .info-text {
                 color: #5B5A5F;
                 // font-family: $font-family;
-                
+
                 font-size: 16px;
                 font-style: normal;
                 font-weight: 400;
@@ -907,6 +907,7 @@
 
 .upload-badge-container {
     font-family: $font-family;
+
     .label {
         font-family: $font-family;
         color: #5B5A5F;
@@ -937,8 +938,9 @@
             input {
                 overflow: hidden;
             }
+
             @media (min-width: $mobile-min) and (max-width: $mobile-max) {
-               width: 82%;
+                width: 82%;
             }
         }
 

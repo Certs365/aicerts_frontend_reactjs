@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const subjects = data?.studentData?.Subjects;
     const semesterRecords = data?.studentData?.SemesterRecords || [];
-console.log(data)
+    console.log(data)
     // Destructure subjects and create an array of objects with subjectName and other details
     const subjectArray = subjects
       ? Object.entries(subjects).map(([subjectName, subjectData]) => ({
@@ -85,7 +85,6 @@ console.log(data)
               position: relative;
               width: 595px;
               min-height: 100vh;
-              border: 1px solid black;
               background: url('https://certs365-live.s3.amazonaws.com/uploads/01_JG%20University.png') no-repeat center center;
               background-size: cover;
               padding: 170px 40px 0 40px;
@@ -171,7 +170,19 @@ console.log(data)
           </style>
         </head>
         <body>
+        
           <div class="content">
+           <div style="
+            position: absolute;
+            right: 40px;
+            top: 45px;
+          ">
+    <img 
+        src="${data.qrData}" 
+        alt="QR info" 
+        style="width: 67px; height: 87px;" 
+    />
+  </div> 
             <table class="table-container">
               <!-- Student's Details Section -->
               <tr>
@@ -248,7 +259,7 @@ console.log(data)
     try {
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
-      await page.setViewport({ width: 1122, height: 793 });
+      await page.setViewport({ width: 722, height: 893 });
       await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
 
       const screenshotBuffer = await page.screenshot({ type: 'png' });

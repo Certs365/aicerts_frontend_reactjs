@@ -8,6 +8,7 @@ import SecondaryButton from '@/common/button/secondaryButton';
 import { toast } from 'react-toastify';
 import ShowImages from '@/components/exam/showImages';
 import responseAPI from './response.json';
+import DownloadCertificate from '@/components/exam/downloadCertificate';
 
 const CertificateDisplayPage: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -24,21 +25,18 @@ const CertificateDisplayPage: React.FC = () => {
     };
 
     // Merge details with student data
-    const mergeDetailsWithData = (studentData: Record<string, StudentData>, details: CertificateDetail[]): MergedCertificate[] => {
-        return details.map((detail) => {
-            const enrollmentNumber = detail.enrollmentNumber;
-            const student = studentData[enrollmentNumber]; // Get corresponding student data using enrollmentNumber
+    const mergeDetailsWithData = (studentData: Record<string, StudentData>, detail: CertificateDetail): MergedCertificate | null => {
+        const enrollmentNumber = detail.enrollmentNumber;
+        // Get corresponding student data using enrollmentNumber
 
-            if (student) {
-                // Merge details and student data
-                return {
-                    ...detail,
-                    studentData: student,  // Adds all student data fields
-                };
-            }
-            return null;  // Return null if no matching data found
-        }).filter(item => item !== null) as MergedCertificate[]; // Filter out null items and assert type
+        // Merge details and student data
+        return {
+            ...detail,
+            studentData  // Adds all student data fields
+        };
+        return null;  // Return null if no matching data found
     };
+
 
     // Fetch the image blob for the certificate
     const fetchBlobForCertificate = async (data: any): Promise<Blob> => {
@@ -61,12 +59,12 @@ const CertificateDisplayPage: React.FC = () => {
         const timestamp = new Date().toISOString(); // Generate a timestamp
         const originalFileName = blob.name || 'file'; // Get the original name or use 'file' as a fallback
         const dynamicFileName = `${originalFileName.split('.')[0]}_${timestamp}.png`; // Append timestamp to name
-    
+
         const renamedBlob = new File([blob], dynamicFileName, { type: blob.type }); // Create a new File with the updated name
-    
+
         const formData = new FormData();
         formData.append('file', renamedBlob);
-    
+
         try {
             const response = await fetch(`${ADMIN_API_URL}/api/upload`, {
                 method: 'POST',
@@ -75,7 +73,7 @@ const CertificateDisplayPage: React.FC = () => {
                 },
                 body: formData,
             });
-    
+
             const result = await response.json();
             return result?.fileUrl || null;
         } catch (error) {
@@ -83,7 +81,7 @@ const CertificateDisplayPage: React.FC = () => {
             return null;
         }
     };
-    
+
 
     // Handle certificate generation
     const handleGenerateCertificates = async () => {
@@ -91,14 +89,14 @@ const CertificateDisplayPage: React.FC = () => {
             toast.error('Please upload a valid file.');
             return;
         }
-    
+
         setIsLoading(true);
-    
+
         try {
             const formData = new FormData();
             formData.append('email', 'basit@aicerts.io'); // Replace with dynamic email if necessary
             formData.append('excelFile', selectedFile);
-    
+
             // Simulate API response for batch data and details
             // const response = await fetch('http://10.2.3.55:2010/api/jg-issuance', {
             //     method: 'POST',
@@ -107,42 +105,42 @@ const CertificateDisplayPage: React.FC = () => {
             //     },
             //     body: formData,
             // });
-    
+
             // if (!response.ok) {
             //     throw new Error('Failed to process the Excel file');
             // }
-    
+
             // const responseData = await response.json();
             const responseData = responseAPI; // Simulated response for testing
-    
             if (!responseData?.data || !responseData?.details) {
                 throw new Error('Invalid response data structure');
             }
-    
+
             const newS3Urls = [];
-    
-            // Iterate over the data and details
-            for (let i = 0; i < responseData.data.length; i++) {
-                const currentData = responseData.data[i];
-                const currentDetails = responseData.details[i];
-    
+
+            // Iterate over the data and details and collect promises for S3 uploads
+            const uploadPromises = responseData.details.map(async (currentDetails, i) => {
+                const currentData = responseData.data[currentDetails?.enrollmentNumber];
                 // Merge details with data
+
                 const mergedDetails = mergeDetailsWithData(currentData, currentDetails);
-    
+
                 // Generate the image blob for the certificate
                 const blob = await fetchBlobForCertificate(mergedDetails);
-    
+
                 // Upload the blob to S3
                 const s3Url = await uploadToS3(blob);
-    
+
                 if (s3Url) {
-                    newS3Urls.push(s3Url);
+                    newS3Urls.push({ ...mergedDetails, s3Url });
                 }
-            }
-    
+            });
+
+            // Wait for all S3 uploads to complete
+            await Promise.all(uploadPromises);
+
             setS3Urls((prevUrls) => [...prevUrls, ...newS3Urls]); // Add new S3 URLs to state
             setIsImagesReady(true); // Flag indicating images are ready
-            debugger
         } catch (error) {
             console.error('Error during certificate generation:', error);
             toast.error('Error during certificate generation');
@@ -150,7 +148,8 @@ const CertificateDisplayPage: React.FC = () => {
             setIsLoading(false);
         }
     };
-    
+
+
 
     // Handle the sample download
     const handleDownloadSample = () => {
@@ -168,7 +167,7 @@ const CertificateDisplayPage: React.FC = () => {
     return (
         <>
             {isImagesReady ? (
-                <ShowImages imageUrls={s3Urls} />  // Render ShowImages component if images are ready
+                <DownloadCertificate data={s3Urls} />  // Render ShowImages component if images are ready
             ) : (
                 <div className="page-bg">
                     <div className="position-relative mt-4">
@@ -182,7 +181,7 @@ const CertificateDisplayPage: React.FC = () => {
                                             <Card.Body>
                                                 <div className="batch-cert-temp">
                                                     <Image
-                                                        src="https://certs365-live.s3.amazonaws.com/uploads/01_JG%20University.png"
+                                                        src="https://certs365-live.s3.amazonaws.com/uploads/01_JG%20University1.png"
                                                         layout="fill"
                                                         objectFit="contain"
                                                         alt="Certificate"
