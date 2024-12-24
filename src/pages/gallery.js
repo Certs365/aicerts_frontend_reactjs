@@ -48,7 +48,7 @@ const Gallery = () => {
   const fetchData = async (storedUser) => {
     setShowLoading(true);
     try {
-      // fetchBatchDates(storedUser);
+      fetchBatchDates(storedUser);
       await Promise.all([
         fetchSingleWithPdfCertificates(storedUser),
         fetchSingleWithoutCertificates(storedUser),
@@ -145,6 +145,7 @@ const Gallery = () => {
     } catch (error) {
       console.error('Error ', error);
     } finally {
+      setLoading(false)
     }
   };
 

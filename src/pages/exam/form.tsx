@@ -1,6 +1,4 @@
 // @ts-nocheck
-
-
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Container, Row, Col, Card } from 'react-bootstrap';
@@ -140,7 +138,8 @@ const CertificateDisplayPage: React.FC = () => {
             });
 
             if (!response.ok) {
-                throw new Error('Failed to process the Excel file');
+            const responseData = await response.json();
+            toast.error(responseData?.message || 'Error during certificate generation');
             }
 
             const responseData = await response.json();
@@ -176,7 +175,6 @@ const CertificateDisplayPage: React.FC = () => {
             setIsImagesReady(true); // Flag indicating images are ready
         } catch (error) {
             console.error('Error during certificate generation:', error);
-            toast.error('Error during certificate generation');
         } finally {
             setIsLoading(false);
         }

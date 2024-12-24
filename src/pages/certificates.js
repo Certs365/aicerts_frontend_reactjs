@@ -6,10 +6,11 @@ import { useContext } from 'react';
 import CertificateContext from "../utils/CertificateContext"
 import { useTheme } from '../context/ThemeContext';
 const iconUrl = process.env.NEXT_PUBLIC_BASE_ICON_URL;
-
+const allowedEmails = process.env.NEXT_PUBLIC_ALLOWED_EMAILS?.split(',');
 const Certificates = () => {
     const router = useRouter();
     const [token, setToken] = useState(null);
+    const [email, setEmail] = useState(null);
     const { tab, setTab } = useContext(CertificateContext);
     const { isDarkMode } = useTheme();
 
@@ -20,6 +21,7 @@ const Certificates = () => {
         if (storedUser && storedUser.JWTToken) {
             // If token is available, set it in the state
             setToken(storedUser.JWTToken);
+            setEmail(storedUser.email);
         } else {
             // If token is not available, redirect to the login page
             router.push('/');
@@ -133,6 +135,7 @@ const Certificates = () => {
                                         </Card>
                                     </div>
                                 </Col>
+                                {allowedEmails && allowedEmails.includes(email) && (
                                 <Col xs="12" md="12" lg="3" className='mt-0 mt-md-4 mt-lg-0'>
                                     <div className='card-warapper' >
                                         <Card className='verify-landing mt-4 mt-md-0'>
@@ -147,6 +150,7 @@ const Certificates = () => {
                                         </Card>
                                     </div>
                                 </Col>
+                                )}
                             </Row>
                         {/* </Container> */}
                     </div>
