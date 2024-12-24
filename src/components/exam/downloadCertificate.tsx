@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import JSZip from 'jszip';
 import { Button, Modal, Image, Container, Row, Col, Card, Form, Table } from 'react-bootstrap';
-import BackIcon from "../../../public/icons/back-icon.svg";
+import BackIcon from "../../../assets/img/back-icon.svg";
 import { useRouter } from 'next/router';
 import PrimaryButton from '@/common/button/primaryButton';
 import { jsPDF } from 'jspdf';
@@ -231,11 +231,11 @@ const DownloadCertificate: React.FC<DownloadCertificateProps> = ({ data }) => {
             <div className='page-bg'>
                 <div className='position-relative h-100'>
                     <div className='vertical-center batchDashboard'>
-                        <div className='dashboard pb-5 pt-5'>
+                        <div className='dashboard pb-5 pt-7'>
                             <Container className='mt-5 mt-md-0'>
                                 <div className='d-flex align-items-center mb-4'>
-                                    <span onClick={() => { window.location.href = "/certificate?tab=1" }} className='back-button'>
-                                        <Image width={10} height={10} src={BackIcon} alt='back' /><span className=''>Back</span>
+                                    <span onClick={() => { window.location.href = "/exam/form" }} className='back-button'>
+                                   <span className=''>Back</span>
                                     </span>
                                     <h3 className='title mb-0'>Batch Issuance</h3>
                                 </div>
@@ -466,7 +466,7 @@ const DownloadCertificate: React.FC<DownloadCertificateProps> = ({ data }) => {
                 <Modal.Body>
                     {loginError ? (
                         <>
-                            <div className="error-icon">
+                            <div className="error-icon success-image">
                                 <Image
                                     src="/icons/close.svg"
                                     layout='fill'
@@ -474,11 +474,12 @@ const DownloadCertificate: React.FC<DownloadCertificateProps> = ({ data }) => {
                                     alt="Error"
                                 />
                             </div>
-                            <h3>{loginError}</h3>
+                            <div className='text' style={{ color: '#ff5500' }}> {loginError}</div>
+                        <button className='warning'  onClick={() => { setShow(false) }}>Ok</button>
                         </>
                     ) : (
                         <>
-                            <div className="success-icon">
+                            <div className="success-icon success-image">
                                 <Image
                                     src="/icons/success.gif"
                                     layout='fill'
@@ -486,10 +487,10 @@ const DownloadCertificate: React.FC<DownloadCertificateProps> = ({ data }) => {
                                     alt="Success"
                                 />
                             </div>
-                            <h3>{loginSuccess}</h3>
+                            <div className='text my-3' style={{ color: '#CFA935' }}>{loginSuccess}</div>
+              <button className='success' onClick={()=>{setShow(false)}}>Ok</button>
                         </>
                     )}
-                    <button className='success' onClick={() => setShow(false)}>Ok</button>
                 </Modal.Body>
             </Modal>
         </>
