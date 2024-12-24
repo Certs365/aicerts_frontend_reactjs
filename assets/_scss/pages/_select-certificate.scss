@@ -808,10 +808,10 @@
 .a4-modal .modal-dialog {
     max-width: 595px;
     /* A4 width in px */
-    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-top: 12rem;
 }
 
 .a4-modal .modal-content {

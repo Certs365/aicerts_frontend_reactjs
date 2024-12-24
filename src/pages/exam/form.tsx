@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import Image from 'next/legacy/image';
@@ -19,6 +19,7 @@ const CertificateDisplayPage: React.FC = () => {
     const ADMIN_API_URL = process.env.NEXT_PUBLIC_BASE_URL_admin2;
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const iconUrl = process.env.NEXT_PUBLIC_BASE_ICON_URL;
+    const [user, setUser] = useState({});
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -101,6 +102,18 @@ const CertificateDisplayPage: React.FC = () => {
         }
     };
 
+    useEffect(() => {
+        // Check if the token is available in localStorage
+        // @ts-ignore: Implicit any for children prop
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+      
+        if (storedUser && storedUser.JWTToken) {
+          // If token is available, set it in the state
+          setUser(storedUser)
+        } else {
+     
+        }
+      }, []);
 
 
     // Handle certificate generation
@@ -114,24 +127,24 @@ const CertificateDisplayPage: React.FC = () => {
 
         try {
             const formData = new FormData();
-            formData.append('email', 'basit@aicerts.io'); // Replace with dynamic email if necessary
+            formData.append('email', user?.email); // Replace with dynamic email if necessary
             formData.append('excelFile', selectedFile);
 
             // Simulate API response for batch data and details
-            // const response = await fetch('http://10.2.3.55:2010/api/jg-issuance', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Accept': 'application/json',
-            //     },
-            //     body: formData,
-            // });
+            const response = await fetch(`${ADMIN_API_URL}/api/jg-issuance`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                },
+                body: formData,
+            });
 
-            // if (!response.ok) {
-            //     throw new Error('Failed to process the Excel file');
-            // }
+            if (!response.ok) {
+                throw new Error('Failed to process the Excel file');
+            }
 
-            // const responseData = await response.json();
-            const responseData = responseAPI; // Simulated response for testing
+            const responseData = await response.json();
+            // const responseData = responseAPI; // Simulated response for testing
             if (!responseData?.data || !responseData?.details) {
                 throw new Error('Invalid response data structure');
             }
