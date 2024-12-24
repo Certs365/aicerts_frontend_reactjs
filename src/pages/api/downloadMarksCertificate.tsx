@@ -74,15 +74,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               margin: 0;
               padding: 0;
               font-family: "Sofia", serif;
-              width: 100%;
+              width: 595px;
               min-height: 100vh;
               display: flex;
               color: #221E20;
               justify-content: center;
+              border:1px solid blue;
               align-items: center;
             }
             .content {
               position: relative;
+              border:1px solid black;
               width: 595px;
               min-height: 100vh;
               background: url('https://certs365-live.s3.amazonaws.com/uploads/01_JG%20University.png') no-repeat center center;

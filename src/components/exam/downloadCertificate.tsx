@@ -45,9 +45,9 @@ const DownloadCertificate: React.FC<DownloadCertificateProps> = ({ data }) => {
         setSearchQuery(searchValue);
 
         const filteredDetails = searchValue.trim() === ""
-            ? data.details
-            : data.details.filter((detail) =>
-                detail.EnrollmentNo.toLowerCase().includes(searchValue.toLowerCase()) ||
+            ? data
+            : data.filter((detail) =>
+                detail.enrollmentNumber.toLowerCase().includes(searchValue.toLowerCase()) ||
                 detail.name.toLowerCase().includes(searchValue.toLowerCase())
             );
 
@@ -115,36 +115,26 @@ const handleDownloadPDF = async (imageUrl: string) => {
         setIsLoading(true);
         try {
             const zip = new JSZip();
-            const isDesign = new URLSearchParams(window.location.search).get('isDesign');
-            const endpoint = isDesign ? '/api/generatePDFBatch' : '/api/generatePDF';
 
+            // Iterate through the detailsArray, which contains the selected certificates
             for (const detail of detailsArray) {
-                const bodyData = {
-                    detail,
-                    certificateUrl: '',
-                    logoUrl: '',
-                    signatureUrl: '',
-                    badgeUrl: '',
-                    issuerName: '',
-                    issuerDesignation: '',
-                };
-
-                const res = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(bodyData),
-                });
-
-                if (res.ok) {
-                    const blob = await res.blob();
-                    zip.file(`Certificate_${detail.EnrollmentNo}.pdf`, blob);
-                } else {
-                    setLoginError("Error downloading PDF");
-                    setShow(true);
+                // Fetch the image from the S3 URL
+                const res = await fetch(detail.s3Url);
+                if (!res.ok) {
+                    throw new Error(`Failed to fetch image for ${detail.EnrollmentNo}`);
                 }
+
+                // Convert the image to a blob
+                const imageBlob = await res.blob();
+
+                // Add the image to the zip file, using the enrollment number for the file name
+                zip.file(`Certificate_${detail.enrollmentNumber}.png`, imageBlob);
             }
 
+            // Generate the zip file as a blob
             const zipBlob = await zip.generateAsync({ type: 'blob' });
+
+            // Create a link to trigger the download of the zip file
             const zipUrl = window.URL.createObjectURL(zipBlob);
             const link = document.createElement('a');
             link.href = zipUrl;
@@ -153,16 +143,21 @@ const handleDownloadPDF = async (imageUrl: string) => {
             link.click();
             link.remove();
 
+            // Show success message
             setLoginError('');
             setLoginSuccess('Certificates Downloaded');
             setShow(true);
         } catch (error) {
-            setLoginError('Error downloading PDFs');
+            // Handle errors, if any
+            setLoginError('Error downloading certificates');
             setShow(true);
         } finally {
+            // Reset loading state
             setIsLoading(false);
         }
     };
+
+
 
     const toggleViewMode = () => {
         setIsGridView(!isGridView);
@@ -184,7 +179,7 @@ const handleDownloadPDF = async (imageUrl: string) => {
             [index]: isChecked,
         }));
 
-        const selectedDetail = data.details[index];
+        const selectedDetail = data[index];
         if (isChecked) {
             setDetailsArray((prevDetails) => [...prevDetails, selectedDetail]);
         } else {
@@ -197,9 +192,9 @@ const handleDownloadPDF = async (imageUrl: string) => {
         setSelectAll(newSelectAll);
 
         if (newSelectAll) {
-            setDetailsArray(data.details);
+            setDetailsArray(data);
             setCheckedItems(
-                data.details.reduce((acc, _, index) => {
+                data.reduce((acc, _, index) => {
                     acc[index] = true;
                     return acc;
                 }, {} as { [key: number]: boolean })
@@ -290,7 +285,7 @@ const handleDownloadPDF = async (imageUrl: string) => {
                                                 <div className='grid-view'>
                                                     <Row>
                                                         {filteredCertificatesArray && filteredCertificatesArray?.map((detail, index) => (
-                                                            <Col key={index} xs={12} md={6}>
+                                                            <Col className='mb-5' key={index} xs={12} md={6}>
                                                                 <div className='prev-cert-card'>
                                                                     <div style={{ border: "1px solid black" }} className='cert-prev'>
                                                                         <Image
@@ -299,20 +294,21 @@ const handleDownloadPDF = async (imageUrl: string) => {
                                                                             width={300}
                                                                             width={300}
                                                                             objectFit='contain'
-                                                                            alt={`Certificate ${detail.EnrollmentNo}`}
+                                                                            alt={`Certificate ${detail.enrollmentNumber}`}
                                                                         />
                                                                     </div>
                                                                     <div className='d-flex justify-content-between align-items-center'>
-                                                                        <Form.Group controlId={`Certificate ${index + 1}`}>
+                                                                        <Form.Group className='d-flex flex-row text-center w-13' controlId={`Certificate ${index + 1}`}>
                                                                             <Form.Check
                                                                                 type="checkbox"
-                                                                                label={detail.EnrollmentNo}
+                                                                                label={detail.enrollmentNumber}
                                                                                 checked={checkedItems[index] || false}
                                                                                 onChange={(event) => handleCheckboxChange(event, index)}
+                                                                                className='w-100'
                                                                             />
                                                                         </Form.Group>
                                                                         <div className='action-buttons d-flex' style={{ columnGap: "10px" }}>
-                                                                            <span className='d-flex align-items-center' style={{ columnGap: "10px" }} onClick={() => handlePrevCert(imageUrlList[index], detail)}>
+                                                                            <span className='d-flex align-items-center' style={{ columnGap: "10px" }} onClick={() => handlePrevCert(detail.s3Url, detail)}>
                                                                                 <Image
                                                                                     src="https://images.netcomlearning.com/ai-certs/icons/eye-white-bg.svg"
                                                                                     width={16}
@@ -342,7 +338,7 @@ const handleDownloadPDF = async (imageUrl: string) => {
                                                             <tr>
                                                                 <th><div className='d-flex align-items-center justify-content-center'><span>S.No</span></div></th>
                                                                 <th><span>Issuer Name</span></th>
-                                                                <th><span>Certificate Number</span></th>
+                                                                <th><span>Enrollment Number</span></th>
                                                                 <th><span>View</span></th>
                                                                 <th><span>Download</span></th>
                                                             </tr>
@@ -361,9 +357,9 @@ const handleDownloadPDF = async (imageUrl: string) => {
                                                                         </div>
                                                                     </td>
                                                                     <td>{detail.name}</td>
-                                                                    <td>{detail.EnrollmentNo}</td>
+                                                                    <td>{detail.enrollmentNumber}</td>
                                                                     <td>
-                                                                        <div className='trigger-icons' onClick={() => handlePrevCert(imageUrlList[index], detail)}>
+                                                                        <div className='trigger-icons' onClick={() => handlePrevCert(detail.s3Url, detail)}>
                                                                             <Image
                                                                                 src="https://images.netcomlearning.com/ai-certs/icons/eye-bg.svg"
                                                                                 layout='fill'
@@ -399,44 +395,54 @@ const handleDownloadPDF = async (imageUrl: string) => {
             </div>
 
             {/* Preview Modal */}
-            <Modal show={prevModal} onHide={closePrevCert} centered>
+            <Modal
+                show={prevModal}
+                onHide={closePrevCert}
+                centered
+                size="lg"
+                className="a4-modal"
+            >
                 <Modal.Body>
                     <div className="close-modal" onClick={closePrevCert}>
                         <Image
                             src="https://images.netcomlearning.com/ai-certs/icons/close-grey-bg.svg"
-                            layout='fill'
-                            objectFit='contain'
-                            alt='Close'
+                            layout="fill"
+                            objectFit="contain"
+                            alt="Close"
                         />
                     </div>
                     <div className="prev-cert">
                         <Image
                             src={imageUrl}
-                            layout='fill'
-                            objectFit='cover'
+                            layout="intrinsic"
+                            width={595}  // A4 width in px
+                            height={842} // A4 height in px
+                            objectFit="contain"
                             alt="Certificate"
                         />
                     </div>
-                    {/* <Button onClick={() => handleDownloadPDF(detailsArray)}>Download</Button> */}
                 </Modal.Body>
             </Modal>
 
-            {/* Loading Modal */}
-            <Modal show={isLoading} centered>
+
+
+
+            <Modal className='loader-modal' show={isLoading} centered>
                 <Modal.Body>
-                    <div className="certificate-loader">
+                    <div className='certificate-loader'>
                         <Image
                             src="/backgrounds/login-loading.gif"
                             layout='fill'
-                            objectFit='contain'
-                            alt="Loading"
+                            alt='Loader'
                         />
                     </div>
+                    <div className='text mt-3'>Please Wait</div>
+                    {/* <ProgressBar now={now} label={`${now}%`} /> */}
                 </Modal.Body>
             </Modal>
 
             {/* Success/Error Modal */}
-            <Modal show={show} onHide={() => setShow(false)} centered>
+            <Modal className='loader-modal text-center' show={show} onHide={() => setShow(false)} centered>
                 <Modal.Body>
                     {loginError ? (
                         <>
@@ -463,7 +469,7 @@ const handleDownloadPDF = async (imageUrl: string) => {
                             <h3>{loginSuccess}</h3>
                         </>
                     )}
-                    <button onClick={() => setShow(false)}>Ok</button>
+                    <button className='success' onClick={() => setShow(false)}>Ok</button>
                 </Modal.Body>
             </Modal>
         </>

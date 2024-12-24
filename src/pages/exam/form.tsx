@@ -154,8 +154,8 @@ const CertificateDisplayPage: React.FC = () => {
     // Handle the sample download
     const handleDownloadSample = () => {
         const anchor = document.createElement('a');
-        anchor.href = '/download-sample.xlsx';
-        anchor.download = 'sample.xlsx';
+        anchor.href = '/student_marks_template.xlsx';
+        anchor.download = 'student_marks_template.xlsx';
         document.body.appendChild(anchor);
         anchor.click();
         document.body.removeChild(anchor);
@@ -170,7 +170,7 @@ const CertificateDisplayPage: React.FC = () => {
                 <DownloadCertificate data={s3Urls} />  // Render ShowImages component if images are ready
             ) : (
                 <div className="page-bg">
-                    <div className="position-relative mt-4">
+                    <div className="position-relative mt-7">
                         <div className="dashboard py-5">
                             <Container className="mt-5">
                                 <Row className="justify-content-md-center">
