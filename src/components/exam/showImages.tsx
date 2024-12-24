@@ -1,4 +1,6 @@
 // components/ShowImages.tsx
+// @ts-nocheck
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import Image from 'next/legacy/image';

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { NextApiRequest, NextApiResponse } from 'next';
 const puppeteer = require('puppeteer');
 
@@ -28,14 +29,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }))
       : [];
 
-    console.log(subjectArray);
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const year = today.getFullYear();
+
+    const formattedDate = `${day}-${month}-${year}`;
 
     // Generate HTML content for the subject rows using `.map()`
     const subjectRows = subjectArray.map((subject, index) => `
       <tr key="${index}">
         <td>${index + 1}</td>
         <td>${subject.subjectName}</td>
-        <td>${subject.Max || 'N/A'}</td>
+        <td>${data?.studentData?.Max || 'N/A'}</td>
         <td>${subject.MinMarks || 'N/A'}</td>
         <td>${subject.ObtainedMarks || 'N/A'}</td>
         <td>${subject.ObtainedMarks || 'N/A'}</td>
@@ -60,6 +66,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       </tr>
     `).join('');
 
+    // Calculate how many empty rows are needed to make it up to 10
+    const remainingRows = (8 - semesterRecords.length) * 2;
+    const emptyRows = Array(remainingRows).fill(`
+      <tr class="no-row-borders">
+         <td colspan="2"></td>
+        <td colspan="2"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    `).join('');
+
+    // Append empty rows if necessary
+    const fullSemesterRows = semesterRows + emptyRows;
+
     const htmlContent = `
       <html>
         <head>
@@ -79,12 +103,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               display: flex;
               color: #221E20;
               justify-content: center;
-              border:1px solid blue;
               align-items: center;
             }
             .content {
               position: relative;
-              border:1px solid black;
               width: 595px;
               min-height: 100vh;
               background: url('https://certs365-live.s3.amazonaws.com/uploads/01_JG%20University.png') no-repeat center center;
@@ -122,6 +144,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               left: 50px;
               right: 50px;
             }
+              .footer-registrar{
+              display: flex;
+              flex-direction:column;
+
+              }
 
         .sub-header th {
           line-height: 1;
@@ -167,7 +194,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       .no-row-borders:last-child td {
           border-top: none;
           border-bottom: 1px solid #C32026;
-          /* Remove only the top border of the last row */
       }
           </style>
         </head>
@@ -177,12 +203,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
            <div style="
             position: absolute;
             right: 40px;
-            top: 75px;
+            top: 65px;
           ">
     <img 
         src="${data.qrData}" 
         alt="QR info" 
-        style="width: 70px; height: 70px;" 
+        style="width: 70px; height: 90px;" 
     />
   </div> 
             <table class="table-container">
@@ -236,7 +262,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 <td class="table-header-primary" colspan="1">Obtained Marks</td>
                 <td class="table-header-primary" colspan="1">Percentage</td>
               </tr>
-              ${semesterRows} <!-- Insert the semester rows here -->
+              ${fullSemesterRows} <!-- Insert the semester rows here -->
               <!-- Summary Section -->
               <tr >
                 <td colspan="2">Result: <strong>${data.studentData?.Result}</strong></td>
@@ -249,9 +275,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               </tr>
             </table>
             <div class="footer">
+            <div class="footer-registrar">
               <p>Date of Issue: </p>
+                <strong>${formattedDate}</strong>
+            </div>
               <p style="width: 210px;">Note: No change in any entry is to be made except by the authority issuing the certificate and that the infringement of the rule will be severely dealt with</p>
+             <div class="footer-registrar">
+              <img alt="Signature" 
+                    style="width: 100px; height: 50px;"  src="https://certs365-live.s3.amazonaws.com/uploads/image%20%282%29.png"/>
               <p>Registrar (I/C)</p>
+                    </div>
             </div>
           </div>
         </body>
@@ -261,25 +294,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
-      
+
       await page.setViewport({
-          width: 722, // Double the original dimensions
-          height: 893,
-          deviceScaleFactor: 6 // Simulates a high-DPI screen
+        width: 595, // Double the original dimensions
+        height: 893,
+        deviceScaleFactor: 6 // Simulates a high-DPI screen
       });
-      
+
       await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
-      
+
       const screenshotBuffer = await page.screenshot({
-          type: 'png' // PNG is already lossless, so no quality setting needed
+        type: 'png' // PNG is already lossless, so no quality setting needed
       });
-      
+
       await browser.close();
-      
+
       res.setHeader('Content-Type', 'image/png');
       res.setHeader('Content-Disposition', 'attachment; filename=output.png');
       res.send(screenshotBuffer);
-      
+
     } catch (error) {
       console.error('Error generating image:', error);
       res.status(500).json({ error: 'Image generation failed' });

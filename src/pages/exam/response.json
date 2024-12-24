@@ -116,56 +116,6 @@
                     "MaxMarks": "640",
                     "ObtainedMarks": "576",
                     "Percentage": "90.00%"
-                },
-                {
-                    "Semester": "Semester 2",
-                    "Credit": "23",
-                    "GP": "207",
-                    "SGPA": "9",
-                    "CGPA": "9",
-                    "MaxMarks": "560",
-                    "ObtainedMarks": "518",
-                    "Percentage": "90.00%"
-                },
-                {
-                    "Semester": "Semester 3",
-                    "Credit": "25",
-                    "GP": "212",
-                    "SGPA": "8.5",
-                    "CGPA": "8.9",
-                    "MaxMarks": "640",
-                    "ObtainedMarks": "544",
-                    "Percentage": "85.00%"
-                },
-                {
-                    "Semester": "Semester 4",
-                    "Credit": "24",
-                    "GP": "221",
-                    "SGPA": "8.5",
-                    "CGPA": "8.9",
-                    "MaxMarks": "720",
-                    "ObtainedMarks": "612",
-                    "Percentage": "85.00%"
-                },
-                {
-                    "Semester": "Semester 5",
-                    "Credit": "25",
-                    "GP": "216",
-                    "SGPA": "9",
-                    "CGPA": "9",
-                    "MaxMarks": "640",
-                    "ObtainedMarks": "590",
-                    "Percentage": "90.00%"
-                },
-                {
-                    "Semester": "Semester 6",
-                    "Credit": "23",
-                    "GP": "207",
-                    "SGPA": "9",
-                    "CGPA": "8.9",
-                    "MaxMarks": "560",
-                    "ObtainedMarks": "521",
-                    "Percentage": "91.00%"
                 }
             ]
         },

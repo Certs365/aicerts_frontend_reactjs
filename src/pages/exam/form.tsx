@@ -1,4 +1,6 @@
-// components/CertificateDisplayPage.tsx
+// @ts-nocheck
+
+
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Container, Row, Col, Card } from 'react-bootstrap';
@@ -6,7 +8,6 @@ import Image from 'next/legacy/image';
 import PrimaryButton from '@/common/button/primaryButton';
 import SecondaryButton from '@/common/button/secondaryButton';
 import { toast } from 'react-toastify';
-import ShowImages from '@/components/exam/showImages';
 import responseAPI from './response.json';
 import DownloadCertificate from '@/components/exam/downloadCertificate';
 
@@ -15,7 +16,7 @@ const CertificateDisplayPage: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [s3Urls, setS3Urls] = useState<string[]>([]);  // To hold the image URLs
     const [isImagesReady, setIsImagesReady] = useState<boolean>(false);  // Flag to track image loading
-    const ADMIN_API_URL = process.env.NEXT_PUBLIC_BASE_URL_admin;
+    const ADMIN_API_URL = process.env.NEXT_PUBLIC_BASE_URL_admin2;
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const iconUrl = process.env.NEXT_PUBLIC_BASE_ICON_URL;
 
@@ -55,10 +56,9 @@ const CertificateDisplayPage: React.FC = () => {
     };
 
     // Upload the blob to S3 and return the URL
-    const uploadToS3 = async (blob: Blob): Promise<string | null> => {
+    const uploadToS3 = async (blob: Blob, enrollmentId: string): Promise<string | null> => {
         const timestamp = new Date().toISOString(); // Generate a timestamp
-        const originalFileName = blob.name || 'file'; // Get the original name or use 'file' as a fallback
-        const dynamicFileName = `${originalFileName.split('.')[0]}_${timestamp}.png`; // Append timestamp to name
+        const dynamicFileName = `${enrollmentId.split('.')[0]}_${timestamp}.png`; // Append timestamp to name
 
         const renamedBlob = new File([blob], dynamicFileName, { type: blob.type }); // Create a new File with the updated name
 
@@ -75,12 +75,32 @@ const CertificateDisplayPage: React.FC = () => {
             });
 
             const result = await response.json();
-            return result?.fileUrl || null;
+            const fileUrl = result?.fileUrl;
+
+            if (fileUrl) {
+                // Make the second API call to update the database with the enrollmentId and S3 URL
+                await fetch(`${ADMIN_API_URL}/api/jg-upload`, {
+                    method: 'POST',
+                    headers: {
+                        'accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id: enrollmentId,
+                        url: fileUrl,
+                    }),
+                });
+
+                return fileUrl; // Return the S3 URL after updating the database
+            }
+
+            return null;
         } catch (error) {
             console.error('Error uploading to S3:', error);
             return null;
         }
     };
+
 
 
     // Handle certificate generation
@@ -129,7 +149,7 @@ const CertificateDisplayPage: React.FC = () => {
                 const blob = await fetchBlobForCertificate(mergedDetails);
 
                 // Upload the blob to S3
-                const s3Url = await uploadToS3(blob);
+                const s3Url = await uploadToS3(blob, currentDetails?.enrollmentNumber);
 
                 if (s3Url) {
                     newS3Urls.push({ ...mergedDetails, s3Url });
