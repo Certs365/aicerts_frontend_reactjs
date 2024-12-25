@@ -115,3 +115,14 @@ export const handleAlignCenter = (canvas,setTextStyles,updateActiveObjectStyles)
     }
   };
 
+
+  export const loadFont = async(font) => {
+    // Check if the font is already loaded
+    if (!document.getElementById(`preload-${font}`)) {
+      const link = document.createElement('link');
+      link.id = `preload-${font}`;
+      link.href = `https://fonts.googleapis.com/css2?family=${font.replace(/ /g, '+')}:wght@400&display=swap`;
+      link.rel = 'stylesheet';
+      document.head.appendChild(link);
+    }
+  };

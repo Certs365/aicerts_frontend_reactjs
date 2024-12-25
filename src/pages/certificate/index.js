@@ -732,7 +732,7 @@ const CardSelector = () => {
     <>
       <div className="page-bg">
         <div className="position-relative settings-container h-100">
-          <div className="dashboard mt-5">
+          <div className="dashboard mt-0">
             <Container>
               {tab == 0 && <h3 className="title mb-4 py-2">Issue Certifications</h3>}
               {tab == 1 && <h3 className="title">Batch Issuance</h3>}

@@ -3,37 +3,68 @@ import { fabric } from "fabric";
 // Function to set background image on canvas
 export const setBackgroundImage = (imageUrl, canvas) => {
   if (!canvas) return;
+
   try {
-    console.log("calling");
     fabric.Image.fromURL(
       imageUrl,
       (img) => {
-        // const scaleX = canvas.width / img.width;
-        // const scaleY = canvas.height / img.height;
-        // const scale = Math.max(scaleX, scaleY);
-        // img.scale(scale);
-        // img.set({
-        //   left: (canvas.width - img.width * scale) / 2, // Center horizontally
-        //   top: (canvas.height - img.height * scale) / 2, // Center vertically
-        // });
+        // Original image dimensions
+        let imgWidth = img.width;
+        let imgHeight = img.height;
 
-        canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
-          scaleX: canvas.width / img.width,
-          scaleY: canvas.height / img.height,
-        });
+        // Max canvas dimensions
+        const maxCanvasWidth = 900;
+        const maxCanvasHeight = 480;
+
+        // Calculate scaling factors
+        const widthScale = maxCanvasWidth / imgWidth;
+        const heightScale = maxCanvasHeight / imgHeight;
+
+        // Determine the scale factor to fit the image inside the canvas
+        const scaleFactor = Math.min(widthScale, heightScale, 1);
+
+        // Apply scaling to image dimensions
+        const scaledImgWidth = imgWidth * scaleFactor;
+        const scaledImgHeight = imgHeight * scaleFactor;
+
+        // Set canvas dimensions to match the scaled image dimensions
+        canvas.setWidth(scaledImgWidth);
+        canvas.setHeight(scaledImgHeight);
+
+        // Calculate exact scaling to perfectly match the canvas
+        const scaleX = scaledImgWidth / img.width;
+        const scaleY = scaledImgHeight / img.height;
+
+        // Center alignment: Use origin "center" and adjust positions
+        canvas.setBackgroundImage(
+          img,
+          canvas.renderAll.bind(canvas),
+          {
+            scaleX: scaleX,
+            scaleY: scaleY,
+            originX: "center", // Align from center horizontally
+            originY: "center", // Align from center vertically
+            left: canvas.getWidth() / 2, // Center horizontally
+            top: canvas.getHeight() / 2, // Center vertically
+          }
+        );
+
+        // Render the canvas to apply changes
+        canvas.renderAll();
       },
       {
-        crossOrigin: "anonymous",
+        crossOrigin: "anonymous", // Ensure cross-origin compatibility
       }
     );
-
-    // Calculate scale factors for width and height
-
-    canvas.renderAll();
   } catch (error) {
-    console.log(error);
+    console.error("Error setting background image:", error);
   }
 };
+
+
+
+
+
 
 export const setImage = (imageUrl, canvas) => {
   if (!canvas) return;
