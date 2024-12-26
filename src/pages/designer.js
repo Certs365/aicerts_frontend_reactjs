@@ -102,7 +102,7 @@ const Designer = () => {
 
   const handleTemplateSave = async () => {
     if (!canvas || canvas.isEmpty()) {
-      // alert("Canvas is empty. Please add content before saving.");
+      // toast.error("Canvas is empty. Please add content before saving.");
       return;
     }
 
@@ -143,11 +143,11 @@ const Designer = () => {
        
         return uploadedFileUrl;
       } else {
-        // alert("Failed to upload template.");
+        // toast.error("Failed to upload template.");
       }
     } catch (error) {
       console.error("Error uploading template:", error);
-      // alert("An error occurred while uploading the template.");
+      // toast.error("An error occurred while uploading the template.");
     } finally {
       // hideLoader();
       setLoading(false);
@@ -270,13 +270,13 @@ const Designer = () => {
 
       if (response.ok) {
         const data = await response.json();
-        // alert("Template updated successfully!");
+        // toast.error("Template updated successfully!");
       } else {
-        // alert("Failed to update template.");
+        // toast.error("Failed to update template.");
       }
     } catch (error) {
       console.error("Error updating template:", error);
-      // alert("An error occurred while updating the template.");
+      // toast.error("An error occurred while updating the template.");
     }
   };
 
@@ -300,13 +300,13 @@ const Designer = () => {
 
       if (response.ok) {
         const data = await response.json();
-        // alert("Template added successfully!");
+        // toast.error("Template added successfully!");
       } else {
-        // alert("Failed to add template.");
+        // toast.error("Failed to add template.");
       }
     } catch (error) {
       console.error("Error adding template:", error);
-      // alert("An error occurred while adding the template.");
+      // toast.error("An error occurred while adding the template.");
     }
   };
 
@@ -324,11 +324,11 @@ const Designer = () => {
         // Redirect to the certificate page
         window.location.href = `/certificate?tab=${tab}`;
       } else {
-        // alert("Template upload failed. Please try again.");
+        // toast.error("Template upload failed. Please try again.");
       }
     } catch (error) {
       console.error("Error during Move to Issuance:", error);
-      // alert("An error occurred while processing your request.");
+      // toast.error("An error occurred while processing your request.");
     }
   };
 

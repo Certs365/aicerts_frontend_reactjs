@@ -23,6 +23,7 @@ import { toast } from 'react-toastify';
 import { GET_USER_BY_EMAIL } from '@/utils/Constants';
 import { commonAuthApi } from '@/services/common';
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL_USER;
+const apiUrlts = process.env.NEXT_PUBLIC_BASE_URL_USER_TS;
 const stripeUrl = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 interface DateRange {
   from: string;
@@ -197,7 +198,7 @@ const Settings: React.FC = () => {
   useEffect(() => {
     if (!email) return;
     const fetchData = async () => {
-      const response = await fetch(`${apiUrl}/api/get-subscription-plans`, {
+      const response = await fetch(`${apiUrlts}/api/get-subscription-plans`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -216,7 +217,7 @@ const Settings: React.FC = () => {
 
   const getPlanName = async (email: string) => {
     try {
-      const response = await fetch(`${apiUrl}/api/fetch-user-subscription-details`, {
+      const response = await fetch(`${apiUrlts}/api/fetch-user-subscription-details`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -239,7 +240,7 @@ const Settings: React.FC = () => {
   const handlePlanSelection = async (card: any) => {
     try {
 
-      const response = await fetch(`${apiUrl}/api/add-user-subscription-plan`, {
+      const response = await fetch(`${apiUrlts}/api/add-user-subscription-plan`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -277,7 +278,7 @@ const Settings: React.FC = () => {
       "Content-Type": "application/json",
     }
     // try {
-    const response = await fetch(`${apiUrl}/api/create-checkout-session`, {
+    const response = await fetch(`${apiUrlts}/api/create-checkout-session`, {
       method: 'POST',
       headers: headers,
       body: JSON.stringify(body)
@@ -439,7 +440,7 @@ const Settings: React.FC = () => {
     // makePayment(card);
     try {
 
-      const response = await fetch(`${apiUrl}/api/add-enterprise-subscription-plan`, {
+      const response = await fetch(`${apiUrlts}/api/add-enterprise-subscription-plan`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -471,7 +472,7 @@ const Settings: React.FC = () => {
 
   const handlePaymentGrievance = async () => {
     try {
-      const response = await fetch(`${apiUrl}/api/checkout-grievance`, {
+      const response = await fetch(`${apiUrlts}/api/checkout-grievance`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -490,20 +491,19 @@ const Settings: React.FC = () => {
   }
 
 
-
   return (
     <div className="page-bg">
       <div className="position-relative settings-container h-100">
         <div className="settings-title">
-          <h3>Settings</h3>
+          <h3><strong>Settings</strong></h3>
         </div>
 
         {/* Issuance Report */}
         <div className="org-details mb-5">
           <h2 className="title">Issuance Report</h2>
-          <Row className="d-flex align-items-center justify-content-center mt-3">
-            <Col xs={12} md={4}>
-              <Form.Label className="label-settings">From:</Form.Label>
+          <Row className="d-flex align-items-center ms-2 ms-md-0 mb-2 justify-content-md-center mt-3">
+            <Col xs={5} md={4}>
+              <Form.Label className="label-settings ">From:</Form.Label>
               <Form.Control
                 type="date"
                 className="search-input-setting"
@@ -511,7 +511,7 @@ const Settings: React.FC = () => {
                 onChange={(e) => handleDateChange(e, 'from')}
               />
             </Col>
-            <Col xs={12} md={4}>
+            <Col xs={5} md={4}>
               <Form.Label className="label-settings">To:</Form.Label>
               <Form.Control
                 type="date"
@@ -546,8 +546,8 @@ const Settings: React.FC = () => {
         {/* Invoice Report */}
         <div className="org-details">
           <h2 className="title">Invoice Report</h2>
-          <Row className="d-flex align-items-center justify-content-center mt-3">
-            <Col xs={12} md={4}>
+          <Row className="d-flex align-items-center ms-2 ms-md-0 mb-2 justify-content-md-center mt-3">
+            <Col xs={5} md={4}>
               <Form.Label className="label-settings">From:</Form.Label>
               <Form.Control
                 type="date"
@@ -556,7 +556,7 @@ const Settings: React.FC = () => {
                 onChange={(e) => handleDateReportChange(e, 'from')}
               />
             </Col>
-            <Col xs={12} md={4}>
+            <Col xs={5} md={4}>
               <Form.Label className="label-settings">To:</Form.Label>
               <Form.Control
                 type="date"
@@ -599,15 +599,7 @@ const Settings: React.FC = () => {
           <Row className="d-flex align-items-center ml-3">
             <Col className="mt-4" xs={12} md={3}>
               <Row className="d-flex align-items-center justify-content-center mt-3 gap-5">
-                <Col xs={12} md={6}>
-                  <div
-                    className={`blockchain-button polygon ${selectedBlockchain === 0 ? 'selected' : ''}`}
-                    onClick={() => handleBlockchainClick(0)}
-                  >
-                    <Image width={110} height={60} src={p1} alt="Polygon logo" />
-                  </div>
-                </Col>
-                <Col xs={12} md={4}>
+                <Col xs={5} md={4}>
                   <div
                     className={`blockchain-button optimism ${selectedBlockchain === 1 ? 'selected' : ''}`}
                     onClick={() => handleBlockchainClick(1)}
@@ -616,6 +608,15 @@ const Settings: React.FC = () => {
                   </div>
 
                 </Col>
+                <Col xs={5} md={6}>
+                  <div
+                    className={`blockchain-button polygon ${selectedBlockchain === 0 ? 'selected' : ''}`}
+                    onClick={() => handleBlockchainClick(0)}
+                  >
+                    <Image width={110} height={60} src={p1} alt="Polygon logo" />
+                  </div>
+                </Col>
+
 
               </Row>
 

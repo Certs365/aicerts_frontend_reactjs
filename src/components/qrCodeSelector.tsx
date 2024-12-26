@@ -99,14 +99,14 @@ const QrCodeSelector: React.FC<QrCodeSelectorProps> = ({ qrCodes }) => {
     return (
         <div className="org-details">
             <h2 className="title">QR Code</h2>
-            <Row className="d-flex align-items-center justify-content-start m-3">
+            <Row className="d-flex align-items-center justify-content-center justify-content-md-start m-3">
                 {qrCodes.map((qr, index) => (
                     <Col
                         key={index}
                         xs={16}
                         md={2}
                         onClick={() => handleQrClick(index)}
-                        className={`qr-container mx-2 ${selectedQr == index ? 'selected' : ''}`}
+                        className={`qr-container mx-2 mb-4 mb-md-0 ${selectedQr == index ? 'selected' : ''}`}
                     >
                         <Image
                             src={qr}

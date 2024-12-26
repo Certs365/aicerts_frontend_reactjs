@@ -3,6 +3,10 @@
     padding: 120px 250px;
     font-family: $font-family;
 
+    @include xs {
+        padding: 10rem 2rem;
+    }
+
     .settings-title {
         font-family: $font-family;
         font-weight: 700;
