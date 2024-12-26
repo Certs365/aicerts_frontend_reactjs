@@ -38,7 +38,7 @@ export const Tooltip = ({ activeObject, fabricCanvas }) => {
     activeObject.lockScalingY = true;
     activeObject.lockRotation = true;
     setIsLocked(true); // Set lock state to true
-    // alert("Shape locked!");
+    // toast.error("Shape locked!");
   };
 
   // Unlock shape functionality
@@ -49,7 +49,7 @@ export const Tooltip = ({ activeObject, fabricCanvas }) => {
     activeObject.lockScalingY = false;
     activeObject.lockRotation = false;
     setIsLocked(false); // Set lock state to false
-    // alert("Shape unlocked!");
+    // toast.error("Shape unlocked!");
   };
 
   // Delete shape functionality

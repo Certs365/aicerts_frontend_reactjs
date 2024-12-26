@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 //  Initializing variables
 var defaultCertPNG = "certificates/dummy.png";
 var defaultFontSize = 20;
@@ -363,7 +365,7 @@ Editor.opacity.addEventListener("input", function () {
 });
 
 function updateDataset(dataname, value, mode = "w") {
-  // alert("Color Changed");
+  toast.error("Color Changed");
   var checkedCheckboxes = document
     .getElementById("inputs")
     .querySelectorAll("input:checked");

@@ -3,6 +3,7 @@ import { IoCloudUploadOutline } from "react-icons/io5";
 import { CiImageOn } from "react-icons/ci";
 import { IoMdClose } from "react-icons/io";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const FileUpload = ({onUploadSuccess,imageType}) => {
   const inputRef = useRef();
@@ -15,11 +16,11 @@ const FileUpload = ({onUploadSuccess,imageType}) => {
     if (file) {
       const maxSize = 5 * 1024 * 1024; // 5 MB max file size
       if (!file.type.startsWith("image/")) {
-        alert("Please upload an image file.");
+        toast.error("Please upload an image file.");
         return;
       }
       if (file.size > maxSize) {
-        alert("File size should not exceed 5MB.");
+        toast.error("File size should not exceed 5MB.");
         return;
       }
       setSelectedFile(file);
@@ -44,7 +45,6 @@ const FileUpload = ({onUploadSuccess,imageType}) => {
       return;
     }
     if (!selectedFile) {
-      alert("Please select a file to upload.");
       return;
     }
 
@@ -80,14 +80,13 @@ const FileUpload = ({onUploadSuccess,imageType}) => {
         console.error("Upload failed.");
         // throw new Error("Upload failed.");
       }
-      // alert("Background uploaded successfully!");
+      toast.error("Background uploaded successfully!");
       // fetchUploadedBackgrounds(); // Uncomment if this function is defined and needed
       setUploadStatus("done");
       onUploadSuccess && onUploadSuccess();
       clearFileInput()
     } catch (error) {
       console.error("Error uploading background:", error);
-      alert("Upload failed. Please try again.");
     }
   };
 

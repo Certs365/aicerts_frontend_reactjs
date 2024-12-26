@@ -3,6 +3,7 @@ import { BsLayerBackward, BsLayerForward } from "react-icons/bs";
 import { CiLock, CiUnlock } from "react-icons/ci"; // Import unlock icon as well
 import { IoDuplicateOutline } from "react-icons/io5";
 import { RiDeleteBinLine } from "react-icons/ri";
+import { toast } from "react-toastify";
 
 // Tooltip component
 export const Tooltip = ({ activeObject, fabricCanvas }) => {
@@ -38,7 +39,7 @@ export const Tooltip = ({ activeObject, fabricCanvas }) => {
     activeObject.lockScalingY = true;
     activeObject.lockRotation = true;
     setIsLocked(true); // Set lock state to true
-    // alert("Shape locked!");
+    toast.error("Shape locked!");
   };
 
   // Unlock shape functionality
@@ -49,7 +50,7 @@ export const Tooltip = ({ activeObject, fabricCanvas }) => {
     activeObject.lockScalingY = false;
     activeObject.lockRotation = false;
     setIsLocked(false); // Set lock state to false
-    // alert("Shape unlocked!");
+    toast.error("Shape unlocked!");
   };
 
   // Delete shape functionality

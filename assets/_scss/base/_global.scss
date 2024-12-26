@@ -124,7 +124,7 @@ a {
     }
 }
 
-  
+
 .password-input {
     .eye-icon {
         cursor: pointer;
@@ -140,17 +140,22 @@ a {
         @media (min-width: $laptop-min) and (max-width: $laptop-max) {}
     }
 }
+
 .password-input input[type="password"] {
-    -webkit-appearance: none; /* Removes browser default styles in Webkit-based browsers */
-    -moz-appearance: none; /* Removes browser default styles in Firefox */
-    appearance: none; /* Removes browser default styles in general */
-  }
-  
-  .password-input input[type="password"]::-ms-reveal,
-  .password-input input[type="password"]::-webkit-credentials-auto-fill-button {
-    display: none; /* Hides the default eye icon */
-  }
-  
+    -webkit-appearance: none;
+    /* Removes browser default styles in Webkit-based browsers */
+    -moz-appearance: none;
+    /* Removes browser default styles in Firefox */
+    appearance: none;
+    /* Removes browser default styles in general */
+}
+
+.password-input input[type="password"]::-ms-reveal,
+.password-input input[type="password"]::-webkit-credentials-auto-fill-button {
+    display: none;
+    /* Hides the default eye icon */
+}
+
 
 .page-footer-bg {
     background-image: url(https://images.netcomlearning.com/ai-certs/cer365AllPageFooterBg.svg);
@@ -261,7 +266,8 @@ a {
 
     @media (min-width: $mobile-min) and (max-width: $mobile-max) {
         font-size: 18px;
-        margin: 20px 0;
+        // margin: 20px 0;
+
     }
 }
 
