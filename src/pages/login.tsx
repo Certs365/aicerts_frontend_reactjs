@@ -108,7 +108,7 @@ const Login: React.FC = () => {
                 <EmblaCarousel slides={[page1, page2, page3, page4]} />
                 <div className='banner_text_wrapper'>
                     <h3 className='fs-24-12 fw-600 mb-4'>Generate up to 2000 certificates at once</h3>
-                    <p className='fs-18-12 grey-light'>Certs365: Empowering Blockchain Certification and Document Issuance (CertiDocIssuance) - Over 10,000+ Credentials Issued, 7,000+ Verified, Supporting Batch Issuance of 2,000 Credentials, Certificate Design, Lifecycle Management, Analytics, and Multi-Chain Issuance and Verification.</p>
+                    <p className='fs-18-12 grey-light'>Certs365: Empowering Blockchain Certification and Document Issuance</p>
                 </div>
             </div>
 
