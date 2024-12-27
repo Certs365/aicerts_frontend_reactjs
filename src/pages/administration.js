@@ -20,7 +20,7 @@ const Admin = () => {
   const [show, setShow] = useState(false);
   const [loginError, setLoginError] = useState('');
   const [loginSuccess, setLoginSuccess] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [isBack, setIsBack] = useState(false);
   const [issuedCertificate, setIssuedCertificate] = useState(null);
   const [showModal, setshowModal] = useState(false);
@@ -64,9 +64,8 @@ const Admin = () => {
   /* eslint-disable */
 
   const fetchData = async (tab, email) => {
-     
-    setIsLoading(true);
-
+    setLoading(true);  // Show loader before API call
+  
     try {
       let queryCode;
       if (tab === 1) {
@@ -76,129 +75,37 @@ const Admin = () => {
       } else if (tab === 3) {
         queryCode = 6;
       }
+  
       const payload = {
         email: email,
         queryCode: queryCode,
-      }
-      // const encryptedData = encryptData(payload);
-      // const response = await fetch(`${apiUrl}/api/get-issuers-log`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({
-      //     data: encryptedData,
-      //   }),
-      // });
-      issuance.appIssuersLog(payload, async (response)=>{
-         
-        if (response.status != 'SUCCESS') {
+      };
+  
+      await issuance.appIssuersLog(payload, async (response) => {
+        if (response.status !== 'SUCCESS') {
           console.error('Failed to fetch data');
-          // throw new Error('Failed to fetch data');
+          return;  // Exit if there is an error
         }
   
         const data = response.data;
         setResponseData(data);
         setIsBack(false);
         setSearchQuery("");
-        // setshowModal(true);
-        console.log("issuance.appIssuerslog-->", response)
-        console.log("issuance.appIssuerslog-->", response.data)
-        console.log("issuance.appIssuerslog-->", response.data.length)
-
-        if(response.data == null || (response.data != null && response.data.data?.length == 0)) {
-           
-            setshowModal(true);
-          }
-        })
-    //     if (!response.ok) {
-    //      throw new Error('Failed to fetch data');
-    //     }
-
-    //   const data = await response.json();
-    //   setResponseData(data);
-    //   setIsBack(false);
-    // setSearchQuery("")
-
+        setLoading(false);  // Hide loader after API call completes
+  
+        if (!data || (data && data.data?.length === 0)) {
+          setshowModal(true);
+        }
+      });
     } catch (error) {
       console.error('Error fetching data:', error);
-    } finally {
-      setIsLoading(false);
-    }
+      setLoading(false);  // Hide loader after API call completes
+
+    } 
   };
+  
 
-  const handleSearchClick = async () => {
-    if (!searchQuery) return
-    setIsLoading(true);
-
-    try {
-      const data = {
-        email: email, 
-        input: searchQuery, 
-        type: tab,
-      }
-      // const response = await fetch(`${apiUrl}/api/get-issue`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'Authorization': `Bearer ${token}`,
-      //   },
-      //   body: JSON.stringify({
-      //     email: email, 
-      //     input: searchQuery, 
-      //     type: tab,
-      //   }),
-      // });
-
-      issuance.getIssue(data, async (response) => {
-         
-        console.log(response)
-        if (response.status != 'SUCCESS') {
-          const data = response;
-          setLoginError(data.message || "Network Error");
-          setShow(true);
-          setIsLoading(false);
-          console.error('Failed to fetch data');
-            //  throw new Error('Failed to fetch data');
-          }
-          const data = response;
-          setLoginError("")
-          setLoginSuccess(data?.message)
-          setShow(true);
-          setResponseData(data.data)
-          setIsLoading(false);
-          setIsBack(true)
-          if(response.data == null || (response.data != null && response.data?.length == 0)) {
-            setshowModal(true);
-          }
-      })
-    //   if (!response.ok) {
-    //   const data = await response.json();
-    //   setLoginError(data.message || "Network Error");
-    //   setShow(true);
-    // setIsLoading(false);
-    
-
-    //     throw new Error('Failed to fetch data');
-    //   }
-
-    //   const data = await response.json();
-    //   setLoginError("")
-    //   setLoginSuccess(data?.message)
-    //   setShow(true);
-    //   setResponseData(data)
-    // setIsLoading(false);
-    // setIsBack(true)
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      setIsLoading(false);
-
-    } finally {
-      setIsLoading(false);
-    }
-  };
-console.log("responseData at admin -->",responseData);
-console.log(issuedCertificate)
+ 
   return (
 
     <div className='admin-wrapper page-bg'>
@@ -236,7 +143,7 @@ console.log(issuedCertificate)
             <Image height={10} width={10} src="/icons/search.svg" alt='search' />
           </div>
         </div> */}
-        <Search setResponseData={setResponseData} tab={tab} setLoading={setIsLoading} />
+        <Search setResponseData={setResponseData} tab={tab} setLoading={setLoading} />
       </div>
       {/* {tab === 2 && filteredBatchCertificatesData && (
             <span onClick={() => { setFilteredBatchCertificatesData(null); }} className='back-button'>
@@ -278,7 +185,7 @@ console.log(issuedCertificate)
 
         </Modal.Body>
       </Modal>
-      <Modal className='loader-modal' show={isLoading} centered>
+      <Modal className='loader-modal' show={loading} centered>
             <Modal.Body>
                 <div className='certificate-loader'>
                     <Image

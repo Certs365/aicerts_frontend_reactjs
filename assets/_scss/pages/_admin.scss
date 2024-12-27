@@ -397,9 +397,16 @@
                     th {
                         color: $white;
                         background-color: #000 !important;
+
                     }
                 }
             }
         }
+    }
+}
+.admin-table-wrapper{
+    td,tr{
+        font-size: 15px;
+    
     }
 }

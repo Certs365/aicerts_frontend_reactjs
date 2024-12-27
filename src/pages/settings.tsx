@@ -279,7 +279,6 @@ const Settings: React.FC = () => {
       },
       email: email
     }
-    debugger
     const headers = {
       "Content-Type": "application/json",
     }

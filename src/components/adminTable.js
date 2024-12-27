@@ -507,7 +507,7 @@ const uploadToS3 = async (blob, certificateNumber,type) => {
     <>
       {/* <Container> */}
       
-        <table  className="table table-bordered">
+        <table  className="admin-table-wrapper table table-bordered">
           <thead >
             <tr >
               <th scope="col" style={{ backgroundColor: "#f3f3f3" }}>S. No.</th>

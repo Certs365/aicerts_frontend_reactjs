@@ -112,12 +112,11 @@ const ComponentWrapper = ({ Component, pageProps }: any) => {
 
 
       {!isLoginPage && <Navigation />}
+      <ToastContainer />
       {/* Bot icon at the bottom right */}
       <div className="bot-icon" onClick={toggleBot}>
         <img src={isBotOpen ? "/BotCross.png" : "/BotIcon.png"} alt="Chatbot" />
       </div>
-      <ToastContainer />
-      {/* Responsive iframe container */}
       {isBotOpen && (
         <div className="bot-iframe-container">
           {/* Loader */}
@@ -126,8 +125,6 @@ const ComponentWrapper = ({ Component, pageProps }: any) => {
               <ClipLoader color="#555" size={40} />
             </div>
           )}
-
-          {/* Iframe with onLoad event */}
           <iframe
             src="https://app.xbot365.io/widget/c489775bb3824445b3291d6be38a23fb"
             frameBorder="0"
