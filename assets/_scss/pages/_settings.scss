@@ -17,6 +17,17 @@
         min-height: 180px;
         margin-top: 20px;
 
+        .subscription-card {
+            min-width: 31.7rem;
+            min-height: 31.7rem;
+            padding: 3rem;
+
+            @include xs {
+                min-width: 25.7rem;
+                min-height: 31.7rem;
+            }
+        }
+
         .label-settings {
             font-family: $font-family;
             color: #5B5A5F;

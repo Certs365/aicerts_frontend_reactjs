@@ -207,7 +207,7 @@ const Settings: React.FC = () => {
       });
       const responseData = await response.json();
       console.log(responseData)
-      setData(responseData.details);
+      setData(responseData?.data);
       // const data = await response.json();
       // setData(typeof data === 'string' ? JSON.parse(data) : data);
     };
@@ -271,9 +271,15 @@ const Settings: React.FC = () => {
         fee: card.fee,
         limit: card.limit,
         rate: card.rate,
-        // expiration: 30,
+        validity: card.validity,
+        credits: card.credits,
+        successUrl: "",
+        cancelUrl: "",
+        credits: 30,
       },
+      email: email
     }
+    debugger
     const headers = {
       "Content-Type": "application/json",
     }
@@ -660,13 +666,13 @@ const Settings: React.FC = () => {
           {/* <Col className=" d-flex flex-wrap align-items-center justify-content-center mt-3"> */}
           <div className="d-flex flex-column  mt-4 ">
 
-            <div className=" d-flex flex-row flex-wrap justify-content-center align-items-center ml-2 ">
+            <div className=" d-flex flex-row flex-wrap justify-content-center justify-content-md-start align-items-center px-5">
               {/* {(data as any[]).map((card) => ( */}
-              {(data as any[]).map((card) => (card.status === true && (
+              {(data as any[])?.map((card) => (card.status === true && (
                 <div className="m-2" key={card.title}>
-                  <Card style={{ width: '14rem', borderRadius: '0px', }}>
+                  <Card className='subscription-card' >
                     <Card.Body>
-                      <Card.Title style={{ fontSize: '20px', fontWeight: 'bolder' }}>{card.title}</Card.Title>
+                      <Card.Title style={{ fontSize: '20px', fontWeight: 'bolder', marginBottom: "2rem" }}>{card.title}</Card.Title>
                       <Card.Subtitle className="mb-2 text-muted" style={{ fontSize: '14px', fontWeight: 'bold' }}>{card.subheader}</Card.Subtitle>
                       <Card.Text className="text-muted" style={{ fontSize: '12px', fontWeight: 'bold' }}>
                         $<b style={{ fontSize: '20px', fontWeight: '900', color: 'black' }}>{card.fee}</b> per month
@@ -682,7 +688,7 @@ const Settings: React.FC = () => {
               )))}
               {/* ))} */}
               <div className="m-2">
-                <Card style={{ width: '14rem', borderRadius: '0px', }}>
+                <Card className='subscription-card'>
                   <Card.Body>
                     <Card.Title style={{ fontSize: '20px', fontWeight: 'bolder' }}>Custom(Enterprise)</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted" style={{ fontSize: '14px', fontWeight: 'bold' }}>Customised Plans</Card.Subtitle>
