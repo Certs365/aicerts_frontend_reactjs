@@ -526,7 +526,7 @@ const Settings: React.FC = () => {
               <Form.Label className="label-settings ">From:</Form.Label>
               <Form.Control
                 type="date"
-                className="search-input-setting"
+                className="search-input-setting fx-16"
                 value={issuanceDate.from}
                 onChange={(e) => handleDateChange(e, 'from')}
               />
@@ -535,7 +535,7 @@ const Settings: React.FC = () => {
               <Form.Label className="label-settings">To:</Form.Label>
               <Form.Control
                 type="date"
-                className="search-input-setting"
+                className="search-input-setting fx-16"
                 value={issuanceDate.to}
                 onChange={(e) => handleDateChange(e, 'to')}
                 disabled={!issuanceDate?.from}
@@ -571,7 +571,7 @@ const Settings: React.FC = () => {
               <Form.Label className="label-settings">From:</Form.Label>
               <Form.Control
                 type="date"
-                className="search-input-setting"
+                className="search-input-setting fx-16"
                 value={reportDate.from}
                 onChange={(e) => handleDateReportChange(e, 'from')}
               />
@@ -580,7 +580,7 @@ const Settings: React.FC = () => {
               <Form.Label className="label-settings">To:</Form.Label>
               <Form.Control
                 type="date"
-                className="search-input-setting"
+                className="search-input-setting fx-16"
                 value={reportDate.to}
                 onChange={(e) => handleDateReportChange(e, 'to')}
                 disabled={!reportDate?.from}
