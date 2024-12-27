@@ -22,9 +22,12 @@ import QrCodeSelector from '@/components/qrCodeSelector';
 import { toast } from 'react-toastify';
 import { GET_USER_BY_EMAIL } from '@/utils/Constants';
 import { commonAuthApi } from '@/services/common';
+import { useRouter } from 'next/router';
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL_USER;
 const apiUrlts = process.env.NEXT_PUBLIC_BASE_URL_USER_TS;
 const stripeUrl = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+const successRedirect = process.env.NEXT_PUBLIC_STRIPE_SUCCESS_URL;
+const cancelRedirect = process.env.NEXT_PUBLIC_STRIPE_CANCEL_URL;
 interface DateRange {
   from: string;
   to: string;
@@ -76,6 +79,18 @@ const Settings: React.FC = () => {
   const [paymentId, setPaymentId] = useState('');
   const [selectedQr, setSelectedQr] = useState(null);
   const [selectedBlockchain, setSelectedBlockchain] = useState(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const { success } = router.query;
+
+    if (success == "true") {
+      toast.success("Subscription Purchased Successfully");
+    }else if(success == "false"){
+      toast.error("Error in Purchasing Subscription");
+
+    }
+  }, [router.query]);
 
 
   const isShowPricingEnabled = !isNaN(planDuration) && planDuration !== 0 && !isNaN(totalCredits) && totalCredits !== 0;
@@ -207,7 +222,7 @@ const Settings: React.FC = () => {
       });
       const responseData = await response.json();
       console.log(responseData)
-      setData(responseData.details);
+      setData(responseData.data);
       // const data = await response.json();
       // setData(typeof data === 'string' ? JSON.parse(data) : data);
     };
@@ -269,10 +284,15 @@ const Settings: React.FC = () => {
       plan: {
         name: card.title,
         fee: card.fee,
-        limit: card.limit,
+        // limit: card.limit,
         rate: card.rate,
+        credits:300,
+        successUrl:`${successRedirect}`,
+        cancelUrl:`${cancelRedirect}`,
+        validity:card.validity
         // expiration: 30,
       },
+      email: email
     }
     const headers = {
       "Content-Type": "application/json",
@@ -286,7 +306,7 @@ const Settings: React.FC = () => {
     const session = await response.json();
 
     console.log(session);
-    const result: any = stripe?.redirectToCheckout({ sessionId: session.id });   //todo-> type any is given
+    const result: any = stripe?.redirectToCheckout({ sessionId: session?.data?.sessionId }); 
     console.log(result)
 
     if (result?.error) {
@@ -597,8 +617,8 @@ const Settings: React.FC = () => {
         <div className="org-details mb-5">
           <h2 className="title">Default Blockchain</h2>
           <Row className="d-flex align-items-center ml-3">
-            <Col className="mt-4" xs={12} md={3}>
-              <Row className="d-flex align-items-center justify-content-center mt-3 gap-5">
+            <Col className="mt-4" xs={12} md={6}>
+              <Row className="d-flex align-items-center justify-content-center mt-3 ps-md-5 gap-5">
                 <Col xs={5} md={4}>
                   <div
                     className={`blockchain-button optimism ${selectedBlockchain === 1 ? 'selected' : ''}`}
@@ -662,9 +682,9 @@ const Settings: React.FC = () => {
 
             <div className=" d-flex flex-row flex-wrap justify-content-center align-items-center ml-2 ">
               {/* {(data as any[]).map((card) => ( */}
-              {(data as any[]).map((card) => (card.status === true && (
+              {(data as any[])?.map((card) => (card.status === true && (
                 <div className="m-2" key={card.title}>
-                  <Card style={{ width: '14rem', borderRadius: '0px', }}>
+                  <Card className='card-wrapper'>
                     <Card.Body>
                       <Card.Title style={{ fontSize: '20px', fontWeight: 'bolder' }}>{card.title}</Card.Title>
                       <Card.Subtitle className="mb-2 text-muted" style={{ fontSize: '14px', fontWeight: 'bold' }}>{card.subheader}</Card.Subtitle>
@@ -682,7 +702,7 @@ const Settings: React.FC = () => {
               )))}
               {/* ))} */}
               <div className="m-2">
-                <Card style={{ width: '14rem', borderRadius: '0px', }}>
+                <Card className='card-wrapper'>
                   <Card.Body>
                     <Card.Title style={{ fontSize: '20px', fontWeight: 'bolder' }}>Custom(Enterprise)</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted" style={{ fontSize: '14px', fontWeight: 'bold' }}>Customised Plans</Card.Subtitle>

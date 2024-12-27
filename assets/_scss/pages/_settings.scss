@@ -16,7 +16,9 @@
         border: 1px solid #BFC0C2;
         min-height: 180px;
         margin-top: 20px;
-
+.card-wrapper{
+    max-width: 32rem;
+}
         .label-settings {
             font-family: $font-family;
             color: #5B5A5F;
