@@ -256,7 +256,7 @@ const Navigation = () => {
       case ('/designer'):
         setSelectedTab(3);
         break;
-      case '/admin':
+      case '/administration':
         setSelectedTab(4);
         break;
       case '/designer':
@@ -309,7 +309,7 @@ const Navigation = () => {
       handleLogout();
     }
   };
-  const routesWithLogoutButton = ['/certificates','/placeholder', '/badge-designer', '/issue-pdf-certificate', '/issue-certificate', '/certificate', '/certificate/[id]', '/certificate/download', '/dashboard', '/user-details', '/admin', '/gallery', '/issue-pdf-qr', '/dynamic-poc', '/settings', '/designer', '/design', '/badge/badge-dashboard', '/badge/badge-form', '/badge/badgeDisplay'];
+  const routesWithLogoutButton = ['/certificates','/placeholder', '/badge-designer', '/issue-pdf-certificate', '/issue-certificate', '/certificate', '/certificate/[id]', '/certificate/download', '/dashboard', '/user-details', '/administration', '/gallery', '/issue-pdf-qr', '/dynamic-poc', '/settings', '/designer', '/design', '/badge/badge-dashboard', '/badge/badge-form', '/badge/badgeDisplay'];
   const handleConfirm = () => {
     setShowModal(false)
     handleLogout();
@@ -369,7 +369,7 @@ const Navigation = () => {
                 <Nav.Link onClick={() => { handleClickTab(2) }} className={`nav-item ${selectedTab === 2 ? "tab-golden" : ""}`} href="/certificates">
                   Issuance
                 </Nav.Link>
-                <Nav.Link onClick={() => { handleClickTab(4) }} className={`nav-item ${selectedTab === 4 ? "tab-golden" : ""}`} href="/admin">
+                <Nav.Link onClick={() => { handleClickTab(4) }} className={`nav-item ${selectedTab === 4 ? "tab-golden" : ""}`} href="/administration">
                   Administration
                 </Nav.Link>
               </Nav>

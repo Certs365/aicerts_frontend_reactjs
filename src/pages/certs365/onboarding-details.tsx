@@ -6,8 +6,8 @@ import PrimaryButton from '@/common/button/primaryButton';
 import SecondaryButton from '@/common/button/secondaryButton';
 import { toast } from 'react-toastify';
 import RadioButton from '@/common/form/radioButton';
-import arrowIcon from "/new_assets/icons/arrow-icon.svg";
-import arrowIconBack from "/new_assets/icons/arrow-icon-back.svg";
+// import arrowIcon from "/new_assets/icons/arrow-icon.svg";
+// import arrowIconBack from "/new_assets/icons/arrow-icon-back.svg";
 
 // Step 1: Tell us about yourself
 const Step1: React.FC<{ formData: any, handleChange: Function, error: string }> = ({ formData, handleChange, error }) => {
@@ -213,8 +213,8 @@ const OnBoardingDetails: React.FC = () => {
 
                     {/* Navigation Buttons */}
                     <div className="d-flex mt-4 flex-row justify-content-between navigation-buttons">
-                        {step > 1 && <SecondaryButton icon={<Image height={24} width={24} src={arrowIconBack} alt="LinkedIn Icon" />} label="Back" type="button" onClick={handleBack} />}
-                        {step < 3 && <PrimaryButton iconPosition='back' icon={<Image height={24} width={24} src={arrowIcon} alt="LinkedIn Icon" />} classes='padding-2-3' label="Next" type="button" onClick={handleNext} />}
+                        {/* {step > 1 && <SecondaryButton icon={<Image height={24} width={24} src={arrowIconBack} alt="LinkedIn Icon" />} label="Back" type="button" onClick={handleBack} />} */}
+                        {/* {step < 3 && <PrimaryButton iconPosition='back' icon={<Image height={24} width={24} src={arrowIcon} alt="LinkedIn Icon" />} classes='padding-2-3' label="Next" type="button" onClick={handleNext} />} */}
                         {step === 3 && (
                             <PrimaryButton onClick={() => { }} label="Complete" type="submit" />
                         )}
