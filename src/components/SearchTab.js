@@ -156,7 +156,7 @@ const SearchTab = () => {
               alt='Loader'
             />
           </div>
-          <p>Please dont reload the Page. It may take a few minutes.</p>
+          <p>Please don&apos;t reload the Page. It may take a few minutes.</p>
         </Modal.Body>
       </Modal>
 

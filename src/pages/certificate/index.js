@@ -21,6 +21,7 @@ import CertificateContext from "../../utils/CertificateContext";
 import AWS from "../../config/aws-config";
 import { getImageSize } from "react-image-size";
 import { IndexOutOfBoundsError } from "pdf-lib";
+import { toast } from "react-toastify";
 
 const iconUrl = process.env.NEXT_PUBLIC_BASE_ICON_URL;
 // import image from "public/images/1709909965183_Badge.png"
@@ -159,7 +160,7 @@ const CardSelector = () => {
     //   sessionStorage.setItem('issuerName', inputValue);
     // } else {
     //   // Show error message here, for example:
-    //   // alert('Issuer name must be 30 characters or less');
+      toast.error('Issuer name must be 30 characters or less');
     // }
   };
 
@@ -174,7 +175,7 @@ const CardSelector = () => {
       sessionStorage.setItem("issuerDesignation", inputValue);
     } else {
       // Show error message here, for example:
-      // alert("Issuer designation must be 30 characters or less");
+      // toast.error("Issuer designation must be 30 characters or less");
     }
   };
 

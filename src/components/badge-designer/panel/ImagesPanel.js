@@ -64,7 +64,6 @@ function ImagesPanel({ onSelectImage }) {
       setUploadedBackgrounds(images);
     } catch (error) {
       console.error("Error fetching uploaded backgrounds:", error);
-      alert(error.message);
     }  finally {
       setLoading(false); // Stop loading after fetching
     }

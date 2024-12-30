@@ -292,7 +292,7 @@ const ProfileDetails = () => {
     return (
         <>
             <div className='page-bg'>
-                <div className='user-details'>
+                <div className='user-details mt-5'>
                     <Container className="my-5">
                         <Row>
                             <Col xs={12} md={4}>

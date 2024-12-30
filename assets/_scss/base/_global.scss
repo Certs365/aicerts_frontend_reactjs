@@ -1,10 +1,17 @@
+html {
+    font-size: 10px;
+    // background-color: $secondary;
+    scroll-behavior: smooth;
+}
+
+
 html,
 body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: $font-family;
-    
+
 
     * {
         box-sizing: inherit;
@@ -71,7 +78,7 @@ a {
             border: 1px solid $golden;
             box-shadow: none;
         }
-   
+
 
     }
 
@@ -117,6 +124,7 @@ a {
     }
 }
 
+
 .password-input {
     .eye-icon {
         cursor: pointer;
@@ -132,6 +140,22 @@ a {
         @media (min-width: $laptop-min) and (max-width: $laptop-max) {}
     }
 }
+
+.password-input input[type="password"] {
+    -webkit-appearance: none;
+    /* Removes browser default styles in Webkit-based browsers */
+    -moz-appearance: none;
+    /* Removes browser default styles in Firefox */
+    appearance: none;
+    /* Removes browser default styles in general */
+}
+
+.password-input input[type="password"]::-ms-reveal,
+.password-input input[type="password"]::-webkit-credentials-auto-fill-button {
+    display: none;
+    /* Hides the default eye icon */
+}
+
 
 .page-footer-bg {
     background-image: url(https://images.netcomlearning.com/ai-certs/cer365AllPageFooterBg.svg);
@@ -212,7 +236,7 @@ a {
 
 .title {
     font-family: Montserrat;
-    
+
     color: #2F3847;
     font-size: 32px;
     font-style: normal;
@@ -242,7 +266,8 @@ a {
 
     @media (min-width: $mobile-min) and (max-width: $mobile-max) {
         font-size: 18px;
-        margin: 20px 0;
+        // margin: 20px 0;
+
     }
 }
 
@@ -250,6 +275,7 @@ a {
 
     // padding: 10%;
     height: 100%;
+
     h3 {
         font-family: "Manrope", sans-serif !important;
         font-size: 28px;
@@ -293,19 +319,19 @@ a {
         width: 100%;
         padding: 10px;
         margin-top: 10px;
-        text-align: left; 
+        text-align: left;
         font-size: bold;
-        background: none; 
+        background: none;
         border: 1px dashed gray;
-    
+
         &.heading {
             font-size: 24px;
         }
-    
+
         &.sub-heading {
             font-size: 18px;
         }
-    
+
         &.body-text {
             font-size: 14px;
         }
@@ -371,8 +397,9 @@ a {
     }
 
     .add-text-button {
-        
-        h4, button {
+
+        h4,
+        button {
             color: $white;
         }
     }

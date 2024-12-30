@@ -10,9 +10,24 @@ import qr1 from "/assets/img/qr-1.png";
 import qr2 from "/assets/img/qr-2.png";
 import qr3 from "/assets/img/qr-3.png";
 import qr4 from "/assets/img/qr-4.png";
+import qr5 from "/assets/img/qr-5.png";
+import qr6 from "/assets/img/qr-6.png";
+import qr7 from "/assets/img/qr-7.png";
+import p1 from "/assets/img/p1.svg";
+import p2 from "/assets/img/p2.svg";
 import user from '@/services/userServices';
+import PrimaryButton from '@/common/button/primaryButton';
+import SecondaryButton from '@/common/button/secondaryButton';
+import QrCodeSelector from '@/components/qrCodeSelector';
+import { toast } from 'react-toastify';
+import { GET_USER_BY_EMAIL } from '@/utils/Constants';
+import { commonAuthApi } from '@/services/common';
+import { useRouter } from 'next/router';
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL_USER;
+const apiUrlts = process.env.NEXT_PUBLIC_BASE_URL_USER_TS;
 const stripeUrl = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+const successRedirect = process.env.NEXT_PUBLIC_STRIPE_SUCCESS_URL;
+const cancelRedirect = process.env.NEXT_PUBLIC_STRIPE_CANCEL_URL;
 interface DateRange {
   from: string;
   to: string;
@@ -30,6 +45,7 @@ const Settings: React.FC = () => {
   });
   const [issuanceReportLoading, setIssuanceReportLoading] = useState(false);
   const [invoiceReportLoading, setInvoiceReportLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // Adjust the event type to be more generic for React-Bootstrap Form.Control
   const handleDateChange = (
@@ -60,16 +76,105 @@ const Settings: React.FC = () => {
   const [planDuration, setPlanDuration] = useState(0);
   const [totalCredits, setTotalCredits] = useState(0);
   const [paymentEmail, setPaymentEmail] = useState('')
-  const [paymentId, setPaymentId] = useState('')
+  const [paymentId, setPaymentId] = useState('');
+  const [selectedQr, setSelectedQr] = useState(null);
+  const [selectedBlockchain, setSelectedBlockchain] = useState(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const { success } = router.query;
+
+    if (success == "true") {
+      toast.success("Subscription Purchased Successfully");
+    }else if(success == "false"){
+      toast.error("Error in Purchasing Subscription");
+
+    }
+  }, [router.query]);
+
 
   const isShowPricingEnabled = !isNaN(planDuration) && planDuration !== 0 && !isNaN(totalCredits) && totalCredits !== 0;
 
+  const handleQrClick = (qr) => {
+    setSelectedQr(qr);
+  };
 
   useEffect(() => {
     if (!isShowPricingEnabled) {
       setCalculatedValue(0);
     }
   }, [isShowPricingEnabled])
+
+
+
+  const handlePolygon = async () => {
+    setLoading(true);
+    const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+    const data = {
+      email: storedUser.email, blockchainPreference: selectedBlockchain, id: storedUser?.issuerId, name: storedUser?.name
+    };
+    try {
+      await user.updateIssuer(data, (response) => {
+        const userData = response.data;
+        const userDetails = userData?.data;
+        toast.success(userData?.message || "Updated Successfully")
+      });
+    } catch (error) {
+      toast.error('Error updating QR preference');
+
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    setNow(10)
+
+    let progressInterval;
+    const startProgress = () => {
+      progressInterval = setInterval(() => {
+        setNow((prev) => {
+          if (prev < 90) return prev + 5;
+          return prev;
+        });
+      }, 100);
+    };
+
+    const stopProgress = () => {
+      clearInterval(progressInterval);
+      setNow(100); // Progress complete
+    };
+
+    startProgress();
+    const data = { email, ...formData };
+    try {
+      // const response = await fetch(`${apiUrl}/api/update-issuer`, {
+      //     method: "POST",
+      //     headers: {
+      //         'Content-Type': 'application/json',
+      //         'Authorization': `Bearer ${token}`,
+      //     },
+      //     body: JSON.stringify({
+      //         data:encryptedData 
+      //     })
+      // });
+      user.updateIssuer(data, async (response) => {
+        const userData = response.data;
+        const userDetails = userData?.data;
+        setLoginSuccess("Details Updated Successfully")
+        setShow(true);
+      })
+
+    } catch (error) {
+      console.error('Error Verifying Certificate:', error);
+      // Handle error
+    } finally {
+      stopProgress();
+      setIsLoading(false);
+    }
+  };
 
   // get all subscription plan details
   // useEffect(() => {
@@ -90,6 +195,9 @@ const Settings: React.FC = () => {
   //   fetchData();
   // }, []);
 
+  const handleBlockchainClick = (blockchain) => {
+    setSelectedBlockchain(blockchain);
+  };
 
 
   useEffect(() => {
@@ -105,7 +213,7 @@ const Settings: React.FC = () => {
   useEffect(() => {
     if (!email) return;
     const fetchData = async () => {
-      const response = await fetch(`${apiUrl}/api/get-subscription-plans`, {
+      const response = await fetch(`${apiUrlts}/api/get-subscription-plans`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -114,7 +222,7 @@ const Settings: React.FC = () => {
       });
       const responseData = await response.json();
       console.log(responseData)
-      setData(responseData.details);
+      setData(responseData.data);
       // const data = await response.json();
       // setData(typeof data === 'string' ? JSON.parse(data) : data);
     };
@@ -124,7 +232,7 @@ const Settings: React.FC = () => {
 
   const getPlanName = async (email: string) => {
     try {
-      const response = await fetch(`${apiUrl}/api/fetch-user-subscription-details`, {
+      const response = await fetch(`${apiUrlts}/api/fetch-user-subscription-details`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -146,8 +254,10 @@ const Settings: React.FC = () => {
 
   const handlePlanSelection = async (card: any) => {
     try {
-       
-      const response = await fetch(`${apiUrl}/api/add-user-subscription-plan`, {
+
+
+      const response = await fetch(`${apiUrlts}/api/add-user-subscription-plan`, {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -170,28 +280,28 @@ const Settings: React.FC = () => {
 
   // todo-> can merge it in handleplanselection ??
   const makePayment = async (card: any) => {
-     
-    console.log(card)
-    console.log(typeof card.fee);
-    console.log(typeof card.title);
-    console.log(typeof card.limit);
-    console.log(typeof card.rate);
+
 
     const stripe = await loadStripe(`${stripeUrl}`);
     const body = {
       plan: {
         name: card.title,
         fee: card.fee,
-        limit: card.limit,
+        // limit: card.limit,
         rate: card.rate,
+        credits:300,
+        successUrl:`${successRedirect}`,
+        cancelUrl:`${cancelRedirect}`,
+        validity:card.validity
         // expiration: 30,
       },
+      email: email
     }
     const headers = {
       "Content-Type": "application/json",
     }
     // try {
-    const response = await fetch(`${apiUrl}/api/create-checkout-session`, {
+    const response = await fetch(`${apiUrlts}/api/create-checkout-session`, {
       method: 'POST',
       headers: headers,
       body: JSON.stringify(body)
@@ -199,14 +309,14 @@ const Settings: React.FC = () => {
     const session = await response.json();
 
     console.log(session);
-    const result: any = stripe?.redirectToCheckout({ sessionId: session.id });   //todo-> type any is given
+    const result: any = stripe?.redirectToCheckout({ sessionId: session?.data?.sessionId }); 
     console.log(result)
-     
+
     if (result?.error) {
       console.error('Error redirecting to Checkout:', result.error);
     }
     if (!window.location.href.includes('canceled=true')) {
-       
+
       handlePlanSelection(card);
     }
     //   } catch (error) {
@@ -304,8 +414,39 @@ const Settings: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchData = async (email: string) => {
+      const data = { email: email };
+      try {
+        const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+        if (storedUser?.email) {
+          // Fetch the issuer data using the user service
+          user.getIssuerByEmail(data, (response) => {
+            const userData = response.data;
+            const userDetails = userData?.data;
+            setSelectedBlockchain(userDetails?.blockchainPreference)
+            setSelectedQr(userDetails?.qrPreference)
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching issuer data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+    if (storedUser?.email) {
+      fetchData(storedUser.email);
+    }
+  }, []);
 
+  const handleClose = (() => {
+    setShow(false);
+    setPlanDuration(0)
+    setCalculatedValue(0)
+    setTotalCredits(0)
+  })
 
   const handleNewPrice = () => {
     setCalculatedValue(planDuration * totalCredits * 5);
@@ -321,8 +462,10 @@ const Settings: React.FC = () => {
     }
     // makePayment(card);
     try {
-       
-      const response = await fetch(`${apiUrl}/api/add-enterprise-subscription-plan`, {
+
+
+      const response = await fetch(`${apiUrlts}/api/add-enterprise-subscription-plan`, {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -335,6 +478,10 @@ const Settings: React.FC = () => {
         }),
       });
 
+      if (response.ok) {
+        toast.success("Plan Updated Successfully")
+      }
+
     } catch (error) {
       console.error('Error selecting plan:', error);
     }
@@ -342,9 +489,15 @@ const Settings: React.FC = () => {
     // handlePlanSelection(card);
   }
 
+  const handleGetUser = async (email) => {
+
+    setSelectedQr(1)
+    setSelectedBlockchain(1)
+  };
+
   const handlePaymentGrievance = async () => {
     try {
-      const response = await fetch(`${apiUrl}/api/checkout-grievance`, {
+      const response = await fetch(`${apiUrlts}/api/checkout-grievance`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -363,34 +516,39 @@ const Settings: React.FC = () => {
   }
 
 
-
   return (
     <div className="page-bg">
       <div className="position-relative settings-container h-100">
         <div className="settings-title">
-          <h3>Settings</h3>
+          <h3><strong>Settings</strong></h3>
         </div>
 
         {/* Issuance Report */}
         <div className="org-details mb-5">
           <h2 className="title">Issuance Report</h2>
-          <Row className="d-flex align-items-center justify-content-center mt-3">
-            <Col xs={12} md={4}>
-              <Form.Label className="label-settings">From:</Form.Label>
+          <Row className="d-flex align-items-center ms-2 ms-md-0 mb-2 justify-content-md-center mt-3">
+            <Col xs={5} md={4}>
+              <Form.Label className="label-settings ">From:</Form.Label>
               <Form.Control
                 type="date"
-                className="search-input-setting"
+                className="search-input-setting fx-16"
                 value={issuanceDate.from}
                 onChange={(e) => handleDateChange(e, 'from')}
               />
             </Col>
-            <Col xs={12} md={4}>
+            <Col xs={5} md={4}>
               <Form.Label className="label-settings">To:</Form.Label>
               <Form.Control
                 type="date"
-                className="search-input-setting"
+                className="search-input-setting fx-16"
                 value={issuanceDate.to}
                 onChange={(e) => handleDateChange(e, 'to')}
+                disabled={!issuanceDate?.from}
+                min={
+                  issuanceDate.from
+                    ? issuanceDate.from
+                    : new Date().toISOString().split('T')[0] // Today's date if "From" is empty
+                }
               />
             </Col>
             <Col className="mt-4" xs={12} md={3}>
@@ -413,23 +571,30 @@ const Settings: React.FC = () => {
         {/* Invoice Report */}
         <div className="org-details">
           <h2 className="title">Invoice Report</h2>
-          <Row className="d-flex align-items-center justify-content-center mt-3">
-            <Col xs={12} md={4}>
+          <Row className="d-flex align-items-center ms-2 ms-md-0 mb-2 justify-content-md-center mt-3">
+            <Col xs={5} md={4}>
               <Form.Label className="label-settings">From:</Form.Label>
               <Form.Control
                 type="date"
-                className="search-input-setting"
+                className="search-input-setting fx-16"
                 value={reportDate.from}
                 onChange={(e) => handleDateReportChange(e, 'from')}
               />
             </Col>
-            <Col xs={12} md={4}>
+            <Col xs={5} md={4}>
               <Form.Label className="label-settings">To:</Form.Label>
               <Form.Control
                 type="date"
-                className="search-input-setting"
+                className="search-input-setting fx-16"
                 value={reportDate.to}
                 onChange={(e) => handleDateReportChange(e, 'to')}
+                disabled={!reportDate?.from}
+                min={
+                  reportDate?.from
+                    ? reportDate?.from
+                    : new Date().toISOString().split('T')[0] // Today's date if "From" is empty
+                }
+
               />
             </Col>
             <Col className="mt-4" xs={12} md={3}>
@@ -451,64 +616,53 @@ const Settings: React.FC = () => {
         </div>
 
         {/* QR  Code */}
-        <div className="org-details">
-          <h2 className="title">QR Code</h2>
-          <Row className=" d-flex align-items-center justify-content-start m-3">
-            <Col xs={16} md={2}>
-              {/* //todo-> Image not added */}
-              <Image
-                src={qr1}
-                height={100}
-                width={100}
-                objectFit='contain'
-                alt="QR code"
-              />
-            </Col>
-            <Col xs={16} md={2}>
-              {/* //todo-> Image not added */}
-              <Image
-                src={qr2}
-                height={100}
-                width={100}
-                objectFit='contain'
-                alt="QR code"
-              />
-            </Col>
-            <Col xs={16} md={2}>
-              {/* //todo-> Image not added */}
-              <Image
-                src={qr3}
-                height={100}
-                width={100}
-                objectFit='contain'
-                alt="QR code"
-              />
-            </Col>
-            <Col xs={16} md={2}>
-              {/* //todo-> Image not added */}
-              <Image
-                src={qr4}
-                height={100}
-                width={100}
-                objectFit='contain'
-                alt="QR code"
-              />
-            </Col>
-          </Row>
-        </div>
+        <QrCodeSelector qrCodes={[qr1, qr2, qr3, qr4, qr5, qr6, qr7]} />
 
         {/* Default Blockchain */}
         <div className="org-details mb-5">
           <h2 className="title">Default Blockchain</h2>
-              <div className=" d-flex flex-row align-items-center ps-3 gap-5">
-                  <div className="blockchain-button polygon">
-                    <img src="../../icons/polygon-icon.svg" alt="asasa" />
+
+          <Row className="d-flex align-items-center ml-3">
+            <Col className="mt-4" xs={12} md={6}>
+              <Row className="d-flex align-items-center justify-content-center mt-3 ps-md-5 gap-5">
+                <Col xs={5} md={4}>
+                  <div
+                    className={`blockchain-button optimism ${selectedBlockchain === 1 ? 'selected' : ''}`}
+                    onClick={() => handleBlockchainClick(1)}
+                  >
+                    <Image width={110} height={60} src={p2} alt="Optimism logo" />
                   </div>
-                  <div className="blockchain-button optimism">
-                    <img src="../../icons/optism-icon.svg" alt="asasa" />
+
+                </Col>
+                <Col xs={5} md={6}>
+                  <div
+                    className={`blockchain-button polygon ${selectedBlockchain === 0 ? 'selected' : ''}`}
+                    onClick={() => handleBlockchainClick(0)}
+                  >
+                    <Image width={110} height={60} src={p1} alt="Polygon logo" />
                   </div>
-              </div>
+                </Col>
+
+
+              </Row>
+
+              {/* Button aligned to the right */}
+
+            </Col>
+          </Row>
+          <div className="d-flex justify-content-end mt-4 p-2">
+            <PrimaryButton
+              classes="p-3"
+              label="Change Blockchain"
+              loading={loading}
+              loadingText="Updating..."
+              onClick={handlePolygon}
+            />
+          </div>
+
         </div>
+
+
 
         {/* App view mode */}
         {/* <div className="org-details mb-5">
@@ -535,9 +689,9 @@ const Settings: React.FC = () => {
 
             <div className=" d-flex flex-row flex-wrap justify-content-center align-items-center ml-2 ">
               {/* {(data as any[]).map((card) => ( */}
-              {(data as any[]).map((card) => (card.status === true && (
+              {(data as any[])?.map((card) => (card.status === true && (
                 <div className="m-2" key={card.title}>
-                  <Card style={{ width: '14rem', borderRadius: '0px', }}>
+                  <Card className='card-wrapper'>
                     <Card.Body>
                       <Card.Title style={{ fontSize: '20px', fontWeight: 'bolder' }}>{card.title}</Card.Title>
                       <Card.Subtitle className="mb-2 text-muted" style={{ fontSize: '14px', fontWeight: 'bold' }}>{card.subheader}</Card.Subtitle>
@@ -555,7 +709,7 @@ const Settings: React.FC = () => {
               )))}
               {/* ))} */}
               <div className="m-2">
-                <Card style={{ width: '14rem', borderRadius: '0px', }}>
+                <Card className='card-wrapper'>
                   <Card.Body>
                     <Card.Title style={{ fontSize: '20px', fontWeight: 'bolder' }}>Custom(Enterprise)</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted" style={{ fontSize: '14px', fontWeight: 'bold' }}>Customised Plans</Card.Subtitle>
@@ -575,9 +729,9 @@ const Settings: React.FC = () => {
             <div className="last-box mb-4 d-flex flex-row justify-content-between">
               <div className='d-flex flex-column p-2'>
                 <h3 className='bold mb-2'>Custom</h3>
-                <p>Need more than 200 Certificates? Contact US.</p>
+                <p>Need more than 200 Certificates? Contact us on support@Certs365.io</p>
               </div>
-              <div className="d-flex align-items-center position-relative me-2 cursor-pointer">
+              {/* <div className="d-flex align-items-center position-relative me-2 cursor-pointer">
                 <Form.Control
                   type="email"
                   placeholder="Enter your email"
@@ -585,48 +739,21 @@ const Settings: React.FC = () => {
                 // value={issuanceDate.from}
                 // onChange={(e) => handleDateChange(e, "from")}
                 />
-                <div className="arrow-container position-absolute end-0 d-flex justify-content-center align-items-center">
-                  <img src='../../icons/arrow-white.svg'/>
-                </div>
-              </div>
+
+                <div className="arrow-container position-absolute end-0"></div>
+              </div> */}
+
 
             </div>
-            {/* <div className="last-box">
-              <div>
-                <h3>Plan not upgraded?</h3>
-                <p>Send us payment details and we will upgrade your plan.</p>
-              </div>
-              <div>
-                <Form className="d-flex flex-column">
-                  <Form.Control
-                    type="email" placeholder="Enter your email"
-                    className="search-input-setting"
-                    value={paymentEmail}
-                    onChange={(e) => setPaymentEmail(e.target.value)}
-                    required
-                  />
-                  <Form.Control
-                    type="text" placeholder="Enter your payment ID"
-                    className="search-input-setting mt-3"
-                    value={paymentId}
-                    onChange={(e) => setPaymentId(e.target.value)}
-                    required
-                  />
-                  <Col md={{ span: 1 }} xs={{ span: 12 }}>
-                    <Button label="Submit" className='btn-danger' onClick={() => handlePaymentGrievance()} />
-                  </Col>
-                </Form>
-              </div>
-            </div> */}
           </div>
         </div>
       </div>
-      <Modal style={{ borderRadius: "26px" }} className='enterprise-modal extend-modal' show={show} centered>
+      <Modal onHide={handleClose} style={{ borderRadius: "26px" }} className='enterprise-modal extend-modal' show={show} centered>
         <Modal.Header className='extend-modal-header'>
           <span className='extend-modal-header-text'>Enter your details</span>
           <div className='close-modal'>
             <Image
-              onClick={() => { setShow(false); }}
+              onClick={() => { handleClose() }}
               className='cross-icon'
               src="/icons/close-icon.svg"
               layout='fill'
@@ -654,16 +781,62 @@ const Settings: React.FC = () => {
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              gap: 2,  // Adjust this value to set the desired spacing
+              gap: 2, // Adjust this value to set the desired spacing
             }}
           >
-            <TextField id="outlined-required" label="Plan Duration in days" variant="outlined" required onChange={(e) => setPlanDuration(Number(e.target.value))} />
-
-            {/* <span className='extend-modal-body-expire'>New Expiration Date</span> */}
-            <TextField id="outlined-basic" label="Total Credits" variant="outlined" required onChange={(e) => setTotalCredits(Number(e.target.value))} />
-            {/* <span className='extend-modal-body-expire'>New Expiration Date</span> */}
-            <TextField id="outlined-basic" disabled label={calculatedValue === 0 ? "Pricing in $" : `${calculatedValue}`} variant="outlined" />
+            <TextField
+              type="number"
+              id="outlined-required"
+              label="Plan Duration in days"
+              variant="outlined"
+              required
+              value={planDuration}
+              onChange={(e) => {
+                if (e.target.value.length < 11) {
+                  setPlanDuration(Number(e.target.value));
+                }
+              }}
+              InputProps={{
+                sx: { fontSize: '1.5rem' }, // Increase font size
+              }}
+              InputLabelProps={{
+                sx: { fontSize: '1.2rem' }, // Increase label font size
+              }}
+            />
+            <TextField
+              type="number"
+              id="outlined-basic"
+              label="Total Credits"
+              variant="outlined"
+              required
+              value={totalCredits}
+              onChange={(e) => {
+                if (e.target.value.length < 11) {
+                  setTotalCredits(Number(e.target.value));
+                }
+              }}
+              InputProps={{
+                sx: { fontSize: '1.5rem' }, // Increase font size
+              }}
+              InputLabelProps={{
+                sx: { fontSize: '1.2rem' }, // Increase label font size
+              }}
+            />
+            <TextField
+              id="outlined-basic"
+              disabled
+              label={calculatedValue === 0 ? "Pricing in $" : `${calculatedValue}`}
+              variant="outlined"
+              InputProps={{
+                sx: { fontSize: '1.5rem' }, // Increase font size
+              }}
+              InputLabelProps={{
+                sx: { fontSize: '1.2rem' }, // Increase label font size
+              }}
+            />
           </Box>
+
+
           {/* <div className='checkbox-container-modal'> */}
           {/* <input
         type="checkbox"
@@ -678,7 +851,7 @@ const Settings: React.FC = () => {
         <Modal.Footer >
 
           <button className="update-button-modal" style={{ opacity: !isShowPricingEnabled ? 0.8 : 1 }} disabled={!isShowPricingEnabled} onClick={() => { handleNewPrice(); }}>Show Pricing</button>
-          <button className="update-button-modal" onClick={() => { handleEnterprisePlan(); setShow(false); }}>Upgrade</button>
+          <button style={{ opacity: (!totalCredits || !planDuration || !calculatedValue) ? 0.8 : 1 }} disabled={!totalCredits || !planDuration || !calculatedValue} className="update-button-modal" onClick={() => { handleEnterprisePlan(); handleClose(); }}>Upgrade</button>
         </Modal.Footer>
       </Modal>
     </div>

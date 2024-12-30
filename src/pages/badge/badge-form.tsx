@@ -93,7 +93,6 @@ const BadgeForm = () => {
         });
       } else {
         setIsLoading(true);
-
         // Using the certificate service for creating
         certificate.addBadgeTemplate({ ...formData, email: userEmail, attributes }, (response) => {
           if (response.status === 'SUCCESS') {

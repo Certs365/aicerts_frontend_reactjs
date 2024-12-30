@@ -321,7 +321,8 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
       backgroundColor: "#CFA935",
       color: "white",
       border:"none",
-      borderRadius: 0
+      borderRadius: 0,
+      height:"40px"
     }}
   >
     {`For: ${searchFor.charAt(0).toUpperCase() + searchFor.slice(1)}`}
@@ -424,7 +425,7 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
   {/* Dropdown (placed inside the input container) */}
   <Dropdown onSelect={handleSearchBySelect} className="golden-dropdown-button d-none d-md-flex" style={{ position: 'absolute', left: 2, width:"200px" }}>
     <Dropdown.Toggle variant="secondary" id="dropdown-basic btn-golden" className="btn-golden" 
-      style={{backgroundColor: "#CFA935",  color: "white", borderRadius: 0, height: '100%', width:"200px",marginRight:"10px",border:"none" }} disabled={!searchFor}>
+      style={{backgroundColor: "#CFA935",  color: "white", borderRadius: 0, height: '40px', width:"200px",marginRight:"10px",border:"none" }} disabled={!searchFor}>
       {` ${searchBy.length ? searchBy.charAt(0).toUpperCase() + searchBy.slice(1) : 'Select Search For'}`}
     </Dropdown.Toggle>
 

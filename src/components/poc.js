@@ -549,7 +549,7 @@ const handleFileBatchChange = (event) => {
         </div>
   <ProgressBar now={now} label={`${now}%`} />
 
-        <p>Please dont reload the Page. It may take a few minutes.</p>
+        <p>Please don&apos;t reload the Page. It may take a few minutes.</p>
       </Modal.Body>
     </Modal>
 
