@@ -255,7 +255,9 @@ const Settings: React.FC = () => {
   const handlePlanSelection = async (card: any) => {
     try {
 
+
       const response = await fetch(`${apiUrlts}/api/add-user-subscription-plan`, {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -278,6 +280,7 @@ const Settings: React.FC = () => {
 
   // todo-> can merge it in handleplanselection ??
   const makePayment = async (card: any) => {
+
 
     const stripe = await loadStripe(`${stripeUrl}`);
     const body = {
@@ -460,7 +463,9 @@ const Settings: React.FC = () => {
     // makePayment(card);
     try {
 
+
       const response = await fetch(`${apiUrlts}/api/add-enterprise-subscription-plan`, {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -616,6 +621,7 @@ const Settings: React.FC = () => {
         {/* Default Blockchain */}
         <div className="org-details mb-5">
           <h2 className="title">Default Blockchain</h2>
+
           <Row className="d-flex align-items-center ml-3">
             <Col className="mt-4" xs={12} md={6}>
               <Row className="d-flex align-items-center justify-content-center mt-3 ps-md-5 gap-5">
@@ -653,6 +659,7 @@ const Settings: React.FC = () => {
               onClick={handlePolygon}
             />
           </div>
+
         </div>
 
 
@@ -732,8 +739,10 @@ const Settings: React.FC = () => {
                 // value={issuanceDate.from}
                 // onChange={(e) => handleDateChange(e, "from")}
                 />
+
                 <div className="arrow-container position-absolute end-0"></div>
               </div> */}
+
 
             </div>
           </div>

@@ -562,7 +562,6 @@ const CardSelector = () => {
       case 5:
         certificateUrl = "https://html.aicerts.io/Background.png";
         break;
-
       default:
         certificateUrl = "https://html.aicerts.io/Background123.png";
         break;
@@ -670,6 +669,10 @@ const CardSelector = () => {
       id: 6,
       imageUrl: "/backgrounds/Certificate_template_5.png",
     },
+    // {
+    //   id: 6,
+    //   imageUrl: "/backgrounds/Certificate_template_7.png",
+    // },
   ];
 
   useEffect(() => {
@@ -730,7 +733,7 @@ const CardSelector = () => {
     <>
       <div className="page-bg">
         <div className="position-relative settings-container h-100">
-          <div className="dashboard mt-5">
+          <div className="dashboard mt-0">
             <Container>
               {tab == 0 && <h3 className="title mb-4 py-2">Issue Certifications</h3>}
               {tab == 1 && <h3 className="title">Batch Issuance</h3>}

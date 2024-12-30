@@ -17,6 +17,7 @@ import {
   handleItalicToggle,
   handleTextColorChange,
   handleUnderlineToggle,
+  loadFont,
 } from "../components/certificate-designer/utils/textUtils";
 import TextEditPanel from "../components/certificate-designer/panel/TextEditPanel";
 import FontPanel from "../components/certificate-designer/panel/FontPanel";
@@ -79,6 +80,7 @@ const Designer = () => {
   const [pendingRoute, setPendingRoute] = useState(null); // Store pending navigation route
   const router = useRouter();
   const [currentRoute, setCurrentRoute] = useState(null); // Store the current route
+  const [zoomLevel, setZoomLevel] = useState(1); // State to manage zoom level
 
   // Use effect to fetch and load the user's email from localStorage
   useEffect(() => {
@@ -110,8 +112,13 @@ const Designer = () => {
     setLoading(true);
 
     const templateData = canvas.toJSON(); // Get the canvas data
+    console.log(templateData)
 
-    const dataURL = canvas.toDataURL({ format: "png" }); // Convert canvas to PNG data URL
+    const multiplier = 2; // You can adjust this value to make the image even higher resolution
+  const dataURL = canvas.toDataURL({
+    format: "png",
+    multiplier: multiplier, // Multiplies the canvas resolution
+  }); // Convert canvas to PNG data URL
     const blob = dataURLToBlob(dataURL);
     const fd = new FormData();
     const date = new Date().getTime();
@@ -345,7 +352,7 @@ const Designer = () => {
       // });
       const fabricCanvas = new fabric.Canvas("myCanvas", {
         width: 900,
-        height: 650,
+        height: 500,
         backgroundColor: "white",
       });
       fabricCanvas.backgroundColor = "#fff";
@@ -355,6 +362,7 @@ const Designer = () => {
 
       // Load saved state from localStorage
       const savedCanvasState = localStorage.getItem("fabricCanvasState");
+      
       if (savedCanvasState) {
         fabricCanvas.loadFromJSON(savedCanvasState, () => {
           fabricCanvas.renderAll(); // Ensure canvas is rendered after loading
@@ -443,14 +451,14 @@ const Designer = () => {
     },
   };
 
-  useEffect(() => {
-    if (canvas) {
-      const { width, height } = paperSizes[paperSize][orientation];
-      canvas.setWidth(width);
-      canvas.setHeight(height);
-      canvas.renderAll();
-    }
-  }, [paperSize, orientation, canvas]);
+  // useEffect(() => {
+  //   if (canvas) {
+  //     const { width, height } = paperSizes[paperSize][orientation];
+  //     canvas.setWidth(width);
+  //     canvas.setHeight(height);
+  //     canvas.renderAll();
+  //   }
+  // }, [paperSize, orientation, canvas]);
 
   const handleFontChange = (font) => {
     const activeObject = canvas?.getActiveObject();
@@ -464,6 +472,33 @@ const Designer = () => {
   const handleOpenFontPanel = () => {
     setActivePanel(<FontPanel onFontChange={handleFontChange} />);
   };
+
+  const zoomCanvas = (zoomIn = true, canvas) => {
+    if (!canvas) return;
+  
+    // Get the current zoom level
+    const currentZoom = canvas.getZoom();
+  
+    // Calculate new zoom level
+    const newZoom = zoomIn ? currentZoom + 0.1 : currentZoom - 0.1;
+  
+    // Ensure zoom level stays within limits
+    if (newZoom > 3 || newZoom < 0.5) return;
+  
+    // Update the canvas scale
+    const scaleFactor = newZoom / currentZoom;
+  
+    // Adjust canvas dimensions to zoom the entire canvas
+    canvas.setWidth(canvas.getWidth() * scaleFactor);
+    canvas.setHeight(canvas.getHeight() * scaleFactor);
+  
+    // Apply the zoom level to the canvas contents
+    canvas.setZoom(newZoom);
+  
+    // Redraw the canvas
+    canvas.renderAll();
+  };
+  
 
   const updateActiveObjectStyles = (activeObject) => {
     if (activeObject.type === "textbox") {
@@ -568,7 +603,7 @@ const Designer = () => {
     }
   };
 
-  const renderTemplateOnCanvas = (template) => {
+  const renderTemplateOnCanvas = async(template) => {
     // Clear the canvas before rendering the new template
     console.log("template is", template);
     canvas.clear();
@@ -605,16 +640,47 @@ const Designer = () => {
           }
         );
       } else if (obj.type === "textbox" || obj.type === "Textbox") {
+        console.log("here is", obj.fontFamily);
+        await loadFont(obj.fontFamily); // Ensure the font is loaded
+      
         const text = new fabric.Textbox(obj.text, {
           left: obj.left,
           top: obj.top,
           fontSize: obj.fontSize,
           fontFamily: obj.fontFamily,
           fill: obj.fill,
+          fillRule:obj.fillRule,
           width: obj.width,
+          height: obj.height,
+          textAlign: obj.textAlign || 'left',
+          lineHeight: obj.lineHeight || 1.16,
+          charSpacing: obj.charSpacing || 0,
+          underline: obj.underline || false,
+          linethrough: obj.linethrough || false,
+          overline: obj.overline || false,
+          opacity: obj.opacity || 1,
+          shadow: obj.shadow || null,
+          stroke: obj.stroke || null,
+          strokeWidth: obj.strokeWidth || 1,
+          backgroundColor: obj.backgroundColor || 'transparent',
+          direction:obj.direction,
+          minWidth:obj.minWidth,
+          fontWeight:obj.fontWeight
+          
+          
         });
+        text.originX = obj.originX
+        text.originY = obj.originY
+      
+        text.set({
+          angle: obj.angle || 0,
+          scaleX: obj.scaleX || 1,
+          scaleY: obj.scaleY || 1,
+          
+        });
+      
         canvas.add(text);
-      } else if (obj.type === "Rect" || obj.type === "rect") {
+      }else if (obj.type === "Rect" || obj.type === "rect") {
         const rect = new fabric.Rect({
           left: obj.left,
           top: obj.top,
@@ -904,6 +970,7 @@ const Designer = () => {
             className="d-flex p-2  overflow-y-scroll"
             style={{
               width: "93%",
+              height:"100%",
               justifyContent: "center",
               alignItems: "center",
               boxShadow:
@@ -920,6 +987,10 @@ const Designer = () => {
               }}
             />
           </div>
+          <div>
+        <button onClick={() => zoomCanvas(true, canvas)}>Zoom In</button>
+        <button onClick={() => zoomCanvas(false, canvas)}>Zoom Out</button>
+      </div>
         </div>
       </div>
       <Tooltip activeObject={activeObject} fabricCanvas={canvas} />

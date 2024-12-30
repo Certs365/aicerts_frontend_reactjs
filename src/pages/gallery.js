@@ -6,7 +6,7 @@ import Image from 'next/legacy/image';
 import BackIcon from "../../public/icons/back-icon.svg";
 import { Modal, ProgressBar } from 'react-bootstrap';
 import SearchAdmin from '../components/searchAdmin';
-import { encryptData } from '../utils/reusableFunctions';
+import { encryptData, reduceImageResolution } from '../utils/reusableFunctions';
 import certificate from '../services/certificateServices';
 
 
@@ -86,11 +86,31 @@ const Gallery = () => {
   
     return new Promise((resolve, reject) => {
       try {
-        certificate.getSingleCertificates(data, (response) => {
-          const certificatesData = response;
-          setSingleWithoutCertificates(certificatesData?.data);
-          setFilteredSingleWithoutCertificates(certificatesData?.data);
-          resolve(certificatesData);
+        certificate.getSingleCertificates(data, async (response) => {
+          const certificatesData = response?.data?.data;
+          if (!certificatesData) {
+            resolve([]);
+            return;
+          }
+  
+          // Process each certificate to reduce the image resolution
+          const resizedCertificates = await Promise.all(
+            certificatesData.map(async (certificate) => {
+              if (certificate.imageUrl) {
+                const resizedUrl = await reduceImageResolution(certificate.imageUrl);
+                return {
+                  ...certificate,
+                  url: resizedUrl, // Replace the original URL with the resized one
+                };
+              }
+              return certificate; // Return as-is if no imageUrl
+            })
+          );
+  
+          // Update state with resized certificates
+          setSingleWithoutCertificates(resizedCertificates);
+          setFilteredSingleWithoutCertificates(resizedCertificates);
+          resolve(resizedCertificates);
         });
       } catch (error) {
         console.error('Error in fetchSingleWithoutCertificates:', error);
@@ -107,11 +127,31 @@ const Gallery = () => {
   
     return new Promise((resolve, reject) => {
       try {
-        certificate.getSingleCertificates(data, (response) => {
-          const certificatesData = response;
-          setSingleWithCertificates(certificatesData?.data);
-          setFilteredSingleWithCertificates(certificatesData?.data);
-          resolve(certificatesData);
+        certificate.getSingleCertificates(data, async (response) => {
+          const certificatesData = response?.data?.data;
+          if (!certificatesData) {
+            resolve([]);
+            return;
+          }
+  
+          // Process each certificate to reduce the image resolution
+          const resizedCertificates = await Promise.all(
+            certificatesData.map(async (certificate) => {
+              if (certificate.imageUrl) {
+                const resizedUrl = await reduceImageResolution(certificate.imageUrl);
+                return {
+                  ...certificate,
+                  url: resizedUrl, // Replace the original URL with the resized one
+                };
+              }
+              return certificate; // Return as-is if no imageUrl
+            })
+          );
+          // Update state with resized certificates
+          setSingleWithCertificates(resizedCertificates);
+          setFilteredSingleWithCertificates(resizedCertificates);
+  
+          resolve(resizedCertificates);
         });
       } catch (error) {
         console.error('Error in fetchSingleWithPdfCertificates:', error);
@@ -119,6 +159,7 @@ const Gallery = () => {
       }
     });
   };
+  
   
 
   const fetchBatchDates = async (storedUser) => {
