@@ -1,0 +1,160 @@
+.register {
+    padding: 0 0 24px;
+
+    .register-form {
+        .card {
+            border: none;
+            border: 1px solid #BFC0C2;
+            border-radius: 0px;
+            -webkit-border-radius: 0px;
+            -moz-border-radius: 0px;
+            -ms-border-radius: 0px;
+            -o-border-radius: 0px;
+
+            &:not(:first-child) {
+                margin-top: 30px;
+            }
+
+            .card-body {
+                padding: 0;
+                font-family: $font-family;
+
+                .card-title {
+                    color: #000000;
+                    font-size: 20px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: normal;
+                    background: #F3F3F3;
+                    padding: 10px 30px;
+                    border-radius: 0;
+                    -webkit-border-radius: 0;
+                    -moz-border-radius: 0;
+                    -ms-border-radius: 0;
+                    -o-border-radius: 0;
+                }
+
+                .input-elements {
+                    padding: 10px 30px;
+                   
+
+                    .form-label {
+                        color: #5A677E;
+                        font-family: $font-family;
+                        font-size: 14px;
+                        font-style: normal;
+                        font-weight: 500;
+                        line-height: normal;
+                    }
+                }
+            }
+        }
+
+        .golden {
+            margin-top: 40px;
+        }
+    }
+
+    @media (min-width: $large-min) and (max-width: $large-max) {}
+
+    // 1440
+    @media (min-width: $medium-min) and (max-width: $medium-max) {}
+
+    // 1366
+    @media (min-width: $small-min) and (max-width: $small-max) {
+        .register-form {
+            .card {
+                &:not(:first-child) {
+                    margin-top: 20px;
+                }
+
+                .card-body {
+                    padding: 0;
+
+                    .card-title {
+                        font-size: 18px;
+                        padding: 12px 20px;
+                    }
+
+                    .input-elements {
+                        padding: 12px 20px;
+
+                        .form-label {
+                            font-size: 16px;
+                        }
+                    }
+                }
+            }
+
+            .golden {
+                padding: 12px 60px;
+                margin-top: 20px;
+            }
+        }
+    }
+
+    // 1280
+    @media (min-width: $laptop-min) and (max-width: $laptop-max) {}
+
+    @media (min-width: $mobile-min) and (max-width: $mobile-max) {
+        .register-form {
+            .card {
+
+
+                &:not(:first-child) {}
+
+                .card-body {
+
+
+                    .card-title {
+                        font-size: 16px;
+                        padding: 12px 14px;
+                        margin-bottom: 0;
+                    }
+
+                    .input-elements {
+                        padding: 12px 14px;
+
+                        .form-label {
+                            font-size: 14px;
+                        }
+                    }
+                }
+            }
+
+            .golden {
+                margin-top: 40px;
+            }
+        }
+    }
+}
+
+.register-success-modal {
+    .modal-content {
+        padding-top: 15px;
+    }
+}
+
+.dark-mode {
+    .register {
+        .register-form {
+            .card {
+                .card-body {
+                    .card-title {
+                        color: $white;
+                        background: #171A24;
+                        margin-bottom: 0;
+                    }
+
+                    .input-elements {
+                        background-color: #000;
+
+                        .form-label {
+                            color: #A9A7B0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

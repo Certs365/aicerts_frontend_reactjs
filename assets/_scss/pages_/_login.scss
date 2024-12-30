@@ -1,0 +1,71 @@
+.nav-logo-login {
+    position: absolute;
+    top: 4rem;
+    left: 4rem;
+    width: 193px;
+    height: 40px;
+
+
+    img {
+        object-position: left;
+    }
+}
+
+.login_wrapper {
+    height: 100vh;
+
+    .login_banner_wrapper,
+    .login_form_wrapper {
+        flex: 1;
+    }
+
+    .login_banner_wrapper {
+        background-color: $gray-bg;
+        padding: 6.2rem 1rem;
+
+
+
+        .banner_text_wrapper {
+            padding: 5.2rem 10rem;
+
+        }
+    }
+
+    .login_form_wrapper {
+        padding: 12.6rem 10rem;
+
+        // Styles for small devices
+        @include xs {
+            padding: 10rem 2rem;
+        }
+
+        .text-signin {
+            margin-bottom: 4rem;
+
+            @include xs {
+                margin-bottom: 1rem;
+
+            }
+
+        }
+    }
+
+    .or-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+
+        /* Adjust the spacing between the lines and the text */
+        .line {
+            flex: 1;
+            /* Makes the lines expand to fill available space */
+            border: none;
+            border-top: 1px solid $black;
+            /* Adjust the color and thickness */
+            margin: 0 3rem;
+        }
+    }
+
+
+}

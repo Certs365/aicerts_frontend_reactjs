@@ -1,0 +1,388 @@
+html {
+    font-size: 10px;
+    // background-color: $secondary;
+    scroll-behavior: smooth;
+}
+
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: $font-family;
+
+
+    * {
+        box-sizing: inherit;
+    }
+
+    // tablet screens
+    @media (min-width: $tablet-min) and (max-width: $tablet-max) {
+        // padding-top: 28px;
+    }
+
+    @media (min-width: $mobile-min) and (max-width: $mobile-max) {
+        // background-color: $pale-grey;
+        // padding-top: 28px;
+    }
+}
+
+// Global Classes
+
+.container-fluid {
+    padding: 0 6%;
+}
+
+a {
+    color: $blue;
+}
+
+.white {
+    color: $white !important;
+}
+
+.dark-grey {
+    color: $dark-grey;
+}
+
+.input-elements {
+    .form-label {
+        display: flex;
+        align-items: center;
+        column-gap: 12px;
+        margin-bottom: 14px;
+        color: #1C1F30;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+    }
+
+    .form-control,
+    .form-select {
+        color: $black;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        padding: 10px 20px;
+        border: 1px solid #BFC0C2;
+        border-radius: 0;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        -ms-border-radius: 0;
+        -o-border-radius: 0;
+
+        &:focus {
+            border: 1px solid $golden;
+            box-shadow: none;
+        }
+
+
+    }
+
+    .react-datepicker-wrapper {
+        width: 100%;
+    }
+
+    .input-group-text {
+        border-radius: 0;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        -ms-border-radius: 0;
+        -o-border-radius: 0;
+    }
+
+    // 1366
+    @media (min-width: $small-min) and (max-width: $small-max) {
+
+        .form-control,
+        .form-select {
+            font-size: 16px;
+            padding: 10px 16px;
+        }
+    }
+}
+
+.copy-right {
+    margin-top: 72px;
+
+    p {
+        color: #FFF;
+        font-family: $font-family;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+    }
+
+    @media (min-width: $mobile-min) and (max-width: $mobile-max) {
+        p {
+            font-size: 12px;
+        }
+    }
+}
+
+.password-input {
+    .eye-icon {
+        cursor: pointer;
+        top: 14px;
+        right: 18px;
+
+        // 1366
+        @media (min-width: $small-min) and (max-width: $small-max) {
+            top: 7px;
+        }
+
+        // 1280
+        @media (min-width: $laptop-min) and (max-width: $laptop-max) {}
+    }
+}
+
+.page-footer-bg {
+    background-image: url(https://images.netcomlearning.com/ai-certs/cer365AllPageFooterBg.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 354px;
+    height: 254px;
+    position: absolute;
+    bottom: 0;
+    z-index: -1;
+}
+
+.vertical-center {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9;
+
+    @media (min-width: $mobile-min) and (max-width: $mobile-max) {
+        top: 0;
+        transform: translateY(0) !important;
+        -webkit-transform: translateY(0) !important;
+        -moz-transform: translateY(0) !important;
+        -ms-transform: translateY(0) !important;
+        -o-transform: translateY(0) !important;
+    }
+}
+
+.equal-height-row {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 99px;
+
+    @media (min-width: $mobile-min) and (max-width: $mobile-max) {
+        padding: 0 40px;
+    }
+
+
+}
+
+.equal-height-row .col {
+    display: flex;
+}
+
+.equal-height-row .content {
+    flex-grow: 1;
+    display: flex;
+    align-items: stretch;
+}
+
+.modal-content {
+    border-radius: 0;
+    // width: 400px;
+    // height: 400px;
+}
+
+.container {
+    @media (min-width: $mobile-min) and (max-width: $mobile-max) {
+        padding: 0 24px;
+    }
+}
+
+/* Hide the scrollbar for all browsers */
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, and Opera */
+}
+
+.title {
+    font-family: Montserrat;
+
+    color: #2F3847;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin: 0 0 30px;
+
+    @media (min-width: $large-min) and (max-width: $large-max) {
+        font-size: 28px;
+    }
+
+    // 1440
+    @media (min-width: $medium-min) and (max-width: $medium-max) {
+        font-size: 28px;
+    }
+
+    // 1366
+    @media (min-width: $small-min) and (max-width: $small-max) {
+        font-size: 26px;
+        margin-bottom: 30px;
+    }
+
+    // 1280
+    @media (min-width: $laptop-min) and (max-width: $laptop-max) {
+        font-size: 24px;
+    }
+
+    @media (min-width: $mobile-min) and (max-width: $mobile-max) {
+        font-size: 18px;
+        margin: 20px 0;
+    }
+}
+
+.no-cert-found {
+
+    // padding: 10%;
+    height: 100%;
+
+    h3 {
+        font-family: "Manrope", sans-serif !important;
+        font-size: 28px;
+        font-weight: 700;
+        line-height: 34.13px;
+    }
+}
+
+
+.page-bg {
+    background-image: url(https://images.netcomlearning.com/ai-certs/cer365AllPageBg.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-y: -10em;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: auto;
+
+    // 1600
+    @media (min-width: $large-min) and (max-width: $large-max) {
+        background-position-y: -7em;
+        background-position-x: 4em;
+    }
+
+    // 1366
+    @media (min-width: $small-min) and (max-width: $small-max) {
+        background-position-y: -5em;
+        background-position-x: 4em;
+    }
+
+    @media (min-width: $mobile-min) and (max-width: $mobile-max) {
+        background-position-y: 34px;
+    }
+}
+
+.add-text-button {
+    button {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        text-align: left;
+        font-size: bold;
+        background: none;
+        border: 1px dashed gray;
+
+        &.heading {
+            font-size: 24px;
+        }
+
+        &.sub-heading {
+            font-size: 18px;
+        }
+
+        &.body-text {
+            font-size: 14px;
+        }
+    }
+}
+
+.dark-mode {
+    .form-label {
+        color: #A9A7B0;
+    }
+
+    .form-control {
+        color: $white;
+        background: transparent !important;
+
+        &::placeholder {
+            color: #A9A7B0;
+        }
+    }
+
+    .form-select {
+        color: $white;
+        background: #000 !important;
+    }
+
+    .input-group-text {
+        color: #A9A7B0;
+        background: transparent !important;
+    }
+
+    .page-bg {
+        background-image: url('/backgrounds/background-dark.png');
+        background-size: cover;
+        background-position-y: 0;
+
+        // 1600
+        @media (min-width: $large-min) and (max-width: $large-max) {
+            background-position-y: 0;
+            background-position-x: 0;
+        }
+
+        // 1366
+        @media (min-width: $small-min) and (max-width: $small-max) {
+            background-position-y: 0;
+            background-position-x: 0;
+        }
+
+        @media (min-width: $mobile-min) and (max-width: $mobile-max) {
+            background-position-y: 0;
+        }
+    }
+
+    .title {
+        color: $white;
+    }
+
+    .loader-modal {
+        .modal-content {
+            .modal-body {
+                background: #fff;
+            }
+        }
+    }
+
+    .add-text-button {
+
+        h4,
+        button {
+            color: $white;
+        }
+    }
+}

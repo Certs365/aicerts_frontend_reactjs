@@ -1,0 +1,531 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul {
+    margin: 0;
+    padding: 0;
+    font-family: $font-family;
+}
+
+a:focus,
+a:hover {
+    text-decoration: none;
+}
+
+.icon-fixe-width {
+    width: 2.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.8rem;
+
+    img {
+        margin: 0;
+    }
+}
+
+.pointer {
+    cursor: pointer !important;
+}
+
+.underline {
+    text-decoration: underline !important;
+}
+
+.main-content-wrapper {
+    margin-top: 4.5rem;
+    padding-top: 3rem;
+    min-height: 68vh;
+}
+
+.padding-2-3 {
+    padding: 2rem 3rem !important;
+}
+
+//Fonts
+
+.br-10 {
+    border-radius: 1rem;
+}
+
+.br-8 {
+    border-radius: 0.8rem;
+}
+
+.br-4 {
+    border-radius: 0.4rem;
+}
+
+.br-20 {
+    border-radius: 2rem;
+}
+
+.br-50 {
+    border-radius: 50%;
+}
+
+// =================== COMON CSS START ==================
+
+.primary {
+    color: $primary;
+}
+
+.golden {
+    color: $golden;
+}
+
+.blue-0C5 {
+    color: $blue-0C5;
+}
+
+.grey-1D1 {
+    color: $grey-1D1;
+}
+
+.black-242 {
+    color: $black-242;
+}
+
+.black-707 {
+    color: $black-707;
+}
+
+.black-495 {
+    color: $black-495;
+}
+
+.black-12 {
+    color: $black-12;
+}
+
+.green-5DF {
+    color: $green-5DF;
+}
+
+
+.bg-ECE {
+    background: $grey-ECE;
+}
+
+.bg-primary {
+    background-color: $primary !important;
+}
+
+.grey-151 {
+    color: $grey-151;
+}
+
+.primary {
+    color: $primary;
+}
+
+.red {
+    color: $red;
+}
+
+.grey-919 {
+    color: $grey-919;
+}
+
+.grey-light {
+    color: $grey-light;
+}
+
+.black-242 {
+    color: $black-242;
+}
+
+.red-FF3 {
+    color: $red-FF3;
+}
+
+.black-4 {
+    color: $black-4;
+}
+
+.black-252 {
+    color: $black-252;
+}
+
+.mb-inline-block {
+    display: none;
+}
+
+// ========= FONT SICE RESPONSIVE -----------------------
+.fs-48-32 {
+    font-size: 4.8rem;
+    line-height: 5.2rem;
+}
+
+.fs-45-28 {
+    font-size: 4.5rem;
+    line-height: 5rem;
+}
+
+.fs-32-18,
+.fs-32-28 {
+    font-size: 3.2rem;
+    line-height: 4rem;
+}
+
+.fs-32-24 {
+    font-size: 3.2rem;
+    line-height: 4rem;
+}
+
+.fs-36-24 {
+    font-size: 3.6rem;
+    line-height: 3.8rem;
+}
+
+.fx-18 {
+    font-size: 1.8rem;
+}
+
+.fx-22 {
+    font-size: 2.2rem;
+}
+
+.fs-18-12,
+.fs-18-14,
+.fs-18-16,
+.fs-18-9 {
+    font-size: 1.8rem;
+    line-height: 2.4rem;
+}
+
+.fs-57-28,
+.fs-57-32,
+.ft-57-32 {
+    font-size: 5.7rem;
+    line-height: 6.4rem;
+}
+
+.fs-75-41 {
+    font-size: 7.5rem;
+    line-height: 8.4rem;
+}
+
+.fs-20-16 {
+    font-size: 2rem;
+    line-height: 2.6rem;
+}
+
+.fs-22-13,
+.fs-22-14,
+.fs-22-16,
+.fs-22-18,
+.fs-22-12 {
+    font-size: 2.2rem;
+    line-height: 2.8rem;
+}
+
+.fs-24-12 {
+    font-size: 2.4rem;
+    line-height: 2.4rem;
+}
+
+.fs-26-12 {
+    font-size: 2.6rem;
+    line-height: 2.9rem;
+}
+
+.fs-14-11,
+.fs-14-13,
+.fs-14-9 {
+    font-size: 1.4rem;
+    line-height: 2rem;
+}
+
+.fs-28-18,
+.fs-28-24,
+.ft-28-18 {
+    font-size: 2.8rem;
+    line-height: 3.6rem;
+}
+
+.fs-14-12,
+.fx-14 {
+    font-size: 1.4rem;
+    line-height: 1.9rem;
+}
+
+.fs-14-10 {
+    font-size: 1.4rem;
+    line-height: 1.9rem;
+}
+
+.fs-12-8 {
+    font-size: 1.2rem;
+    line-height: 1.2rem;
+}
+
+.fs-12-9 {
+    font-size: 1.2rem;
+    line-height: 1.2rem;
+}
+
+.fs-24-14,
+.fs-24-16,
+.fs-24-18,
+.fx-24 {
+    font-size: 2.4rem;
+    line-height: 2.9rem;
+}
+
+.fs-16-12,
+.fs-16-13,
+.fs-16-14,
+.fx-16 {
+    font-size: 1.6rem;
+    line-height: 2.4rem;
+}
+
+.fs-16-11 {
+    font-size: 1.6rem;
+    line-height: 2.4rem;
+}
+
+.fx-12 {
+    font-size: 1.2rem;
+    line-height: 1.8rem;
+}
+
+.fw-300 {
+    font-weight: 300;
+}
+
+.fw-400 {
+    font-weight: 400;
+}
+
+.fw-500 {
+    font-weight: 500;
+}
+
+.fw-600 {
+    font-weight: 600;
+}
+
+.fw-700 {
+    font-weight: 700;
+}
+
+.fw-900 {
+    font-weight: 900;
+}
+
+.mb-24 {
+    margin-bottom: 2.4rem;
+}
+
+.mw-151,
+.mw-151-1 {
+    max-width: 15.1rem !important;
+    width: 100%;
+}
+
+.premium-image {
+    width: 1.4rem;
+    margin-right: 0.5rem;
+    margin-top: -2px;
+}
+
+.mw-200 {
+    max-width: 20rem;
+    width: 100%;
+}
+
+.mw-101 {
+    max-width: 10rem;
+    width: 100%;
+}
+
+.mh-400 {
+    min-height: 40rem !important;
+    height: 100%;
+}
+
+.lh-70 {
+    line-height: 7rem !important;
+}
+
+// ========= FONT SICE RESPONSIVE -----------------------
+.desk-show {}
+
+.slick-dots {
+    bottom: -4.7rem;
+}
+
+.cancel-menu,
+.mb-show,
+.menu-bar,
+.tab-show {
+    display: none;
+}
+
+.mb-flex {
+    display: none !important;
+}
+
+
+.search-border {
+    border: 0.1rem solid $black-4;
+    max-width: 100% !important;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.mw-90 {
+    width: 9rem;
+}
+
+.mw-698 {
+    max-width: 69.8rem;
+    width: 100%;
+}
+
+.pe-0 {
+    padding-right: 0 !important;
+}
+
+.right-0 {
+    right: 0;
+}
+
+.gap-30 {
+    gap: 3rem;
+}
+
+.gap-27 {
+    gap: 2.7rem;
+}
+
+.gap-10 {
+    gap: 1rem;
+}
+
+.gap-5 {
+    gap: 0.5rem;
+}
+
+
+
+.formelement-wrapper {
+    margin: 2rem 0;
+
+    input {
+        padding: 1.5rem;
+        border: 1px solid $grey-light;
+        width: 100%;
+        gap: 10px;
+        border-radius: 0.6rem;
+    }
+}
+
+
+
+.radio-wrapper {
+    cursor: pointer;
+
+    .radio-text {
+        cursor: pointer;
+    }
+
+    .golden-radio {
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid goldenrod;
+        border-radius: 50%;
+        outline: none;
+        display: inline-block;
+        position: relative;
+        cursor: pointer;
+
+        &:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+            border-color: #ccc;
+            /* Grey border when disabled */
+        }
+    }
+
+    .golden-radio:checked::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 10px;
+        height: 10px;
+        background-color: $golden;
+        border-radius: 50%;
+    }
+
+    &.radio-bordered {
+        width: fit-content;
+        padding: 1.6rem 2rem;
+        border-radius: 0.6rem;
+        border: 1px solid $border-grey;
+    }
+
+    &.disabled {
+        pointer-events: none;
+        /* Prevent interaction with the entire wrapper */
+        opacity: 0.5;
+        /* Dim the entire wrapper */
+    }
+}
+
+
+.otp-input-wrapper {
+    .input-wrapper {
+        gap: 0.8rem;
+
+    }
+
+    .otp-input {
+        width: 6rem;
+        height: 40px;
+        text-align: center;
+        font-size: 18px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .otp-input:focus {
+        outline: 2px solid #007bff;
+        border-color: #007bff;
+    }
+    .otp-custom-input .input-wrapper {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+      }
+      
+      .otp-custom-input .otp-input {
+        flex: 1;
+        margin: 0 4px;
+        height: 40px;
+        text-align: center;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+      
+      .otp-custom-input {
+        width: 100%;
+      }
+      
+      .otp-custom-input .otp-input-wrapper {
+        width: 100%;
+      }
+      
+}

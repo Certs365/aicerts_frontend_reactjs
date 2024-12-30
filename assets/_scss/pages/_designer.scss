@@ -1,0 +1,395 @@
+.text-edit-panel{
+    // border: 1px solid black;
+    width: 100%;
+    background-color: white;
+
+    .font-style-btn{
+        border: 1px solid gray;
+        padding: 5px 15px;
+        border-radius: 5px;
+    }
+}
+
+
+.backgrounds-panel{
+    display: flex;
+    flex-direction: column;
+   
+    width: 100%;
+    height: 100%;
+
+    .background-tabs{
+      
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+
+        button{
+            width: 50%;
+            border: none;
+            background: white;
+            padding-bottom: 20px;
+        }
+
+        .active-panel{
+            color: #CFA935;
+            border-bottom: 5px solid #CFA935;
+            padding-bottom: 20px;
+            border-radius: 3px;
+            /* Curved downwards */
+        }
+
+
+
+    }
+
+    .predefined-backgrounds{
+      
+        padding-top: 10px;
+        // border: 1px solid red;
+        display: flex;
+        height: 100%;
+       
+
+
+        .backgrounds-grid{
+           
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            
+            .background-item{
+                border: 1px solid gray;
+                padding: 5px;
+                width: 70px;
+                height: 70px;
+            }
+
+
+            .background-item img{
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                /* Maintain aspect ratio, fill container */
+              
+            }
+
+        }
+
+        
+
+
+    }
+
+    .uploaded-backgrounds{
+        // border: 1px solid green;
+       
+        display: flex;
+        flex-direction: column;
+        padding-top: 10px;
+        gap: 10px;
+        height: 100%;
+
+
+     .backgrounds-grid{
+        // border: 1px solid red;
+        height: 80%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+    
+
+     }
+
+    //  .backgrounds-grid::-webkit-scrollbar {
+    //     display: none; /* Hide scrollbar for Chrome, Safari, and Edge */
+        
+    //   }
+    }
+
+
+    
+}
+
+
+.file-btn{
+    width: 100%;
+    height: 100px;
+    font-size: 18px;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    color: #CFA935;
+    background-color: white;
+    border: 1.5px dashed #CFA935;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 10px;
+    padding: 5px;
+
+ span{
+   width: 50px;
+   height: 50px;
+   font-size: 30px;
+   color: white;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   border-radius: 25px;
+   background-color: #CFA935;
+ }
+
+
+}
+.file-btn:hover{
+    // background-color: red;
+}
+
+.file-card{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #000;
+    background-color: white;
+    border: 1px solid #CFA935;
+    padding: 8px 15px;
+
+    .file-info{
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+
+        h6{
+            flex: 1;
+            font-size: 13px;
+            font-weight: 400;
+
+        }
+        .progress-bg{
+            width: 100%;
+            height: 5px;
+            background-color: rgba(0,0,0,0.076);
+
+            .progress{
+                width: 0%;
+                height: 5px;
+                background-color: #CFA935;
+                border-radius: 8px;
+                transition: width 0.5s ease;
+            }
+        }
+        button{
+            width: 36px;
+            height: 36px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 100px;
+            border: none;
+            background-color: #CFA935;
+            color: white;
+            border-radius: 30px;
+        }
+    }
+}
+
+.upload-btn{
+    width: 100%;
+    font-size: 18px;
+    font-weight: 500;
+    color: white;
+    background-color: #CFA935;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+
+.font-panel{
+    // border: 1px solid red;
+    height: 100%;
+    overflow: hidden;
+
+    .font-option{
+       border: none;
+       width: 100%;
+       padding: 10px;
+       margin: 10px;
+      
+    }
+}
+
+#tooltip{
+    // background-color: red;
+    gap: 8px;
+    padding: 5px 10px;
+    border: 1px solid gray;
+    background-color: white;
+    border-radius: 10px;
+
+
+    button{
+        border: none;
+        background-color: white;
+        font-size: 20px;
+       
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        :hover{
+            color:#CFA935
+        }
+       
+    }
+
+    
+
+}
+
+.template-panel{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    
+
+    align-items: center;
+    .predefined-backgrounds{
+        // border: 1px solid red;
+        height: 90%;
+        display: flex;
+        flex-wrap: wrap;
+        overflow-y: scroll;
+    }
+
+    .template-box{
+        // border: 1px solid red;
+        padding: 2px;
+        border: 1px solid #e5e5e5;
+
+    }
+
+}
+
+.loader{
+    display: flex;
+    height: 80%;
+    justify-content: center;
+    align-items: center;
+   
+}
+
+.active-panels{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    margin-left: 3px;
+    font-size: 12px;
+   
+    
+}
+
+.active-btn{
+    border: 1px solid #CFA935;
+    color: #CFA935;
+
+   
+}
+.non-active{
+    color: #CFA935;
+
+}
+
+/* Track styles */
+.transparency-slider {
+    -webkit-appearance: none; /* For Chrome and Safari */
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 5px;
+    background: linear-gradient(to right, #CFA935 100%, #ddd 50%); /* Adjust this as needed */
+    outline: none;
+    opacity: 0.7;
+  }
+  
+  /* Thumb styling for WebKit browsers (Chrome, Safari) */
+  .transparency-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #CFA935;
+    cursor: pointer;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Thumb styling for Firefox */
+  .transparency-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #CFA935;
+    cursor: pointer;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  }
+
+
+  .panel-box{
+    cursor: "pointer";
+     margin: "10px";
+      display: "flex"; width: "60px";
+       padding:"5px";
+        background-color:"#e5e5e5";
+  }
+
+  .loader-overlay {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white background */
+    backdrop-filter: blur(3px); /* Apply blur to the background */
+    border-radius: 10px; /* Optional: rounded corners */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Make sure it's on top of other elements */
+  }
+
+  .golden-btn {
+   width: 100%;
+ padding: 10px;
+ border: none;
+    color: white;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    background: $golden;
+    transition: 0.5s;
+    -webkit-transition: 0.5s;
+    -moz-transition: 0.5s;
+    -ms-transition: 0.5s;
+    -o-transition: 0.5s;
+
+    &:hover {
+        background: rgba(186, 152, 47, 1);
+    }
+}
+
+  
+  
+

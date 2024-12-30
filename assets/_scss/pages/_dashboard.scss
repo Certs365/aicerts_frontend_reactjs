@@ -1,0 +1,513 @@
+@font-face {
+    font-family: 'Inter';
+    src: url('../../fonts/Inter/Inter-Bold.ttf');
+    font-weight: 400;
+    font-style: normal;
+}
+
+.dashboard {
+    padding: 40px 0;
+
+    .batch-cert-temp {
+        position: relative;
+        width: 100%;
+        height: 270px;
+
+        @media (min-width: $mobile-min) and (max-width: $mobile-max) {
+            height: 240px;
+        }
+    }
+
+    .card {
+        .card-body {
+            .btn-select-template {
+                margin-top: 40px;
+            }
+
+            @media (min-width: $mobile-min) and (max-width: $mobile-max) {
+                .btn-select-template {
+                    position: initial;
+                    width: 100%;
+                    font-size: 14px;
+                    padding: 12px;
+                    margin-top: 24px;
+                }
+            }
+        }
+    }
+
+    .admin-button-container {
+        max-width: 175px;
+        height: 50px;
+        display: flex;
+        // border-radius: 10px;
+        border: 1px solid #D5DDEA;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+
+        .btn {
+            // width: 200px;
+            height: 90%;
+            font-family: $font-family;
+            font-size: 17px;
+            font-weight: 700;
+            padding-top: 9px;
+            // border-radius: 0px;
+            margin: 0 5px;
+            color: #5A677E;
+            ;
+
+            // border: 1px solid black;
+            &:hover {
+                background: #CFA935;
+
+                color: white;
+                // border-radius: 10px;
+            }
+        }
+
+
+        .btn-golden {
+            background: #CFA935;
+            color: white;
+            // border-radius: 10px;
+        }
+
+        .vertical-line {
+            border-left: 1px solid #D5DDEA;
+            height: 70%;
+            margin: 0 2px;
+        }
+
+
+    }
+
+}
+
+
+
+.cards-container-main {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    // padding: 0 40px;
+    margin-top: 140px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.card-container {
+    position: relative;
+    /* Added to establish a positioning context */
+    width: calc(25% - 20px);
+    /* Adjust as needed for the number of cards per row */
+    // max-width: 310px;   
+    /* Added for better responsiveness */
+    min-width: 260px;
+    /* Added for better responsiveness */
+    height: 145px;
+    flex-shrink: 0;
+    // border-radius: 10px;
+
+    padding: 15px;
+    background: #FFF;
+    // box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.08);
+    // box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.item-title {
+    color: var(--Neutral-Colors-400, #9291A5);
+    font-family: "Inter";
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 3px;
+}
+
+.title-value {
+    color: var(--Neutral-Colors-Black, #1E1B39);
+    font-feature-settings: 'clig'off, 'liga'off;
+    /* Headings/H5 */
+    font-family: "Inter";
+    font-size: 18px;
+    // font-weight: bold;
+    font-weight: 800;
+}
+
+.badge-container {
+    position: absolute;
+    /* Changed to absolute positioning */
+    top: 10px;
+    /* Adjusted position from top */
+    right: 10px;
+    /* Adjusted position from right */
+    width: 44px;
+    height: 44px;
+    border-radius: 6px;
+    background: #EFF0F3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.badge-cert {
+    width: 24px;
+    height: 24px;
+}
+
+.value-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.item-value {
+    color: var(--Neutral-Colors-Black, #1E1B39);
+    font-feature-settings: 'clig'off, 'liga'off;
+    font-family: "Inter";
+    font-size: 28px;
+    font-style: normal;
+    // font-weight: bold;
+    font-weight: 700;
+    line-height: 52px;
+    /* 185.714% */
+}
+
+.item-percentage {
+    color: var(--System-Colors-Green-400, #04CE00);
+    font-feature-settings: 'clig'off, 'liga'off;
+    font-family: "Inter";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+    /* 133.333% */
+
+    &::after {
+        content: "";
+        display: inline-block;
+        width: 13px;
+        /* Adjust width as needed */
+        height: 7px;
+        /* Adjust height as needed */
+        background-image: url('/icons/trend.svg');
+        background-size: cover;
+        margin-left: 5px;
+        /* Adjust margin as needed */
+    }
+
+    .graph-line {
+        width: 150px;
+        height: 53px;
+        flex-shrink: 0;
+        stroke-width: 3px;
+        stroke: var(--System-Colors-Blue-400, #2D5BFF);
+    }
+}
+
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+    .card-container {
+        width: calc(50% - 20px);
+        /* Adjust as needed for the number of cards per row */
+    }
+}
+
+.outer-container {
+    
+    height: 300px;
+    margin-top: 20px;
+    // border-radius: 6px;
+    border: 1px solid #BFC0C2;
+    background-color: white;
+    position: relative;
+    // box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+    .filter-options {
+        font-family: $font-family;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 15px;
+
+        label {
+            margin: 0 10px 0 0;
+            font-family: $font-family;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 17.07px;
+
+
+            input {
+                margin-right: 5px;
+                accent-color: red;
+                border: 1px solid red
+            }
+        }
+    }
+
+    /* Base styles for all radio buttons */
+    .filter-options input[type="radio"] {
+        appearance: none;
+        /* Remove default radio button styling */
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        border: 2px solid #ccc;
+        border-radius: 50%;
+        vertical-align: middle;
+        cursor: pointer;
+        outline: none;
+    }
+
+    /* Styles for radio button borders when checked */
+    .filter-options input[type="radio"]:checked {
+        border-width: 4px;
+    }
+
+    /* Specific colors for each radio button */
+    .filter-options input[value="Issued"]:checked {
+        border-color: #FF885B;
+    }
+
+    .filter-options input[value="Reactivated"]:checked {
+        border-color: #4D9891;
+    }
+
+    .filter-options input[value="Reissued"]:checked {
+        border-color: #FABC3F;
+    }
+
+    .filter-options input[value="Revoked"]:checked {
+        border-color: #EE2A3A;
+    }
+
+    .filter-options input[value="Single Issued"]:checked {
+        border-color: #CFA935;
+    }
+
+    .filter-options input[value="Batch Issued"]:checked {
+        border-color: #3D915E;
+    }
+
+    /* Styles for label to align with the custom radio buttons */
+    .filter-options label {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+    .outer-container {
+
+
+        .filter-options {
+
+
+
+            label {
+               
+                font-size: 7px;
+
+                input {
+                    margin-right: 5px;
+                    accent-color: red;
+                    border: 1px solid red
+                }
+            }
+        }
+
+        .filter-options input[type="radio"] {
+            appearance: none;
+            /* Remove default radio button styling */
+            width: 17px;
+            height: 17px;
+            margin-right: 5px;
+            border: 2px solid #ccc;
+            border-radius: 50%;
+            vertical-align: middle;
+            cursor: pointer;
+            outline: none;
+        }
+    }
+
+}
+
+.loader {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    padding-top: 110px;
+}
+
+.chart-date {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 2px 2px 2px 5px;
+    direction: 'rtl'
+}
+
+.chart-date::-webkit-calendar-picker-indicator {
+    position: absolute;
+    right: 0;
+    left: auto;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.custom-date-input {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #ccc;
+    padding: 5px;
+
+    background-color: white;
+    cursor: pointer;
+    width: 140px;
+    height: 50px;
+    border-radius: 6px;
+}
+
+.custom-date-input .icon-calendar {
+    margin-right: 8px;
+    color: #555;
+}
+
+.custom-date-input .icon-down {
+    margin-left: auto;
+    color: #555;
+}
+
+.custom-date-input span {
+    // flex-grow: 1;
+    font-family: $font-family;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19.5px;
+
+}
+
+// Mobile
+@media (min-width: $mobile-min) and (max-width: $mobile-max) {
+    .badge-container {
+        width: 30px;
+        height: 30px;
+        right: 10px;
+    }
+
+    .card-container {
+        // max-width: 170px;
+        // min-width: 170px;
+        width: calc(100% - 20px);
+        padding: 10px;
+    }
+
+    .value-container {
+        .graph-line {
+            width: 80px !important;
+        }
+    }
+    
+
+    .item-title {
+        color: var(--Neutral-Colors-400, #9291A5);
+        font-family: "Inter";
+        font-weight: 500;
+        font-size: 16px;
+        margin-bottom: 3px;
+        width: 180px;
+    }
+    .title-value {
+        color: var(--Neutral-Colors-Black, #1E1B39);
+        font-feature-settings: 'clig'off, 'liga'off;
+        /* Headings/H5 */
+        font-family: "Inter";
+        font-size: 20px;
+        // font-weight: bold;
+        font-weight: 800;
+    }
+
+    .main-container {
+        .outer-container {
+           
+
+            &:not(:first-child) {
+                margin-top: 60px;
+            }
+
+            canvas {
+                margin-top: 25px;
+            }
+        }
+
+        .filter-options {
+            overflow: hidden;
+            overflow-x: scroll;
+        }
+    }
+}
+
+.modal-wrapper {
+    border-radius: 0 !important;
+
+    .modal-content {
+        border-radius: 0;
+
+    }
+}
+
+.dark-mode {
+    .dashboard {}
+
+    .card-container {
+        background: #171a24;
+        border: 1px solid #BFC0C2;
+
+        .badge-container {
+            background: #2A2E36;
+        }
+
+        .title-cont {
+            .item-title {
+                color: #A9A7B0;
+            }
+
+            .title-value {
+                color: $white;
+            }
+        }
+
+        .value-container {
+            .item-value {
+                color: $white;
+            }
+        }
+    }
+
+    .outer-container {
+        background: #171a24;
+        border: 1px solid #BFC0C2;
+
+        .filter-options {
+            label {
+                color: $white;
+            }
+        }
+
+        .custom-date-input {
+            color: $white;
+            border: 1px solid #BFC0C2;
+            background: #2A2E36;
+        }
+    }
+}

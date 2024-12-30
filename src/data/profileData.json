@@ -1,0 +1,57 @@
+[
+    {
+      "name": "John Doe",
+      "role": "Full Stack Developer",
+      "location": "Bay Area, San Francisco, CA",
+      "website": "https://netcomlearning.com",
+      "github": "NetCom",
+      "twitter": "@NetCom",
+      "instagram": "NetCom",
+      "facebook": "NetCom",
+      "profileImage": "https://bootdey.com/img/Content/avatar/avatar6.png",
+      "socialMedia": [
+        [
+            {
+              "id": 1,
+              "icon": "website",
+              "title": "Website",
+              "url": "https://netcomlearning.com"
+            },
+            {
+              "id": 2,
+              "icon": "phone",
+              "title": "Phone",
+              "text": "7836280835"
+            },
+            {
+              "id": 3,
+              "icon": "email",
+              "title": "Email",
+              "text": "john.doe@aicerts.io"
+            },
+            {
+              "id": 4,
+              "icon": "org_name",
+              "title": "Organization Name",
+              "text": "Ai Certs"
+            },
+            {
+              "id": 4,
+              "icon": "user_name",
+              "title": "User Name",
+              "text": "Ai Certs"
+            }
+          ]
+          
+      ],
+      "formData": [
+        [
+            { "label": "Full Name", "type": "text", "value": "John Doe" },
+            { "label": "Email", "type": "text", "value": "john@example.com" },
+            { "label": "Phone", "type": "text", "value": "(239) 816-9029" },
+            { "label": "Mobile", "type": "text", "value": "(320) 380-4539" },
+            { "label": "Address", "type": "text", "value": "Bay Area, San Francisco, CA" }
+        ]
+      ]
+    }
+  ]

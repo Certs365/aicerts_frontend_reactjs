@@ -1,0 +1,97 @@
+.user-details {
+    padding-top: 6em;
+
+    .card {
+        border-radius: 0;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        -ms-border-radius: 0;
+        -o-border-radius: 0;
+    }
+
+    .name {
+        color: #000;
+        font-size: 22px;
+        font-style: normal;
+        font-weight: 700;
+    }
+
+    .role {
+        color: #5A677E;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+    }
+
+    .address {
+        color: #000;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+    }
+
+    .icons {
+        color: #5A677E;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+
+    }
+
+    .lead-info {
+        color: #000;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+    }
+}
+
+.dark-mode {
+    .user-details {
+        .card {
+            background-color: #000;
+
+            .card-body {
+                .rounded-circle {
+                    color: #A9A7B0;
+                    background-color: #171A24 !important;
+                }
+
+                .form-control {
+                    border-radius: 0;
+                    -webkit-border-radius: 0;
+                    -moz-border-radius: 0;
+                    -ms-border-radius: 0;
+                    -o-border-radius: 0;
+                    color: $white;
+                    background-color: #000;
+                }
+            }
+        }
+
+        .name {
+            color: $white;
+        }
+
+        .role,
+        .address {
+            color: #A9A7B0;
+        }
+
+        .icons {
+            color: $white;
+        }
+
+        .list-group {
+            --bs-list-group-bg: #000;
+
+
+
+            .lead-info {
+                color: #A9A7B0 !important;
+            }
+        }
+    }
+}

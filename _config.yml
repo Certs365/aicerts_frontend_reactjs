@@ -1,0 +1,18 @@
+# Styleguide settings
+title: SCSS
+version: 1.0
+keywords: scss, design, code 
+author: NetCom Learning
+description: Quickstart scss.
+language: en
+styles: /assets/css/styles.css
+
+# Preprocessor settings
+highlighter: rouge
+markdown: kramdown
+kramdown:
+  input: GFM
+  
+sass:
+  sass_dir: assets/_scss # Scss location
+  style: :compressed  
