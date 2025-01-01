@@ -6,6 +6,7 @@ interface PrimaryButtonProps {
     icon?: React.ReactNode; // Optional icon
     iconPosition?: "front" | "back"; // Position of the icon relative to the text
     width?: string;
+    height?: string;
     disabled?: boolean;
     classes?: string;
     onClick?: () => void; // Click handler
@@ -20,6 +21,7 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
     iconPosition = "front", // Default icon position is 'front'
     width = "auto",
     onClick,
+    height = "auto",
     classes = "",
     disabled = false,
     loading = false, // Default loading state is false
@@ -28,7 +30,7 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
     return (
         <button
             className={`primary-btn d-flex align-items-center justify-content-center ${classes}`}
-            style={{ width }}
+            style={{ width,height }}
             onClick={onClick}
             disabled={disabled || loading}
             type={type} // Dynamically set the button type

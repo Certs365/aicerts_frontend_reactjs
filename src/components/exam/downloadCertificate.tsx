@@ -64,11 +64,11 @@ const DownloadCertificate: React.FC<DownloadCertificateProps> = ({ data }) => {
     };
 
 
-    const handleDownloadPDF = async (imageUrl: string) => {
+    const handleDownloadPDF = async (imageDetails: any) => {
         setIsLoading(true);
         try {
             // Fetch the image from the S3 URL
-            const res = await fetch(imageUrl);
+            const res = await fetch(imageDetails?.s3Url);
             if (!res.ok) {
                 throw new Error('Failed to fetch image');
             }
@@ -93,7 +93,7 @@ const DownloadCertificate: React.FC<DownloadCertificateProps> = ({ data }) => {
             pdf.addImage(imageUrlObject, 'JPEG', 0, 0, pdfWidth, pdfHeight);
 
             // Save the PDF
-            pdf.save('Certification.pdf');
+            pdf.save(`Certificate_${imageDetails?.enrollmentNumber}.pdf`);
 
             // Clean up the image URL object
             URL.revokeObjectURL(imageUrlObject);
@@ -251,15 +251,19 @@ const DownloadCertificate: React.FC<DownloadCertificateProps> = ({ data }) => {
                                         </Card>
                                     </Col>
                                     <Col xs={12} md={8}>
-                                        <div className='cert-list'>
+                                        <div  className='cert-list'>
                                             <div className="search-wrapper d-block d-md-flex align-items-center justify-content-between">
                                                 <div className='select-all'>
-                                                    <Form.Group controlId="select-all">
-                                                        <Form.Check type="checkbox" label="Select All"
-                                                            checked={selectAll}
-                                                            onChange={handleSelectAllChange}
-                                                        />
-                                                    </Form.Group>
+                                                <Form.Group controlId="select-all">
+    <Form.Check
+        type="checkbox"
+        label="Select All"
+        style={{ gap: '10px', display: 'flex', alignItems: 'center' }}
+        checked={selectAll}
+        onChange={handleSelectAllChange}
+    />
+</Form.Group>
+
                                                 </div>
                                                 <Form.Group controlId="search">
                                                     <div className="password-input position-relative">
@@ -280,26 +284,31 @@ const DownloadCertificate: React.FC<DownloadCertificateProps> = ({ data }) => {
                                                         </div>
                                                     </div>
                                                 </Form.Group>
-                                                <div className='d-none d-md-flex align-items-center' style={{ columnGap: "10px" }}>
+                                                <div className='d-none d-md-flex align-items-center' style={{ columnGap: "10px", }}>
                                                     <div className='icon' onClick={toggleViewMode}>
-                                                        {isGridView ? (
-                                                            <Image
-                                                                src="https://images.netcomlearning.com/ai-certs/icons/list.svg"
-                                                                layout='fill'
-                                                                objectFit='contain'
-                                                                alt='List View'
-                                                            />
-                                                        ) : (
-                                                            <Image
-                                                                src="https://images.netcomlearning.com/ai-certs/icons/grid.svg"
-                                                                layout='fill'
-                                                                objectFit='contain'
-                                                                alt='Grid View'
-                                                            />
-                                                        )}
+                                                    {isGridView ? (
+  <Image
+    src="https://images.netcomlearning.com/ai-certs/icons/list.svg"
+    layout="intrinsic"
+    width={50} // Set width
+    height={48} // Set height
+    objectFit="contain"
+    alt="List View"
+  />
+) : (
+  <Image
+    src="https://images.netcomlearning.com/ai-certs/icons/grid.svg"
+    layout="intrinsic"
+    width={50} // Set width
+    height={48} // Set height
+    objectFit="contain"
+    alt="Grid View"
+  />
+)}
+
                                                     </div>
                                                 </div>
-                                                <PrimaryButton disabled={detailsArray?.length === 0} onClick={handleDownloadPDFs} label='Download Certificates' />
+                                                <PrimaryButton height='50px' disabled={detailsArray?.length === 0} onClick={handleDownloadPDFs} label='Download Certificates' />
                                             </div>
 
                                             {isGridView ? (
@@ -336,7 +345,7 @@ const DownloadCertificate: React.FC<DownloadCertificateProps> = ({ data }) => {
                                                                                     alt='View Certificate'
                                                                                 />
                                                                             </span>
-                                                                            <span className='d-flex align-items-center' style={{ columnGap: "10px" }} onClick={() => handleDownloadPDF(detail.s3Url)}>
+                                                                            <span className='d-flex align-items-center' style={{ columnGap: "10px" }} onClick={() => handleDownloadPDF(detail)}>
                                                                                 <Image
                                                                                     src="https://images.netcomlearning.com/ai-certs/icons/download-white-bg.svg"
                                                                                     width={16}
@@ -395,7 +404,7 @@ const DownloadCertificate: React.FC<DownloadCertificateProps> = ({ data }) => {
                                                                                 layout='fill'
                                                                                 objectFit='contain'
                                                                                 alt='Download Certificate'
-                                                                                onClick={() => handleDownloadPDF(detail.s3Url)}
+                                                                                onClick={() => handleDownloadPDF(detail)}
                                                                             />
                                                                         </div>
                                                                     </td>
