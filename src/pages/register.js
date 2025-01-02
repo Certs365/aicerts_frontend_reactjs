@@ -98,10 +98,6 @@ const Register = () => {
 
   // Function to handle form field changes
   const handleInputChange = (field, value) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [field]: value,
-    }));
 
     // Clear field error when the user starts typing
     setFieldErrors((prevErrors) => ({
@@ -132,6 +128,7 @@ const Register = () => {
         return;
       }
 
+     
       // Prevent adding space at the start
       if (value.trimStart() !== value) {
         // Remove leading spaces from the value
@@ -177,6 +174,26 @@ const Register = () => {
         }));
       }
     }
+
+    if (field === 'userEmail') {
+      const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailPattern.test(value)) {
+        setFieldErrors((prevErrors) => ({
+          ...prevErrors,
+          userEmail: 'Please enter a valid email address',
+        }));
+      } else {
+        // Clear email error if the email is valid
+        setFieldErrors((prevErrors) => ({
+          ...prevErrors,
+          email: '',
+        }));
+      }
+    }
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [field]: value,
+    }));
   };
 
   // Function to handle form submission
