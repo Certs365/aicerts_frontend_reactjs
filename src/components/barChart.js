@@ -53,8 +53,8 @@ function BarChart() {
                     console.error('Failed to fetch data');
                     // throw new Error('Failed to fetch data');
                 }
-                const data = response.data;
-                setResponseData(data.data);
+                const data = response?.data;
+                setResponseData(data?.data);
             })
 
 

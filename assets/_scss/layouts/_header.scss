@@ -286,8 +286,8 @@
       }
 
       .navbar-text {
-        text-align: right;
-        display: block;
+        display: flex;
+        justify-content: flex-end;
 
         .icons-container {
           display: flex;
@@ -300,7 +300,6 @@
   }
   .icons-container-settings {
     display: flex;
-    justify-content: center;
     justify-content: center;
     background-color:#F3F3F3 ;
     width: 50px;

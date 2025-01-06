@@ -93,6 +93,7 @@ const DisplayPdf = ({ file, scale, isLocked, setRectangle, rectangle }) => {
                         scale={currentScale}
                         renderTextLayer={false}
                         onLoadSuccess={onPageLoadSuccess}
+                        className='mobile-cert'
                     />
                 </Document>
                 {rectangle && (

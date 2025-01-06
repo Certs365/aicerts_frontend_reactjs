@@ -186,7 +186,7 @@ const Dashboard = () => {
           return <DashboardCard key={index} item={item} />;
         })}
       </div>
-      <div className="main-container gap">
+      <div className="main-container gap pb-4">
         {/* Rendering LineChart component */}
         <Container >
           <BarChartSecond />

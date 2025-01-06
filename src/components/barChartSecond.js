@@ -292,7 +292,7 @@ function BarChartSecond() {
     }, []);
     
     return (
-        <div  className="container outer-container p-0" style={{height:"300px"}}>
+        <div  className="container outer-container p-0" style={{height:"320px"}}>
             <div className="chart-date">
                 <DatePicker
                     selected={selectedDate}

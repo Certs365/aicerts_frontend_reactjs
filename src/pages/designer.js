@@ -810,10 +810,10 @@ const Designer = () => {
           />
         </div>
       )}
-      <div className="w-100 h-100 d-flex ">
+      <div className="w-100 h-100 d-flex design-page">
         <div className="w-25 d-flex align-items-center">
           <div
-            className="w-25 h-100"
+            className="w-100 w-md-25 h-100"
             style={{
               background:
                 "linear-gradient(to bottom, #CFA935 0%, #A3852B 100%)",
@@ -857,7 +857,7 @@ const Designer = () => {
               </button>
             </div>
           </div>
-          <div className="w-75 h-100 d-flex flex-column pt-4 px-1">
+          <div className="w-md-75 h-100 d-flex flex-column pt-4 px-1 text-design">
             {activePanel}
           </div>
         </div>

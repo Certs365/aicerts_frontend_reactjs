@@ -236,7 +236,6 @@ a {
 
 .title {
     font-family: Montserrat;
-
     color: #2F3847;
     font-size: 32px;
     font-style: normal;
@@ -266,6 +265,7 @@ a {
 
     @media (min-width: $mobile-min) and (max-width: $mobile-max) {
         font-size: 18px;
+        margin-top: 40px;
         // margin: 20px 0;
 
     }
@@ -401,6 +401,23 @@ a {
         h4,
         button {
             color: $white;
+        }
+    }
+}
+
+@media (min-width: $mobile-min) and (max-width: $mobile-max) {
+    .design-page {
+        .text-design {
+            z-index: 9;
+            background-color: #fff;
+            border: 1px solid #cbcbcb;
+        }
+    }
+
+    .mobile-cert {
+        canvas {
+            overflow: hidden;
+            overflow-y: auto;
         }
     }
 }
