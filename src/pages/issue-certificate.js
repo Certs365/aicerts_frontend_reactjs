@@ -350,12 +350,12 @@ const IssueCertificate = () => {
   // };
 
   const generateAndUploadImage = async (formData, responseData) => {
-     ;
+     
     console.log("generateAndUploadImage payload formData", formData);
     try {
       // Generate the image
       const blob = await handleShowImages(formData, responseData);
-
+ 
       // Upload the image to S3
       const certificateNumber = formData.certificateNumber;
       await uploadToS3(blob, certificateNumber);
@@ -429,9 +429,13 @@ const IssueCertificate = () => {
       //   method: "POST",
       //   body: formCert,
       // });
+ 
+
       try {
         certificate.apiuploadCertificate(formCert, (response) => {
           console.log("API Response:", response);
+ 
+
           if (response.status !== "SUCCESS") {
             console.error("Failed to upload certificate to S3");
           } else {
