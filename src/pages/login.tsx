@@ -206,7 +206,7 @@ const Login: React.FC = () => {
               <PrimaryButton loadingText='Verifying...' loading={loading} label='Verify' type='submit' width='100%' />
            
               <div className="d-flex flex-column text-center mt-4">
-              <div className=" fs-14-10 mb-2">Don't receive an email?</div>
+              <div className=" fs-14-10 mb-2">Don&apos;t receive an email?</div>
                 {!canResend ? (
                   <p className="fs-18-12 grey-light">
                     Resend in {Math.floor(timer / 60)}:
