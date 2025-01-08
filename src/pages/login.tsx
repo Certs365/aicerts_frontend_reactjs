@@ -56,7 +56,9 @@ const Login: React.FC = () => {
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
-      toast.error("Both email and password are required.");
+      toast.error("Both email and password are required.", {
+        style: { fontSize: "16px" },
+    });
       return;
     }
 
@@ -74,14 +76,18 @@ const Login: React.FC = () => {
         localStorage.removeItem("rememberedEmail");
       }
     } catch (err) {
-      toast.error("Login failed. Please try again.");
+      toast.error("Login failed. Please try again.", {
+        style: { fontSize: "16px" },
+    });
     }
   };
 
   const handleOtpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!otp) {
-      toast.error("Please enter the OTP.");
+      toast.error("Please enter the OTP.",{
+        style: { fontSize: "16px" },
+    });
       return;
     }
     try {
@@ -92,14 +98,18 @@ const Login: React.FC = () => {
         router
       );
     } catch (err) {
-      toast.error("Invalid OTP. Please try again.");
+      toast.error("Invalid OTP. Please try again.", {
+        style: { fontSize: "16px" },
+    });
     }
   };
 
   const handleResendOtp = async () => {
     if (canResend) {
       await commonApi(TWO_FACTOR_AUTH, { email: formData?.email }, "post");
-      toast.success("OTP send successfully on registered Email");
+      toast.success("OTP send successfully on registered Email", {
+        style: { fontSize: "14px" },
+    });
       setCanResend(false);
       setTimer(60);
     }

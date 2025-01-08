@@ -25,7 +25,9 @@ export const getDataApi = async <T>(
         const response = await postLoginUserInstance.get<ApiResponse<T>>(url);
         setData(response.data.data); // Update state with data
     } catch (error: any) {
-        toast.error(error?.response?.data?.message || "Something went wrong");
+        toast.error(error?.response?.data?.message || "Something went wrong", {
+            style: { fontSize: "16px" },
+        });
         setData(null as unknown as T); // Reset state on error
     } finally {
         setLoading?.(false); // Set loading to false when done
@@ -53,7 +55,9 @@ export const commonApi = async <T>(
         setResult?.(result);
         return result;
     } catch (error: any) {
-        toast.error(error?.response?.data?.message || "Something went wrong");
+        toast.error(error?.response?.data?.message || "Something went wrong", {
+            style: { fontSize: "16px" },
+        });
         setResult?.(null as unknown as T); // Reset state on error
         return null; // Explicitly return null in case of an error
     } finally {
@@ -78,7 +82,9 @@ export const commonAuthApi = async <T>(
         });
         setResult?.(response.data.data); // Update state with response data
     } catch (error: any) {
-        toast.error(error?.response?.data?.message || "Something went wrong");
+        toast.error(error?.response?.data?.message || "Something went wrong", {
+            style: { fontSize: "16px" },
+        });
         setResult?.(null as unknown as T); // Reset state on error
     } finally {
         setLoading?.(false); // Set loading to false when done
@@ -97,7 +103,9 @@ export const commonPostApi = async <T>(
         setLoading?.(true); // Set loading to true
         if (method.toLowerCase() === "delete") {
             const response = await postLoginAdminInstance.delete<ApiResponse<T>>(url);
-            toast.success(response.data.message);
+            toast.success(response.data.message, {
+                style: { fontSize: "16px" },
+            });
             setResult?.(response.data.data); // Update state with response data
         } else {
             const response = await postLoginAdminInstance.request<ApiResponse<T>>({
@@ -108,7 +116,9 @@ export const commonPostApi = async <T>(
             setResult?.(response.data.data); // Update state with response data
         }
     } catch (error: any) {
-        toast.error(error?.response?.data?.message || "Something went wrong");
+        toast.error(error?.response?.data?.message || "Something went wrong", {
+            style: { fontSize: "16px" },
+        });
         setResult?.(null as unknown as T); // Reset state on error
     } finally {
         setLoading?.(false); // Set loading to false when done

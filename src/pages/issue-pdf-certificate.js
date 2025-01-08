@@ -358,9 +358,9 @@ const IssueNewCertificate = () => {
                                             <Card.Title>Certification Details</Card.Title>
 
                                             <div className='input-elements'>
-                                                <Row className="justify-content-md-center">
-                                                    <Col md={{ span: 4 }} xs={{ span: 12 }}>
-                                                        <Form.Group controlId="name" className='mb-3'>
+                                                <Row className="">
+                                                    {/* <Col md={{ span: 4 }} xs={{ span: 12 }}> */}
+                                                        <Form.Group controlId="name" className='mb-3 col-md-4'>
                                                             <Form.Label >Name of Candidate<span className='text-danger'>*</span></Form.Label>
                                                             <InputGroup>
                                                                 <Form.Control
@@ -374,21 +374,7 @@ const IssueNewCertificate = () => {
                                                                 <InputGroup.Text>{formData.name.length}/30</InputGroup.Text> {/* Display character count */}
                                                             </InputGroup>
                                                         </Form.Group>
-                                                        <Form.Group controlId="certificateNumber" className='mb-3'>
-                                                            <Form.Label>Certification Number <span className='text-danger'>*</span></Form.Label>
-                                                            <Form.Control
-                                                                type="text"
-                                                                name='certificateNumber'
-                                                                value={formData.certificateNumber}
-                                                                onChange={(e) => handleChange(e, /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$/, 12, 20, 'Certificate Number')}
-                                                                maxLength={20}
-                                                                required
-                                                            />
-                                                            <div style={{ marginTop: "7px" }} className="error-message small-p">{errors.certificateNumber}</div>
-                                                        </Form.Group>
-                                                    </Col>
-                                                    <Col md={{ span: 4 }} xs={{ span: 12 }}>
-                                                        <Form.Group controlId="date-of-issue" className='mb-3'>
+                                                        <Form.Group controlId="date-of-issue" className='mb-3 col-md-4'>
                                                             <Form.Label>Date of Issue <span className='text-danger'>*</span></Form.Label>
                                                             {/* <input
                                                                 name='date-of-issue'
@@ -415,8 +401,8 @@ const IssueNewCertificate = () => {
                                                                 isClearable
                                                             />
                                                         </Form.Group>
-
-                                                        <Form.Group controlId="date-of-expiry" className='mb-3 d-block d-md-none'>
+                                                        
+                                                        <Form.Group controlId="date-of-expiry" className='mb-3 d-block d-md-none col-md-4'>
                                                             <Form.Label>Date of Expiry  <span className='text-danger'>*</span></Form.Label>
                                                             {/* <input
                                                                 name='date-of-expiry'
@@ -441,8 +427,24 @@ const IssueNewCertificate = () => {
                                                                 isClearable
                                                             />
                                                         </Form.Group>
+                                                        <Form.Group controlId="certificateNumber" className='mb-3 col-md-4'>
+                                                            <Form.Label>Certification Number <span className='text-danger'>*</span></Form.Label>
+                                                            <Form.Control
+                                                                type="text"
+                                                                name='certificateNumber'
+                                                                value={formData.certificateNumber}
+                                                                onChange={(e) => handleChange(e, /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$/, 12, 20, 'Certificate Number')}
+                                                                maxLength={20}
+                                                                required
+                                                            />
+                                                            <div style={{ marginTop: "7px" }} className="error-message small-p">{errors.certificateNumber}</div>
+                                                        </Form.Group>
+                                                    {/* </Col> */}
+                                                    {/* <Col md={{ span: 4 }} xs={{ span: 12 }}> */}
 
-                                                        <Form.Group controlId="course" className='mb-3'>
+
+
+                                                        <Form.Group controlId="course" className='mb-3 col-md-4'>
                                                             <Form.Label>Course Name <span className='text-danger'>*</span></Form.Label>
                                                             <InputGroup>
                                                                 <Form.Control
@@ -456,9 +458,9 @@ const IssueNewCertificate = () => {
                                                                 <InputGroup.Text>{formData.course.length}/20</InputGroup.Text> {/* Display character count */}
                                                             </InputGroup>
                                                         </Form.Group>
-                                                    </Col>
-                                                    <Col md={{ span: 4 }} xs={{ span: 12 }}>
-                                                        <Form.Group controlId="date-of-expiry" className='mb-3 d-none d-md-block'>
+                                                    {/* </Col> */}
+                                                    {/* <Col md={{ span: 4 }} xs={{ span: 12 }}> */}
+                                                        <Form.Group controlId="date-of-expiry" className='mb-3 d-none d-md-block col-md-4'>
                                                             <Form.Label>Date of Expiry  <span className='text-danger'>*</span></Form.Label>
                                                             {/* <input
                                                                 name='date-of-expiry'
@@ -483,7 +485,7 @@ const IssueNewCertificate = () => {
                                                                 isClearable
                                                             />
                                                         </Form.Group>
-                                                    </Col>
+                                                    {/* </Col> */}
                                                 </Row>
                                             </div>
                                         </Card.Body>

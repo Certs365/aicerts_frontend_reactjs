@@ -41,7 +41,9 @@ export const loginApi = async (
         const responseData = response?.data?.data;
         if (responseData?.JWTToken) {
             const response = await commonApi(TWO_FACTOR_AUTH, { email: data?.email }, 'post');
-            toast.success("OTP send to your registered email successfully")
+            toast.success("OTP send to your registered email successfully", {
+                style: { fontSize: "16px" },
+            })
             stateSetters?.setUser?.(responseData);
             stateSetters?.setTimer?.(60);
             stateSetters?.setShowVerify?.(true);
@@ -49,12 +51,16 @@ export const loginApi = async (
             return responseData;
         } else {
              
-            toast.error(response?.data?.message || "Login failed");
+            toast.error(response?.data?.message || "Login failed", {
+                style: { fontSize: "16px" },
+            });
 
             return null;
         }
     } catch (error: any) {
-        toast.error(error?.response?.data?.message || "Something went wrong");
+        toast.error(error?.response?.data?.message || "Something went wrong", {
+            style: { fontSize: "16px" },
+        });
         
  
         return null;
@@ -79,14 +85,18 @@ export const verifyOtpApi = async (
         if (response) {
             localStorage.setItem('token', states?.user?.JWTToken);
             localStorage.setItem('user', JSON.stringify(states?.user));
-            toast.success(response?.data?.message || "OTP verified successfully");
+            toast.success(response?.data?.message || "OTP verified successfully" , {
+                style: { fontSize: "16px" },
+            });
             router?.push("/dashboard");
             return true;
         }
         return false;
     } catch (error: any) {
         // Accessing message from error response data
-        toast.error(error?.response?.data?.message || "Something went wrong");
+        toast.error(error?.response?.data?.message || "Something went wrong", {
+            style: { fontSize: "16px" },
+        });
         return false;
     } finally {
         if (stateSetters?.setLoading) stateSetters.setLoading(false);
@@ -101,11 +111,15 @@ export const resetPasswordApi = async (token: string, data: Record<string, any>)
             data
         );
         // Accessing message from response.data.data.message
-        toast.success(response.data.data.message || "Password reset successfully");
+        toast.success(response.data.data.message || "Password reset successfully", {
+            style: { fontSize: "16px" },
+        });
         return true;
     } catch (error: any) {
         // Accessing message from error response data
-        toast.error(error?.response?.data?.message || "Something went wrong");
+        toast.error(error?.response?.data?.message || "Something went wrong", {
+            style: { fontSize: "16px" },
+        });
         return false;
     }
 };

@@ -1,13 +1,13 @@
 import dynamic from "next/dynamic";
+import QRCodeStylingComponent from "./customized-qr";
 
-const QRCodeStylingComponent = dynamic(() => import("./QRCodeStylingComponent"), {
-  ssr: false,
-});
+// const QRCodeStylingComponent = dynamic(() => import("./QRCodeStylingComponent"), {
+//   ssr: false,
+// });
 
 const QRCodePage = () => {
   return (
     <div>
-      <h1>QR Code Styling in Next.js</h1>
       <QRCodeStylingComponent />
     </div>
   );

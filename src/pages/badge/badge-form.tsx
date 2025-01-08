@@ -122,10 +122,10 @@ const BadgeForm = () => {
       <form className="p-4 border rounded shadow-sm" style={{ maxWidth: '600px', margin: '0 auto' }}>
         {/* Title */}
         <div className="mb-3">
-          <label htmlFor="title" className="form-label">Title</label>
+          <label htmlFor="title" className="form-label fs-14">Title</label>
           <input
             type="text"
-            className="form-control"
+            className="form-control fs-14"
             id="title"
             name="title"
             placeholder="Enter badge title"
@@ -137,10 +137,10 @@ const BadgeForm = () => {
 
         {/* Subtitle */}
         <div className="mb-3">
-          <label htmlFor="subTitle" className="form-label">Subtitle</label>
+          <label htmlFor="subTitle" className="form-label fs-14">Subtitle</label>
           <input
             type="text"
-            className="form-control"
+            className="form-control fs-14"
             id="subTitle"
             name="subTitle"
             placeholder="Enter subtitle"
@@ -152,9 +152,9 @@ const BadgeForm = () => {
 
         {/* Description */}
         <div className="mb-3">
-          <label htmlFor="description" className="form-label">Description</label>
+          <label htmlFor="description" className="form-label fs-14">Description</label>
           <textarea
-            className="form-control"
+            className="form-control fs-14"
             id="description"
             name="description"
             rows={4}
@@ -167,7 +167,7 @@ const BadgeForm = () => {
         {/* Add Field Button */}
         <button
           type="button"
-          className="btn btn-primary mb-4"
+          className="btn btn-primary mb-4 fs-14"
           onClick={handleAddField}
           disabled={isLoading}
         >
@@ -175,14 +175,14 @@ const BadgeForm = () => {
         </button>
         {/* Attributes */}
         {attributes && attributes?.length > 0 &&
-          <h5 className="my-4">Custom Fields</h5>
+          <h5 className="my-4 fs-14">Custom Fields</h5>
         }
         {attributes.map((attr, index) => (
           <div key={index} className="mb-3">
             <div className="d-flex gap-3">
               <input
                 type="text"
-                className="form-control"
+                className="form-control fs-14"
                 placeholder="Key"
                 value={attr.key}
                 onChange={(e) => handleFieldChange(index, 'key', e.target.value)}
@@ -190,7 +190,7 @@ const BadgeForm = () => {
               />
               <input
                 type="text"
-                className="form-control"
+                className="form-control fs-14"
                 placeholder="Value"
                 value={attr.value}
                 onChange={(e) => handleFieldChange(index, 'value', e.target.value)}
@@ -198,7 +198,7 @@ const BadgeForm = () => {
               />
               <button
                 type="button"
-                className="btn btn-danger"
+                className="btn btn-danger fs-14"
                 onClick={() => handleRemoveField(index)}
                 disabled={isLoading}
               >
