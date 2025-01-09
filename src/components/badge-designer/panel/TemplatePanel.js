@@ -20,7 +20,7 @@ const TemplatePanel = ({ onTemplateSelect }) => {
 
       try {
         const response = await fetch(
-          `https://userdevapi.certs365.io/api/get-certificate-templates`, 
+          `${apiUrl_Admin}/api/get-certificate-templates`, 
           {
             method: "POST",
             headers: {

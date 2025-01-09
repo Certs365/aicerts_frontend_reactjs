@@ -69,7 +69,7 @@ const FileUpload = ({onUploadSuccess,imageType}) => {
     try {
       setUploadStatus("uploading");
       const response = await axios.post(
-        `https://userdevapi.certs365.io/api/add/certificate/image`,
+        `${apiUrl_Admin}/api/add/certificate/image`,
         formData,
         {
           onUploadProgress: (progressEvent) => {

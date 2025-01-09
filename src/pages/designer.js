@@ -49,7 +49,7 @@ import ElementPanel from "../components/certificate-designer/panel/ElementPanel"
 import { useRouter } from "next/router";
 import UnsavedChangesPopup from "../components/certificate-designer/UnsavedChangesPopup";
 import BadgePanel from "../components/badge-designer/panel/badgePanel";
-
+const apiUrl_Admin = process.env.NEXT_PUBLIC_BASE_URL_admin
 const Designer = () => {
   const canvasRef = useRef(true);
   const [canvas, setCanvas] = useState(null);
@@ -129,7 +129,7 @@ const Designer = () => {
     try {
       // Upload image to server (S3)
       const uploadResponse = await fetch(
-        `https://adminapidev.certs365.io/api/upload`,
+        `${apiUrl_Admin}/api/upload`,
         {
           method: "POST",
           body: fd,
@@ -262,7 +262,7 @@ const Designer = () => {
   const updateTemplate = async (id, fileUrl, templateData) => {
     try {
       const response = await fetch(
-        `https://userdevapi.certs365.io/api/update-certificate-template`,
+        `${apiUrl_Admin}/api/update-certificate-template`,
         {
           method: "PUT",
           headers: {
@@ -292,7 +292,7 @@ const Designer = () => {
   const createTemplate = async (fileUrl, templateData) => {
     try {
       const response = await fetch(
-        `https://userdevapi.certs365.io/api/add-certificate-template`,
+        `${apiUrl_Admin}/api/add-certificate-template`,
         {
           method: "POST",
           headers: {

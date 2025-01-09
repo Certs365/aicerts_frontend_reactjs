@@ -64,7 +64,7 @@ function BadgePanel({ onSelectImage, certificate1 }) {
 
     try {
       const response = await fetch(
-        `https://userdevapi.certs365.io/api/get/certificate/image/${issuerId}`
+        `${apiUrl_Admin}/api/get/certificate/image/${issuerId}`
       );
       if (!response.ok) {
         const errorData = await response.json();

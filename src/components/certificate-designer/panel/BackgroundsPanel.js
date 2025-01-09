@@ -72,7 +72,7 @@ function BackgroundsPanel({ onSelectBackground }) {
 
     try {
       const response = await fetch(
-        `https://userdevapi.certs365.io/api/get/certificate/background/${issuerId}`
+        `${apiUrl_Admin}/api/get/certificate/background/${issuerId}`
       );
       if (!response.ok) {
         const errorData = await response.json();
