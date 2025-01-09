@@ -9,20 +9,22 @@ const Design = () => {
   };
 
   return (
-    <div className="design-container">
-      {/* Card for Certificate Designer */}
-      <div
-        className="card-badge"
-        onClick={() => handleNavigate('/designer')}
-      >
-        <h3>Certificate Designer</h3>
-      </div>
+    <div className="page-bg">
+      <div className="design-container">
+        {/* Card for Certificate Designer */}
+        <div
+          className="card-badge"
+          onClick={() => handleNavigate('/designer')}
+        >
+          <h3>Certificate Designer</h3>
+        </div>
 
-      <div
-        className="card-badge"
-        onClick={() => handleNavigate('/badge/badge-dashboard')}
-      >
-        <h3>Badge Designer</h3>
+        <div
+          className="card-badge"
+          onClick={() => handleNavigate('/badge/badge-dashboard')}
+        >
+          <h3>Badge Designer</h3>
+        </div>
       </div>
     </div>
   );

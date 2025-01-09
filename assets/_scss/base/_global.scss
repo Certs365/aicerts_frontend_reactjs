@@ -192,6 +192,14 @@ a {
     flex-wrap: wrap;
     padding: 0 99px;
 
+    @media (min-width: $small-min) and (max-width: $small-max) {
+        padding: 0 78px;
+    }
+
+    @media (min-width: $laptop-min) and (max-width: $laptop-max) {
+        padding: 0 78px;
+    }
+
     @media (min-width: $mobile-min) and (max-width: $mobile-max) {
         padding: 0 40px;
     }
@@ -402,6 +410,18 @@ a {
         button {
             color: $white;
         }
+    }
+
+    .text-design {
+        color: #fff;
+    }
+
+    .select-shapes {
+        background-color: #fff;
+    }
+
+    h1, h3, h4, h2, h5, p {
+        color: #fff;
     }
 }
 

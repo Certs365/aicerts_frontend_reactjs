@@ -149,7 +149,7 @@ const Navigation = () => {
           setCreditLimit(issueService?.limit);
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        // console.error('Error fetching data:', error);
       }
     })
   };
@@ -163,7 +163,7 @@ const Navigation = () => {
         },
         body: JSON.stringify({ email }),
       });
-      console.log(response);
+      
       if (!response.ok) {
         console.error('Failed to fetch plan name');
         // throw new Error('Failed to fetch plan name');
@@ -506,7 +506,7 @@ const Navigation = () => {
             </Navbar.Text>
             <Navbar.Text>
               <div onClick={() => { navigateToSettings() }} className='icons-container-settings'>
-                <Image src={settingsIcon} />
+                <Image src={settingsIcon} alt='Setting icon' />
               </div>
             </Navbar.Text>
             <Navbar.Text>

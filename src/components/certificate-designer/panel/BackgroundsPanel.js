@@ -197,6 +197,7 @@ function BackgroundsPanel({ onSelectBackground }) {
             {/* Map over predefined backgrounds and display them */}
             {predefinedBackgrounds.map((bg, index) => (
               <div key={index} className="background-item">
+                {/* eslint-disable-next-line  */}
                 <img
                 crossorigin="anonymous"
                   src={`${bg}`}
@@ -248,6 +249,7 @@ function BackgroundsPanel({ onSelectBackground }) {
      
         {uploadedBackgrounds.map((image) => (
           <div key={image.id} className="background-item d-flex justify-content-center mt-2" >
+            {/* eslint-disable-next-line  */}
             <img
             crossorigin="anonymous"
               src={image.imageUrl}
@@ -267,6 +269,7 @@ function BackgroundsPanel({ onSelectBackground }) {
                 }}
                 onClick={() => handleDelete(image.id)}
               >
+                {/* eslint-disable-next-line  */}
                 <img
                   src="./templateAsset/close.png"
                   alt="close"

@@ -89,12 +89,11 @@ export const Tooltip = ({ activeObject, fabricCanvas }) => {
   };
 
   // Run the tooltip positioning when the active object changes
+  /* eslint-disable */
   useEffect(() => {
     updateTooltipPosition();
   }, [activeObject]);
-
-  
-
+   /* eslint-disable */
 
   if (!activeObject) return null; // Don't render tooltip if there's no active object
 

@@ -57,7 +57,7 @@ const CertificateDisplayPage = ({ cardId }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
+ /* eslint-disable */
   useEffect(() => {
     const fetchPlaceholders = async () => {
         try {
@@ -80,11 +80,12 @@ const CertificateDisplayPage = ({ cardId }) => {
             console.error('Error fetching placeholders:', error);
         }
     };
-if(cardId){
+  if(cardId){
 
-  fetchPlaceholders(); // Call the function to fetch data on component mount
-}
+    fetchPlaceholders(); // Call the function to fetch data on component mount
+  }
 }, []);
+/* eslint-disable */
   useEffect(() => {
     // Function to retrieve data from session storage and set local state
     const retrieveDataFromSessionStorage = () => {

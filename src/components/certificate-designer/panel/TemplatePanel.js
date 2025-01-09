@@ -140,6 +140,7 @@ const TemplatePanel = ({ onTemplateSelect }) => {
             {/* Map over predefined backgrounds and display them */}
             {predefinedTemplates.map((bg, index) => (
               <div key={index} className="background-item">
+                 {/* eslint-disable-next-line  */}
                 <img
                 crossorigin="anonymous"
                   src={`${bg}`}
@@ -190,6 +191,7 @@ const TemplatePanel = ({ onTemplateSelect }) => {
                 style={{ position: "relative", display: "inline-block", margin: "10px" }}
                 onClick={() => handleTemplateClick(template)}
               >
+                 {/* eslint-disable-next-line  */}
                 <img
                   src={template.url}
                   alt={`Template ${template._id}`}
@@ -208,6 +210,7 @@ const TemplatePanel = ({ onTemplateSelect }) => {
                   }}
                   onClick={() => handleDelete(template._id)}
                 >
+                   {/* eslint-disable-next-line  */}
                   <img
                     src="./templateAsset/close.png"
                     alt="close"

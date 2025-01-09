@@ -114,6 +114,7 @@ const ComponentWrapper = ({ Component, pageProps }: any) => {
       {!isLoginPage && <Navigation />}
       {/* Bot icon at the bottom right */}
       <div className="bot-icon" onClick={toggleBot}>
+         {/* eslint-disable-next-line  */}
         <img src={isBotOpen ? "/BotCross.png" : "/BotIcon.png"} alt="Chatbot" />
       </div>
       <ToastContainer />

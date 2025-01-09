@@ -340,7 +340,7 @@ const Designer = () => {
   };
 
   const { paperSize, orientation } = useCanvasStore((state) => state); // Access Zustand state
-
+ /* eslint-disable */
   useEffect(() => {
     if (canvasRef.current) {
       console.log(canvasRef.current);
@@ -422,6 +422,8 @@ const Designer = () => {
       };
     }
   }, []);
+   /* eslint-disable */
+
   const containerWidth = 700; // Example: Update this based on your outer container width
   const aspectRatios = {
     A4: 595 / 842,
@@ -813,7 +815,7 @@ const Designer = () => {
       <div className="w-100 h-100 d-flex design-page">
         <div className="w-25 d-flex align-items-center">
           <div
-            className="w-100 w-md-25 h-100"
+            className="w-100 w-md-25 w-auto h-100"
             style={{
               background:
                 "linear-gradient(to bottom, #CFA935 0%, #A3852B 100%)",
@@ -967,7 +969,7 @@ const Designer = () => {
             )}
           </div>
           <div
-            className="d-flex p-2  overflow-y-scroll"
+            className="d-flex p-2 overflow-y-scroll"
             style={{
               width: "93%",
               height:"100%",

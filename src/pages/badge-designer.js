@@ -194,12 +194,13 @@ const BadgeDesigner = () => {
       setIsLoading(false);
     }
   };
-
+ /* eslint-disable */
   useEffect(()=>{
     fetchBadgeDetails()
   },[id])
-
-
+ /* eslint-disable */
+ 
+ /* eslint-disable */
   useEffect(() => {
     if (canvasRef.current) {
       const fabricCanvas = new fabric.Canvas(canvasRef.current, {
@@ -256,6 +257,7 @@ const BadgeDesigner = () => {
       };
     }
   }, []);
+   /* eslint-disable */
 
   const handleFontChange = (font) => {
     const activeObject = canvas?.getActiveObject();
