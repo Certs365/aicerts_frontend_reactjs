@@ -52,7 +52,9 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
   });
 
   window.addEventListener('beforeunload', () => {
-    toast.error('User clicked back button');
+    toast.error('User clicked back button', {
+      style: { fontSize: "16px" },
+  });
      
        });
 

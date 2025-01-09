@@ -16,11 +16,15 @@ const FileUpload = ({onUploadSuccess,imageType}) => {
     if (file) {
       const maxSize = 5 * 1024 * 1024; // 5 MB max file size
       if (!file.type.startsWith("image/")) {
-        toast.error("Please upload an image file.");
+        toast.error("Please upload an image file.", {
+          style: { fontSize: "16px" },
+      });
         return;
       }
       if (file.size > maxSize) {
-        toast.error("File size should not exceed 5MB.");
+        toast.error("File size should not exceed 5MB.", {
+          style: { fontSize: "16px" },
+      });
         return;
       }
       setSelectedFile(file);
@@ -80,7 +84,9 @@ const FileUpload = ({onUploadSuccess,imageType}) => {
         console.error("Upload failed.");
         // throw new Error("Upload failed.");
       }
-      toast.error("Background uploaded successfully!");
+      toast.error("Background uploaded successfully!", {
+        style: { fontSize: "16px" },
+    });
       // fetchUploadedBackgrounds(); // Uncomment if this function is defined and needed
       setUploadStatus("done");
       onUploadSuccess && onUploadSuccess();
