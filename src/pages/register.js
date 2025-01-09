@@ -45,6 +45,7 @@ const Register = () => {
 
 
   const isFormInvalid = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email validation regex
     return (
       !formData.organisationName ||
       !formData.fullName ||
@@ -54,9 +55,11 @@ const Register = () => {
       !formData.confirmPassword ||
       !formData.userPhoneNumber ||
       formData.password !== formData.confirmPassword || // Check if passwords match
+      !emailRegex.test(formData.userEmail) || // Check if email is valid
       Object.keys(fieldErrors).some((key) => fieldErrors[key] !== '')
     );
   };
+  
 
   // State for form data
   const [formData, setFormData] = useState({

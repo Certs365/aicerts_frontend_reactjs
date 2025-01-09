@@ -48,6 +48,7 @@ import { useCanvasStore } from "../components/certificate-designer/utils/canvasS
 import ElementPanel from "../components/certificate-designer/panel/ElementPanel";
 import { useRouter } from "next/router";
 import UnsavedChangesPopup from "../components/certificate-designer/UnsavedChangesPopup";
+import BadgePanel from "../components/badge-designer/panel/badgePanel";
 
 const Designer = () => {
   const canvasRef = useRef(true);
@@ -756,6 +757,17 @@ const Designer = () => {
         <BackgroundsPanel
           onSelectBackground={(imageUrl) => {
             setBackgroundImage(imageUrl, canvas);
+          }}
+        />
+      ),
+    },
+    {
+      icon: FaImages,
+      label: "Badges",
+      panel: (
+        <BadgePanel
+          onSelectImage={(imageUrl) => {
+            setImage(imageUrl, canvas);
           }}
         />
       ),

@@ -40,6 +40,7 @@ import TemplatePanel from "../components/badge-designer/panel/TemplatePanel";
 import { Button, Spinner } from "react-bootstrap";
 import BasePanel from "../components/badge-designer/panel/BasePanel";
 import { useRouter } from "next/router";
+import BadgePanel from "../components/badge-designer/panel/badgePanel";
 const apiUserUrl = process.env.NEXT_PUBLIC_BASE_URL_USER;
 const apiAdminUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -488,6 +489,7 @@ const BadgeDesigner = () => {
         />
       ),
     },
+    
     {
       icon: CiText,
       label: "Text",
