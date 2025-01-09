@@ -734,7 +734,7 @@ const CardSelector = () => {
   return (
     <>
       <div className="page-bg">
-        <div className="position-relative settings-container h-100">
+        <div className="position-relative settings-container h-100"  style={{padding:"100px 140px"}}>
           <div className="dashboard mt-0">
             <Container>
               {tab == 0 && <h3 className="title mb-4 mt-0">Issue Certifications</h3>}

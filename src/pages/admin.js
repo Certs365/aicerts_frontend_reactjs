@@ -212,15 +212,16 @@ console.log(issuedCertificate)
         <span className='admin-title-name'>
           Administration
         </span>
-        <div className='admin-button-container'>
+        <div className='admin-button-container' style={{padding:"4px"}}>
           <span onClick={() => handleChange(1)} className={`btn ${tab === 1 ? 'btn-golden' : ''}`}>Extend Expiration</span>
-          <span className="vertical-line"></span>
+          <span className={` ${tab === 1 || tab === 2 ? '' : 'vertical-line'}`}></span>
           <span onClick={() => handleChange(2)} className={`btn ${tab === 2 ? 'btn-golden' : ''}`}>Reactivate Certification</span>
-          <span className="vertical-line"></span>
+          <span className={` ${tab === 2 || tab === 3 ? '' : 'vertical-line'}`}></span>
           <span onClick={() => handleChange(3)} className={`btn ${tab === 3 ? 'btn-golden' : ''}`}>Revoke Certification</span>
         </div>
       </div>
-      <div className='table-title'>
+      <div className='table-title' style={{background:"#fff"}}>
+      <h3 className="text-start fw-700">{tableheadName(tab)}</h3>
         <span className='expire-typo'></span>
         {/* <div className='admin-search-container'>
           <span>Certificate Number</span>
