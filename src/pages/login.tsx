@@ -59,7 +59,9 @@ const Login: React.FC = () => {
     const handleLoginSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!formData.email || !formData.password) {
-            toast.error('Both email and password are required.');
+            toast.error('Both email and password are required.', {
+                style: { fontSize: "16px" },
+            });
             return;
         }
 
@@ -73,20 +75,26 @@ const Login: React.FC = () => {
                 localStorage.removeItem('rememberedEmail');
             }
         } catch (err) {
-            toast.error('Login failed. Please try again.');
+            toast.error('Login failed. Please try again.', {
+                style: { fontSize: "16px" },
+            });
         }
     };
 
     const handleOtpSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!otp) {
-            toast.error('Please enter the OTP.');
+            toast.error('Please enter the OTP.', {
+                style: { fontSize: "16px" },
+            });
             return;
         }
         try {
             await verifyOtpApi({ email: formData.email, code: otp }, { user }, { setLoading }, router);
         } catch (err) {
-            toast.error('Invalid OTP. Please try again.');
+            toast.error('Invalid OTP. Please try again.',{
+                style: { fontSize: "16px" },
+            });
         }
     };
 
@@ -94,7 +102,9 @@ const Login: React.FC = () => {
     const handleResendOtp = async () => {
         if (canResend) {
             await commonApi(TWO_FACTOR_AUTH, { email: formData?.email }, 'post');
-            toast.success("OTP send successfully on registered Email")
+            toast.success("OTP send successfully on registered Email", {
+                style: { fontSize: "16px" },
+            })
             setCanResend(false);
             setTimer(60);
         }
@@ -161,36 +171,46 @@ const Login: React.FC = () => {
                     </>
                 ) : (
                     <>
-                        <h2 className='text-signin fw-700'>Verify OTP</h2>
-                        <form onSubmit={handleOtpSubmit}>
-                            {/* OTP Field */}
-                            <OTPInput
+                        <div className="m-0">
+            <div className="text-signin">
+            <h1 className=" fw-700 text-start mb-2">Verify with OTP</h1>
+            <div className="text-start fs-14-10">An OTP has been set on your email id. Please enter that OTP below.</div>
+            </div>
+            <form onSubmit={handleOtpSubmit}>
+       
+              {/* OTP Field */}
+              <OTPInput
                                 icon={lockIcon.src}
                                 title='OTP'
                                 numInputs={6}
                                 onChange={(value) => setOtp(value)}
                                 inputType="text"
+                                classes="otp-custom-input"
                             />
 
-                            {/* Submit Button */}
-                            <PrimaryButton loadingText='Verifying...' loading={loading} label='Verify' type='submit' width='100%' />
-                            <div className="d-flex flex-column text-center mt-4">
-                                {!canResend ? (
-                                    <p className="fs-18-12 grey-light">
-                                        Resend in {Math.floor(timer / 60)}:
-                                        {String(timer % 60).padStart(2, "0")}
-                                    </p>
-                                ) : (
-                                    <p
-                                        className="fs-18-12 grey-light resend-otp-text"
-                                        onClick={handleResendOtp}
-                                        style={{ cursor: "pointer", color: "blue" }}
-                                    >
-                                        Resend OTP
-                                    </p>
-                                )}
-                            </div>
-                        </form>
+              {/* Submit Button */}
+              <PrimaryButton loadingText='Verifying...' loading={loading} label='Verify' type='submit' width='100%' />
+           
+              <div className="d-flex flex-column text-center mt-4">
+              <div className=" fs-14-10 mb-2">Don&apos;t receive an email?</div>
+                {!canResend ? (
+                  <p className="fs-18-12 grey-light">
+                    Resend in {Math.floor(timer / 60)}:
+                    {String(timer % 60).padStart(2, "0")}
+                  </p>
+                ) : (
+                  <p
+                    className="fs-18-12 grey-light resend-otp-text"
+                    onClick={handleResendOtp}
+                    style={{ cursor: "pointer", color: "blue" }}
+                  >
+                    Resend OTP
+                  </p>
+                )}
+              </div>
+              
+            </form>
+            </div>
                     </>
                 )}
             </div>

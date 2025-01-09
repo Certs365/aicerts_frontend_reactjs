@@ -365,7 +365,9 @@ Editor.opacity.addEventListener("input", function () {
 });
 
 function updateDataset(dataname, value, mode = "w") {
-  toast.error("Color Changed");
+  toast.error("Color Changed", {
+    style: { fontSize: "16px" },
+});
   var checkedCheckboxes = document
     .getElementById("inputs")
     .querySelectorAll("input:checked");

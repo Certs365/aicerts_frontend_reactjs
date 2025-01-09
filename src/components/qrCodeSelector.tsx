@@ -85,11 +85,15 @@ const QrCodeSelector: React.FC<QrCodeSelectorProps> = ({ qrCodes }) => {
             await user.updateIssuer(data, (response) => {
                 const userData = response.data;
                 const userDetails = userData?.data;
-                toast.success(userData?.message || "Updated Successfully")
+                toast.success(userData?.message || "Updated Successfully", {
+                    style: { fontSize: "16px" },
+                })
                 setShow(true); // Assuming this triggers a success message
             });
         } catch (error) {
-            toast.error('Error updating QR preference');
+            toast.error('Error updating QR preference', {
+                style: { fontSize: "16px" },
+            });
 
         } finally {
             setIsLoading(false);

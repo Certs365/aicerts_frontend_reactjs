@@ -305,236 +305,278 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
   };
 
   return (
-    <Form onSubmit={(e) => e.preventDefault()} >
-      <Form.Group controlId="search">
-        <div className="search align-items-center d-flex align-items-center">
+    <Form onSubmit={(e) => e.preventDefault()}>
+    <Form.Group controlId="search">
+      <div className="search  align-items-center d-flex align-items-center">
+        {/* First Dropdown (For) */}
+        <div
+          style={{ width: "100%", display: "flex", justifyContent: "center" }}
+        >
+          <Dropdown
+            onSelect={handleSearchForSelect}
+            className="me-2 golden-dropdown-button"
+            style={{top:"6px"}}
+          >
+            <Dropdown.Toggle
+              variant="secondary"
+              id="dropdown-basic btn-golden"
+              className="btn-golden"
+              style={{
+                backgroundColor: "#CFA935",
+                color: "white",
+                border: "none",
+                borderRadius: 0,
+                fontSize:"14px",
+              }}
+            >
+              {`For: ${
+                searchFor.charAt(0).toUpperCase() + searchFor.slice(1)
+              }`}
+            </Dropdown.Toggle>
 
-          {/* First Dropdown (For) */}
-          <div className='w-100 d-block d-md-flex justify-content-center'>
-            <Dropdown onSelect={handleSearchForSelect} className="me-2 golden-dropdown-button">
+            <Dropdown.Menu
+              style={{ borderRadius: 0 }}
+              className="custom-dropdown-menu"
+            >
+              {["default", "dynamic"].map((item) => (
+                <div
+                  key={item}
+                  style={{ position: "relative" }}
+                >
+                  <Dropdown.Item
+                    eventKey={item}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      padding: "8px 16px",
+                      color: item === searchFor ? "#CFA935" : "#5B5A5F", // Apply golden color if selected
+                    }}
+                  >
+                    {item.charAt(0).toUpperCase() + item.slice(1)}
+                    {item === searchFor && (
+                      <span style={{ color: "#CFA935", fontWeight: "bold" }}>
+                        ✔
+                      </span> // Tick for selected item
+                    )}
+                  </Dropdown.Item>
+                  {/* Horizontal Line */}
+                  {item !== "dynamic" && (
+                    <hr style={{ margin: "0", borderColor: "#ccc" }} />
+                  )}
+                </div>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+          <Dropdown
+            onSelect={handleSearchBySelect}
+            className="golden-dropdown-button d-flex d-md-none "
+          >
+            <Dropdown.Toggle
+              variant="secondary"
+              id="dropdown-basic btn-golden"
+              className="custom-dropdown-toggle fs-14-10 "
+              style={{
+                backgroundColor: "#CFA935",
+                color: "white",
+                borderColor: "white",
+                borderRadius: 0,
+                height: "100%",
+                minWidth: "150px",
+              }}
+              disabled={!searchFor}
+            >
+              {` ${
+                searchBy.length
+                  ? searchBy.charAt(0).toUpperCase() + searchBy.slice(1)
+                  : "Select Search For"
+              }`}
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu
+              style={{ borderRadius: 0}}
+              className="custom-dropdown-menu fs-14-10"
+            >
+              {getSearchByOptions()}
+            </Dropdown.Menu>
+          </Dropdown>
+
+          {/* Wrapper div to hold the input and dropdown */}
+          <div
+            style={{
+              position: "relative",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize:"14px"
+            }}
+          >
+            {/* Search Input */}
+            <div style={{ flex: 1 }}>
+              {isDateInput ? (
+                <Form.Control
+                  style={{ paddingLeft: "220px" }}
+                  type="date"
+                  className="search-input-admin custom-date-picker pd-220"
+                  value={rawDate} // Bind rawDate to the date picker
+                  onChange={handleDateChange}
+                />
+              ) : (
+                <>
+                  <input
+                    type="text"
+                    className="d-none d-md-flex search-input-admin ml-2"
+                    placeholder={`Search by ${searchBy}`}
+                    value={searchTerm}
+                    onChange={handleSearchTermChange}
+                    style={{
+                      paddingLeft: "220px",
+                      border: "none",
+                      fontSize: "14px",
+                    }}
+                  />
+                  <input
+                    type="text"
+                    // style={{paddingLeft:"220px"}}
+                    placeholder="Search here..."
+                    className="d-flex d-md-none search-input  "
+                    value={searchTerm}
+                    onChange={handleSearchTermChange}
+                    style={{ border: "none" }}
+                  />
+                </>
+              )}
+
+              {/* Suggestions List */}
+              {!isDateInput && showSuggestions && (
+                <ul className="suggestions-list" style={suggestionsListStyle}>
+                  {suggestions?.length > 0 ? (
+                    suggestions.map((suggestion, index) => (
+                      <li
+                        key={index}
+                        onClick={() => handleSuggestionClick(suggestion)}
+                        style={suggestionItemStyle}
+                        onMouseDown={(e) => e.preventDefault()} // Prevents input blur
+                      >
+                        {suggestion}
+                      </li>
+                    ))
+                  ) : (
+                    <li style={suggestionItemStyle}>No suggestions found</li>
+                  )}
+                </ul>
+              )}
+            </div>
+
+            {/* Dropdown (placed inside the input container) */}
+            <Dropdown
+              onSelect={handleSearchBySelect}
+              className="golden-dropdown-button d-none d-md-flex"
+              style={{ position: "absolute", left: 2, width: "200px" }}
+            >
               <Dropdown.Toggle
                 variant="secondary"
                 id="dropdown-basic btn-golden"
-                className="btn-golden"
+                className="btn-golden fs-14-10 "
                 style={{
                   backgroundColor: "#CFA935",
                   color: "white",
-                  border: "none",
                   borderRadius: 0,
-                  height: "40px"
+                  height: "100%",
+                  width: "200px",
+                  // marginRight: "10px",
+                  border: "none",
                 }}
+                disabled={!searchFor}
               >
-                {`For: ${searchFor.charAt(0).toUpperCase() + searchFor.slice(1)}`}
+                {` ${
+                  searchBy.length
+                    ? searchBy.charAt(0).toUpperCase() + searchBy.slice(1)
+                    : "Select Search For"
+                }`}
               </Dropdown.Toggle>
 
-              <Dropdown.Menu style={{ borderRadius: 0 }} className="custom-dropdown-menu">
-                {['default', 'dynamic'].map((item) => (
-                  <div key={item} style={{ position: 'relative' }}>
-                    <Dropdown.Item
-                      eventKey={item}
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        padding: '8px 16px',
-                        color: item === searchFor ? '#CFA935' : '#5B5A5F', // Apply golden color if selected
-                      }}
-                    >
-                      {item.charAt(0).toUpperCase() + item.slice(1)}
-                      {item === searchFor && (
-                        <span style={{ color: '#CFA935', fontWeight: 'bold' }}>✔</span> // Tick for selected item
-                      )}
-                    </Dropdown.Item>
-                    {/* Horizontal Line */}
-                    {item !== 'dynamic' && <hr style={{ margin: '0', borderColor: '#ccc' }} />}
-                  </div>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
-            <Dropdown onSelect={handleSearchBySelect} className="golden-dropdown-button d-flex d-md-none" >
-              <Dropdown.Toggle variant="secondary" id="dropdown-basic btn-golden" className="custom-dropdown-toggle"
-                style={{ backgroundColor: "#CFA935", color: "white", borderColor: "white", borderRadius: 0, height: '100%', minWidth: "150px" }} disabled={!searchFor}>
-                {` ${searchBy.length ? searchBy.charAt(0).toUpperCase() + searchBy.slice(1) : 'Select Search For'}`}
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu style={{ borderRadius: 0 }} className="custom-dropdown-menu">
+              <Dropdown.Menu
+                style={{ borderRadius: 0 }}
+                className="custom-dropdown-menu"
+              >
                 {getSearchByOptions()}
               </Dropdown.Menu>
             </Dropdown>
+          </div>
 
-            {/* Wrapper div to hold the input and dropdown */}
-            <div className='position-relative  d-md-flex align-items-center justify-content-center'>
-              {/* Search Input */}
-              <div className='d-none d-md-block' style={{ flex: 1, }}>
-                {isDateInput ? (
-                  <Form.Control
-                    style={{ paddingLeft: "220px" }}
-                    type="date"
-                    className="search-input-admin custom-date-picker pd-220"
-                    value={rawDate} // Bind rawDate to the date picker
-                    onChange={handleDateChange}
-
-                  />
-                ) : (
-                  <>
-                    <input
-                      type="text"
-
-                      className="d-none d-md-flex search-input-admin ml-2"
-                      placeholder={`Search by ${searchBy}`}
-                      value={searchTerm}
-                      onChange={handleSearchTermChange}
-                      style={{ paddingLeft: "220px", border: "none" }}
-
-                    />
-                    <input
-                      type="text"
-                      // style={{paddingLeft:"220px"}}
-                      placeholder="Search here..."
-                      className="d-flex d-md-none search-input  "
-                      value={searchTerm}
-                      onChange={handleSearchTermChange}
-                      style={{ border: "none" }}
-                    />
-                  </>
-                )}
-
-                {/* Suggestions List */}
-                {!isDateInput && showSuggestions && (
-                  <ul className="suggestions-list" style={suggestionsListStyle}>
-                    {suggestions?.length > 0 ? (
-                      suggestions.map((suggestion, index) => (
-                        <li
-                          key={index}
-                          onClick={() => handleSuggestionClick(suggestion)}
-                          style={suggestionItemStyle}
-                          onMouseDown={(e) => e.preventDefault()} // Prevents input blur
-                        >
-                          {suggestion}
-                        </li>
-                      ))
-                    ) : (
-                      <li style={suggestionItemStyle}>No suggestions found</li>
-                    )}
-                  </ul>
-                )}
-              </div>
-
-              <div className='d-block d-md-none' style={{ flex: 1, }}>
-                {isDateInput ? (
-                  <Form.Control
-                    style={{ paddingLeft: "220px" }}
-                    type="date"
-                    className="search-input-admin custom-date-picker pd-220"
-                    value={rawDate} // Bind rawDate to the date picker
-                    onChange={handleDateChange}
-
-                  />
-                ) : (
-                  <div className='d-flex align-items-center'>
-                    <input
-                      type="text"
-
-                      className="d-none d-md-flex search-input-admin ml-2"
-                      placeholder={`Search by ${searchBy}`}
-                      value={searchTerm}
-                      onChange={handleSearchTermChange}
-                      style={{ paddingLeft: "220px", border: "none" }}
-
-                    />
-                    <input
-                      type="text"
-                      // style={{paddingLeft:"220px"}}
-                      placeholder="Search here..."
-                      className="d-flex d-md-none search-input  "
-                      value={searchTerm}
-                      onChange={handleSearchTermChange}
-                      style={{ border: "none" }}
-                    />
-                    <div className='d-flex d-md-none search-icon-container-mobile' onClick={handleSearch}>
-                      <Image width={10} height={10} src="/icons/search.svg" alt='search' />
-                    </div>
-                  </div>
-                )}
-
-                {/* Suggestions List */}
-                {!isDateInput && showSuggestions && (
-                  <ul className="suggestions-list" style={suggestionsListStyle}>
-                    {suggestions?.length > 0 ? (
-                      suggestions.map((suggestion, index) => (
-                        <li
-                          key={index}
-                          onClick={() => handleSuggestionClick(suggestion)}
-                          style={suggestionItemStyle}
-                          onMouseDown={(e) => e.preventDefault()} // Prevents input blur
-                        >
-                          {suggestion}
-                        </li>
-                      ))
-                    ) : (
-                      <li style={suggestionItemStyle}>No suggestions found</li>
-                    )}
-                  </ul>
-                )}
-              </div>
-
-              {/* Dropdown (placed inside the input container) */}
-              <Dropdown onSelect={handleSearchBySelect} className="golden-dropdown-button d-none d-md-flex" style={{ position: 'absolute', left: 2, width: "200px" }}>
-                <Dropdown.Toggle variant="secondary" id="dropdown-basic btn-golden" className="btn-golden"
-                  style={{ backgroundColor: "#CFA935", color: "white", borderRadius: 0, height: '40px', width: "200px", marginRight: "10px", border: "none" }} disabled={!searchFor}>
-                  {` ${searchBy.length ? searchBy.charAt(0).toUpperCase() + searchBy.slice(1) : 'Select Search For'}`}
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu style={{ borderRadius: 0 }} className="custom-dropdown-menu">
-                  {getSearchByOptions()}
-                </Dropdown.Menu>
-              </Dropdown>
-            </div>
-
-
-            {/* Search Icon */}
-            <div className='d-none d-md-flex search-icon-container' onClick={handleSearch}>
-              <Image width={10} height={10} src="/icons/search.svg" alt='search' />
-            </div>
-            {/* <div className='d-flex d-md-none search-icon-container-mobile' onClick={handleSearch}>
-              <Image width={10} height={10} src="/icons/search.svg" alt='search' />
-            </div> */}
+          {/* Search Icon */}
+          <div
+            className="d-none d-md-flex search-icon-container"
+            onClick={handleSearch}
+          >
+            <Image
+              width={10}
+              height={10}
+              src="/icons/search.svg"
+              alt="search"
+            />
+          </div>
+          <div
+            className="d-flex d-md-none search-icon-container-mobile"
+            onClick={handleSearch}
+          >
+            <Image
+              width={10}
+              height={10}
+              src="/icons/search.svg"
+              alt="search"
+            />
           </div>
         </div>
-      </Form.Group>
+      </div>
+    </Form.Group>
 
-      <Modal onHide={handleClose} className='loader-modal text-center' show={show} centered>
-        <Modal.Body>
-          {error !== '' ? (
-            <>
-              <div className='error-icon success-image'>
-                <Image
-                  src="/icons/invalid-password.gif"
-                  layout='fill'
-                  objectFit='contain'
-                  alt='Loader'
-                />
-              </div>
-              <div className='text' style={{ color: '#ff5500' }}>{error}</div>
-              <button className='warning' onClick={handleClose}>Ok</button>
-            </>
-          ) : (
-            <>
-              <div className='error-icon success-image'>
-                <Image
-                  src="/icons/success.gif"
-                  layout='fill'
-                  objectFit='contain'
-                  alt='Loader'
-                />
-              </div>
-              <div className='text' style={{ color: '#CFA935' }}>{success}</div>
-              <button className='success' onClick={handleClose}>Ok</button>
-            </>
-          )}
-        </Modal.Body>
-      </Modal>
-    </Form>
+    <Modal
+      onHide={handleClose}
+      className="loader-modal text-center"
+      show={show}
+      centered
+    >
+      <Modal.Body>
+        {error !== "" ? (
+          <>
+            <div className="error-icon success-image">
+              <Image
+                src="/icons/invalid-password.gif"
+                layout="fill"
+                objectFit="contain"
+                alt="Loader"
+              />
+            </div>
+            <div className="text" style={{ color: "#ff5500" }}>
+              {error}
+            </div>
+            <button className="warning" onClick={handleClose}>
+              Ok
+            </button>
+          </>
+        ) : (
+          <>
+            <div className="error-icon success-image">
+              <Image
+                src="/icons/success.gif"
+                layout="fill"
+                objectFit="contain"
+                alt="Loader"
+              />
+            </div>
+            <div className="text" style={{ color: "#CFA935" }}>
+              {success}
+            </div>
+            <button className="success" onClick={handleClose}>
+              Ok
+            </button>
+          </>
+        )}
+      </Modal.Body>
+    </Modal>
+  </Form>
   );
 };
 

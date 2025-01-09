@@ -135,17 +135,23 @@ const OnBoardingDetails: React.FC = () => {
     const handleNext = () => {
         if (step === 1) {
             if (!formData.fullName || !formData.organizationName) {
-                toast.error('Full Name and Organization Name are required.');
+                toast.error('Full Name and Organization Name are required.',{
+                    style: { fontSize: "16px" },
+                });
                 return;
             }
         } else if (step === 2) {
             if (!formData.businessType) {
-                toast.error('Please select your business type.');
+                toast.error('Please select your business type.',{
+                    style: { fontSize: "16px" },
+                });
                 return;
             }
         } else if (step === 3) {
             if (!formData.useCase) {
-                toast.error('Please select your use case.');
+                toast.error('Please select your use case.', {
+                    style: { fontSize: "16px" },
+                });
                 return;
             }
         }
