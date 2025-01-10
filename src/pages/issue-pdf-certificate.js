@@ -392,6 +392,7 @@ const IssueNewCertificate = () => {
                                                                 dateFormat="MM/dd/yyyy"
                                                                 showMonthDropdown
                                                                 showYearDropdown
+                                                                onKeyDown={(e) => e.preventDefault()}
                                                                 dropdownMode="select"
                                                                 selected={formData.grantDate}
                                                                 onChange={(date) => handleDateChange('grantDate', date)}
@@ -419,12 +420,14 @@ const IssueNewCertificate = () => {
                                                                 dateFormat="MM/dd/yyyy"
                                                                 showMonthDropdown
                                                                 showYearDropdown
+                                                                onKeyDown={(e) => e.preventDefault()}
                                                                 dropdownMode="select"
                                                                 selected={formData.expirationDate}
                                                                 onChange={(date) => handleDateChange('expirationDate', date)}
                                                                 minDate={formData.grantDate ? new Date(formData.grantDate) : new Date()}
                                                                 maxDate={new Date('2099-12-31')}
                                                                 isClearable
+
                                                             />
                                                         </Form.Group>
                                                         <Form.Group controlId="certificateNumber" className='mb-3 col-md-4'>
@@ -477,6 +480,7 @@ const IssueNewCertificate = () => {
                                                                 dateFormat="MM/dd/yyyy"
                                                                 showMonthDropdown
                                                                 showYearDropdown
+                                                                onKeyDown={(e) => e.preventDefault()}
                                                                 dropdownMode="select"
                                                                 selected={formData.expirationDate}
                                                                 onChange={(date) => handleDateChange('expirationDate', date)}

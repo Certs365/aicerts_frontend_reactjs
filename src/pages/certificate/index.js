@@ -160,9 +160,9 @@ const CardSelector = () => {
     //   sessionStorage.setItem('issuerName', inputValue);
     // } else {
     //   // Show error message here, for example:
-      toast.error('Issuer name must be 30 characters or less',{
-        style: { fontSize: "16px" },
-    });
+    //   toast.error('Issuer name must be 30 characters or less',{
+    //     style: { fontSize: "16px" },
+    // });
     // }
   };
 

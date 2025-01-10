@@ -505,10 +505,11 @@ const Navigation = () => {
               </div>
             </Navbar.Text>
             <Navbar.Text>
-              <div onClick={() => { navigateToSettings() }} className='icons-container-settings'>
-                <Image src={settingsIcon} alt='Setting icon' />
-              </div>
-            </Navbar.Text>
+  <a href="/settings" className="icons-container-settings">
+    <Image src={settingsIcon} alt="Setting icon" />
+  </a>
+</Navbar.Text>
+
             <Navbar.Text>
               <ThemeSwitcher />
             </Navbar.Text>
