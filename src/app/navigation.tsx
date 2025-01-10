@@ -505,9 +505,9 @@ const Navigation = () => {
               </div>
             </Navbar.Text>
             <Navbar.Text>
-  <a href="/settings" className="icons-container-settings">
+  <Link href="/settings" className="icons-container-settings">
     <Image src={settingsIcon} alt="Setting icon" />
-  </a>
+  </Link>
 </Navbar.Text>
 
             <Navbar.Text>
