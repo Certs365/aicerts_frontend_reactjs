@@ -13,7 +13,7 @@ const Design = () => {
 
     <div className="design-container" >
      
-      {/* <div
+      <div
         className="card-badge"
         onClick={() => handleNavigate('/designer')}
       >
@@ -25,12 +25,12 @@ const Design = () => {
         onClick={() => handleNavigate('/badge/badge-dashboard')}
       >
         <h3>Badge Designer</h3>
-      </div> */}
-      <div className='design-container-head px-5'>
+      </div>
+      {/* <div className='design-container-head px-5'>
         <DesignerHeader/>
         
 
-      </div>
+      </div> */}
 
 
 
