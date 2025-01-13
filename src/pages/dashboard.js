@@ -51,7 +51,7 @@ const Dashboard = () => {
       router.push("/");
     }
   }, [router]);
-
+ /* eslint-disable */
   useEffect(() => {
     const flag = localStorage.getItem('firstlogin');
     // const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -93,6 +93,7 @@ const Dashboard = () => {
       }
     }
   }, [email]);
+   /* eslint-disable */
 
   const fetchData = async (email) => {
     const payload = {
@@ -186,10 +187,9 @@ const Dashboard = () => {
           return <DashboardCard key={index} item={item} />;
         })}
       </div>
-      <div className="main-container gap">
+      <div className="main-container gap pb-4">
         {/* Rendering LineChart component */}
-        <Container>
-      
+        <Container >
           <BarChartSecond />
         </Container>
         {/* Rendering BarChart component */}
@@ -199,13 +199,12 @@ const Dashboard = () => {
           </Col>
           <Col xs={12} md={8}>
             <BarChart />
-          </Col>
-       
+          </Col>       
         </Container>
 
          {/* { warning != false && */}
          {expiryDate !== null && warnModal &&   //todo=> modal not showing on initial load, fix it
-             <Modal className='modal-wrapper' show={warnModal} centered>
+            <Modal className='modal-wrapper' show={warnModal} centered>
                 <Modal.Header className='extend-modal-header'>
                   <span className='extend-modal-header-text'>WARNING</span>
                 </Modal.Header>
@@ -230,7 +229,8 @@ const Dashboard = () => {
                     <Modal.Footer className='d-flex justify-content-center'>
                       <Button  className='red-btn px-4' label='Ok' onClick={closeModal}/>
                     </Modal.Footer>
-              </Modal> }
+            </Modal> 
+          }
       </div>
     </div>
   );

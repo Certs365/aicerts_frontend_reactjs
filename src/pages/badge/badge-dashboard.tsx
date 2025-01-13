@@ -61,26 +61,32 @@ const BadgeDashboard: React.FC = () => {
   };
 
   return (
-    <div className="dashboard-badge mt-3">
-      <div className="d-flex flex-row justify-content-between">
-        <h3 className="mx-5 mt-4">Badge Dashboard</h3>
-        <Button onClick={() => { handleNewBadge() }} className='golden me-3' label='Create New Badge' />
+    <div className="page-bg pt-5">
+      <div className="mt-5 pt-5">
+        <div className="design-container mt-5 pt-5">
+          <div className="dashboard-badge mt-5 pt-5">
+            <div className="d-flex flex-row align-items-center justify-content-between mt-5 pt-5">
+              <h3 className="mx-5">Badge Dashboard</h3>
+              <Button onClick={() => { handleNewBadge() }} className='golden me-3' label='Create New Badge' />
 
-      </div>
-      <h4 className="mx-5 mt-4">Select Your Badge Template</h4>
-      <div className="d-flex flex-row m-3 flex-wrap">
-        {badges?.length > 0 &&
-          badges.map((badge) => (
-            <div
-              key={badge._id}
-              onClick={() => handleBadgeClick(badge)}
-              className="badge-Card-dashboard ms-4 mb-3"
-            >
-              <span className="badge-title">
-                {badge.title || "Badge"}
-              </span>
             </div>
-          ))}
+            <h4 className="mx-5 mt-4">Select Your Badge Template</h4>
+            <div className="d-flex flex-row m-3 flex-wrap">
+              {badges?.length > 0 &&
+                badges.map((badge) => (
+                  <div
+                    key={badge._id}
+                    onClick={() => handleBadgeClick(badge)}
+                    className="badge-Card-dashboard ms-4 mb-3"
+                  >
+                    <span className="badge-title">
+                      {badge.title || "Badge"}
+                    </span>
+                  </div>
+                ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

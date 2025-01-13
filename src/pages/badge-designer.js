@@ -40,6 +40,7 @@ import TemplatePanel from "../components/badge-designer/panel/TemplatePanel";
 import { Button, Spinner } from "react-bootstrap";
 import BasePanel from "../components/badge-designer/panel/BasePanel";
 import { useRouter } from "next/router";
+import BadgePanel from "../components/badge-designer/panel/badgePanel";
 const apiUserUrl = process.env.NEXT_PUBLIC_BASE_URL_USER;
 const apiAdminUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -96,7 +97,7 @@ const BadgeDesigner = () => {
 
     const handleTemplateSave = async () => {
       if (!canvas || canvas.isEmpty()) {
-        alert("Canvas is empty. Please add content before saving.");
+        // toast.error("Canvas is empty. Please add content before saving.");
         return;
       }
   
@@ -126,11 +127,11 @@ const BadgeDesigner = () => {
           await updateTemplate(id, uploadedFileUrl, templateData);
           return uploadedFileUrl
         } else {
-          alert("Failed to upload template.");
+          // toast.error("Failed to upload template.");
         }
       } catch (error) {
         console.error("Error uploading template:", error);
-        alert("An error occurred while uploading the template.");
+        // toast.error("An error occurred while uploading the template.");
       } finally {
         // hideLoader();
         setLoading(false)
@@ -150,7 +151,7 @@ const BadgeDesigner = () => {
       });
     } catch (error) {
       console.error("Error updating template:", error);
-      alert("An error occurred while updating the template.");
+      // toast.error("An error occurred while updating the template.");
     }
   };
 
@@ -163,11 +164,11 @@ const BadgeDesigner = () => {
       if (fileUrl) {
         window.location.href = `/badge/badgeDisplay?id=${id}`;
       } else {
-        alert("Template upload failed. Please try again.");
+        // toast.error("Template upload failed. Please try again.");
       }
     } catch (error) {
       console.error("Error during Move to Issuance:", error);
-      alert("An error occurred while processing your request.");
+      // toast.error("An error occurred while processing your request.");
     }
   };
 
@@ -194,12 +195,13 @@ const BadgeDesigner = () => {
       setIsLoading(false);
     }
   };
-
+ /* eslint-disable */
   useEffect(()=>{
     fetchBadgeDetails()
   },[id])
-
-
+ /* eslint-disable */
+ 
+ /* eslint-disable */
   useEffect(() => {
     if (canvasRef.current) {
       const fabricCanvas = new fabric.Canvas(canvasRef.current, {
@@ -256,6 +258,7 @@ const BadgeDesigner = () => {
       };
     }
   }, []);
+   /* eslint-disable */
 
   const handleFontChange = (font) => {
     const activeObject = canvas?.getActiveObject();
@@ -486,6 +489,7 @@ const BadgeDesigner = () => {
         />
       ),
     },
+    
     {
       icon: CiText,
       label: "Text",

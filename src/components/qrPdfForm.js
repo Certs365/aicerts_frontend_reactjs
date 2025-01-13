@@ -8,6 +8,7 @@ import fileDownload from 'react-file-download';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import issuance from '../services/issuanceServices';
+import { toast } from 'react-toastify';
 
 const generalError = process.env.NEXT_PUBLIC_BASE_GENERAL_ERROR;
 
@@ -51,7 +52,9 @@ const QrPdfForm = ({ selectedFile,page, setPage, type }) => {
   });
 
   window.addEventListener('beforeunload', () => {
-    // alert('User clicked back button');
+    toast.error('User clicked back button', {
+      style: { fontSize: "16px" },
+  });
      
        });
 

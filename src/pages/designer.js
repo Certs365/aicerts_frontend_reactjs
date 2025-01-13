@@ -17,6 +17,7 @@ import {
   handleItalicToggle,
   handleTextColorChange,
   handleUnderlineToggle,
+  loadFont,
 } from "../components/certificate-designer/utils/textUtils";
 import TextEditPanel from "../components/certificate-designer/panel/TextEditPanel";
 import FontPanel from "../components/certificate-designer/panel/FontPanel";
@@ -47,7 +48,8 @@ import { useCanvasStore } from "../components/certificate-designer/utils/canvasS
 import ElementPanel from "../components/certificate-designer/panel/ElementPanel";
 import { useRouter } from "next/router";
 import UnsavedChangesPopup from "../components/certificate-designer/UnsavedChangesPopup";
-
+import BadgePanel from "../components/badge-designer/panel/badgePanel";
+const apiUrl_Admin = process.env.NEXT_PUBLIC_BASE_URL_admin
 const Designer = () => {
   const canvasRef = useRef(true);
   const [canvas, setCanvas] = useState(null);
@@ -79,6 +81,7 @@ const Designer = () => {
   const [pendingRoute, setPendingRoute] = useState(null); // Store pending navigation route
   const router = useRouter();
   const [currentRoute, setCurrentRoute] = useState(null); // Store the current route
+  const [zoomLevel, setZoomLevel] = useState(1); // State to manage zoom level
 
   // Use effect to fetch and load the user's email from localStorage
   useEffect(() => {
@@ -102,7 +105,7 @@ const Designer = () => {
 
   const handleTemplateSave = async () => {
     if (!canvas || canvas.isEmpty()) {
-      alert("Canvas is empty. Please add content before saving.");
+      // toast.error("Canvas is empty. Please add content before saving.");
       return;
     }
 
@@ -110,8 +113,13 @@ const Designer = () => {
     setLoading(true);
 
     const templateData = canvas.toJSON(); // Get the canvas data
+    console.log(templateData)
 
-    const dataURL = canvas.toDataURL({ format: "png" }); // Convert canvas to PNG data URL
+    const multiplier = 2; // You can adjust this value to make the image even higher resolution
+  const dataURL = canvas.toDataURL({
+    format: "png",
+    multiplier: multiplier, // Multiplies the canvas resolution
+  }); // Convert canvas to PNG data URL
     const blob = dataURLToBlob(dataURL);
     const fd = new FormData();
     const date = new Date().getTime();
@@ -121,7 +129,7 @@ const Designer = () => {
     try {
       // Upload image to server (S3)
       const uploadResponse = await fetch(
-        `https://adminapidev.certs365.io/api/upload`,
+        `${apiUrl_Admin}/api/upload`,
         {
           method: "POST",
           body: fd,
@@ -143,11 +151,11 @@ const Designer = () => {
        
         return uploadedFileUrl;
       } else {
-        alert("Failed to upload template.");
+        // toast.error("Failed to upload template.");
       }
     } catch (error) {
       console.error("Error uploading template:", error);
-      alert("An error occurred while uploading the template.");
+      // toast.error("An error occurred while uploading the template.");
     } finally {
       // hideLoader();
       setLoading(false);
@@ -254,7 +262,7 @@ const Designer = () => {
   const updateTemplate = async (id, fileUrl, templateData) => {
     try {
       const response = await fetch(
-        `https://userdevapi.certs365.io/api/update-certificate-template`,
+        `${apiUrl_Admin}/api/update-certificate-template`,
         {
           method: "PUT",
           headers: {
@@ -270,13 +278,13 @@ const Designer = () => {
 
       if (response.ok) {
         const data = await response.json();
-        // alert("Template updated successfully!");
+        // toast.error("Template updated successfully!");
       } else {
-        alert("Failed to update template.");
+        // toast.error("Failed to update template.");
       }
     } catch (error) {
       console.error("Error updating template:", error);
-      alert("An error occurred while updating the template.");
+      // toast.error("An error occurred while updating the template.");
     }
   };
 
@@ -284,7 +292,7 @@ const Designer = () => {
   const createTemplate = async (fileUrl, templateData) => {
     try {
       const response = await fetch(
-        `https://userdevapi.certs365.io/api/add-certificate-template`,
+        `${apiUrl_Admin}/api/add-certificate-template`,
         {
           method: "POST",
           headers: {
@@ -300,13 +308,13 @@ const Designer = () => {
 
       if (response.ok) {
         const data = await response.json();
-        // alert("Template added successfully!");
+        // toast.error("Template added successfully!");
       } else {
-        alert("Failed to add template.");
+        // toast.error("Failed to add template.");
       }
     } catch (error) {
       console.error("Error adding template:", error);
-      alert("An error occurred while adding the template.");
+      // toast.error("An error occurred while adding the template.");
     }
   };
 
@@ -324,16 +332,16 @@ const Designer = () => {
         // Redirect to the certificate page
         window.location.href = `/certificate?tab=${tab}`;
       } else {
-        alert("Template upload failed. Please try again.");
+        // toast.error("Template upload failed. Please try again.");
       }
     } catch (error) {
       console.error("Error during Move to Issuance:", error);
-      alert("An error occurred while processing your request.");
+      // toast.error("An error occurred while processing your request.");
     }
   };
 
   const { paperSize, orientation } = useCanvasStore((state) => state); // Access Zustand state
-
+ /* eslint-disable */
   useEffect(() => {
     if (canvasRef.current) {
       console.log(canvasRef.current);
@@ -345,7 +353,7 @@ const Designer = () => {
       // });
       const fabricCanvas = new fabric.Canvas("myCanvas", {
         width: 900,
-        height: 650,
+        height: 500,
         backgroundColor: "white",
       });
       fabricCanvas.backgroundColor = "#fff";
@@ -355,6 +363,7 @@ const Designer = () => {
 
       // Load saved state from localStorage
       const savedCanvasState = localStorage.getItem("fabricCanvasState");
+      
       if (savedCanvasState) {
         fabricCanvas.loadFromJSON(savedCanvasState, () => {
           fabricCanvas.renderAll(); // Ensure canvas is rendered after loading
@@ -414,6 +423,8 @@ const Designer = () => {
       };
     }
   }, []);
+   /* eslint-disable */
+
   const containerWidth = 700; // Example: Update this based on your outer container width
   const aspectRatios = {
     A4: 595 / 842,
@@ -443,14 +454,14 @@ const Designer = () => {
     },
   };
 
-  useEffect(() => {
-    if (canvas) {
-      const { width, height } = paperSizes[paperSize][orientation];
-      canvas.setWidth(width);
-      canvas.setHeight(height);
-      canvas.renderAll();
-    }
-  }, [paperSize, orientation, canvas]);
+  // useEffect(() => {
+  //   if (canvas) {
+  //     const { width, height } = paperSizes[paperSize][orientation];
+  //     canvas.setWidth(width);
+  //     canvas.setHeight(height);
+  //     canvas.renderAll();
+  //   }
+  // }, [paperSize, orientation, canvas]);
 
   const handleFontChange = (font) => {
     const activeObject = canvas?.getActiveObject();
@@ -464,6 +475,33 @@ const Designer = () => {
   const handleOpenFontPanel = () => {
     setActivePanel(<FontPanel onFontChange={handleFontChange} />);
   };
+
+  const zoomCanvas = (zoomIn = true, canvas) => {
+    if (!canvas) return;
+  
+    // Get the current zoom level
+    const currentZoom = canvas.getZoom();
+  
+    // Calculate new zoom level
+    const newZoom = zoomIn ? currentZoom + 0.1 : currentZoom - 0.1;
+  
+    // Ensure zoom level stays within limits
+    if (newZoom > 3 || newZoom < 0.5) return;
+  
+    // Update the canvas scale
+    const scaleFactor = newZoom / currentZoom;
+  
+    // Adjust canvas dimensions to zoom the entire canvas
+    canvas.setWidth(canvas.getWidth() * scaleFactor);
+    canvas.setHeight(canvas.getHeight() * scaleFactor);
+  
+    // Apply the zoom level to the canvas contents
+    canvas.setZoom(newZoom);
+  
+    // Redraw the canvas
+    canvas.renderAll();
+  };
+  
 
   const updateActiveObjectStyles = (activeObject) => {
     if (activeObject.type === "textbox") {
@@ -568,7 +606,7 @@ const Designer = () => {
     }
   };
 
-  const renderTemplateOnCanvas = (template) => {
+  const renderTemplateOnCanvas = async(template) => {
     // Clear the canvas before rendering the new template
     console.log("template is", template);
     canvas.clear();
@@ -605,16 +643,47 @@ const Designer = () => {
           }
         );
       } else if (obj.type === "textbox" || obj.type === "Textbox") {
+        console.log("here is", obj.fontFamily);
+        await loadFont(obj.fontFamily); // Ensure the font is loaded
+      
         const text = new fabric.Textbox(obj.text, {
           left: obj.left,
           top: obj.top,
           fontSize: obj.fontSize,
           fontFamily: obj.fontFamily,
           fill: obj.fill,
+          fillRule:obj.fillRule,
           width: obj.width,
+          height: obj.height,
+          textAlign: obj.textAlign || 'left',
+          lineHeight: obj.lineHeight || 1.16,
+          charSpacing: obj.charSpacing || 0,
+          underline: obj.underline || false,
+          linethrough: obj.linethrough || false,
+          overline: obj.overline || false,
+          opacity: obj.opacity || 1,
+          shadow: obj.shadow || null,
+          stroke: obj.stroke || null,
+          strokeWidth: obj.strokeWidth || 1,
+          backgroundColor: obj.backgroundColor || 'transparent',
+          direction:obj.direction,
+          minWidth:obj.minWidth,
+          fontWeight:obj.fontWeight
+          
+          
         });
+        text.originX = obj.originX
+        text.originY = obj.originY
+      
+        text.set({
+          angle: obj.angle || 0,
+          scaleX: obj.scaleX || 1,
+          scaleY: obj.scaleY || 1,
+          
+        });
+      
         canvas.add(text);
-      } else if (obj.type === "Rect" || obj.type === "rect") {
+      }else if (obj.type === "Rect" || obj.type === "rect") {
         const rect = new fabric.Rect({
           left: obj.left,
           top: obj.top,
@@ -692,6 +761,17 @@ const Designer = () => {
         />
       ),
     },
+    {
+      icon: FaImages,
+      label: "Badges",
+      panel: (
+        <BadgePanel
+          onSelectImage={(imageUrl) => {
+            setImage(imageUrl, canvas);
+          }}
+        />
+      ),
+    },
     // {
     //   icon: FaImages,
     //   label: "Images",
@@ -744,10 +824,10 @@ const Designer = () => {
           />
         </div>
       )}
-      <div className="w-100 h-100 d-flex ">
+      <div className="w-100 h-100 d-flex design-page">
         <div className="w-25 d-flex align-items-center">
           <div
-            className="w-25 h-100"
+            className="w-100 w-md-25 w-auto h-100"
             style={{
               background:
                 "linear-gradient(to bottom, #CFA935 0%, #A3852B 100%)",
@@ -791,7 +871,7 @@ const Designer = () => {
               </button>
             </div>
           </div>
-          <div className="w-75 h-100 d-flex flex-column pt-4 px-1">
+          <div className="w-md-75 h-100 d-flex flex-column pt-4 px-1 text-design">
             {activePanel}
           </div>
         </div>
@@ -901,9 +981,10 @@ const Designer = () => {
             )}
           </div>
           <div
-            className="d-flex p-2  overflow-y-scroll"
+            className="d-flex p-2 overflow-y-scroll"
             style={{
               width: "93%",
+              height:"100%",
               justifyContent: "center",
               alignItems: "center",
               boxShadow:
@@ -920,6 +1001,10 @@ const Designer = () => {
               }}
             />
           </div>
+          <div>
+        <button onClick={() => zoomCanvas(true, canvas)}>Zoom In</button>
+        <button onClick={() => zoomCanvas(false, canvas)}>Zoom Out</button>
+      </div>
         </div>
       </div>
       <Tooltip activeObject={activeObject} fabricCanvas={canvas} />

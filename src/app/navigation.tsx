@@ -149,27 +149,27 @@ const Navigation = () => {
           setCreditLimit(issueService?.limit);
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        // console.error('Error fetching data:', error);
       }
     })
   };
 
   const getPlanName = async (email: string) => {
     try {
-      const response = await fetch(`${apiUrl}/api/get-subscription-details`, {
+      const response = await fetch(`${apiUrl}/api/fetch-user-subscription-details`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email }),
       });
-
+      
       if (!response.ok) {
         console.error('Failed to fetch plan name');
         // throw new Error('Failed to fetch plan name');
       }
       const data = await response.json();
-      setPlanName(data.details.subscriptionPlanName);
+      setPlanName(data.details.subscriptionPlanTitle);
       setcreditRemaining(data.details.currentCredentials);
     } catch (error) {
       console.error('Error fetching plan name:', error);
@@ -256,14 +256,14 @@ const Navigation = () => {
       case ('/designer'):
         setSelectedTab(3);
         break;
-      case '/admin':
+      case '/administration':
         setSelectedTab(4);
         break;
       case '/designer':
         setSelectedTab(5);
         break;
       default:
-        setSelectedTab(2); // Default to the first tab
+        setSelectedTab(10); // Default to the first tab
     }
   }, [router.pathname]);
 
@@ -309,7 +309,7 @@ const Navigation = () => {
       handleLogout();
     }
   };
-  const routesWithLogoutButton = ['/certificates', '/badge-designer', '/issue-pdf-certificate', '/issue-certificate', '/certificate', '/certificate/[id]', '/certificate/download', '/dashboard', '/user-details', '/admin', '/gallery', '/issue-pdf-qr', '/dynamic-poc', '/settings', '/designer', '/design', '/badge/badge-dashboard', '/badge/badge-form', '/badge/badgeDisplay'];
+  const routesWithLogoutButton = ['/certificates','/placeholder', '/badge-designer', '/issue-pdf-certificate', '/issue-certificate', '/certificate', '/certificate/[id]', '/certificate/download', '/dashboard', '/user-details', '/administration', '/gallery', '/issue-pdf-qr', '/dynamic-poc', '/settings', '/designer', '/design', '/badge/badge-dashboard', '/badge/badge-form', '/badge/badgeDisplay'];
   const handleConfirm = () => {
     setShowModal(false)
     handleLogout();
@@ -369,7 +369,7 @@ const Navigation = () => {
                 <Nav.Link onClick={() => { handleClickTab(2) }} className={`nav-item ${selectedTab === 2 ? "tab-golden" : ""}`} href="/certificates">
                   Issuance
                 </Nav.Link>
-                <Nav.Link onClick={() => { handleClickTab(4) }} className={`nav-item ${selectedTab === 4 ? "tab-golden" : ""}`} href="/admin">
+                <Nav.Link onClick={() => { handleClickTab(4) }} className={`nav-item ${selectedTab === 4 ? "tab-golden" : ""}`} href="/administration">
                   Administration
                 </Nav.Link>
               </Nav>
@@ -505,10 +505,11 @@ const Navigation = () => {
               </div>
             </Navbar.Text>
             <Navbar.Text>
-              <div onClick={() => { navigateToSettings() }} className='icons-container-settings'>
-                <Image src={settingsIcon} />
-              </div>
-            </Navbar.Text>
+  <Link href="/settings" className="icons-container-settings">
+    <Image src={settingsIcon} alt="Setting icon" />
+  </Link>
+</Navbar.Text>
+
             <Navbar.Text>
               <ThemeSwitcher />
             </Navbar.Text>

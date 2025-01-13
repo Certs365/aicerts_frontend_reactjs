@@ -35,7 +35,7 @@ function BackgroundsPanel({ onSelectBackground }) {
 
     try {
       const response = await fetch(
-        `https://userdevapi.certs365.io/api/get/certificate/background/${issuerId}`
+        `${apiUrl_Admin}/api/get/certificate/background/${issuerId}`
       );
       if (!response.ok) {
         const errorData = await response.json();
@@ -47,7 +47,6 @@ function BackgroundsPanel({ onSelectBackground }) {
       setUploadedBackgrounds(images);
     } catch (error) {
       console.error("Error fetching uploaded backgrounds:", error);
-      alert(error.message);
     }   finally {
       setLoading(false); // Stop loading after fetching
     }
@@ -105,6 +104,7 @@ function BackgroundsPanel({ onSelectBackground }) {
             {/* Map over predefined backgrounds and display them */}
             {predefinedBackgrounds.map((bg, index) => (
               <div key={index} className="background-item">
+                {/* eslint-disable-next-line  */}
                 <img
                 crossorigin="anonymous"
                   src={`${bg}`}
@@ -156,6 +156,7 @@ function BackgroundsPanel({ onSelectBackground }) {
      
         {uploadedBackgrounds.map((image) => (
           <div key={image.id} className="background-item d-flex justify-content-center mt-2" >
+            {/* eslint-disable-next-line  */}
             <img
             crossorigin="anonymous"
               src={image.imageUrl}
@@ -175,6 +176,7 @@ function BackgroundsPanel({ onSelectBackground }) {
                 }}
                 onClick={() => handleDelete(image.id)}
               >
+                {/* eslint-disable-next-line  */}
                 <img
                   src="./templateAsset/close.png"
                   alt="close"

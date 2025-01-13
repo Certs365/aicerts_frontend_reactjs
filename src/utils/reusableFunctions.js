@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import CryptoJS from 'crypto-js';
 import { PDFDocument } from 'pdf-lib';
 // Debounced function to fetch suggestions
@@ -45,5 +47,33 @@ const secretKey = process.env.NEXT_PUBLIC_BASE_ENCRYPTION_KEY;
       return null;
     }
   };
+
+  const reduceImageResolution = async (imageUrl, scalingFactor = 4) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous'; // Handle cross-origin if needed
+      img.src = imageUrl;
   
-export {encryptData, createPdfFromImage}
+      img.onload = () => {
+        // Create an off-screen canvas
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+  
+        // Set canvas dimensions to 1X
+        canvas.width = img.naturalWidth / scalingFactor;
+        canvas.height = img.naturalHeight / scalingFactor;
+  
+        // Draw the image onto the canvas with scaled dimensions
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  
+        // Convert the canvas content to a data URL
+        const resizedImageUrl = canvas.toDataURL('image/png'); // Use desired format
+        resolve(resizedImageUrl);
+      };
+  
+      img.onerror = (error) => reject(error);
+    });
+  };
+  
+  
+export {encryptData, createPdfFromImage,reduceImageResolution}

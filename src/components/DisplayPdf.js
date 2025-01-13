@@ -93,6 +93,7 @@ const DisplayPdf = ({ file, scale, isLocked, setRectangle, rectangle }) => {
                         scale={currentScale}
                         renderTextLayer={false}
                         onLoadSuccess={onPageLoadSuccess}
+                        className='mobile-cert'
                     />
                 </Document>
                 {rectangle && (
@@ -149,7 +150,7 @@ const DisplayPdf = ({ file, scale, isLocked, setRectangle, rectangle }) => {
                             alt='Loader'
                         />
                     </div>
-                    <p>Please dont reload the Page. It may take a few minutes.</p>
+                    <p>Please don&apos;t reload the Page. It may take a few minutes.</p>
                 </Modal.Body>
             </Modal>
             <Modal className='loader-modal text-center' show={show} centered onHide={() => setShow(false)}>

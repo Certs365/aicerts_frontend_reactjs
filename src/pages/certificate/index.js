@@ -21,6 +21,7 @@ import CertificateContext from "../../utils/CertificateContext";
 import AWS from "../../config/aws-config";
 import { getImageSize } from "react-image-size";
 import { IndexOutOfBoundsError } from "pdf-lib";
+import { toast } from "react-toastify";
 
 const iconUrl = process.env.NEXT_PUBLIC_BASE_ICON_URL;
 // import image from "public/images/1709909965183_Badge.png"
@@ -159,7 +160,9 @@ const CardSelector = () => {
     //   sessionStorage.setItem('issuerName', inputValue);
     // } else {
     //   // Show error message here, for example:
-    //   // alert('Issuer name must be 30 characters or less');
+    //   toast.error('Issuer name must be 30 characters or less',{
+    //     style: { fontSize: "16px" },
+    // });
     // }
   };
 
@@ -174,7 +177,7 @@ const CardSelector = () => {
       sessionStorage.setItem("issuerDesignation", inputValue);
     } else {
       // Show error message here, for example:
-      // alert("Issuer designation must be 30 characters or less");
+      // toast.error("Issuer designation must be 30 characters or less");
     }
   };
 
@@ -561,7 +564,6 @@ const CardSelector = () => {
       case 5:
         certificateUrl = "https://html.aicerts.io/Background.png";
         break;
-
       default:
         certificateUrl = "https://html.aicerts.io/Background123.png";
         break;
@@ -669,6 +671,10 @@ const CardSelector = () => {
       id: 6,
       imageUrl: "/backgrounds/Certificate_template_5.png",
     },
+    // {
+    //   id: 6,
+    //   imageUrl: "/backgrounds/Certificate_template_7.png",
+    // },
   ];
 
   useEffect(() => {
@@ -728,11 +734,11 @@ const CardSelector = () => {
   return (
     <>
       <div className="page-bg">
-        <div className="position-relative">
-          <div className="dashboard mt-5">
+        <div className="position-relative settings-container h-100"  style={{padding:"100px 140px"}}>
+          <div className="dashboard mt-0">
             <Container>
-              {tab == 0 && <h3 className="title mb-4 py-2">Issue Certifications</h3>}
-              {tab == 1 && <h3 className="title">Batch Issuance</h3>}
+              {tab == 0 && <h3 className="title mb-4 mt-0">Issue Certifications</h3>}
+              {tab == 1 && <h3 className="title mt-0">Batch Issuance</h3>}
 
               <div className="register issue-new-certificate issue-with-pdf">
                 <Form className="register-form">

@@ -12,7 +12,7 @@ interface Response {
 
 // Set the base URL for the app server using the configuration
 const APP_URL = serverConfig.appServerUrl;
-const BASE_URL = serverConfig.appUserUrl;
+const APP_URL_TS = serverConfig.appServerUrlts;
 const ADMIN_API_URL = serverConfig.appApiUrl;
 
 // Define the encryption key from the environment variable
@@ -38,7 +38,7 @@ const appIssuersLog = (data: any, callback: (response: Response) => void) => {
 
   API({
     method: "POST",
-    url: `${APP_URL}/api/get-issuers-log`,
+    url: `${APP_URL_TS}/api/get-issuers-log`,
     data: { data: encryptedData },
   })
     .then((response) => {

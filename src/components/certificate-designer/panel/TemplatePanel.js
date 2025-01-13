@@ -8,6 +8,37 @@ const apiUrl = "YOUR_API_URL"; // Replace with your actual API URL
 const TemplatePanel = ({ onTemplateSelect }) => {
   const [templates, setTemplates] = useState([]);
   const [loading, setLoading] = useState(true); // Loading state
+  const [activeTab, setActiveTab] = useState("predefined");
+
+  const predefinedTemplates = [
+    "./poc-assets/b1.jpg",
+    "./poc-assets/b2.png",
+    "./poc-assets/b3.png",
+    "./poc-assets/b4.png",
+    "./poc-assets/b5.jpg",
+    "./poc-assets/b6.jpg",
+    "./poc-assets/b7.png",
+    "./poc-assets/b8.jpg",
+    "./poc-assets/b9.png",
+    "./poc-assets/b10.png",
+    "./poc-assets/b11.png",
+    "./poc-assets/b12.png",
+    "./poc-assets/b13.png",
+    "./poc-assets/b14.png",
+    "./poc-assets/b15.png",
+    "./poc-assets/b16.png",
+    "./poc-assets/b17.png",
+    "./poc-assets/b18.png",
+    "./poc-assets/b19.png",
+    "./poc-assets/b20.png",
+    "./poc-assets/b21.png",
+    "./poc-assets/b22.png",
+    "./poc-assets/b23.png",
+    "./poc-assets/b24.png",
+    "./poc-assets/b25.png",
+    "./poc-assets/b26.png",
+    
+  ];
 
   useEffect(() => {
     // Fetch the templates when the component mounts
@@ -20,7 +51,7 @@ const TemplatePanel = ({ onTemplateSelect }) => {
 
       try {
         const response = await fetch(
-          `https://userdevapi.certs365.io/api/get-certificate-templates`, 
+          `${apiUrl_Admin}/api/get-certificate-templates`, 
           {
             method: "POST",
             headers: {
@@ -64,73 +95,138 @@ const TemplatePanel = ({ onTemplateSelect }) => {
   };
 
   return (
-    <div className="template-panel">
+    <div className="backgrounds-panel">
       {/* <h3>Available Certificate Templates</h3> */}
+      <div className="background-tabs">
+        <button
+          onClick={() => setActiveTab("predefined")}
+          className={activeTab === "predefined" ? "active-panel" : ""}
+        >
+          Templates
+        </button>
+        <button
+          onClick={() => setActiveTab("uploaded")}
+          className={activeTab === "uploaded" ? "active-panel" : ""}
+        >
+          Your Designed
+        </button>
+      </div>
 
-      {loading ? (
-        <div className="loader">
-          <Spinner style={{width:"100px", height:"100px"}} animation="border" variant="warning" />
-        </div>
-      ) : (
-        <Scrollbar
-        style={{ height: "100%" }}
-        
-        noScrollX
-        thumbYProps={{
-          renderer: (props) => {
-            const { elementRef, ...restProps } = props;
-            return (
-              <div
-                {...restProps}
-                ref={elementRef}
-                style={{
-                  backgroundColor: "#CFA935", // Thumb color
-                  borderRadius: "8px", // Optional: rounded corners for the scrollbar thumb
-                }}
-              />
-            );
-          },
-        }}
-      >
-           {/* <div className="predefined-backgrounds"> */}
-          {templates.map((template) => (
-            <div
-              key={template._id}
-              className="template-box"
-              style={{ position: "relative", display: "inline-block", margin: "10px" }}
-              onClick={() => handleTemplateClick(template)}
-            >
-              <img
-                src={template.url}
-                alt={`Template ${template._id}`}
-                width="60"
-                height="60"
-                data-design-fields={JSON.stringify(template.designFields)}
-              />
-              
-              <div
-                className="close"
-                style={{
-                  position: "absolute",
-                  top: "-10px",
-                  right: "-10px",
-                  cursor: "pointer",
-                }}
-                onClick={() => handleDelete(template._id)}
-              >
+      
+      {activeTab === "predefined" && (
+        <div className="predefined-backgrounds">
+          {/* <h3>Predefined Backgrounds</h3> */}
+          {/* Display predefined backgrounds here */}
+          <Scrollbar
+            style={{ height: "100%" }}
+            noScrollX
+            thumbYProps={{
+              renderer: (props) => {
+                const { elementRef, ...restProps } = props;
+                return (
+                  <div
+                    {...restProps}
+                    ref={elementRef}
+                    style={{
+                      backgroundColor: "#CFA935", // Thumb color
+                      borderRadius: "8px", // Optional: rounded corners for the scrollbar thumb
+                    }}
+                  />
+                );
+              },
+            }}
+          >
+             <div className="backgrounds-grid">
+            {/* Map over predefined backgrounds and display them */}
+            {predefinedTemplates.map((bg, index) => (
+              <div key={index} className="background-item">
+                 {/* eslint-disable-next-line  */}
                 <img
-                  src="./templateAsset/close.png"
-                  alt="close"
-                  style={{ width: "16px", height: "16px" }}
+                crossorigin="anonymous"
+                  src={`${bg}`}
+                  alt={`Background ${index + 1}`}
+                  // onClick={() => onSelectBackground(bg)}
                 />
               </div>
-            </div>
-          ))}
-        
+            ))}
+          </div>
 
-      </Scrollbar>
-     
+          </Scrollbar>
+         
+        </div>
       )}
+
+      {
+        activeTab === "uploaded" && 
+// loading ? (
+//           <div className="loader">
+//             <Spinner style={{width:"100px", height:"100px"}} animation="border" variant="warning" />
+//           </div>
+//         ) : (
+          <Scrollbar
+          style={{ height: "100%" }}
+          
+          noScrollX
+          thumbYProps={{
+            renderer: (props) => {
+              const { elementRef, ...restProps } = props;
+              return (
+                <div
+                  {...restProps}
+                  ref={elementRef}
+                  style={{
+                    backgroundColor: "#CFA935", // Thumb color
+                    borderRadius: "8px", // Optional: rounded corners for the scrollbar thumb
+                  }}
+                />
+              );
+            },
+          }}
+        >
+            
+            {templates.map((template) => (
+              <div
+                key={template._id}
+                className="template-box"
+                style={{ position: "relative", display: "inline-block", margin: "10px" }}
+                onClick={() => handleTemplateClick(template)}
+              >
+                 {/* eslint-disable-next-line  */}
+                <img
+                  src={template.url}
+                  alt={`Template ${template._id}`}
+                  width="60"
+                  height="60"
+                  data-design-fields={JSON.stringify(template.designFields)}
+                />
+                
+                <div
+                  className="close"
+                  style={{
+                    position: "absolute",
+                    top: "-10px",
+                    right: "-10px",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => handleDelete(template._id)}
+                >
+                   {/* eslint-disable-next-line  */}
+                  <img
+                    src="./templateAsset/close.png"
+                    alt="close"
+                    style={{ width: "16px", height: "16px" }}
+                  />
+                </div>
+              </div>
+            ))}
+          
+  
+        </Scrollbar>
+       
+        
+      }
+
+      
     </div>
   );
 };

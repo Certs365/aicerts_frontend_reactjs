@@ -20,7 +20,7 @@ const TemplatePanel = ({ onTemplateSelect }) => {
 
       try {
         const response = await fetch(
-          `https://userdevapi.certs365.io/api/get-certificate-templates`, 
+          `${apiUrl_Admin}/api/get-certificate-templates`, 
           {
             method: "POST",
             headers: {
@@ -100,6 +100,7 @@ const TemplatePanel = ({ onTemplateSelect }) => {
               style={{ position: "relative", display: "inline-block", margin: "10px" }}
               onClick={() => handleTemplateClick(template)}
             >
+              {/* eslint-disable-next-line  */}
               <img
                 src={template.url}
                 alt={`Template ${template._id}`}
@@ -118,6 +119,7 @@ const TemplatePanel = ({ onTemplateSelect }) => {
                 }}
                 onClick={() => handleDelete(template._id)}
               >
+                {/* eslint-disable-next-line  */}
                 <img
                   src="./templateAsset/close.png"
                   alt="close"

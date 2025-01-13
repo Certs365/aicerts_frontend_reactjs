@@ -20,8 +20,6 @@
 
   }
  
-
-
   .nav-item {
     font-family: $font-family;
     font-size: 17px;
@@ -31,7 +29,10 @@
     text-decoration: none;
     margin-left: 30px;
     color: #000;
-
+    
+    @media (min-width: $laptop-min) and (max-width: $laptop-max) {
+      margin-left: 18px;
+    }
   }
 
   .tab-golden {
@@ -286,8 +287,8 @@
       }
 
       .navbar-text {
-        text-align: right;
-        display: block;
+        display: flex;
+        justify-content: flex-end;
 
         .icons-container {
           display: flex;
@@ -300,7 +301,6 @@
   }
   .icons-container-settings {
     display: flex;
-    justify-content: center;
     justify-content: center;
     background-color:#F3F3F3 ;
     width: 50px;

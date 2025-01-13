@@ -7,6 +7,7 @@ const CanvasSetting = ({ canvas, onScaleCanvas }) => {
     const maxCanvasHeight = 500;
     const scaleStep = 0.1;
 
+    /* eslint-disable */
     useEffect(() => {
         if (canvas) {
             canvas.setWidth(canvasWidth);
@@ -16,6 +17,7 @@ const CanvasSetting = ({ canvas, onScaleCanvas }) => {
             onScaleCanvas(canvasWidth / maxCanvasWidth, canvasHeight / maxCanvasHeight);
         }
     }, [canvasWidth, canvasHeight, canvas]);
+    /* eslint-disable */
 
     const handleIncreaseSize = () => {
         setCanvasWidth((prevWidth) => Math.min(prevWidth * (1 + scaleStep), maxCanvasWidth));

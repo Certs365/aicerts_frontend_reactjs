@@ -93,7 +93,6 @@ const BadgeForm = () => {
         });
       } else {
         setIsLoading(true);
-
         // Using the certificate service for creating
         certificate.addBadgeTemplate({ ...formData, email: userEmail, attributes }, (response) => {
           if (response.status === 'SUCCESS') {
@@ -112,108 +111,112 @@ const BadgeForm = () => {
     }
   };
 
+  /* eslint-disable */
   useEffect(() => {
     fetchBadgeDetails();
   }, [id]);
+   /* eslint-disable */
 
   return (
-    <div className="container mt-5 mb-4">
-      <h2 className="text-center mb-4">Badge Details</h2>
-      <form className="p-4 border rounded shadow-sm" style={{ maxWidth: '600px', margin: '0 auto' }}>
-        {/* Title */}
-        <div className="mb-3">
-          <label htmlFor="title" className="form-label">Title</label>
-          <input
-            type="text"
-            className="form-control"
-            id="title"
-            name="title"
-            placeholder="Enter badge title"
-            value={formData.title}
-            onChange={handleInputChange}
-            disabled={isLoading}
-          />
-        </div>
-
-        {/* Subtitle */}
-        <div className="mb-3">
-          <label htmlFor="subTitle" className="form-label">Subtitle</label>
-          <input
-            type="text"
-            className="form-control"
-            id="subTitle"
-            name="subTitle"
-            placeholder="Enter subtitle"
-            value={formData.subTitle}
-            onChange={handleInputChange}
-            disabled={isLoading}
-          />
-        </div>
-
-        {/* Description */}
-        <div className="mb-3">
-          <label htmlFor="description" className="form-label">Description</label>
-          <textarea
-            className="form-control"
-            id="description"
-            name="description"
-            rows={4}
-            placeholder="Enter detailed description"
-            value={formData.description}
-            onChange={handleInputChange}
-            disabled={isLoading}
-          ></textarea>
-        </div>
-        {/* Add Field Button */}
-        <button
-          type="button"
-          className="btn btn-primary mb-4"
-          onClick={handleAddField}
-          disabled={isLoading}
-        >
-          Add Field
-        </button>
-        {/* Attributes */}
-        {attributes && attributes?.length > 0 &&
-          <h5 className="my-4">Custom Fields</h5>
-        }
-        {attributes.map((attr, index) => (
-          <div key={index} className="mb-3">
-            <div className="d-flex gap-3">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Key"
-                value={attr.key}
-                onChange={(e) => handleFieldChange(index, 'key', e.target.value)}
-                disabled={isLoading}
-              />
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Value"
-                value={attr.value}
-                onChange={(e) => handleFieldChange(index, 'value', e.target.value)}
-                disabled={isLoading}
-              />
-              <button
-                type="button"
-                className="btn btn-danger"
-                onClick={() => handleRemoveField(index)}
-                disabled={isLoading}
-              >
-                Remove
-              </button>
-            </div>
+    <div className="page-bg mt-5 pt-5">
+      <div className="container badge-details mt-5 pt-5 mb-4">
+        <h2 className="text-center mb-4 mt-5">Badge Details</h2>
+        <form className="p-4 border rounded shadow-sm" style={{ maxWidth: '600px', margin: '0 auto' }}>
+          {/* Title */}
+          <div className="mb-3">
+            <label htmlFor="title" className="form-label fs-14">Title</label>
+            <input
+              type="text"
+              className="form-control fs-14"
+              id="title"
+              name="title"
+              placeholder="Enter badge title"
+              value={formData.title}
+              onChange={handleInputChange}
+              disabled={isLoading}
+            />
           </div>
-        ))}
 
-        {/* Submit Button */}
-        <div className='d-flex justify-content-center mt-4'>
+          {/* Subtitle */}
+          <div className="mb-3">
+            <label htmlFor="subTitle" className="form-label fs-14">Subtitle</label>
+            <input
+              type="text"
+              className="form-control fs-14"
+              id="subTitle"
+              name="subTitle"
+              placeholder="Enter subtitle"
+              value={formData.subTitle}
+              onChange={handleInputChange}
+              disabled={isLoading}
+            />
+          </div>
 
-          <Button onClick={(e) => { handleSubmit(e) }} className="golden" label={id ? 'Update' : 'Submit'} />
-        </div>
-      </form>
+          {/* Description */}
+          <div className="mb-3">
+            <label htmlFor="description" className="form-label fs-14">Description</label>
+            <textarea
+              className="form-control fs-14"
+              id="description"
+              name="description"
+              rows={4}
+              placeholder="Enter detailed description"
+              value={formData.description}
+              onChange={handleInputChange}
+              disabled={isLoading}
+            ></textarea>
+          </div>
+          {/* Add Field Button */}
+          <button
+            type="button"
+           className="btn btn-primary mb-4 fs-14"
+            onClick={handleAddField}
+            disabled={isLoading}
+          >
+            Add Field
+          </button>
+          {/* Attributes */}
+          {attributes && attributes?.length > 0 &&
+             <h5 className="my-4 fs-14">Custom Fields</h5>
+          }
+          {attributes.map((attr, index) => (
+            <div key={index} className="mb-3">
+              <div className="d-flex gap-3">
+                <input
+                  type="text"
+                  className="form-control fs-14"
+                  placeholder="Key"
+                  value={attr.key}
+                  onChange={(e) => handleFieldChange(index, 'key', e.target.value)}
+                  disabled={isLoading}
+                />
+                <input
+                  type="text"
+                  className="form-control fs-14"
+                  placeholder="Value"
+                  value={attr.value}
+                  onChange={(e) => handleFieldChange(index, 'value', e.target.value)}
+                  disabled={isLoading}
+                />
+                <button
+                  type="button"
+                  className="btn btn-danger fs-14"
+                  onClick={() => handleRemoveField(index)}
+                  disabled={isLoading}
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          ))}
+
+          {/* Submit Button */}
+          <div className='d-flex justify-content-center mt-4'>
+
+            <Button onClick={(e) => { handleSubmit(e) }} className="golden" label={id ? 'Update' : 'Submit'} />
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
