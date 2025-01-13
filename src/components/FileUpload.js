@@ -69,7 +69,8 @@ const FileUpload = ({onUploadSuccess,imageType}) => {
     try {
       setUploadStatus("uploading");
       const response = await axios.post(
-        `${apiUrl_Admin}/api/add/certificate/image`,
+
+        `${process.env.NEXT_PUBLIC_BASE_UPLOAD_CERTIFICATE}`,
         formData,
         {
           onUploadProgress: (progressEvent) => {
@@ -84,9 +85,8 @@ const FileUpload = ({onUploadSuccess,imageType}) => {
         console.error("Upload failed.");
         // throw new Error("Upload failed.");
       }
-      toast.error("Background uploaded successfully!", {
-        style: { fontSize: "16px" },
-    });
+
+      toast.success("Background uploaded successfully!");
       // fetchUploadedBackgrounds(); // Uncomment if this function is defined and needed
       setUploadStatus("done");
       onUploadSuccess && onUploadSuccess();
