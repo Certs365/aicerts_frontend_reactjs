@@ -13,6 +13,7 @@ import issuance from '../services/issuanceServices';
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const testApiUrl = process.env.NEXT_PUBLIC_BASE_URL_USER;
 const secretKey = process.env.NEXT_PUBLIC_BASE_ENCRYPTION_KEY;
+
 const Dashboard = () => {
   const [token, setToken] = useState(null); // State variable for storing token
   const [email, setEmail] = useState(null); // State variable for storing email

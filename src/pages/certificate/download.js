@@ -467,7 +467,7 @@ const DownloadCertificate = () => {
         <div className='position-relative h-100'>
           <div className='vertical-center batchDashboard'>
             <div className='dashboard pb-5 pt-5'>
-              <Container className='mt-5 mt-md-0'>
+              <Container className='mt-5 py-5 mt-md-0'>
                 <div className='d-flex align-items-center mb-4'>
                   <span onClick={() => { window.location.href = "/certificate?tab=1" }} className='back-button'>
                     <Image width={10} height={10} src={BackIcon} alt='back' /><span className=''>Back</span>
@@ -525,49 +525,50 @@ const DownloadCertificate = () => {
                             />
                           </Form.Group>
                         </div>
-                        <Form.Group controlId="search">
-                          <div className="password-input position-relative">
-                            <Form.Control
-                              type='text'
-                              value={searchQuery}
-                              onChange={handleSearchChange}
-                              placeholder="Seach Certificate"
-                            />
-                            <div className='eye-icon position-absolute'>
-                              <Image
-                                src="https://images.netcomlearning.com/ai-certs/icons/search-icon-transparent.svg"
-                                width={20}
-                                height={20}
-                                alt="Search certificate"
-                                className="password-toggle"
+                        <div className="d-block d-md-flex align-items-center justify-content-between gap-10">
+                          <Form.Group controlId="search">
+                            <div className="password-input position-relative">
+                              <Form.Control
+                                type='text'
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                                placeholder="Seach Certificate"
                               />
+                              <div className='eye-icon position-absolute'>
+                                <Image
+                                  src="https://images.netcomlearning.com/ai-certs/icons/search-icon-transparent.svg"
+                                  width={20}
+                                  height={20}
+                                  alt="Search certificate"
+                                  className="password-toggle"
+                                />
+                              </div>
+                            </div>
+                          </Form.Group>
+                          <div className='d-none d-md-flex align-items-center' style={{ columnGap: "10px" }}>
+                            <div className='icon' onClick={toggleViewMode}>
+                              {isGridView ? (
+                                <Image
+                                  src="https://images.netcomlearning.com/ai-certs/icons/list.svg"
+                                  layout='fill'
+                                  objectFit='contain'
+                                  alt='List View'
+                                />
+                              ) : (
+                                <Image
+                                  src="https://images.netcomlearning.com/ai-certs/icons/grid.svg"
+                                  layout='fill'
+                                  objectFit='contain'
+                                  alt='Grid View'
+                                />
+                              )}
                             </div>
                           </div>
-                        </Form.Group>
-                        <div className='d-none d-md-flex align-items-center' style={{ columnGap: "10px" }}>
-                          <div className='icon' onClick={toggleViewMode}>
-                            {isGridView ? (
-                              <Image
-                                src="https://images.netcomlearning.com/ai-certs/icons/list.svg"
-                                layout='fill'
-                                objectFit='contain'
-                                alt='List View'
-                              />
-                            ) : (
-                              <Image
-                                src="https://images.netcomlearning.com/ai-certs/icons/grid.svg"
-                                layout='fill'
-                                objectFit='contain'
-                                alt='Grid View'
-                              />
-                            )}
-                          </div>
+                          <Button disabled={detailsArray?.length === 0} onClick={handleDownloadPDFs} label='Download Certificate' className='golden-download' />
                         </div>
-                        <Button disabled={detailsArray?.length === 0} onClick={handleDownloadPDFs} label='Download Certificate' className='golden-download' />
                       </div>
                       {isGridView ? (
                         <div className='grid-view'>
-
                           <Row>
                             {filteredCertificatesArray && filteredCertificatesArray?.map((detail, index) => (
 

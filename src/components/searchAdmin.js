@@ -44,21 +44,20 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
           <Dropdown.Item eventKey="certificationNumber">Certification Number</Dropdown.Item>
           <Dropdown.Item eventKey="name">Name</Dropdown.Item>
           <InputGroup className="mb-3">
-            {/* <FormControl
-    size="sm" // Make the input small
-    placeholder="Enter search criteria"
-    aria-label="Search criteria"
-    aria-describedby="basic-addon1"
-    className='m-2'
-    value={dynamicSearchCriteria}
-    onChange={(e)=>{setDynamicSearchCriteria(e.target.value)}}
-    onKeyPress={(e) => {
-      if (e.key === 'Enter') {
-        handleDynamicSearchCriteriaChange(e); // Trigger onEnter
-      }
-    }}
-  /> */}
-
+          {/* <FormControl
+            size="sm" // Make the input small
+            placeholder="Enter search criteria"
+            aria-label="Search criteria"
+            aria-describedby="basic-addon1"
+            className='m-2'
+            value={dynamicSearchCriteria}
+            onChange={(e)=>{setDynamicSearchCriteria(e.target.value)}}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                handleDynamicSearchCriteriaChange(e); // Trigger onEnter
+              }
+            }}
+          /> */}
           </InputGroup>
         </>
       );
@@ -310,21 +309,16 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
         <div className="search align-items-center d-flex align-items-center">
 
           {/* First Dropdown (For) */}
-          <div className='w-100 d-block d-md-flex justify-content-center'>
+          <div className='w-100 d-block d-md-flex justify-content-center align-items-center gap-2'>
+            <div className='d-flex align-items-center gap-2 mb-2'>
+            <spa className='default-tag'>For: </spa> 
             <Dropdown onSelect={handleSearchForSelect} className="me-2 golden-dropdown-button">
               <Dropdown.Toggle
                 variant="secondary"
                 id="dropdown-basic btn-golden"
                 className="btn-golden"
-                style={{
-                  backgroundColor: "#CFA935",
-                  color: "white",
-                  border: "none",
-                  borderRadius: 0,
-                  height: "40px"
-                }}
               >
-                {`For: ${searchFor.charAt(0).toUpperCase() + searchFor.slice(1)}`}
+                {`${searchFor.charAt(0).toUpperCase() + searchFor.slice(1)}`}
               </Dropdown.Toggle>
 
               <Dropdown.Menu style={{ borderRadius: 0 }} className="custom-dropdown-menu">
@@ -351,9 +345,18 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
                 ))}
               </Dropdown.Menu>
             </Dropdown>
+            </div>
             <Dropdown onSelect={handleSearchBySelect} className="golden-dropdown-button d-flex d-md-none" >
-              <Dropdown.Toggle variant="secondary" id="dropdown-basic btn-golden" className="custom-dropdown-toggle"
-                style={{ backgroundColor: "#CFA935", color: "white", borderColor: "white", borderRadius: 0, height: '100%', minWidth: "150px" }} disabled={!searchFor}>
+              <Dropdown.Toggle variant="secondary" id="dropdown-basic btn-golden" className="select-search-item"
+                // style={{ 
+                //   backgroundColor: "#CFA935", 
+                //   color: "white", 
+                //   borderColor: "white",
+                //   borderRadius: 0, 
+                //   height: '100%', 
+                //   minWidth: "150px"
+                // }} 
+                disabled={!searchFor}>
                 {` ${searchBy.length ? searchBy.charAt(0).toUpperCase() + searchBy.slice(1) : 'Select Search For'}`}
               </Dropdown.Toggle>
 
@@ -368,7 +371,7 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
               <div className='d-none d-md-block' style={{ flex: 1, }}>
                 {isDateInput ? (
                   <Form.Control
-                    style={{ paddingLeft: "220px" }}
+                    style={{ paddingLeft: "175px" }}
                     type="date"
                     className="search-input-admin custom-date-picker pd-220"
                     value={rawDate} // Bind rawDate to the date picker
@@ -423,7 +426,7 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
               <div className='d-block d-md-none' style={{ flex: 1, }}>
                 {isDateInput ? (
                   <Form.Control
-                    style={{ paddingLeft: "220px" }}
+                    // style={{ paddingLeft: "220px" }}
                     type="date"
                     className="search-input-admin custom-date-picker pd-220"
                     value={rawDate} // Bind rawDate to the date picker
@@ -479,9 +482,9 @@ const SearchAdmin = ({ setFilteredSingleWithCertificates, setFilteredSingleWitho
               </div>
 
               {/* Dropdown (placed inside the input container) */}
-              <Dropdown onSelect={handleSearchBySelect} className="golden-dropdown-button d-none d-md-flex" style={{ position: 'absolute', left: 2, width: "200px" }}>
-                <Dropdown.Toggle variant="secondary" id="dropdown-basic btn-golden" className="btn-golden"
-                  style={{ backgroundColor: "#CFA935", color: "white", borderRadius: 0, height: '40px', width: "200px", marginRight: "10px", border: "none" }} disabled={!searchFor}>
+              <Dropdown onSelect={handleSearchBySelect} className="golden-dropdown-button d-none d-md-flex" style={{ position: 'absolute', left: 0, top: 0 }}>
+                <Dropdown.Toggle variant="secondary" id="dropdown-basic btn-golden" className="select-search-item" 
+                  disabled={!searchFor}>
                   {` ${searchBy.length ? searchBy.charAt(0).toUpperCase() + searchBy.slice(1) : 'Select Search For'}`}
                 </Dropdown.Toggle>
 

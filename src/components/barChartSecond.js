@@ -93,6 +93,7 @@ function BarChartSecond() {
                     }
                     const data = response?.data?.data
                     updateChartData(data, `${year}-${month}`);
+                    return;
                 })
 
                 // if (!response.ok) {
@@ -152,7 +153,7 @@ function BarChartSecond() {
                     borderRadius: 6,
                     tension: 0.4,
                     barPercentage: 0.5,
-    categoryPercentage: 1.0
+                    categoryPercentage: 1.0
                 },
                 {
                     label: "Reactivated",
@@ -204,6 +205,8 @@ function BarChartSecond() {
         setSelectedFilter(filter);
         filterChartData(filter);
     };
+
+    console.log(chartData)
 
     const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
         <div className="custom-date-input" onClick={onClick} ref={ref}>
@@ -290,6 +293,10 @@ function BarChartSecond() {
             window.removeEventListener('resize', resizeChart);
         };
     }, []);
+
+    console.log(chartData)
+
+    const isDataEmpty = chartData.datasets.every(dataset => dataset.data.every(value => value === 0));
     
     return (
         <div  className="container outer-container p-0" style={{height:"320px"}}>
@@ -351,14 +358,20 @@ function BarChartSecond() {
                 </label>
             </div>
 
-            {loading ? (
+            {/* {loading ? (
                 <div className="loader">
                 <div className="spinner-border text-danger" role="status">
                 </div>
             </div>
             ) : (
                     <Bar ref={chartRef} data={chartData} options={chartOptions} width={"100%"}height={"90%"}/>
-            )}
+            )} */}
+
+{isDataEmpty ? (
+    <div className="empty-chart-message">No data available for the selected date range</div>
+) : (
+    <Bar ref={chartRef} data={chartData} options={chartOptions} width={"100%"} height={"90%"} />
+)}
         </div>
     );
 }

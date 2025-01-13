@@ -201,6 +201,8 @@ function BarChart() {
         });
     }, []);
 
+    console.log(filteredChartData)
+
     return (
         <div style={{height:"300px"}} className="container outer-container">
             <div className="filter-options d-none d-md-flex">

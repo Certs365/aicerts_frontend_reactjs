@@ -99,7 +99,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        padding-right: 3.5rem; //add-mine
     }
 
     .gallery-title {
@@ -142,6 +141,70 @@
     }
 }
 
+.search  {
+    .default-tag {
+        color: #000;
+        font-family: $font-family;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+    }
+
+    .golden-dropdown-button {
+        .btn-golden {
+            color: #5B5A5F;
+            font-family: $font-family;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+            background-color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 0;
+            -webkit-border-radius: 0;
+            -moz-border-radius: 0;
+            -ms-border-radius: 0;
+            -o-border-radius: 0;
+}
+
+        .select-search-item {
+            color: #5B5A5F;
+            font-family: $font-family;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+            background-color: #f3f3f3;
+            padding: 10px;
+            border: none;
+        }
+
+        .custom-dropdown-menu {
+            color: #5B5A5F;
+            font-family: $font-family;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+        }
+    }
+
+    .search-input-admin {
+        color: #000;
+        font-family: $font-family;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+
+        &::placeholder {
+            color: rgba(91, 90, 95, 0.30);
+        }
+    }
+
+}
 
 
 .btn-new-date {

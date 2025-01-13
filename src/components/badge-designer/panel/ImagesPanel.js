@@ -79,6 +79,7 @@ function ImagesPanel({ onSelectImage }) {
   return (
     <div className="backgrounds-panel">
       <div className="background-tabs">
+      <h5 style={{color: "#000", fontWeight: '600'}} className="my-3">Backgrounds</h5>
         <button
           onClick={() => setActiveTab("predefined")}
           className={activeTab === "predefined" ? "active-panel" : ""}

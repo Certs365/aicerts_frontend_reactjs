@@ -97,18 +97,19 @@ const TemplatePanel = ({ onTemplateSelect }) => {
   return (
     <div className="backgrounds-panel">
       {/* <h3>Available Certificate Templates</h3> */}
+      <h5 style={{color: "#000", fontWeight: '600'}} className="my-3">Templates</h5>
       <div className="background-tabs">
         <button
           onClick={() => setActiveTab("predefined")}
           className={activeTab === "predefined" ? "active-panel" : ""}
         >
-          Templates
+          Designed
         </button>
         <button
           onClick={() => setActiveTab("uploaded")}
           className={activeTab === "uploaded" ? "active-panel" : ""}
         >
-          Your Designed
+          Your Saves
         </button>
       </div>
 

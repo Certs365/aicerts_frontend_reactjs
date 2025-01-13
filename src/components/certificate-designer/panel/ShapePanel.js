@@ -5,7 +5,7 @@ import { Circle, DownArrow, Heart, HorizontalLine, LeftArrow, PolygonShape, Rect
 const ShapesPanel = ({ onAddShape }) => {
     return (
       <div style={{ padding:"5px", marginBottom:"20px" ,height:"30%"}}>
-        <h5 style={{color: "#CFA935"}} className="mb-2">Select Shape</h5>
+        <h5 style={{color: "#000", fontWeight: '600'}} className="mb-2">Select Shape</h5>
         <div className="d-flex flex-wrap justify-content-around select-shapes">
           {[
             { Component: Rectangle, label: "Rectangle" },

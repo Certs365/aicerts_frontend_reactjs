@@ -275,7 +275,11 @@ const Gallery = () => {
             </div>
           </div> */}
 
-          <SearchAdmin setFilteredSingleWithCertificates={setFilteredSingleWithCertificates} setFilteredSingleWithoutCertificates={setFilteredSingleWithoutCertificates} setFilteredBatchCertificatesData={setFilteredBatchCertificatesData} tab={tab} setLoading={setLoading} />
+          <SearchAdmin 
+              setFilteredSingleWithCertificates={setFilteredSingleWithCertificates} setFilteredSingleWithoutCertificates={setFilteredSingleWithoutCertificates} setFilteredBatchCertificatesData={setFilteredBatchCertificatesData} 
+              tab={tab} 
+              setLoading={setLoading} 
+          />
           <Modal className='loader-modal' show={showLoading} centered>
                 <Modal.Body>
                     <div className='certificate-loader'>

@@ -233,16 +233,19 @@
 
             li {
                 margin-bottom: 0.75rem;
-                font-size: 1rem;
+                font-size: 16px;
+                font-family: $font-family;
                 color: #495057;
                 counter-increment: step-counter; // Increment custom counter
 
                 &:before {
-                    content: "Step "counter(step-counter) ": "; // Use custom counter for steps
+                    content: "Step "counter(step-counter) "\A"; // Use custom counter for steps
                     font-weight: bold;
                     color: #CFA935;
+                    white-space: pre-line;
                 }
             }
+            
         }
 
         .note {
@@ -251,7 +254,7 @@
             background-color: #fff3cd;
             border: 1px solid #ffeeba;
             border-radius: 4px;
-            font-size: 0.875rem;
+            font-size: 14px;
             color: #856404;
 
             strong {
@@ -446,6 +449,8 @@
             }
 
             .prev-cert-card {
+                padding: 10px;
+                border: 1px solid #e0e0e0;
 
                 .form-check-input:checked {
                     background-color: $golden;
@@ -457,6 +462,7 @@
                     font-size: 18px;
                     font-style: normal;
                     font-weight: 600;
+                    margin-left: 5px;
                 }
 
                 .form-check-input[type=checkbox] {
@@ -619,7 +625,7 @@
                     font-style: normal;
                     font-weight: 500;
                     line-height: normal;
-                    margin-top: 5px;
+                    margin: 5px 0 0 5px;
                 }
             }
         }
@@ -813,7 +819,8 @@
 }
 
 .image-container {
-    width: 230px;
+    width: 96%;
+    margin: auto;
     /* Set your desired width */
     height: 200px;
     /* Set your desired height */
@@ -910,7 +917,6 @@
     .label {
         font-family: $font-family;
         color: #5B5A5F;
-        // font-family: $font-family;
         font-size: 14px;
         font-style: normal;
         font-weight: 500;
@@ -928,6 +934,7 @@
         /* Adjust as needed */
 
         .file-upload {
+            font-size: 16px;
             font-family: $font-family;
             width: 70%;
             border: 1px solid #bfbfbf;
@@ -937,8 +944,32 @@
             input {
                 overflow: hidden;
             }
+            @media (min-width: $small-min) and (max-width: $small-max) {
+                padding: 4px;
+            }
+            @media (min-width: $laptop-min) and (max-width: $laptop-max) {
+                font-size: 14px;
+                padding: 4px;
+            }
             @media (min-width: $mobile-min) and (max-width: $mobile-max) {
                width: 82%;
+            }
+        }
+
+        .file-info {
+            span {
+                font-family: $font-family;
+                color: #5B5A5F;
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;
+            }
+
+            .close-icon {
+                fill: red;
+                font-size: 18px;
+                margin-left: 6px;
             }
         }
 

@@ -389,15 +389,15 @@ const Upload = ({ page, setPage, certificates, setCertificates }) => {
       <Container className='dashboard pb-5' >
         <Row className=' d-flex justify-content-center align-items-center' >
           <Col xs={12} md={8} >
-            <h3 className='page-title pb-2'>Batch Issuance with Dynamic QR Positioning</h3>
-            <div className=' d-flex flex-column flex-md-row align-items-center gap-2'>
-              <div className='p-2 bg-white d-flex justify-content-center align-items-center' style={{ border: "1px solid #BFC0C2" }}>
+            <h2 className='page-title pb-3'>Batch Issuance with Dynamic QR Positioning</h2>
+            <div className='poc-filter-icons d-flex flex-column flex-md-row align-items-center gap-2'>
+              <div className='poc-filter-box bg-white d-flex justify-content-center align-items-center'>
                 <input disabled={selectedOption == 'more-than-250'} className='me-1' checked={flag} onChange={() => { setFlag(!flag) }} type='checkbox' style={{ width: "18px", height: "18px" }} />
                 <label>Show Certification in Galley</label>
               </div>
-              <div className='p-2 d-flex gap-2 align-items-center bg-white' style={{ border: "1px solid #BFC0C2" }}>
-                <label>Select Issuance Type</label>
-                <div className=' d-flex flex-column flex-md-row align-items-md-center gap-2'>
+              <div className='poc-filter-box d-flex gap-10 align-items-center bg-white'>
+                <label>Select Issuance Type </label>
+                <div className='d-flex flex-column flex-md-row align-items-md-center gap-10'>
                   <label className=' d-flex justify-content-center align-items-center'>
                     <input
                       className='me-1'
@@ -407,7 +407,7 @@ const Upload = ({ page, setPage, certificates, setCertificates }) => {
                       onChange={handleOptionChange}
                       style={{ width: "18px", height: "18px" }}
                     />
-                    upto 250
+                     upto 250
                   </label>
 
                   <label className=' d-flex justify-content-center align-items-center'>
@@ -425,11 +425,9 @@ const Upload = ({ page, setPage, certificates, setCertificates }) => {
                 </div>
               </div>
             </div>
-
-
           </Col>
           <Col className=' w-25'>
-            <div className='download-sample d-block d-md-flex justify-content-center  text-center py-3 bg-white gap-2 ' style={{ border: "1px solid #BFC0C2" }}>
+            <div className='download-sample d-block d-md-flex justify-content-center py-3 bg-white gap-2 ' style={{ border: "1px solid #BFC0C2" }}>
               <div className='tagline mb-3 mb-md-0 w-50'>Please refer to our Sample file for upload.</div>
               <Button label="Download &nbsp; &nbsp;" className='golden position-relative' onClick={handleDownloadsample} />
             </div>
@@ -440,12 +438,7 @@ const Upload = ({ page, setPage, certificates, setCertificates }) => {
         <Row >
           <Col xs={12} md={8}>
             <div className='bulk-upload'>
-
-
-
               <div className='d-flex flex-column'>
-
-
               </div>
               <div className="tab-content" id="uploadTabContent">
                 {/* Single Tab */}
@@ -490,7 +483,7 @@ const Upload = ({ page, setPage, certificates, setCertificates }) => {
               <div className='steps-header d-flex align-items-center  p-2 mb-3'>
                 <h2>Steps to Follow</h2>
               </div>
-              <Scrollbar style={{ height: '100%', }}
+              {/* <Scrollbar style={{ height: '100%', }}
                 noScrollX
                 thumbYProps={{
                   renderer: (props) => {
@@ -502,12 +495,11 @@ const Upload = ({ page, setPage, certificates, setCertificates }) => {
                         style={{
                           backgroundColor: '#CFA935', // Thumb color
                           borderRadius: '8px', // Optional: rounded corners for the scrollbar thumb
-
                         }}
                       />
                     );
                   }
-                }}>
+                }}> */}
                 <ol className="steps-list">
                   <li>Download the sample ZIP file after locking the QR code position. Extract the contents and edit the existing Excel and PDF files or create new ones, ensuring accurate credential details.</li>
                   <li>Ensure the documentName in the Excel file matches the PDF filenames exactly. Use the correct date format (MM/DD/YYYY). There are three mandatory fields and five optional with key value pair to map.
@@ -519,14 +511,14 @@ const Upload = ({ page, setPage, certificates, setCertificates }) => {
                   <li>Upload the ZIP file and click Validate and Issue. Wait for the process to complete, ensuring you do not refresh or navigate away until confirmation appears.
                   </li>
                   <li> After successful issuance, download individual certificates or all certificates as a ZIP file. If enabled, use the Show Certification button to view generated certificates. </li>
-                  <li>
+                  {/* <li>
                     <div className='download-sample d-block d-md-flex justify-content-center  text-center py-3 bg-white gap-2 ' style={{ border: "1px solid #BFC0C2" }}>
                       <div className='tagline mb-3 mb-md-0 w-50'>Please refer to our Help Document.</div>
                       <Button label="Download &nbsp; &nbsp;" className='golden position-relative' onClick={handleDownloadDocument} />
                     </div>
-                  </li>
+                  </li> */}
                 </ol>
-              </Scrollbar>
+              {/* </Scrollbar> */}
               <div className="note">
                 <strong>Note:</strong> This process may take some time. Please do not refresh or press the back button until it completes.
               </div>

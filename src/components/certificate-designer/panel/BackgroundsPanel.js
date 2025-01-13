@@ -99,6 +99,7 @@ function BackgroundsPanel({ onSelectBackground }) {
 
   return (
     <div className="backgrounds-panel ">
+      <h5 style={{color: "#000", fontWeight: '600'}} className="my-3">Backgrounds</h5>
       <div className="background-tabs">
         <button
           onClick={() => setActiveTab("predefined")}

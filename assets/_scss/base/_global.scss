@@ -441,3 +441,91 @@ a {
         }
     }
 }
+
+
+.react-datepicker {
+    .react-datepicker__header {
+        .react-datepicker__current-month {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .react-datepicker__header__dropdown {
+            .react-datepicker__month-dropdown-container {
+                font-size: 14px;
+            }
+
+            .react-datepicker__year-dropdown-container--select {
+                font-size: 14px !important; 
+            }
+
+        }
+    }
+    .react-datepicker__day-names {
+        .react-datepicker__day-name {
+            font-size: 12px !important; 
+        }
+    }
+
+    .react-datepicker__month {
+        .react-datepicker__week {
+            .react-datepicker__day {
+                width: 2.7rem;
+                font-size: 14px;
+
+            }
+
+        }
+    }
+}
+
+.dynamic-poc {
+    .page-title {
+        color: #000;
+        font-family: $font-family;
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+
+    .poc-filter-icons {
+        .poc-filter-box {
+            border: 1px solid #BFC0C2;
+            padding: 14px 20px;
+            label {
+                color: #000;
+                font-family: $font-family;
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;
+            }
+        }
+    }
+
+    .tagline {
+        color: #000;
+        font-family: $font-family;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+    }
+
+    .steps-container {
+        .steps-header {
+            padding: 16px 20px;
+            background: #F3F3F3;
+            
+            h2 {
+                color: #1C1F30;
+                font-family: $font-family;
+                font-size: 22px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+            }
+        }
+    }
+}

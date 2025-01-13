@@ -3,6 +3,7 @@ import React from 'react'
 const TextPanel = ({ onAddTextBox }) => {
   return (
     <div style={{ padding: '20px', width: '100%' }}>
+    <h5 style={{color: "#000", fontWeight: '600'}} className="mb-3">Text</h5>
     <button
     
         style={{ width: '100%', backgroundColor: "#CFA935", color: '#fff', padding: '10px', borderRadius: '5px', border:"none",  }}

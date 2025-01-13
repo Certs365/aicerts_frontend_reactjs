@@ -813,7 +813,7 @@ const Designer = () => {
         </div>
       )}
       <div className="w-100 h-100 d-flex design-page">
-        <div className="w-25 d-flex align-items-center">
+        <div className="w-md-25 d-flex align-items-center">
           <div
             className="w-100 w-md-25 w-auto h-100"
             style={{
@@ -859,7 +859,7 @@ const Designer = () => {
               </button>
             </div>
           </div>
-          <div className="w-md-75 h-100 d-flex flex-column pt-4 px-1 text-design">
+          <div className="h-100 d-flex flex-column pt-4 px-1 text-design">
             {activePanel}
           </div>
         </div>
@@ -975,8 +975,9 @@ const Designer = () => {
               height:"100%",
               justifyContent: "center",
               alignItems: "center",
-              boxShadow:
-                "rgba(0, 0, 0, 0.16) 0px 1px 4px, #CFA935 0px 0px 0px 3px",
+              // boxShadow:
+              //   "rgba(0, 0, 0, 0.16) 0px 1px 4px, #CFA935 0px 0px 0px 3px",
+              border: '1px solid #BFC0C2'
             }}
           >
             <canvas
@@ -985,7 +986,7 @@ const Designer = () => {
               style={{
                 width: "100%", // Can adjust to a specific value if you want to fix it
                 height: "100%", // Same for height if you want it fixed
-                boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+                // boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
               }}
             />
           </div>
