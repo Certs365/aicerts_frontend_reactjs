@@ -15,6 +15,7 @@ export const onAddShape = (shape, canvas) => {
         fill: "none",
         left: canvas.width / 2 - 50,
         top: canvas.height / 2 - 30,
+        stroke:"black"
       });
       break;
     case "Polygon":
@@ -61,6 +62,8 @@ export const onAddShape = (shape, canvas) => {
         fill: "none",
         left: canvas.width / 2 - 50,
         top: canvas.height / 2 - 50,
+        stroke:"black"
+
       });
       break;
     case "Square":
@@ -70,6 +73,8 @@ export const onAddShape = (shape, canvas) => {
         fill: "none",
         left: canvas.width / 2 - 30,
         top: canvas.height / 2 - 30,
+        stroke:"black"
+
       });
       break;
       case "VerticalLine":
@@ -124,7 +129,7 @@ export const handleShapeBgColorChange = (canvas, setShapeStyles, updateActiveObj
 
 export const handleShapeBorderColorChange = (canvas, setShapeStyles, updateActiveObjectStyles) => (e) => {
     const activeObject = canvas?.getActiveObject();
-    if (activeObject && ["rect", "circle", "polygon"].includes(activeObject.type)) {
+    if (activeObject && ["rect", "circle", "polygon", "line"].includes(activeObject.type)) {
         const newColor = e.target.value; // Get new color from event
         activeObject.set({ stroke: newColor });
         setShapeStyles((prevStyles) => ({

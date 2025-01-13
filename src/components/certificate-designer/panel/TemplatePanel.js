@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import Scrollbar from "react-scrollbars-custom";
+import { predefineTemplates } from "../utils/predefineTemplates";
 
 // Define the API URL
 const apiUrl = "YOUR_API_URL"; // Replace with your actual API URL
@@ -10,35 +11,7 @@ const TemplatePanel = ({ onTemplateSelect }) => {
   const [loading, setLoading] = useState(true); // Loading state
   const [activeTab, setActiveTab] = useState("predefined");
 
-  const predefinedTemplates = [
-    "./poc-assets/b1.jpg",
-    "./poc-assets/b2.png",
-    "./poc-assets/b3.png",
-    "./poc-assets/b4.png",
-    "./poc-assets/b5.jpg",
-    "./poc-assets/b6.jpg",
-    "./poc-assets/b7.png",
-    "./poc-assets/b8.jpg",
-    "./poc-assets/b9.png",
-    "./poc-assets/b10.png",
-    "./poc-assets/b11.png",
-    "./poc-assets/b12.png",
-    "./poc-assets/b13.png",
-    "./poc-assets/b14.png",
-    "./poc-assets/b15.png",
-    "./poc-assets/b16.png",
-    "./poc-assets/b17.png",
-    "./poc-assets/b18.png",
-    "./poc-assets/b19.png",
-    "./poc-assets/b20.png",
-    "./poc-assets/b21.png",
-    "./poc-assets/b22.png",
-    "./poc-assets/b23.png",
-    "./poc-assets/b24.png",
-    "./poc-assets/b25.png",
-    "./poc-assets/b26.png",
-    
-  ];
+
 
   useEffect(() => {
     // Fetch the templates when the component mounts
@@ -66,11 +39,13 @@ const TemplatePanel = ({ onTemplateSelect }) => {
         if (response.ok) {
           const data = await response.json();
           if (data.status === "SUCCESS" && data.data.length > 0) {
+            console.log("template from backend", data.data)
             setTemplates(data.data); // Store templates in state
           } else {
             console.error("No templates found.");
           }
         } else {
+          
           console.error("Can't fetch template", response.statusText);
         }
       } catch (error) {
@@ -96,7 +71,9 @@ const TemplatePanel = ({ onTemplateSelect }) => {
 
   return (
     <div className="backgrounds-panel">
-      {/* <h3>Available Certificate Templates</h3> */}
+     <div className="panel-heading">
+     <h4>Templates</h4>
+     </div>
       <div className="background-tabs">
         <button
           onClick={() => setActiveTab("predefined")}
@@ -138,13 +115,13 @@ const TemplatePanel = ({ onTemplateSelect }) => {
           >
              <div className="backgrounds-grid">
             {/* Map over predefined backgrounds and display them */}
-            {predefinedTemplates.map((bg, index) => (
-              <div key={index} className="background-item">
+            {predefineTemplates.map((template , index) => (
+              <div key={index} className="background-item" onClick={() => handleTemplateClick(template)}>
                 <img
-                crossorigin="anonymous"
-                  src={`${bg}`}
-                  alt={`Background ${index + 1}`}
-                  // onClick={() => onSelectBackground(bg)}
+                  src={template.url}
+                  alt={`Template ${template._id}`}
+                 
+                  data-design-fields={JSON.stringify(template.designFields)}
                 />
               </div>
             ))}

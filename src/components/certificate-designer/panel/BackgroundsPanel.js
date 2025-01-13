@@ -3,6 +3,8 @@ import FileUpload from "../../FileUpload";
 import Scrollbar from "react-scrollbars-custom";
 import { Spinner } from "react-bootstrap";
 import { useCanvasStore } from "../utils/canvasStore";
+import { toast } from 'react-toastify';
+const getBG=process.env.NEXT_PUBLIC_BASE_GET_UPLOADED_CERTIFICATE
 
 
 function BackgroundsPanel({ onSelectBackground }) {
@@ -72,10 +74,12 @@ function BackgroundsPanel({ onSelectBackground }) {
 
     try {
       const response = await fetch(
-        `https://userdevapi.certs365.io/api/get/certificate/background/${issuerId}`
+        `${getBG}/background/${issuerId}`
       );
       if (!response.ok) {
+        
         const errorData = await response.json();
+        toast.info(errorData.message || "Failed to fetch uploaded backgrounds."  )
         throw new Error(
           errorData.message || "Failed to fetch uploaded backgrounds."
         );

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import FileUpload from "../../FileUpload";
 import Scrollbar from "react-scrollbars-custom";
 import { Spinner } from "react-bootstrap";
+import { toast } from "react-toastify";
+const getImg=process.env.NEXT_PUBLIC_BASE_GET_UPLOADED_CERTIFICATE
 
 function ImagesPanel({ onSelectImage }) {
   const [activeTab, setActiveTab] = useState("predefined");
@@ -52,10 +54,11 @@ function ImagesPanel({ onSelectImage }) {
 
     try {
       const response = await fetch(
-        `https://userdevapi.certs365.io/api/get/certificate/image/${issuerId}`
+        `${getImg}/image/${issuerId}`
       );
       if (!response.ok) {
         const errorData = await response.json();
+        toast.info(errorData.message || "Failed to fetch uploaded Images." )
         throw new Error(
           errorData.message || "Failed to fetch uploaded backgrounds."
         );

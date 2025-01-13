@@ -5,6 +5,7 @@ export const setBackgroundImage = (imageUrl, canvas) => {
   if (!canvas) return;
   try {
     console.log("calling");
+    localStorage.setItem("backgroundImageUrl", imageUrl)
     fabric.Image.fromURL(
       imageUrl,
       (img) => {

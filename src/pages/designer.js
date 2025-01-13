@@ -8,6 +8,9 @@ import { IoReturnUpBackOutline } from "react-icons/io5";
 import { FaImages } from "react-icons/fa";
 import { TbIcons } from "react-icons/tb";
 import TextPanel from "../components/certificate-designer/panel/TextPanel";
+import { FaRegSave } from "react-icons/fa";
+import { MdMoveUp } from "react-icons/md";
+
 import {
   handleAddTextBox,
   handleAlignCenter,
@@ -166,6 +169,7 @@ const Designer = () => {
 
     const saveCanvasState = () => {
       const canvasState = JSON.stringify(canvas.toJSON());
+      console.log("canav state", canvasState)
       localStorage.setItem("fabricCanvasState", canvasState);
     };
 
@@ -351,8 +355,8 @@ const Designer = () => {
       //   orientation
       // });
       const fabricCanvas = new fabric.Canvas("myCanvas", {
-        width: 900,
-        height: 500,
+        width: 800,
+        height: 450,
         backgroundColor: "white",
       });
       fabricCanvas.backgroundColor = "#fff";
@@ -365,7 +369,15 @@ const Designer = () => {
       
       if (savedCanvasState) {
         fabricCanvas.loadFromJSON(savedCanvasState, () => {
-          fabricCanvas.renderAll(); // Ensure canvas is rendered after loading
+          // Ensure canvas is rendered after loading
+          
+      
+          // Set the background image if there's a URL in the saved state
+          const backgroundImageURL = JSON.parse(savedCanvasState).backgroundImage?.src;
+          if (backgroundImageURL) {
+            setBackgroundImage(backgroundImageURL, fabricCanvas);
+          }
+          fabricCanvas.renderAll();
         });
       }
       const guidelineInstance = new AlignGuidelines({
@@ -502,6 +514,7 @@ const Designer = () => {
 
   const updateActiveObjectStyles = (activeObject) => {
     if (activeObject.type === "textbox") {
+      console.log(activeObject)
       const { fontWeight, fontStyle, underline, fill, textAlign, opacity } =
         activeObject;
       setTextStyles({
@@ -717,10 +730,36 @@ const Designer = () => {
         canvas.add(circle);
       }
     });
+
+    // Save the current canvas state to localStorage including the background image
+  const currentCanvasState = canvas.toJSON();
+  
+  // Add background image manually to the JSON state
+  if (backgroundImage && backgroundImage.src) {
+    currentCanvasState.backgroundImage = {
+      src: backgroundImage.src,
+      left: 0,  // Assuming no offset, adjust as necessary
+      top: 0,
+      width: canvas.width,
+      height: canvas.height,
+    };
+  }
+  
+  localStorage.setItem('fabricCanvasState', JSON.stringify(currentCanvasState));
   };
 
   // Icon data array
   const icons = [
+    {
+      icon: LuLayoutTemplate,
+      label: "Templates",
+      panel: <TemplatePanel onTemplateSelect={renderTemplateOnCanvas} />,
+    },
+    {
+      icon: TbIcons,
+      label: "Elements",
+      panel: <ElementPanel canvas={canvas} />,
+    },
     {
       icon: CiText,
       label: "Text",
@@ -742,11 +781,7 @@ const Designer = () => {
     //     />
     //   ),
     // },
-    {
-      icon: LuLayoutTemplate,
-      label: "Templates",
-      panel: <TemplatePanel onTemplateSelect={renderTemplateOnCanvas} />,
-    },
+
     {
       icon: TbBackground,
       label: "Background",
@@ -769,28 +804,32 @@ const Designer = () => {
     //     />
     //   ),
     // },
-    {
-      icon: TbIcons,
-      label: "Elements",
-      panel: <ElementPanel canvas={canvas} />,
-    },
-    { icon: IoReturnUpBackOutline, label: "Back" },
+  
   ];
+
+ 
+
+  const handleBackClick = () => {
+    router.push("/design"); // Navigate to the home page
+  };
+
 
   const SidebarIcon = ({ icon: Icon, label, onClick, isActive }) => {
     return (
       <div
         className={
           isActive
-            ? "active-panels my-4 d-flex flex-column align-items-center text-white py-1 "
+            ? "active-panels my-4 d-flex flex-column align-items-center text-white p-3 "
             : " my-4 d-flex flex-column align-items-center text-white py-1"
         }
-        onClick={onClick}
+         onClick={ onClick}
         style={{ cursor: "pointer" }}
       >
-        <Icon size={20} color={isActive ? "#CFA935" : "white"} />
+       {
+        label === "Text"?  <Icon  size={25} color={"white"} /> : <Icon fill= {isActive?"white":"none"} size={25} color={"white"} />
+       }
         {/* <TbIcons color=""/> */}
-        <small style={{ color: isActive ? "#CFA935" : "white" }}>{label}</small>
+        <small style={{ color:"white" }}>{label}</small>
       </div>
     );
   };
@@ -800,7 +839,7 @@ const Designer = () => {
   };
 
   return (
-    <div className="page-bg position-absolute" style={{ top: "90px" }}>
+    <div className="page-bg position-absolute" style={{ top: "80px" }}>
       {loading && (
         <div className="loader-overlay position-absolute">
           <Spinner
@@ -811,10 +850,12 @@ const Designer = () => {
         </div>
       )}
       <div className="w-100 h-100 d-flex ">
-        <div className="w-25 d-flex align-items-center">
+        <div className=" d-flex align-items-center" style={{ width:"30%"}}>
           <div
-            className="w-25 h-100"
+            className=" h-100"
             style={{
+              width:"124px",
+              padding:"0px 10px 0px 10px",
               background:
                 "linear-gradient(to bottom, #CFA935 0%, #A3852B 100%)",
             }}
@@ -828,40 +869,84 @@ const Designer = () => {
                 isActive={isActivePanel === iconData.label}
               />
             ))}
-            <div className="action-buttons d-flex gap-2 flex-column px-1">
+           <div style={{ display:"flex", flexDirection:"column", justifyContent:"space-between", height:"45%"}}>
+           <div className="action-buttons d-flex gap-2 flex-column">
               <button
                 style={{
                   background: "none",
-                  border: "2px solid white",
                   borderRadius: "5px",
                   fontSize: "13px",
                   color: "white",
-                  fontWeight: "bold",
+                  display:"flex",
+                  flexDirection:"column",
+                  justifyContent:"center",
+                  alignItems:"center",
+                  padding:"5px",
+                  border:"none"
                 }}
                 onClick={handleTemplateSave}
               >
-                {targetId ? "Save Template" : "Save as Template"}
+                <FaRegSave size={25} />
+                <small style={{ color:"white" }}>{targetId ? "Save Template" : "Save as Template"}</small>
+
+                
               </button>
               <button
-                style={{
-                  background: "none",
-                  border: "2px solid white",
-                  borderRadius: "5px",
-                  fontSize: "13px",
-                  color: "white",
-                  fontWeight: "bold",
-                }}
+              style={{
+                background: "none",
+                borderRadius: "5px",
+                fontSize: "13px",
+                color: "white",
+                display:"flex",
+                flexDirection:"column",
+                justifyContent:"center",
+                alignItems:"center",
+                padding:"5px",
+                border:"none"
+              }}
                 onClick={moveToIssuance}
               >
-                Move to Issuance
+                 <img 
+        src="/icons/movetoIssuance.svg" 
+        alt="Move to Issuance" 
+        style={{ width: "25px", height: "25px" }} 
+      />
+                <small style={{ color:"white" }}> Move to Issuance</small>
+               
               </button>
+         
+           
             </div>
+            
+          <div style={{width:"100%", display:"flex", justifyContent:"center" , borderTop:"1px solid white"}}>
+          <button
+              style={{
+                background: "none",
+                borderRadius: "5px",
+                fontSize: "13px",
+                color: "white",
+                display:"flex",
+                flexDirection:"column",
+                justifyContent:"center",
+                alignItems:"center",
+                padding:"5px",
+                border:"none"
+              }}
+                onClick={handleBackClick}
+              >
+                <IoReturnUpBackOutline size={25} />
+                
+                <small style={{ color:"white" }}> Back</small>
+               
+              </button>
           </div>
-          <div className="w-75 h-100 d-flex flex-column pt-4 px-1">
+           </div>
+          </div>
+          <div className="w-75 h-100 d-flex flex-column pt-2 px-1" style={{backgroundColor:"white"}}>
             {activePanel}
           </div>
         </div>
-        <div className="w-75 d-flex gap-3 align-items-center flex-column overflow-y-auto mt-4">
+        <div className="w-75 d-flex gap-3 align-items-center flex-column overflow-y-auto mt-1" style={{backgroundColor:"#F3F3F3" }}>
           <div
             className="  px-3 d-flex align-items-center"
             style={{ height: "10%", width: "85%" }}
@@ -973,8 +1058,8 @@ const Designer = () => {
               height:"100%",
               justifyContent: "center",
               alignItems: "center",
-              boxShadow:
-                "rgba(0, 0, 0, 0.16) 0px 1px 4px, #CFA935 0px 0px 0px 3px",
+              
+        
             }}
           >
             <canvas
@@ -983,7 +1068,7 @@ const Designer = () => {
               style={{
                 width: "100%", // Can adjust to a specific value if you want to fix it
                 height: "100%", // Same for height if you want it fixed
-                boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+                
               }}
             />
           </div>
