@@ -45,6 +45,7 @@ const Register = () => {
 
 
   const isFormInvalid = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email validation regex
     return (
       !formData.organisationName ||
       !formData.fullName ||
@@ -54,9 +55,11 @@ const Register = () => {
       !formData.confirmPassword ||
       !formData.userPhoneNumber ||
       formData.password !== formData.confirmPassword || // Check if passwords match
+      !emailRegex.test(formData.userEmail) || // Check if email is valid
       Object.keys(fieldErrors).some((key) => fieldErrors[key] !== '')
     );
   };
+  
 
   // State for form data
   const [formData, setFormData] = useState({
@@ -98,10 +101,6 @@ const Register = () => {
 
   // Function to handle form field changes
   const handleInputChange = (field, value) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [field]: value,
-    }));
 
     // Clear field error when the user starts typing
     setFieldErrors((prevErrors) => ({
@@ -132,6 +131,7 @@ const Register = () => {
         return;
       }
 
+     
       // Prevent adding space at the start
       if (value.trimStart() !== value) {
         // Remove leading spaces from the value
@@ -177,6 +177,26 @@ const Register = () => {
         }));
       }
     }
+
+    if (field === 'userEmail') {
+      const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailPattern.test(value)) {
+        setFieldErrors((prevErrors) => ({
+          ...prevErrors,
+          userEmail: 'Please enter a valid email address',
+        }));
+      } else {
+        // Clear email error if the email is valid
+        setFieldErrors((prevErrors) => ({
+          ...prevErrors,
+          email: '',
+        }));
+      }
+    }
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [field]: value,
+    }));
   };
 
   // Function to handle form submission
@@ -317,9 +337,9 @@ const Register = () => {
               <Card.Title>Organization Details</Card.Title>
 
               <div className='input-elements'>
-                <Row className="justify-content-md-center">
-                  <Col md={{ span: 4 }} xs={{ span: 12 }}>
-                    <Form.Group controlId="organization-name" className='mb-3'>
+                 
+              <Row>
+                    <Form.Group controlId="organization-name" className='mb-3 col-md-4'>
                       <Form.Label>Organization Name <span className='text-danger'>*</span></Form.Label>
                       <Form.Control
                         type="text"
@@ -329,8 +349,35 @@ const Register = () => {
                       />
                       {fieldErrors.organisationName && <p className='error-message' style={{ color: '#ff5500' }}>{fieldErrors.organisationName}</p>}
                     </Form.Group>
+                    <Form.Group controlId="organization-type" className='mb-3 col-md-4'>
+                      <Form.Label>Organization Type</Form.Label>
+                      <Form.Control type="text"
+                        name="organization-type"
+                        value={formData?.organizationType}
+                        onChange={(e) => handleInputChange('organizationType', e.target.value)}
+                      />
+                    </Form.Group>
+                    <Form.Group className='col-md-4 mb-3'>
+                    <Form.Label>Industry Sector</Form.Label>
+                    <Form.Select aria-label="select" className=''
+                      value={formData?.industrySector}
+                      onChange={(e) => handleInputChange('industrySector', e.target.value)}
+                    >
+                      <option value="">Select Industry</option>
+                      <option value="Technology">Technology</option>
+                      <option value="Education">Education</option>
+                      <option value="Finance">Finance</option>
+                      <option value="Fintech">Fintech</option>
+                      <option value="Engineering">Engineering</option>
+                      <option value="Commerce">Commerce</option>
+                      <option value="Health Care">Health Care</option>
+                      <option value="Manufacturing">Manufacturing</option>
+                      <option value="Others">Others</option>
+                    </Form.Select>
+                    </Form.Group>
+                  
 
-                    <Form.Group controlId="address" className='mb-3'>
+                    <Form.Group controlId="address" className='col-md-4 mb-3'>
                       <Form.Label>Address</Form.Label>
                       <Form.Control type="text"
                         value={formData?.address}
@@ -338,8 +385,25 @@ const Register = () => {
                         onChange={(e) => handleInputChange('address', e.target.value)}
                       />
                     </Form.Group>
+                    <Form.Group controlId="city" className='col-md-4 mb-3'>
+                      <Form.Label>City</Form.Label>
+                      <Form.Control type="text"
+                        name="city"
+                        value={formData?.city}
+                        onChange={(e) => handleInputChange('city', e.target.value)}
+                      />
+                    </Form.Group>
 
-                    <Form.Group controlId="country" className='mb-3'>
+                    <Form.Group controlId="state" className='col-md-4 mb-3'>
+                      <Form.Label>State</Form.Label>
+                      <Form.Control type="text"
+                        value={formData?.state}
+                        name="state"
+                        onChange={(e) => handleInputChange('state', e.target.value)}
+                      />
+                    </Form.Group>
+
+                    <Form.Group controlId="country"className='col-md-4 mb-3'>
                       <Form.Label>Country</Form.Label>
                       <Form.Control type="text"
                         value={formData?.country}
@@ -347,8 +411,29 @@ const Register = () => {
                         onChange={(e) => handleInputChange('country', e.target.value)}
                       />
                     </Form.Group>
-                  </Col>
-                  <Col md={{ span: 4 }} xs={{ span: 12 }}>
+
+                    <Form.Group controlId="zip" className='col-md-4 mb-3' >
+                      <Form.Label>Zip</Form.Label>
+                      <Form.Control type="text"
+                        name="zip"
+                        value={formData?.zip}
+                        onChange={(e) => handleInputChange('zip', e.target.value)}
+                      />
+                    </Form.Group>
+
+                    <Form.Group controlId="website-link" className='col-md-4 mb-3'>
+                      <Form.Label>Website Link</Form.Label>
+                      <Form.Control type="text"
+                        value={formData?.websiteLink}
+                        name="website-link"
+                        onChange={(e) => handleInputChange('websiteLink', e.target.value)}
+                      />
+                    </Form.Group>
+
+                    
+
+                  
+                  {/* <Col md={{ span: 4 }} xs={{ span: 12 }}>
                     <Form.Group controlId="organization-type" className='mb-3'>
                       <Form.Label>Organization Type</Form.Label>
                       <Form.Control type="text"
@@ -411,7 +496,7 @@ const Register = () => {
                         onChange={(e) => handleInputChange('websiteLink', e.target.value)}
                       />
                     </Form.Group>
-                  </Col>
+                  </Col> */}
                 </Row>
               </div>
             </Card.Body>
@@ -421,9 +506,9 @@ const Register = () => {
               <Card.Title>Primary Contact Detail of the User</Card.Title>
 
               <div className='input-elements'>
-                <Row className="justify-content-md-center">
-                  <Col md={{ span: 4 }} xs={{ span: 12 }}>
-                    <Form.Group controlId="full-name" className='mb-3'>
+              <Row>
+                  {/* <Col md={{ span: 4 }} xs={{ span: 12 }}> */}
+                    <Form.Group controlId="full-name" className='col-md-4 mb-3'>
                       <Form.Label>Full Name <span className='text-danger'>*</span></Form.Label>
                       <Form.Control type="text"
                         value={formData?.fullName}
@@ -432,7 +517,7 @@ const Register = () => {
                       />
                       {fieldErrors.fullName && <p className='error-message' style={{ color: '#ff5500' }}>{fieldErrors.fullName}</p>}
                     </Form.Group>
-                    <Form.Group controlId="phone-number" className='mb-3'>
+                    <Form.Group controlId="phone-number" className='col-md-4 mb-3'>
                       <Form.Label>Phone Number<span className='text-danger'>*</span></Form.Label>
                       <Form.Control type="text"
                         name="phone-number"
@@ -440,9 +525,9 @@ const Register = () => {
                         onChange={(e) => handleInputChange('userPhoneNumber', e.target.value)}
                       />
                     </Form.Group>
-                  </Col>
-                  <Col md={{ span: 4 }} xs={{ span: 12 }}>
-                    <Form.Group controlId="designation" className='mb-3'>
+                  {/* </Col> */}
+                  {/* <Col md={{ span: 4 }} xs={{ span: 12 }}> */}
+                    <Form.Group controlId="designation" className='col-md-4 mb-3'>
                       <Form.Label>Designation</Form.Label>
                       <Form.Control type="text"
                         name="designation"
@@ -450,9 +535,9 @@ const Register = () => {
                         onChange={(e) => handleInputChange('designation', e.target.value)}
                       />
                     </Form.Group>
-                  </Col>
-                  <Col md={{ span: 4 }} xs={{ span: 12 }}>
-                    <Form.Group controlId="email" className='mb-3'>
+                  {/* </Col> */}
+                  {/* <Col md={{ span: 4 }} xs={{ span: 12 }}> */}
+                    <Form.Group controlId="email" className='col-md-4 mb-3'>
                       <Form.Label>Email <span className='text-danger'>*</span></Form.Label>
                       <Form.Control type="email"
                         name="email"
@@ -465,7 +550,7 @@ const Register = () => {
                         <p className='error-message' style={{ color: '#ff5500' }}>{fieldErrors?.generalError}</p>
                       )}
                     </Form.Group>
-                  </Col>
+                  {/* </Col> */}
                 </Row>
               </div>
             </Card.Body>

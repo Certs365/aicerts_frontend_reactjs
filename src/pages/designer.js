@@ -51,7 +51,8 @@ import { useCanvasStore } from "../components/certificate-designer/utils/canvasS
 import ElementPanel from "../components/certificate-designer/panel/ElementPanel";
 import { useRouter } from "next/router";
 import UnsavedChangesPopup from "../components/certificate-designer/UnsavedChangesPopup";
-
+import BadgePanel from "../components/badge-designer/panel/badgePanel";
+const apiUrl_Admin = process.env.NEXT_PUBLIC_BASE_URL_admin
 const Designer = () => {
   const canvasRef = useRef(true);
   const [canvas, setCanvas] = useState(null);
@@ -131,7 +132,7 @@ const Designer = () => {
     try {
       // Upload image to server (S3)
       const uploadResponse = await fetch(
-        `https://adminapidev.certs365.io/api/upload`,
+        `${apiUrl_Admin}/api/upload`,
         {
           method: "POST",
           body: fd,
@@ -265,7 +266,7 @@ const Designer = () => {
   const updateTemplate = async (id, fileUrl, templateData) => {
     try {
       const response = await fetch(
-        `https://userdevapi.certs365.io/api/update-certificate-template`,
+        `${apiUrl_Admin}/api/update-certificate-template`,
         {
           method: "PUT",
           headers: {
@@ -295,7 +296,7 @@ const Designer = () => {
   const createTemplate = async (fileUrl, templateData) => {
     try {
       const response = await fetch(
-        `https://userdevapi.certs365.io/api/add-certificate-template`,
+        `${apiUrl_Admin}/api/add-certificate-template`,
         {
           method: "POST",
           headers: {
@@ -344,7 +345,7 @@ const Designer = () => {
   };
 
   const { paperSize, orientation } = useCanvasStore((state) => state); // Access Zustand state
-
+ /* eslint-disable */
   useEffect(() => {
     if (canvasRef.current) {
       console.log(canvasRef.current);
@@ -434,6 +435,8 @@ const Designer = () => {
       };
     }
   }, []);
+   /* eslint-disable */
+
   const containerWidth = 700; // Example: Update this based on your outer container width
   const aspectRatios = {
     A4: 595 / 842,
@@ -793,6 +796,17 @@ const Designer = () => {
         />
       ),
     },
+    {
+      icon: FaImages,
+      label: "Badges",
+      panel: (
+        <BadgePanel
+          onSelectImage={(imageUrl) => {
+            setImage(imageUrl, canvas);
+          }}
+        />
+      ),
+    },
     // {
     //   icon: FaImages,
     //   label: "Images",
@@ -853,6 +867,7 @@ const Designer = () => {
         <div className=" d-flex align-items-center" style={{ width:"30%"}}>
           <div
             className=" h-100"
+
             style={{
               width:"124px",
               padding:"0px 10px 0px 10px",
@@ -942,6 +957,7 @@ const Designer = () => {
           </div>
            </div>
           </div>
+
           <div className="w-75 h-100 d-flex flex-column pt-2 px-1" style={{backgroundColor:"white"}}>
             {activePanel}
           </div>
@@ -1052,7 +1068,7 @@ const Designer = () => {
             )}
           </div>
           <div
-            className="d-flex p-2  overflow-y-scroll"
+            className="d-flex p-2 overflow-y-scroll"
             style={{
               width: "93%",
               height:"100%",

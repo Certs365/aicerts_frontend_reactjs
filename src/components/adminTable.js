@@ -467,6 +467,8 @@ const uploadToS3 = async (blob, certificateNumber,type) => {
     setNeverExpires(event.target.checked);
   };
 
+ 
+
   const rowHeadName = (tab) => {
     if (tab === 1) {
       return "New Expiration Date";
@@ -510,22 +512,22 @@ const uploadToS3 = async (blob, certificateNumber,type) => {
         <table  className="table table-bordered">
           <thead >
             <tr >
-              <th scope="col" style={{ backgroundColor: "#f3f3f3" }}>S. No.</th>
-              <th scope="col" style={{ backgroundColor: "#f3f3f3" }}>Name</th>
-              <th scope="col" style={{ backgroundColor: "#f3f3f3" }}>Certificate Number</th>
-              <th scope="col" style={{ backgroundColor: "#f3f3f3" }}>Expiration Date</th>
-              <th scope="col" style={{ backgroundColor: "#f3f3f3" }} >{rowHeadName(tab)}</th>
+              <th scope="col" style={{ backgroundColor: "#f3f3f3", padding:"10px" }}>S. No.</th>
+              <th scope="col" style={{ backgroundColor: "#f3f3f3", padding:"10px"  }}>Name</th>
+              <th scope="col" style={{ backgroundColor: "#f3f3f3", padding:"10px"  }}>Certificate Number</th>
+              <th scope="col" style={{ backgroundColor: "#f3f3f3", padding:"10px"  }}>Expiration Date</th>
+              <th scope="col" style={{ backgroundColor: "#f3f3f3", padding:"10px"  }} >{rowHeadName(tab)}</th>
             </tr>
           </thead>
           <tbody>
             {responseData?.data?.map((item, index) => {
               return (
                 <tr key={index}>
-                  <th scope="row">{index + 1}</th>
-                  <td >{item?.name}</td>
-                  <td>{item?.certificateNumber}</td>
-                  <td>{item?.expirationDate == 1 || !item?.expirationDate ? "-" : formatDate(item?.expirationDate) || "-"}</td>
-                  <td>{rowAction(tab, item)}</td>
+                  <th scope="row" style={{padding:"10px" }}>{index + 1}</th>
+                  <td  style={{padding:"10px" }}>{item?.name}</td>
+                  <td style={{padding:"10px" }}>{item?.certificateNumber}</td>
+                  <td style={{padding:"10px" }}>{item?.expirationDate == 1 || !item?.expirationDate ? "-" : formatDate(item?.expirationDate) || "-"}</td>
+                  <td style={{padding:"10px" }}>{rowAction(tab, item)}</td>
                 </tr>
               )
             })}

@@ -16,12 +16,15 @@
         border: 1px solid #BFC0C2;
         min-height: 180px;
         margin-top: 20px;
-.card-wrapper{
-    max-width: 32rem;
-}
+
+        .card-wrapper {
+            max-width: 32rem;
+        }
+
         .label-settings {
             font-family: $font-family;
             color: #5B5A5F;
+            font-size: 14px;
         }
 
         .title {
@@ -119,6 +122,26 @@
             }
         }
     }
+
+    @media (min-width: $large-min) and (max-width: $large-max) {
+        padding: 120px 90px;
+    }
+
+    @media (min-width: $medium-min) and (max-width: $medium-max) {
+        padding: 120px 90px;
+    }
+
+    @media (min-width: $small-min) and (max-width: $small-max) {
+        padding: 120px 90px;
+    }
+
+    @media (min-width: $laptop-min) and (max-width: $laptop-max) {
+        padding: 120px 90px;
+    }
+
+    @media (min-width: $mobile-min) and (max-width: $mobile-max) {
+        // padding: 120px 250px;
+    }
 }
 
 .blockchain-button.selected {
@@ -182,5 +205,5 @@
     .switch-button {
         color: $white;
     }
-   
+
 }

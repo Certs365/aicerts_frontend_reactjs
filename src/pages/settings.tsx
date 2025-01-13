@@ -85,9 +85,13 @@ const Settings: React.FC = () => {
     const { success } = router.query;
 
     if (success == "true") {
-      toast.success("Subscription Purchased Successfully");
+      toast.success("Subscription Purchased Successfully", {
+        style: { fontSize: "16px" },
+    });
     }else if(success == "false"){
-      toast.error("Error in Purchasing Subscription");
+      toast.error("Error in Purchasing Subscription", {
+        style: { fontSize: "16px" },
+    });
 
     }
   }, [router.query]);
@@ -117,10 +121,14 @@ const Settings: React.FC = () => {
       await user.updateIssuer(data, (response) => {
         const userData = response.data;
         const userDetails = userData?.data;
-        toast.success(userData?.message || "Updated Successfully")
+        toast.success(userData?.message || "Updated Successfully", {
+          style: { fontSize: "16px" },
+      })
       });
     } catch (error) {
-      toast.error('Error updating QR preference');
+      toast.error('Error updating QR preference',{
+        style: { fontSize: "16px" },
+    });
 
     } finally {
       setLoading(false);
@@ -479,7 +487,9 @@ const Settings: React.FC = () => {
       });
 
       if (response.ok) {
-        toast.success("Plan Updated Successfully")
+        toast.success("Plan Updated Successfully",{
+          style: { fontSize: "16px" },
+      })
       }
 
     } catch (error) {

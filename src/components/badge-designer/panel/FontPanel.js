@@ -52,6 +52,7 @@ const FontPanel = ({ onFontChange }) => {
     });
   };
 
+  /* eslint-disable */
   useEffect(() => {
     observer.current = new IntersectionObserver(lazyLoadFonts, {
       root: null,
@@ -63,6 +64,7 @@ const FontPanel = ({ onFontChange }) => {
 
     return () => observer.current.disconnect();
   }, [filteredFonts]);
+  /* eslint-disable */
 
   return (
     <div className="font-panel" >

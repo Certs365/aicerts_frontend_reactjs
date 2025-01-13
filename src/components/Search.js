@@ -246,7 +246,7 @@ const Search = ({ setResponseData, tab, setLoading }) => {
 
 
                     {/* Search Input and Suggestions */}
-                    <div style={{ position: 'relative', flex: 1 }}>
+                    <div className='d-none d-md-block' style={{ position: 'relative', flex: 1 }}>
                         {isDateInput ? (
                             <Form.Control
                             style={{paddingLeft:"220px"}}
@@ -294,11 +294,59 @@ const Search = ({ setResponseData, tab, setLoading }) => {
                         )}
                     </div>
 
+                    <div className='d-block d-md-none' style={{ position: 'relative', flex: 1 }}>
+                        {isDateInput ? (
+                            <Form.Control
+                            style={{paddingLeft:"220px"}}
+                                type="date"
+                                className="search-input-admin"
+                                value={rawDate} // Bind rawDate to the date picker
+                                onChange={handleDateChange}
+                            />
+                        ) : (
+                            <div className='d-flex'>
+                                <input
+                                
+                                    type="text"
+                                    className="d-none d-md-flex search-input-admin-page"
+                                    placeholder={`Search by ${searchBy}`}
+                                    value={searchTerm}
+                                    onChange={handleSearchTermChange}
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Search here..."
+                                    className="d-flex d-md-none search-input"
+                                    value={searchTerm}
+                                    onChange={handleSearchTermChange}
+                                />
+                                <div className='d-flex d-md-none search-icon-container-mobile' onClick={handleSearch}>
+                                    <Image width={10} height={10} src="/icons/search.svg" alt='search' />
+                                </div>
+                            </div>
+                        )}
+                        {!isDateInput && showSuggestions && (
+                            <ul className="suggestions-list" style={suggestionsListStyle}>
+                                {suggestions?.length > 0 ? (
+                                    suggestions.map((suggestion, index) => (
+                                        <li
+                                            key={index}
+                                            onClick={() => handleSuggestionClick(suggestion)}
+                                            style={suggestionItemStyle}
+                                            onMouseDown={(e) => e.preventDefault()} // Prevents input blur
+                                        >
+                                            {suggestion}
+                                        </li>
+                                    ))
+                                ) : (
+                                    <li style={suggestionItemStyle}>No suggestions found</li>
+                                )}
+                            </ul>
+                        )}
+                    </div>
+
                     {/* Search Icon */}
                     <div className='d-none d-md-flex search-icon-container' onClick={handleSearch}>
-                        <Image width={10} height={10} src="/icons/search.svg" alt='search' />
-                    </div>
-                    <div className='d-flex d-md-none search-icon-container-mobile' onClick={handleSearch}>
                         <Image width={10} height={10} src="/icons/search.svg" alt='search' />
                     </div>
                 </div>

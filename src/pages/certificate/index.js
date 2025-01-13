@@ -160,7 +160,9 @@ const CardSelector = () => {
     //   sessionStorage.setItem('issuerName', inputValue);
     // } else {
     //   // Show error message here, for example:
-      toast.error('Issuer name must be 30 characters or less');
+    //   toast.error('Issuer name must be 30 characters or less',{
+    //     style: { fontSize: "16px" },
+    // });
     // }
   };
 
@@ -732,11 +734,11 @@ const CardSelector = () => {
   return (
     <>
       <div className="page-bg">
-        <div className="position-relative settings-container h-100">
+        <div className="position-relative settings-container h-100"  style={{padding:"100px 140px"}}>
           <div className="dashboard mt-0">
             <Container>
-              {tab == 0 && <h3 className="title mb-4 py-2">Issue Certifications</h3>}
-              {tab == 1 && <h3 className="title">Batch Issuance</h3>}
+              {tab == 0 && <h3 className="title mb-4 mt-0">Issue Certifications</h3>}
+              {tab == 1 && <h3 className="title mt-0">Batch Issuance</h3>}
 
               <div className="register issue-new-certificate issue-with-pdf">
                 <Form className="register-form">

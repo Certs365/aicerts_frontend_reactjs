@@ -3,6 +3,7 @@
     height: 88vh;
     gap: 20px;
 
+
     .design-container-head{
         border: 1px solid red;
         width: 100%;
@@ -28,6 +29,14 @@
             border: none;
             
         }
+    }
+
+
+    margin-top: 20px;
+
+    @media (min-width: $mobile-min) and (max-width: $mobile-max) {
+        height: 30vh;
+        padding: 0 18px;
     }
 
 }
@@ -58,6 +67,10 @@
     h3 {
         margin: 0;
     }
+
+    @media (min-width: $mobile-min) and (max-width: $mobile-max) {
+        height: 175px;
+    }
 }
 
 .dashboard-badge {
@@ -66,7 +79,7 @@
     flex-wrap: wrap;
     gap: 20px;
     min-height: 100vh; // Center vertically
-    background-color: #f9f9f9; // Add a light background
+    // background-color: #f9f9f9; // Add a light background
 }
 
 .badge-Card-dashboard {
@@ -85,6 +98,11 @@
     &:hover {
         transform: scale(1.05);
         box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (min-width: $mobile-min) and (max-width: $mobile-max) {
+        height: 145px;
+        width: 170px;
     }
 }
 

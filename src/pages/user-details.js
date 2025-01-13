@@ -316,7 +316,7 @@ const ProfileDetails = () => {
                                                 <div className="icons d-flex align-items-center" style={{ columnGap: "8px" }}>
                                                     Email
                                                 </div>
-                                                <span className="lead-info" style={{ color: email ? 'inherit' : 'gray', fontSize: email ? 'inherit' : 'small' }}>
+                                                <span className="lead-info" style={{ color: email ? 'inherit' : 'gray' }}>
                                                     {email || "Not Set"}
                                                 </span>
                                             </li>
@@ -324,7 +324,7 @@ const ProfileDetails = () => {
                                                 <div className="icons d-flex align-items-center" style={{ columnGap: "8px" }}>
                                                     Username
                                                 </div>
-                                                <span className="lead-info" style={{ color: username ? 'inherit' : 'gray', fontSize: username ? 'inherit' : 'small' }}>
+                                                <span className="lead-info" style={{ color: username ? 'inherit' : 'gray' }}>
                                                     {username || "Not Set"}
                                                 </span>
 
@@ -333,7 +333,7 @@ const ProfileDetails = () => {
                                                 <div className="icons d-flex align-items-center" style={{ columnGap: "8px" }}>
                                                     Phone Number
                                                 </div>
-                                                <span className="lead-info" style={{ color: formData?.phoneNumber ? 'inherit' : 'gray', fontSize: formData?.phoneNumber ? 'inherit' : 'small' }}>
+                                                <span className="lead-info" style={{ color: formData?.phoneNumber ? 'inherit' : 'gray' }}>
                                                     {formData?.phoneNumber || "Not Set"}
                                                 </span>
                                             </li>
@@ -341,7 +341,7 @@ const ProfileDetails = () => {
                                                 <div className="icons d-flex align-items-center" style={{ columnGap: "8px" }}>
                                                     Website
                                                 </div>
-                                                <span className="lead-info" style={{ color: formData?.websiteLink ? 'inherit' : 'gray', fontSize: formData?.websiteLink ? 'inherit' : 'small' }}>
+                                                <span className="lead-info" style={{ color: formData?.websiteLink ? 'inherit' : 'gray'}}>
                                                     {formData?.websiteLink || "Not Set"}
                                                 </span>
                                             </li>
@@ -349,7 +349,7 @@ const ProfileDetails = () => {
                                                 <div className="icons d-flex align-items-center" style={{ columnGap: "8px" }}>
                                                     Organization
                                                 </div>
-                                                <span className="lead-info" style={{ color: formData?.organization ? 'inherit' : 'gray', fontSize: formData?.organization ? 'inherit' : 'small' }}>
+                                                <span className="lead-info" style={{ color: formData?.organization ? 'inherit' : 'gray' }}>
                                                     {formData?.organization || "Not Set"}
                                                 </span>
                                             </li>
@@ -365,7 +365,7 @@ const ProfileDetails = () => {
                                                 <h6 className="mb-0 icons">Name</h6>
                                             </Col>
                                             <div className="col-sm-9 text-secondary">
-                                                <input value={formData.name} onChange={handleInputChange} name='name' type="text" className="form-control" placeholder="" disabled={!editable} />
+                                                <input value={formData.name} onChange={handleInputChange} name='name' type="text" className="form-control fs-14" placeholder="" disabled={!editable} />
 
                                             </div>
                                         </Row>
@@ -390,7 +390,7 @@ const ProfileDetails = () => {
                                                 <h6 className="mb-0 icons">Phone</h6>
                                             </div>
                                             <div className="col-sm-9 text-secondary">
-                                                <input type="text" className="form-control" value={formData.phoneNumber} onChange={handleInputChange} name='phoneNumber' disabled={!editable} />
+                                                <input type="text" className="form-control fs-14" value={formData.phoneNumber} onChange={handleInputChange} name='phoneNumber' disabled={!editable} />
                                             </div>
                                         </div>
                                         <div className="row mb-3">
@@ -398,7 +398,7 @@ const ProfileDetails = () => {
                                                 <h6 className="mb-0 icons">Address</h6>
                                             </div>
                                             <div className="col-sm-9 text-secondary">
-                                                <input type="text" className="form-control" value={formData.address} onChange={handleInputChange} name='address' disabled={!editable} />
+                                                <input type="text" className="form-control fs-14" value={formData.address} onChange={handleInputChange} name='address' disabled={!editable} />
                                             </div>
                                         </div>
                                         <div className="row mb-3">
@@ -406,7 +406,7 @@ const ProfileDetails = () => {
                                                 <h6 className="mb-0 icons">City</h6>
                                             </div>
                                             <div className="col-sm-9 text-secondary">
-                                                <input type="text" className="form-control" value={formData.city} onChange={handleInputChange} name='city' disabled={!editable} />
+                                                <input type="text" className="form-control fs-14" value={formData.city} onChange={handleInputChange} name='city' disabled={!editable} />
                                             </div>
                                         </div>
                                         <div className="row mb-3">
@@ -414,7 +414,7 @@ const ProfileDetails = () => {
                                                 <h6 className="mb-0 icons">State</h6>
                                             </div>
                                             <div className="col-sm-9 text-secondary">
-                                                <input type="text" className="form-control" value={formData.state} onChange={handleInputChange} name='state' disabled={!editable} />
+                                                <input type="text" className="form-control fs-14" value={formData.state} onChange={handleInputChange} name='state' disabled={!editable} />
                                             </div>
                                         </div>
                                         <div className="row mb-3">
@@ -422,7 +422,7 @@ const ProfileDetails = () => {
                                                 <h6 className="mb-0 icons">Country</h6>
                                             </div>
                                             <div className="col-sm-9 text-secondary">
-                                                <input type="text" className="form-control" value={formData.country} onChange={handleInputChange} name='country' disabled={!editable} />
+                                                <input type="text" className="form-control fs-14" value={formData.country} onChange={handleInputChange} name='country' disabled={!editable} />
                                             </div>
                                         </div>
                                         <div className="row mb-3">
@@ -430,7 +430,7 @@ const ProfileDetails = () => {
                                                 <h6 className="mb-0 icons">Zip</h6>
                                             </div>
                                             <div className="col-sm-9 text-secondary">
-                                                <input type="text" className="form-control" value={formData.zip} onChange={handleInputChange} name='zip' disabled={!editable} />
+                                                <input type="text" className="form-control fs-14" value={formData.zip} onChange={handleInputChange} name='zip' disabled={!editable} />
                                             </div>
                                         </div>
                                         <div className="row mb-3">
@@ -438,7 +438,7 @@ const ProfileDetails = () => {
                                                 <h6 className="mb-0 icons">Industry Sector</h6>
                                             </div>
                                             <div className="col-sm-9 text-secondary">
-                                                <input type="text" className="form-control" value={formData.industrySector} onChange={handleInputChange} name='industrySector' disabled={!editable} />
+                                                <input type="text" className="form-control fs-14" value={formData.industrySector} onChange={handleInputChange} name='industrySector' disabled={!editable} />
                                             </div>
                                         </div>
                                         <div className="row mb-3">
@@ -446,7 +446,7 @@ const ProfileDetails = () => {
                                                 <h6 className="mb-0 icons">Website Link</h6>
                                             </div>
                                             <div className="col-sm-9 text-secondary">
-                                                <input type="text" className="form-control" value={formData.websiteLink} onChange={handleInputChange} name='websiteLink' disabled={!editable} />
+                                                <input type="text" className="form-control fs-14" value={formData.websiteLink} onChange={handleInputChange} name='websiteLink' disabled={!editable} />
                                             </div>
                                         </div>
                                         <div className="row mb-3">
@@ -454,7 +454,7 @@ const ProfileDetails = () => {
                                                 <h6 className="mb-0 icons">Organization Type</h6>
                                             </div>
                                             <div className="col-sm-9 text-secondary">
-                                                <input type="text" className="form-control" value={formData.organizationType} onChange={handleInputChange} name='organizationType' disabled={!editable} />
+                                                <input type="text" className="form-control fs-14" value={formData.organizationType} onChange={handleInputChange} name='organizationType' disabled={!editable} />
                                             </div>
                                         </div>
                                         <div className="row mb-3">
@@ -462,7 +462,7 @@ const ProfileDetails = () => {
                                                 <h6 className="mb-0 icons">Designation</h6>
                                             </div>
                                             <div className="col-sm-9 text-secondary">
-                                                <input type="text" className="form-control" value={formData.designation} onChange={handleInputChange} name='designation' disabled={!editable} />
+                                                <input type="text" className="form-control fs-14" value={formData.designation} onChange={handleInputChange} name='designation' disabled={!editable} />
                                             </div>
                                         </div>
                                         <div className="d-flex align-items-center justify-content-center" style={{ columnGap: "10px" }}>

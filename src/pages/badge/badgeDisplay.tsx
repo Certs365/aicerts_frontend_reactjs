@@ -5,7 +5,7 @@ import html2canvas from "html2canvas";
 import axios from "axios";
 import { useRouter } from "next/router";
 
-const apiUserUrl = process.env.NEXT_PUBLIC_BASE_URL_USER;
+const apiUserUrl = process.env.NEXT_PUBLIC_BASE_URL_USER_TS;
 
 const CertificateEditor: React.FC = () => {
     const [placeholders, setPlaceholders] = useState([]);

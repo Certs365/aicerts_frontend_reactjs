@@ -10,6 +10,7 @@ const Design = () => {
   };
 
   return (
+
     <div className="design-container" >
      
       {/* <div
@@ -28,6 +29,7 @@ const Design = () => {
       <div className='design-container-head px-5'>
         <DesignerHeader/>
         
+
       </div>
 
 

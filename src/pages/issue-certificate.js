@@ -652,6 +652,7 @@ const IssueCertificate = () => {
                                   dateFormat="MM/dd/yyyy"
                                   showMonthDropdown
                                   showYearDropdown
+                                  onKeyDown={(e) => e.preventDefault()}
                                   dropdownMode="select"
                                   selected={formData.grantDate}
                                   onChange={(date) =>
@@ -679,6 +680,7 @@ const IssueCertificate = () => {
                                   name="date-of-expiry"
                                   className="form-control"
                                   dateFormat="MM/dd/yyyy"
+                                  onKeyDown={(e) => e.preventDefault()}
                                   showMonthDropdown
                                   showYearDropdown
                                   dropdownMode="select"

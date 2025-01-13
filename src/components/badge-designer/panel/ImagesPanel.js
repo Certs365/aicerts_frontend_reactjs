@@ -52,7 +52,7 @@ function ImagesPanel({ onSelectImage }) {
 
     try {
       const response = await fetch(
-        `https://userdevapi.certs365.io/api/get/certificate/image/${issuerId}`
+        `${apiUrl_Admin}/api/get/certificate/image/${issuerId}`
       );
       if (!response.ok) {
         const errorData = await response.json();
@@ -119,6 +119,7 @@ function ImagesPanel({ onSelectImage }) {
             <div className="backgrounds-grid">
               {predefinedImages.map((src, index) => (
                 <div key={index} className="background-item">
+                  {/* eslint-disable-next-line  */}
                   <img
                   crossorigin="anonymous"
                     src={src}
@@ -173,6 +174,7 @@ function ImagesPanel({ onSelectImage }) {
         <div className="backgrounds-grid">
           {uploadedBackgrounds.map((image) => (
             <div key={image.id} className="background-item d-flex justify-content-center mt-2" >
+              {/* eslint-disable-next-line  */}
               <img
               crossorigin="anonymous"
                 src={image.imageUrl}
@@ -192,6 +194,7 @@ function ImagesPanel({ onSelectImage }) {
             }}
             onClick={() => handleDelete(image.id)}
           >
+            {/* eslint-disable-next-line  */}
             <img
               src="./templateAsset/close.png"
               alt="close"

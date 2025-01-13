@@ -1,7 +1,7 @@
 
 // const apiUrl = "http://10.2.3.55:7039";
 // const apiUrl_Admin = "http://10.2.3.55:6049";
-const apiUrl = "https://userdevapi.certs365.io";
+const apiUrl = "${apiUrl_Admin}";
 const apiUrl_Admin = "https://adminapidev.certs365.io";
 
 let canvas;

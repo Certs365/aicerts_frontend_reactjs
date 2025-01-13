@@ -40,7 +40,7 @@ const TextEditPanel = ({
 
       {/* Transparency Control */}
       <label className="d-flex align-items-center gap-2">
-        <span style={{color:'#CFA935'}}  >Transparency:</span>
+        <span style={{color:'#CFA935'}}>Transparency:</span>
         <input
        
           type="range"

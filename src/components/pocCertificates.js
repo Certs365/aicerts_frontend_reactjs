@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo} from 'react';
 import { useInView } from 'react-intersection-observer';
 import Image from 'next/image';
 import { Col, Row, Modal, Button } from 'react-bootstrap';
@@ -10,7 +10,8 @@ import data from "./data.json";
 import download from '@/services/downloadServices';
 
 const PocCertificates = ({ certificateData }) => {
-  const certificates = certificateData?.urls || [];
+  // const certificates = certificateData?.urls || [];
+  const certificates = useMemo(() => certificateData?.urls || [], [certificateData]);
   const [imageAvailability, setImageAvailability] = useState({});
   const [unavailableCertificates, setUnavailableCertificates] = useState(certificates);
   const [prevModal, setPrevModal] = useState(false);
